@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>GithubPages Umlaut test </title>
+<meta name="AUTHOR" content="Albrecht Weinert" />
+<meta name="DESCRIPTION" content="test Github Pages Umlaute &mdash; ÄÖÜßäöüfrom the blogs" />
+<meta http-equiv="content-language" content="de" />
+<meta name="AUTHOR" content="Albrecht Weinert" />
+</head><body>
+
+weinert-automation<br />
+Prof. Dr.-Ing. Albrecht Weinert<br />
+
+<h1>GithubPages Umlaut test</h1>
+<h2>Symptoms</h2>
+&Auml; Ä; &Ouml; Ö; &Uuml; Ü; <br />
+&auml; Ä; &ouml; Ö; &uuml; Ü; &szlig; ß; <br />
+
+Here &amp; Auml; is followed by the iso-8859-1 &Auml;; and so on. <br />
+Every well behaving (Apache 2.4 without forcing encoding) web server 
+delivers this page unspoiled but Github Pages won't.<br />
+With GitHub Pages all iso-8859-1 characters above 127 get displayed as 
+question mark in black diamond (&#xfffd;).<br />
+
+<h2>Background</h2>
+Our very first (quasi hello world) experience with GitHub Pages was disappointing:
+Almost all well tested pages transferred (pushed) there were miss-rendered by 
+several browsers. This page was started as  test page to explore the failure's
+reason.<br />
+<br />
+In spite of <br />
+&nbsp; &lt;?xml version="1.0" encoding="iso-8859-1"?&gt; <br />
+and <br />
+&nbsp; &lt;meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /&gt; <br />
+as well as even (irrelevant for character set settings, of course)<br /> 
+&nbsp; &lt;meta http-equiv="content-language" content="de" /&gt; <br />
+all German Umlauts are spoiled.<br />
+<br />
+See this very page on Apache 2.4: <br />
+ &nbsp; <a href="https://weinert-automation.de/infos/umlautGitHubPages.html"
+   title="Umlauts not spoiled on Apache2.4">weinert-automation.de/infos/umlautGitHubPages.html</a><br />
+And see it on GitHub Pages: <br />
+ &nbsp; <a href="https://a-weinert.github.io/umlautGitHubPages.html"
+   title="All Umlauts not spoiled on GitHub Pages">a-weinert.github.io/umlautGitHubPages.html</a><br /> 
+   
+   
+<h2>Diagnosis</h2>
+The failure has two reasons:<ol>
+<li> GitHub Pages says encoding UTF8 in its response header &mdash; at least
+  in our case. Searches, so far, found no documentation therefore. And all
+  introductory examples &mdash; three steps to your first web page on 
+  GitHub &mdash; don't give a warning.</li>
+<li> There seems to be a rule that the response header's encoding indication
+  overrules all header and xml attribute setting in a web page. And all 
+  browsers seem to obey this rule.<br />
+  Considering a perfectly consistent static web page encoded in iso-8859-11
+  and saying so, this behaviour respectively preference rule seems a totally
+  senseless recipe for false rendering.</li>
+</ol>
+Tip: No web server should use encoding in its response header when (as usual)
+unaware of the content.
+</body></html>
