@@ -53,11 +53,12 @@ And see it on GitHub Pages: <br />
 <h2>Diagnosis</h2>
 The failure has two reasons:<ol>
 <li> GitHub Pages says encoding UTF8 in its response header &mdash; at least
-  in our case. Searches, so far, found no documentation therefore. And all
-  introductory examples &mdash; three steps to your first web page on 
-  GitHub &mdash; don't give a warning.</li>
+  in our case. Searches, so far, found no documentation therefore (except
+  Jekyll naming UTF-8 as default). And all introductory examples &mdash; 
+  three steps to your first web page on GitHub &mdash; don't give a 
+  warning.</li>
 <li> There seems to be a rule that the response header's encoding indication
-  overrules all header and XML attribute setting in a web page. And all 
+  overrules all header and xml attribute setting in a web page. And all 
   browsers seem to obey this rule.<br />
   Considering a perfectly consistent static web page encoded in iso-8859-11
   and saying so, this behaviour respectively preference rule seems a totally
@@ -65,4 +66,16 @@ The failure has two reasons:<ol>
 </ol>
 Tip: No web server should use encoding in its response header when (as usual)
 unaware of the content.
+
+<h2>No remedies</h2>
+Best would be all browsers giving the explicit page encoding preference over
+the server response. The latter should only the (server region) default, 
+when the page encoding  was forgotten. But that cannot be changed. <br />
+<br />
+If working in Western Europe and doing almost everything in ISO-8859-1 or 
+similar code pages you would like to avoid UTF8. Theoretically GitHub pages
+should obey <br />
+<code>encoding: ISO-8859-1</code><br />
+in the _config.yml. But that doesn't yield the expected result. <br />
 </body></html>
+
