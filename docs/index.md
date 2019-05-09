@@ -12,6 +12,3 @@ https://name.github.io/project/, i.e. here https://a-weinert.github.io/weAut/.
 - [blog auf GitHub Pages](https://a-weinert.github.io/index_de.html "blog seit April 2019")
 - [Albrecht Weinert](https://a-weinert.de/index.html "Albrecht Weinerts Web-Bereich")
 - [weinert-automation](https://weinert-automation.de/index.html "Entwicklung Service Beratung")
-
-Dies ist ein Test für die Integration des docs-Verzeichnisses eines 
-GitHub-Projekts in einen GitHub-Webauftritt.
