@@ -14,6 +14,4 @@ https://name.github.io/project/, i.e. here https://a-weinert.github.io/weAut/.
 - [weinert-automation](https://weinert-automation.de/index.html "Entwicklung Service Beratung")
 
 Dies ist ein Test für die Integration des docs-Verzeichnisses eines 
-GitHub-Projekts in einen GitHub-Webauftritt unter 
-https://name.github.io/project/, im Beispiel hier also unter
- https://a-weinert.github.io/weAut/.
+GitHub-Projekts in einen GitHub-Webauftritt.
