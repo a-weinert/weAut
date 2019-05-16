@@ -1,0 +1,15 @@
+# Transfer a programme to the target machine
+# Copyright 2017 Albrecht Weinert            a-weinert de
+# $Revision: 3 $ ($Date: 2017-05-31 12:32:49 +0200 (Mi, 31 Mai 2017) $)
+# param 1 : user:passwd  (ftp user)     e.g. pi:raspberry
+# param 2 : target machine (IP)        e.g. 192.168.89.67
+# param 3 : target directory (within user's ~)   e.g. bin
+# param 4 : programme                 e.g. rdGnBlinkBlink 
+# use by  : 
+#   winscp.com /script=progTransWin /parameter pi:raspberry 192.168.89.67 bin rdGnBlinkBlink
+open sftp://%1%@%2%
+cd %3%
+option batch continue
+option confirm off
+put %4% -preservetime -permissions=775
+exit

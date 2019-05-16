@@ -1,0 +1,81 @@
+/** \file main_page.dox
+ *
+ * This file is for extra Doxygen documentation texts, only.
+ * It contains no software.
+ * Copyright (c) 2018 Albrecht Weinert, Bochum
+
+   Revision history \code
+   Rev. $Revision: 190 $ $Date: 2019-02-14 19:40:38 +0100 (Do, 14 Feb 2019) $
+   Rev. 108 13.02.2018 : modified from weAutSys (2014)
+   Rev. 109 15.02.2018 : directory descriptions included (trial)
+   Rev. 189 12.11.2018 : remove weAutSys past
+ \endcode
+
+\dir weRasp
+
+Raspberry Pi 3 Process control &mdash; C sources by A. Weinert
+
+\dir include 
+
+Raspberry Pi Process control &mdash; definitions
+
+\defgroup raspArchGrp Raspberries architecture differences
+
+The different Raspberry types, like Pi1 and P3, can mostly be handled 
+transparently to the control programmes. This is done by make variables by 
+a make variable TARGET identifying a concrete target machine and, hence, the
+architecture, i.e the PLATFORM variable.The latter can also be set directly as
+PLATFORM = raspberry_03 e.g.. raspberry_03 is the default by the way.
+
+The mechanism used is calculated make includes and calculated C includes.
+@{
+\dir include/arch 
+
+Raspberry Pi variants &mdash; architecture definitions
+
+The preferred Raspberry test and target platform for control applications
+is a Pi3 with a non graphical OS. But other and older platforms may be 
+sufficient sometimes. To handle differences (GPIO pinning e.g.) in a uniform
+way, the include files in this directory describe those platforms.
+
+@} 
+
+\mainpage rasProject1 - process control with Raspberry Pi 3
+
+  The ideas behind using a Raspberry Pi3 for process control are published in
+  &lt;<a href="http://a-weinert.de/pub/raspberry4remoteServices.pdf"
+  >raspberry4remoteServices.pdf</a>&gt; at
+  &lt;<a href="http://a-weinert.de/pub/">a-weinert.de/pub/</a>&gt;. 
+
+  \section intro_secH Process control features
+  
+  By certain configuration and utilising constraints we get 24/7 base for 
+  control software with <ul> 
+    <li> cycles (1ms,  10ms, 100ms, 1s and multiples) </li>
+    <li> support for Modbus, MQTT, 1-wire and more</li>
+    <li> HMI via Web-interface </li>
+    <li> watchdog </li>
+ * </ul>
+  Compared with industrial PLCs and weAut01 there is <ul>
+    <li> no supervising of power supply, and, hence </li>
+    <li> no (cycle for) programmable reaction on power outages </li>
+ *
+  
+ * \section copyLicNote A note on Copyright and License
+ *
+ * For software and documentation developed for this project:
+ *
+ * &nbsp; &nbsp; &nbsp; Copyright &copy;&nbsp;2018 Prof. Dr.-Ing. Albrecht Weinert
+ *  &nbsp; &nbsp; &lt;<a href="http://a-weinert.de">a-weinert.de</a>&gt;<br />
+ * &nbsp; &nbsp; &nbsp; weinert - automation &nbsp; Bochum &nbsp; &nbsp; &nbsp;
+ * &lt;<a href="http://weinert-automation.de">weinert-automation.de</a>&gt;
+ *  <br />
+ * &nbsp; &nbsp; &nbsp; All right reserved.<br />
+ *
+ * The software is open source and available by SVN checkout.
+ 
+ * It uses open source libraries by other authors. Those parts 
+ * keep their original license and author's copyright.
+ *
+ *  <br />
+ */

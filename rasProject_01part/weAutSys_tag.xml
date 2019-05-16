@@ -1,0 +1,1734 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<tagfile>
+  <compound kind="file">
+    <name>config.h</name>
+    <path>D:/mapa/gitPapa/weAut/rasProject_01part/include/arch/</path>
+    <filename>config_8h</filename>
+    <includes id="config__raspberry__03_8h" name="config_raspberry_03.h" local="yes" imported="no">arch/config_raspberry_03.h</includes>
+  </compound>
+  <compound kind="file">
+    <name>config_raspberry_01.h</name>
+    <path>D:/mapa/gitPapa/weAut/rasProject_01part/include/arch/</path>
+    <filename>config__raspberry__01_8h</filename>
+  </compound>
+  <compound kind="file">
+    <name>config_raspberry_03.h</name>
+    <path>D:/mapa/gitPapa/weAut/rasProject_01part/include/arch/</path>
+    <filename>config__raspberry__03_8h</filename>
+  </compound>
+  <compound kind="file">
+    <name>basicTyCo.h</name>
+    <path>D:/mapa/gitPapa/weAut/rasProject_01part/include/</path>
+    <filename>basic_ty_co_8h</filename>
+    <class kind="union">dualReg_t</class>
+    <class kind="union">sdm80regs_t</class>
+    <class kind="struct">smdX30modbus_t</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>clearArray</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a7418d0754d67760aa8800d871c27d44b</anchor>
+      <arglist>(a)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>DAYs</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>ae464e371f89290ec2e89a5fb25efcf83</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ERAend</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a34351c969f9c87ad4116fd3c94546613</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>FALSE</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>aa93f0eb578d23995850d61f7d61c55c1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>FOURYEARS</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a6f4435791dfb7874e757f2eb6992c3f5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>HOURs</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a842bbeb35abe0c4904c55d748caab8d7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>LEAPYEAR</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a0c624fd5ee452d0bf432c5a8e5346efb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>memBarrier</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a5fe3d718b0200919018c60ba9668d275</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>MILLIARD</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>aa1e588e0b55b3ab54f316bfdbe57adb8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>MILLION</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a368e7704f92e34c8ea0a5c263a95a1b1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>MINUTEs</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a9320bec4d4d4cb7a5a42f3dda408a2c9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>OFF</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a29e413f6725b2ba32d165ffaa35b01e5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ON</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>ad76d1750a6cdeebd506bfcd6752554d2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PLATFlittlE</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a310eb8b2e616fd9a68a9e53ecac68a76</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>TRUE</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>aa8cecfc5c5c054d2875c03e77b7be15d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>YEAR</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a5871356500f559add06ea81d60331b1b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>enum modBusLinkState_t</type>
+      <name>modBusLinkState_t</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>ab4a6bfc85b3e454988dbe3ef5b362184</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <type></type>
+      <name>modBusLinkState_t</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>ML_OFF</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555aa21bcee4f51f14c1e8ec1e895c21f8fa</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>ML_ON</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555adf2212b990aabb3bd3b2d547eed47427</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>ML_IDLE</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555afd765b34fc845ab2b53328b7326da4ba</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>ML_INITED</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555ad610b0bb1476e7dec003afbce229527f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>ML_REQSEND</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555a7023a0f2fbaae1774af06b6014ca063c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>ML_RESPREC</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555addaf7495f4c0af2604130e18ca2aa9b5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>ML_LISTEN</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555a0c526de7b653e9b6a67d16bdc0459184</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>ML_REQREC</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555abd9e428daf597ada846c9e7f73b6df61</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>ML_RESPOND</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555a922949b35ce207b399708d87684a9fab</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>ML_ERR_ANY</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555ac8b5eaa8bc640d01a09e7df1ff604b05</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>ML_ERR_INIT</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555a1a7536aba97fdf3662d185aa1fac75e8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>ML_ERR_REQ</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555a60febcf77481e83f74c244a188425878</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>ML_ERR_RESP</name>
+      <anchorfile>basic_ty_co_8h.html</anchorfile>
+      <anchor>a4472d8f3e292130503d95cd807b9e555a19c0521aa7d67e5a63c9e5f1e80f498e</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>sysBasic.h</name>
+    <path>D:/mapa/gitPapa/weAut/rasProject_01part/include/</path>
+    <filename>sys_basic_8h</filename>
+    <member kind="typedef">
+      <type>struct timespec</type>
+      <name>timespec</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a1cccab7444210b21d232130957e966dc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>float</type>
+      <name>cosDay</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a227221d20952554cd67b5e333fc87928</anchor>
+      <arglist>(short int dayInYear)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>errLogIsStd</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>ab927b6d8162c728e37384eb416b0057c</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>formatTmTim</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a42626e284c4dbf7d59d2e749de65beb2</anchor>
+      <arglist>(char *rTmTxt, struct tm *rTm)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>formatTmTiMs</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a45cf8de17863e3642514c6c7ab0b7a70</anchor>
+      <arglist>(char *rTmTxt, struct tm *rTm, int millis)</arglist>
+    </member>
+    <member kind="function">
+      <type>__time_t</type>
+      <name>getDaySunrise</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a5b021c4fa435f71366af8ec47b7e8c07</anchor>
+      <arglist>(short int const dayInYear, uint32_t const meanSunriseSec, uint16_t const halfRiseDeltaMin)</arglist>
+    </member>
+    <member kind="function">
+      <type>__time_t</type>
+      <name>getDaySunset</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a8f53def6ffb2df85367996b1a1b13aa6</anchor>
+      <arglist>(short int const dayInYear, uint32_t const meanSunsetSec, uint16_t const halfSetDeltaMin)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>isFNaN</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>aa6571580e1982e20f2d4658d7a16e1c6</anchor>
+      <arglist>(float const val)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>littleEndian</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a2acb147d13363e463ccd18ba242d263b</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>outLogIsStd</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>aaca8b6ec7fca088531870362f188794a</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>size_t</type>
+      <name>strlcat</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a2d19a7821bdc073ed60a616c479a9612</anchor>
+      <arglist>(char *dest, char const *src, size_t num)</arglist>
+    </member>
+    <member kind="function">
+      <type>size_t</type>
+      <name>strlcpy</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>ad1deeb662e5e0f5cf927da8906ff5ae5</anchor>
+      <arglist>(char *dest, char const *src, size_t const num)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>switchErrorLog</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>addc5bc8196d9bf02ab0d53d620e959da</anchor>
+      <arglist>(char const *const errFilNam)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>switchEventLog</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a36700af15db48dd9018a259f3ed31670</anchor>
+      <arglist>(char const *const logFilNam)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>updateReaLocalTime</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a49771c087d5ea900069d83f09a3ec97b</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="variable">
+      <type>timespec</type>
+      <name>actRTime</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a44522d7635c03e315f0a83dcb248d252</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>struct tm</type>
+      <name>actRTm</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>af26f344d3f16ca02ad81d1f357c7d86f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float const</type>
+      <name>cosDiY</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a8799899f295984041f90bc0c6f3fab81</anchor>
+      <arglist>[192]</arglist>
+    </member>
+    <member kind="variable">
+      <type>short int const</type>
+      <name>cosDiY60</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>af710a7872295cdf25c556cf6f52c217a</anchor>
+      <arglist>[192]</arglist>
+    </member>
+    <member kind="variable">
+      <type>char const</type>
+      <name>dec2digs</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>aa8b29d0475dd643403cbf958ce7afb5a</anchor>
+      <arglist>[102][2]</arglist>
+    </member>
+    <member kind="variable">
+      <type>char const</type>
+      <name>dow</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a75c4474c0087fc77364e390d6d6fbfa4</anchor>
+      <arglist>[9][4]</arglist>
+    </member>
+    <member kind="variable">
+      <type>FILE *</type>
+      <name>errLog</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a8e06c364311ad7059ee79b3fb403ea6c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char const</type>
+      <name>fType</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a0668143bf459af991e76cd07dad16a52</anchor>
+      <arglist>[16][8]</arglist>
+    </member>
+    <member kind="variable">
+      <type>__time_t</type>
+      <name>localMidnight</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a85b12788371655281b31fc09971673b7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>FILE *</type>
+      <name>outLog</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a9b5a61f0aca1bdf7343ff9d76ebe58e5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>todayInYear</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>aa7350689e2a7e33d414b94a19648e7c2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>useOutLog4errLog</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a62854336982175c8dfeb9759da0e244f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>__time_t</type>
+      <name>utcMidnight</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>ab42d34d5189f8958dd38df9a1ca16746</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char const</type>
+      <name>zif2charMod10</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a07ccf1646cfeafe6d3b83c254fd7077a</anchor>
+      <arglist>[44]</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weUtil.h</name>
+    <path>D:/mapa/gitPapa/weAut/rasProject_01part/include/</path>
+    <filename>we_util_8h</filename>
+    <class kind="struct">cycTask_t</class>
+    <class kind="struct">cycTaskEventData_t</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>ABS_MONOTIME</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a10594594cf2c588a3a99508dc8b3af17</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>advanceTmTim</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a32120c4b8340ab58c78171ccec1a4679</anchor>
+      <arglist>(struct tm *rTm, char *rTmTxt, uint8_t sec)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>char2hexDig</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>ab56aa83c91924b69442ece9bb9f906ac</anchor>
+      <arglist>(char c)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>closeLock</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a443f5822f3f9fefa72ccb3104ec703fa</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cycTaskDestroy</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>ae59d48365585d69c82a87d106d713c50</anchor>
+      <arglist>(cycTask_t *cykTask)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cycTaskEvent</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>ad59c1a8985b92031bcdc9a084c74045c</anchor>
+      <arglist>(cycTask_t *cycTask, uint8_t noEvents, timespec stamp, cycTaskEventData_t cycTaskEventData)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cycTaskInit</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a8d87993b6d7da78211cf856f3093fc23</anchor>
+      <arglist>(cycTask_t *cykTask)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cycTaskWaitEvent</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>adf321c0417053fd0be7d8baeafd4f159</anchor>
+      <arglist>(cycTask_t *cycTask, uint32_t eventsThreshold, cycTask_t *cycTaskSnap)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>endCyclist</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a2fcbf0941de3d5ab59f342e9dffcfff1</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>formFixed16</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a0aaf311ec5beaf5fcd8ace6cd93d05d9</anchor>
+      <arglist>(char *target, uint8_t targetLen, uint16_t value, uint8_t dotPos)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>formFixed32</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a7fe36b348722fbf9b74f106535c42e54</anchor>
+      <arglist>(char *target, uint8_t targetLen, uint32_t value, uint8_t dotPos)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>genErrWithText</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a60b86995f27c137f93efe500debd37e4</anchor>
+      <arglist>(char const *txt)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>get10inS</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>af07b1800024382606d24709964daff58</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>uint32_t</type>
+      <name>getAbsS</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a6617c9d90189e89a60cc1fe6c99d78ba</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>uint32_t</type>
+      <name>getCykTaskCount</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a9a8b8d23833f3662592c6c42bed4b908</anchor>
+      <arglist>(cycTask_t const *const cycTask)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint16_t</type>
+      <name>getMSinS</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a833c5eada5e571e3c4abf45c32125b5b</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>initStartRTime</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a0df950ef72ca4df3dbd9c6600ed73cef</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>uint32_t</type>
+      <name>ioSetClrSelect</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>ad6fb6e697fc1bab60cbaeadee4ed282d</anchor>
+      <arglist>(uint8_t pin)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>isValidIp4</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a00c3cb64f3fa4147443fef3dfbb60657</anchor>
+      <arglist>(char const *str)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>justLock</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a7f7507277dc1f611ceca6f6666dcb21d</anchor>
+      <arglist>(char const *lckPiGpioFil)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logErrorText</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>ada72ccf6c9cd71a9e921b02bc31d9153</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logErrText</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>aa84cd478064ef1421337943b1dd6e66c</anchor>
+      <arglist>(char const *txt)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logErrWithText</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>ad7497cd9519c21926f66f76478f2d6f4</anchor>
+      <arglist>(char const *txt)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logEventText</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a91085d81a46c7b046179c188197850dd</anchor>
+      <arglist>(char const *txt)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logStampedText</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a7d11086712897d2fa0ef5268700448ad</anchor>
+      <arglist>(char const *txt)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>monoTimeInit</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a6afbbb06267fbee5885213d9fc223e1e</anchor>
+      <arglist>(timespec *timer)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>monoTimeResol</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>ac8add13ed303a6fe007100ac2896bcee</anchor>
+      <arglist>(timespec *timeRes)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>onSignalExit</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a9f3e767ba605b3fc727e6517eb325e0b</anchor>
+      <arglist>(int s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>onSignalExit0</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a8f1f5542f563fea2dba95e53cea32c51</anchor>
+      <arglist>(int s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>onSignalStop</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a2d4c587139d28607f96bd21f91b42bd7</anchor>
+      <arglist>(int s)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>openLock</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a8e53ae42133bd729cafe4177a13ba08f</anchor>
+      <arglist>(char const *lckPiGpioFil, uint8_t const perr)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>parsInt</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a8ed128a0291c4a75a10e82f3b437f869</anchor>
+      <arglist>(const char *str, const int lower, const int upper, const int def)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint16_t</type>
+      <name>stopMSwatch</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a0278d8203996f06cb7673691f1de907c</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>strLappend</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a13374713d980a32e824bc05b47030dca</anchor>
+      <arglist>(char *dest, char const *src, int n)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>strLinto</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a8ed911c959ae09f08d8606dc46b38c30</anchor>
+      <arglist>(char *dest, char const *src, size_t n)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>strRinto</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>afaae746734d7e5ada73a2fdb7acc0757</anchor>
+      <arglist>(char *dest, char const *src, size_t n)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>theCyclistStart</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a83c9dc5402672489fb380a80cfab4250</anchor>
+      <arglist>(int startMsDelay)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>theCyclistWaitEnd</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a99798124d55f63019dc7ffe93d6c55f0</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>timespec</type>
+      <name>timeAdd</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>ad86f9882779686730bc6c8dc6f2e6f7b</anchor>
+      <arglist>(timespec const t1, timespec const t2)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>timeAddNs</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a695f77f1228fd21889298b9af4d19a37</anchor>
+      <arglist>(timespec *t1, long ns)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>timeAddTo</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a0c5234d2dce740c5c20802edbf38de36</anchor>
+      <arglist>(timespec *t1, timespec const t2)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>timeCmp</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a63b766c5e1e501b708592f4104d95770</anchor>
+      <arglist>(timespec const t1, timespec const t2)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>timeSleep</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a43c8f4a5d06dd873a271b2b250dccf4c</anchor>
+      <arglist>(unsigned int micros)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>timeStep</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a310c50b608cbc8d21df2c993869e007e</anchor>
+      <arglist>(timespec *timeSp, unsigned int micros)</arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>actRTmTxt</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a64ede4fde9a288da665dd2ebea5a775b</anchor>
+      <arglist>[]</arglist>
+    </member>
+    <member kind="variable">
+      <type>timespec</type>
+      <name>allCycStart</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>ad75ebdb0d933d01494780b7ea08947ec</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char const</type>
+      <name>bin8digs</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a3377ac2012c3de1d11d5049bef83c6f5</anchor>
+      <arglist>[256][10]</arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>commonRun</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>afc40c529b0776d00aab52cdc87c99fd2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>const uint32_t</type>
+      <name>csBit</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a5f09ba0862339800e246bd10ca42ec58</anchor>
+      <arglist>[]</arglist>
+    </member>
+    <member kind="variable">
+      <type>cycTask_t</type>
+      <name>cyc100ms</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a50548a82f685b9fdf9e8a15a35a34e06</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>cycTask_t</type>
+      <name>cyc1ms</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a9d2c3c1d66abb3fd23271558a5c59498</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>cycTask_t</type>
+      <name>cyc1sec</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>aa1503e30845b1d3ac65805fa1f6cd04c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>cycTask_t</type>
+      <name>cyc20ms</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a2adab3016b0e79bc436979deef07abe4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>errorText</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a831fe5642b75f5d85a4724f27c3bc83a</anchor>
+      <arglist>[182]</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>have100msCyc</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a0ca9fca0aa873deb2b3eb47c2ee17d26</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>have1msCyc</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>aa46e598bb33d3f83352ab9f614ab5e1a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>have1secCyc</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a5eb5d41a7a516718fc90a0a4133ea316</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>have20msCyc</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a71d5ff5b7f57daa646ed768e74d314da</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char const  *const</type>
+      <name>lckPiGpioPth</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>acf71a05e9e5b04f211dcc97c991fab5e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>lockFd</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>ae1ebee5c86e04d9f3284aebb3dd6183a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>retCode</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a1ff5ada708c1e7c8f38abc41907506ba</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile int</type>
+      <name>sigRec</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a8967add9f287601b65d03494378da871</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>timespec</type>
+      <name>startRTime</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>a42d9519ddc5e26686d7c4fcdb9ec6aa9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int8_t</type>
+      <name>vcoCorrNs</name>
+      <anchorfile>we_util_8h.html</anchorfile>
+      <anchor>ac0349d3f92e3f3064c98630d1eaaad95</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>justLock.c</name>
+    <path>D:/mapa/gitPapa/weAut/rasProject_01part/</path>
+    <filename>just_lock_8c</filename>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>just_lock_8c.html</anchorfile>
+      <anchor>a3c04138a5bfe5d72780bb7e82a18e627</anchor>
+      <arglist>(int argc, char **argv)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>printRevDat</name>
+      <anchorfile>just_lock_8c.html</anchorfile>
+      <anchor>aaa4d71b74ceaa129e11df59e2adeda9b</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>char const  *</type>
+      <name>revTxt</name>
+      <anchorfile>just_lock_8c.html</anchorfile>
+      <anchor>a9246fa89005d073abfe055cd2aef70c8</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="variable">
+      <type>char const  *</type>
+      <name>lckPiGpio</name>
+      <anchorfile>just_lock_8c.html</anchorfile>
+      <anchor>af3ec226c7edf98e74ceab9150d3c160b</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>main_page.dox</name>
+    <path>D:/mapa/gitPapa/weAut/rasProject_01part/</path>
+    <filename>main__page_8dox</filename>
+  </compound>
+  <compound kind="file">
+    <name>rdGnPiGpioDBlink.c</name>
+    <path>D:/mapa/gitPapa/weAut/rasProject_01part/</path>
+    <filename>rd_gn_pi_gpio_d_blink_8c</filename>
+    <includes id="config_8h" name="config.h" local="yes" imported="no">arch/config.h</includes>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+  </compound>
+  <compound kind="file">
+    <name>sysBasic.c</name>
+    <path>D:/mapa/gitPapa/weAut/rasProject_01part/weRasp/</path>
+    <filename>sys_basic_8c</filename>
+    <includes id="sys_basic_8h" name="sysBasic.h" local="yes" imported="no">sysBasic.h</includes>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>errLogIsStd</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>ab927b6d8162c728e37384eb416b0057c</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>formatTmTim</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a42626e284c4dbf7d59d2e749de65beb2</anchor>
+      <arglist>(char *rTmTxt, struct tm *rTm)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>formatTmTiMs</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a45cf8de17863e3642514c6c7ab0b7a70</anchor>
+      <arglist>(char *rTmTxt, struct tm *rTm, int millis)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>isFNaN</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>aa6571580e1982e20f2d4658d7a16e1c6</anchor>
+      <arglist>(float const val)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>littleEndian</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a2acb147d13363e463ccd18ba242d263b</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>outLogIsStd</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>aaca8b6ec7fca088531870362f188794a</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>size_t</type>
+      <name>strlcat</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a2d19a7821bdc073ed60a616c479a9612</anchor>
+      <arglist>(char *dest, char const *src, size_t num)</arglist>
+    </member>
+    <member kind="function">
+      <type>size_t</type>
+      <name>strlcpy</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>ad1deeb662e5e0f5cf927da8906ff5ae5</anchor>
+      <arglist>(char *dest, char const *src, size_t const num)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>switchErrorLog</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>addc5bc8196d9bf02ab0d53d620e959da</anchor>
+      <arglist>(char const *const errFilNam)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>switchEventLog</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a36700af15db48dd9018a259f3ed31670</anchor>
+      <arglist>(char const *const logFilNam)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>updateReaLocalTime</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a49771c087d5ea900069d83f09a3ec97b</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="variable">
+      <type>timespec</type>
+      <name>actRTime</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a44522d7635c03e315f0a83dcb248d252</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>struct tm</type>
+      <name>actRTm</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>af26f344d3f16ca02ad81d1f357c7d86f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float const</type>
+      <name>cosDiY</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a8799899f295984041f90bc0c6f3fab81</anchor>
+      <arglist>[192]</arglist>
+    </member>
+    <member kind="variable">
+      <type>int16_t const</type>
+      <name>cosDiY60</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a8ddb898d79b2e4274eaed7e38ab91093</anchor>
+      <arglist>[192]</arglist>
+    </member>
+    <member kind="variable">
+      <type>char const</type>
+      <name>dec2digs</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>aa8b29d0475dd643403cbf958ce7afb5a</anchor>
+      <arglist>[102][2]</arglist>
+    </member>
+    <member kind="variable">
+      <type>char const</type>
+      <name>dow</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a75c4474c0087fc77364e390d6d6fbfa4</anchor>
+      <arglist>[9][4]</arglist>
+    </member>
+    <member kind="variable">
+      <type>FILE *</type>
+      <name>errLog</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a8e06c364311ad7059ee79b3fb403ea6c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char const</type>
+      <name>fType</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a0668143bf459af991e76cd07dad16a52</anchor>
+      <arglist>[16][8]</arglist>
+    </member>
+    <member kind="variable">
+      <type>__time_t</type>
+      <name>localMidnight</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a85b12788371655281b31fc09971673b7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>FILE *</type>
+      <name>outLog</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a9b5a61f0aca1bdf7343ff9d76ebe58e5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>todayInYear</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>aa7350689e2a7e33d414b94a19648e7c2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>useOutLog4errLog</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a62854336982175c8dfeb9759da0e244f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>__time_t</type>
+      <name>utcMidnight</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>ab42d34d5189f8958dd38df9a1ca16746</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char const</type>
+      <name>zif2charMod10</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a07ccf1646cfeafe6d3b83c254fd7077a</anchor>
+      <arglist>[44]</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weUtil.c</name>
+    <path>D:/mapa/gitPapa/weAut/rasProject_01part/weRasp/</path>
+    <filename>we_util_8c</filename>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>advanceTmTim</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a32120c4b8340ab58c78171ccec1a4679</anchor>
+      <arglist>(struct tm *rTm, char *rTmTxt, uint8_t sec)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>char2hexDig</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>ab56aa83c91924b69442ece9bb9f906ac</anchor>
+      <arglist>(char c)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>closeLock</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a443f5822f3f9fefa72ccb3104ec703fa</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cycTaskDestroy</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>ae59d48365585d69c82a87d106d713c50</anchor>
+      <arglist>(cycTask_t *cykTask)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cycTaskEvent</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>ad59c1a8985b92031bcdc9a084c74045c</anchor>
+      <arglist>(cycTask_t *cycTask, uint8_t noEvents, timespec stamp, cycTaskEventData_t cycTaskEventData)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cycTaskInit</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a8d87993b6d7da78211cf856f3093fc23</anchor>
+      <arglist>(cycTask_t *cykTask)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cycTaskWaitEvent</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>adf321c0417053fd0be7d8baeafd4f159</anchor>
+      <arglist>(cycTask_t *cycTask, uint32_t eventsThreshold, cycTask_t *cycTaskSnap)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>endCyclist</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a2fcbf0941de3d5ab59f342e9dffcfff1</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>formFixed16</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a0aaf311ec5beaf5fcd8ace6cd93d05d9</anchor>
+      <arglist>(char *target, uint8_t targetLen, uint16_t value, uint8_t dotPos)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>formFixed32</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a7fe36b348722fbf9b74f106535c42e54</anchor>
+      <arglist>(char *target, uint8_t targetLen, uint32_t value, uint8_t dotPos)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>genErrWithText</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a60b86995f27c137f93efe500debd37e4</anchor>
+      <arglist>(char const *txt)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>get10inS</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>af07b1800024382606d24709964daff58</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>uint32_t</type>
+      <name>getAbsS</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a6617c9d90189e89a60cc1fe6c99d78ba</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>uint32_t</type>
+      <name>getCykTaskCount</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a9a8b8d23833f3662592c6c42bed4b908</anchor>
+      <arglist>(cycTask_t const *const cycTask)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint16_t</type>
+      <name>getMSinS</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a833c5eada5e571e3c4abf45c32125b5b</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>initStartRTime</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a0df950ef72ca4df3dbd9c6600ed73cef</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>uint32_t</type>
+      <name>ioSetClrSelect</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>ad6fb6e697fc1bab60cbaeadee4ed282d</anchor>
+      <arglist>(uint8_t pin)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>isValidIp4</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a00c3cb64f3fa4147443fef3dfbb60657</anchor>
+      <arglist>(char const *str)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>justLock</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a7f7507277dc1f611ceca6f6666dcb21d</anchor>
+      <arglist>(char const *lckPiGpioFil)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logErrorText</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a31f073975bc6b4efbfdd666fdc459a21</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logErrText</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>aa84cd478064ef1421337943b1dd6e66c</anchor>
+      <arglist>(char const *txt)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logErrWithText</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>ad7497cd9519c21926f66f76478f2d6f4</anchor>
+      <arglist>(char const *txt)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logEventText</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a91085d81a46c7b046179c188197850dd</anchor>
+      <arglist>(char const *txt)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logStampedText</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a7d11086712897d2fa0ef5268700448ad</anchor>
+      <arglist>(char const *txt)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>monoTimeInit</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a6afbbb06267fbee5885213d9fc223e1e</anchor>
+      <arglist>(timespec *timer)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>monoTimeResol</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>ac8add13ed303a6fe007100ac2896bcee</anchor>
+      <arglist>(timespec *timeRes)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>onSignalExit</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a9f3e767ba605b3fc727e6517eb325e0b</anchor>
+      <arglist>(int s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>onSignalExit0</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a8f1f5542f563fea2dba95e53cea32c51</anchor>
+      <arglist>(int s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>onSignalStop</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a2d4c587139d28607f96bd21f91b42bd7</anchor>
+      <arglist>(int s)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>openLock</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a8e53ae42133bd729cafe4177a13ba08f</anchor>
+      <arglist>(char const *lckPiGpioFil, uint8_t const perr)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>parsInt</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a8ed128a0291c4a75a10e82f3b437f869</anchor>
+      <arglist>(const char *str, const int lower, const int upper, const int def)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint16_t</type>
+      <name>stopMSwatch</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a0278d8203996f06cb7673691f1de907c</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>strLappend</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a13374713d980a32e824bc05b47030dca</anchor>
+      <arglist>(char *dest, char const *src, int n)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>strLinto</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a8ed911c959ae09f08d8606dc46b38c30</anchor>
+      <arglist>(char *dest, char const *src, size_t n)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>strRinto</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>afaae746734d7e5ada73a2fdb7acc0757</anchor>
+      <arglist>(char *dest, char const *src, size_t n)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>theCyclistStart</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a83c9dc5402672489fb380a80cfab4250</anchor>
+      <arglist>(int startMsDelay)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>theCyclistWaitEnd</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a99798124d55f63019dc7ffe93d6c55f0</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>timespec</type>
+      <name>timeAdd</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>ad86f9882779686730bc6c8dc6f2e6f7b</anchor>
+      <arglist>(timespec const t1, timespec const t2)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>timeAddNs</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a695f77f1228fd21889298b9af4d19a37</anchor>
+      <arglist>(timespec *t1, long ns)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>timeAddTo</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a0c5234d2dce740c5c20802edbf38de36</anchor>
+      <arglist>(timespec *t1, timespec const t2)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>timeCmp</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a63b766c5e1e501b708592f4104d95770</anchor>
+      <arglist>(timespec const t1, timespec const t2)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>timeSleep</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a43c8f4a5d06dd873a271b2b250dccf4c</anchor>
+      <arglist>(unsigned int micros)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>timeStep</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a310c50b608cbc8d21df2c993869e007e</anchor>
+      <arglist>(timespec *timeSp, unsigned int micros)</arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>actRTmTxt</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>ac55bc131824f2372030ccb53405150a8</anchor>
+      <arglist>[34]</arglist>
+    </member>
+    <member kind="variable">
+      <type>timespec</type>
+      <name>allCycStart</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>ad75ebdb0d933d01494780b7ea08947ec</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char const</type>
+      <name>bin8digs</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a3377ac2012c3de1d11d5049bef83c6f5</anchor>
+      <arglist>[256][10]</arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>commonRun</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>afc40c529b0776d00aab52cdc87c99fd2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>const uint32_t</type>
+      <name>csBit</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a50cc5db1134636d6fa7f828bfa955e24</anchor>
+      <arglist>[32]</arglist>
+    </member>
+    <member kind="variable">
+      <type>cycTask_t</type>
+      <name>cyc100ms</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a50548a82f685b9fdf9e8a15a35a34e06</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>cycTask_t</type>
+      <name>cyc1ms</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a9d2c3c1d66abb3fd23271558a5c59498</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>cycTask_t</type>
+      <name>cyc1sec</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>aa1503e30845b1d3ac65805fa1f6cd04c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>cycTask_t</type>
+      <name>cyc20ms</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a2adab3016b0e79bc436979deef07abe4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>errorText</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a831fe5642b75f5d85a4724f27c3bc83a</anchor>
+      <arglist>[182]</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>have100msCyc</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a0ca9fca0aa873deb2b3eb47c2ee17d26</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>have1msCyc</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>aa46e598bb33d3f83352ab9f614ab5e1a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>have1secCyc</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a5eb5d41a7a516718fc90a0a4133ea316</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>have20msCyc</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a71d5ff5b7f57daa646ed768e74d314da</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char const  *const</type>
+      <name>lckPiGpioPth</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>acf71a05e9e5b04f211dcc97c991fab5e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>lockFd</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>ae1ebee5c86e04d9f3284aebb3dd6183a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>retCode</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a1ff5ada708c1e7c8f38abc41907506ba</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile int</type>
+      <name>sigRec</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a8967add9f287601b65d03494378da871</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>timespec</type>
+      <name>startRTime</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>a42d9519ddc5e26686d7c4fcdb9ec6aa9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int8_t</type>
+      <name>vcoCorrNs</name>
+      <anchorfile>we_util_8c.html</anchorfile>
+      <anchor>ac0349d3f92e3f3064c98630d1eaaad95</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>cycTask_t</name>
+    <filename>structcyc_task__t.html</filename>
+    <member kind="variable">
+      <type>pthread_cond_t</type>
+      <name>cond</name>
+      <anchorfile>structcyc_task__t.html</anchorfile>
+      <anchor>a0a1433271fddfed84bc959ae6c202e5a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>count</name>
+      <anchorfile>structcyc_task__t.html</anchorfile>
+      <anchor>a86988a65e0d3ece7990c032c159786d6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>cycTaskEventData_t</type>
+      <name>cycTaskEventData</name>
+      <anchorfile>structcyc_task__t.html</anchorfile>
+      <anchor>a3ba0fce4ff884bbea26e6f8e5e997ab8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>timespec</type>
+      <name>stamp</name>
+      <anchorfile>structcyc_task__t.html</anchorfile>
+      <anchor>a00631d395be178012f4ce02e2e36bf32</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>cycTaskEventData_t</name>
+    <filename>structcyc_task_event_data__t.html</filename>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>cnt10inSec</name>
+      <anchorfile>structcyc_task_event_data__t.html</anchorfile>
+      <anchor>afefef56f5ac6b9d5647ececca3f6f95e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint64_t</type>
+      <name>cnt1ms</name>
+      <anchorfile>structcyc_task_event_data__t.html</anchorfile>
+      <anchor>a5d25757fb967e0b2a530850ace79e3bb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>cnt210sec</name>
+      <anchorfile>structcyc_task_event_data__t.html</anchorfile>
+      <anchor>a9d2453d8c0ded623492c334fe2d0fcea</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>timespec</type>
+      <name>cycStart</name>
+      <anchorfile>structcyc_task_event_data__t.html</anchorfile>
+      <anchor>aa214d044acbc1aae911791b3cc041938</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>cycStartMillis</name>
+      <anchorfile>structcyc_task_event_data__t.html</anchorfile>
+      <anchor>aa2c6a5b3aedcf641ce09d3f1515bdf36</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>struct tm</type>
+      <name>cycStartRTm</name>
+      <anchorfile>structcyc_task_event_data__t.html</anchorfile>
+      <anchor>aedd3ef14cc4810abefafa026bf123a94</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>hourOffs</name>
+      <anchorfile>structcyc_task_event_data__t.html</anchorfile>
+      <anchor>a3e12f9444bb7c732a06417ff0c74d52d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>msTo100Cnt</name>
+      <anchorfile>structcyc_task_event_data__t.html</anchorfile>
+      <anchor>a7adfcacab2ab684f95d09d30b154853a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>realSec</name>
+      <anchorfile>structcyc_task_event_data__t.html</anchorfile>
+      <anchor>af5ba8ac4597b40b17f61bcac0a075d45</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>rTmTxt</name>
+      <anchorfile>structcyc_task_event_data__t.html</anchorfile>
+      <anchor>accce9c220b9f3bdedca4000fced47b6f</anchor>
+      <arglist>[34]</arglist>
+    </member>
+  </compound>
+  <compound kind="union">
+    <name>dualReg_t</name>
+    <filename>uniondual_reg__t.html</filename>
+  </compound>
+  <compound kind="union">
+    <name>sdm80regs_t</name>
+    <filename>unionsdm80regs__t.html</filename>
+  </compound>
+  <compound kind="struct">
+    <name>smdX30modbus_t</name>
+    <filename>structsmd_x30modbus__t.html</filename>
+    <member kind="variable">
+      <type>uint16_t</type>
+      <name>errorCount</name>
+      <anchorfile>structsmd_x30modbus__t.html</anchorfile>
+      <anchor>a396e4de6e38f0fabefa20680a5ac6eac</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>lastRetCode</name>
+      <anchorfile>structsmd_x30modbus__t.html</anchorfile>
+      <anchor>a99dbd7c59c49adbc3527659e49e0fa54</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>modBusLinkState_t</type>
+      <name>linkState</name>
+      <anchorfile>structsmd_x30modbus__t.html</anchorfile>
+      <anchor>ad89e9b1fbc3da7e056508a9820ac6b21</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>name</name>
+      <anchorfile>structsmd_x30modbus__t.html</anchorfile>
+      <anchor>a38db771080a5bca533de0f0236ff11ec</anchor>
+      <arglist>[10]</arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>slave</name>
+      <anchorfile>structsmd_x30modbus__t.html</anchorfile>
+      <anchor>a7f46665d1fe6d01a75a90942bb34cfaf</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>raspArchGrp</name>
+    <title>Raspberries architecture differences</title>
+    <filename>group__rasp_arch_grp.html</filename>
+    <dir>include/arch</dir>
+  </compound>
+  <compound kind="page">
+    <name>index</name>
+    <title>rasProject1 - process control with Raspberry Pi 3</title>
+    <filename>index</filename>
+    <docanchor file="index" title="Process control features">intro_secH</docanchor>
+    <docanchor file="index" title="A note on Copyright and License">copyLicNote</docanchor>
+  </compound>
+</tagfile>
