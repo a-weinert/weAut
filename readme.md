@@ -1,8 +1,17 @@
 ## github.com/a-weinert/weAut
 
-Some publications and public / open source projects
-will be mirrored here for those preferring git over 
-SVN or web download.
+Some publications and public / open source projects respectively parts of
+them will be mirrored here for those preferring Git over SVN or web download.
+
+rasProject_01part is a very small subset of 
+[rasProject_01](https://a-weinert.de/pub/raspberry4remoteServices.pdf "Raspberry for remote services"),
+see also  
+[on SVN](https://weinert-automation.de/svn/rasProject_01/ "use guest:guest").
+
+frame4j_part is a very small subset of [frame4j](https://frame4j.de "a Java framework")
+containing just the Java version of the Raspberry Pi I/O with pigpiod demo in Java.
+See also
+[on SVN](https://weinert-automation.de/svn/frame4j/ "use guest:guest").
 
 See also 
 
