@@ -1,16 +1,80 @@
+/*  Copyright 2009 Albrecht Weinert, Bochum, Germany (a-weinert.de)
+ *  All rights reserved.
+ *  
+ *  This file is part of Frame4J 
+ *  ( frame4j.de  http://weinert-automation.de/software/frame4j/ )
+ * 
+ *  Frame4J is made available under the terms of the 
+ *  Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  https://www.eclipse.org/legal/epl-2.0/  or as text in
+ *  [frame4jSourceRoot]/de/frame4j/doc-files/epl.txt within 
+ *  the source distribution 
+ */
+package de.weAut;
+
+import java.util.concurrent.TimeUnit;
+
 /** <b>Definitions for the usage of the Raspberry Pi and its I/O. <br />
  *  <br />
  *  <a href=./de/weAut/package-summary.html#co>&copy;</a> 
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 18 $ ($Date: 2019-05-17 14:18:26 +0200 (Fr, 17 Mai 2019) $)
+ *  @version  $Revision: 19 $ ($Date: 2019-05-17 18:27:23 +0200 (Fr, 17 Mai 2019) $)
  */
-package de.weAut;
+public interface PiUtil {
 
-import java.util.concurrent.TimeUnit;
+// ------------  common constants for Pi GPIO -----------------------------   
+/** Hi, ON.
+ * 
+ *  This is the boolean variant of High, On, An, Go. See also the int variant
+ *  {@link H1}. In pure C software this distinction is not necessary as there
+ *  is no boolean and 0 is false and any other value, as e.g. 1, is considered
+ *  true. <br />
+ *  In pure Java the numeric variant would be obsolet, but here we communicate
+ *  with C software partly expecting integer values for true and false.<br />
+ *  See {@link HI},  {@link LO};  {@link H1},  {@link L0} and note the boolean
+ *  variants ending with capital letters (I, O) and the int variants with
+ *  digits.
+ */
+   public static final boolean HI = true;
+   
+/** Lo, OFF.
+ * 
+ *  This is the boolean variant of Low, Off, Aus, Halt.<br />
+ *  See the explanation at {@link HI}.
+ */
+   public static final boolean LO = false;
 
-public interface PiUsage {
+/**  Hi, ON.
+ * 
+ *  See the explanation at {@link HI}; see also {@link L0}.
+ */
+   public static final int H1 = 1;
+
+/** Lo, OFF.
+ * 
+ *  See the explanation at {@link HI}; see also {@link H1}.
+ */
+   public static final int L0 = 0;
+   
+/** GPIO input mode. */
+   public static final int GPIO_INP = 0;
+
+/** GPIO output mode. */
+   public static final int GPIO_OUT = 1;
+
+/** GPIO alternative mode. */
+   public static final int PIO_ALT0 = 2;
+   public static final int PIO_ALT1 = 3;
+   public static final int PIO_ALT2 = 4;
+   public static final int PIO_ALT3 = 5;
+   public static final int PIO_ALT4 = 6;
+   public static final int PIO_ALT5 = 7;
+
+   
+// ------------  GPIO lock (file) handling    -----------------------------   
    
 /** The default lock file.
  * 
@@ -18,7 +82,7 @@ public interface PiUsage {
  *  the pigpoi[d] on the RasPi. It is (has to be) the same as with control
  *  programs written in C.   
  */
-  public final String lckPiGpioPth = "/home/pi/bin/.lockPiGpio";
+  public static final String lckPiGpioPth = "/home/pi/bin/.lockPiGpio";
   
 /** Some (default) implementations. */  
   public final Impl impl = new Impl(); // singleton
@@ -38,8 +102,14 @@ public interface PiUsage {
 /**  Unlock the lock file. */
   public default void closeLock(){ impl.closeLock(); } 
   
+
+// ------------  method (default) implementations    -----------------------   
+
 /** <b>Implementations for Raspberry Pi IO</b>.
- *   
+ *  
+ *  This class provides implementations for the enclosing interface's 
+ *  methods and their (minimal) state. In most cases these are sufficient
+ *  and would not be overridden.
  */
   public class Impl {
      private Impl() {}; // singleton

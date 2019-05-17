@@ -1,9 +1,9 @@
 package de.weAut.tests;
 
-import de.weAut.Pi3Usage;             // Raspberry Pi / Pi3 handling
-import jpigpio.JPigpio;        // pigpio Java interface by Neil Kolban  
-import jpigpio.PigpioSocket;   // the socket variant (the only one used)
+import jpigpio.PigpioSocket; // pigpio Java interface by Neil Kolban  
 
+import de.weAut.PiUtil;     // Raspberry Pi handling utilities (IO lock)
+import de.weAut.Pi3Usage;  // Raspberry Pi3 handling
 
 /** Port of pigpiod test and demo program rdGnPiGpioDBlink.c to Java.
  * 
@@ -12,7 +12,7 @@ import jpigpio.PigpioSocket;   // the socket variant (the only one used)
  *  The comment of the C source file: <br />
   A fifth program for Raspberry's GPIO pins
 
-  Rev. $Revision: 18 $  $Date: 2019-05-17 14:18:26 +0200 (Fr, 17 Mai 2019) $
+  Rev. $Revision: 19 $  $Date: 2019-05-17 18:27:23 +0200 (Fr, 17 Mai 2019) $
 
   Copyright  (c)  2019   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
@@ -33,7 +33,7 @@ import jpigpio.PigpioSocket;   // the socket variant (the only one used)
  *  target by implementing either Pi3Usage or Pi1Usage; other targets
  *  might be added later.
  */
-public class RdGnJPiGpioDBlink implements Pi3Usage {
+public class RdGnJPiGpioDBlink implements PiUtil, Pi3Usage {
 	
 /** The LEDs to blink.  */
   public final int LEDrd = PIN11;
@@ -63,9 +63,10 @@ public class RdGnJPiGpioDBlink implements Pi3Usage {
      runOn = false;
      System.out.println("RdGnJPiGpioDBlink shutdown");
 	  if (pigpio != null) try {
-        pigpio.gpioSetMode(LEDrd, JPigpio.PI_INPUT);
-        pigpio.gpioSetMode(LEDrd, JPigpio.PI_INPUT);
-        pigpio.gpioSetMode(LEDye, JPigpio.PI_INPUT);
+	     // we consider GPIO input pins as inactive and, in most cases, safe.
+        pigpio.gpioSetMode(LEDrd, GPIO_INP);
+        pigpio.gpioSetMode(LEDrd, GPIO_INP);
+        pigpio.gpioSetMode(LEDye, GPIO_INP);
         pigpio.gpioTerminate();
       } catch (Throwable e) {
         e.printStackTrace();
@@ -75,26 +76,26 @@ public class RdGnJPiGpioDBlink implements Pi3Usage {
     
     runOn = openLock(null, true);
     if (! runOn) return;
-    System.out.println("RdGnJPiGpioDBlink got lock");
+    //  System.out.println("RdGnJPiGpioDBlink got lock");
 
     try {
       pigpio = new PigpioSocket(null, 8888);
       pigpio.gpioInitialize();
-      pigpio.gpioSetMode(LEDrd, JPigpio.PI_OUTPUT);
-      pigpio.gpioSetMode(LEDrd, JPigpio.PI_OUTPUT);
-      pigpio.gpioSetMode(LEDye, JPigpio.PI_OUTPUT);
+      pigpio.gpioSetMode(LEDrd, GPIO_OUT);
+      pigpio.gpioSetMode(LEDrd, GPIO_OUT);
+      pigpio.gpioSetMode(LEDye, GPIO_OUT);
       boolean yLd = true;
-	  for(;runOn;) {                    // red green time/state  yellow
-		  pigpio.gpioWrite(LEDrd, true);  // on
-		  pigpio.gpioDelay(200);          //          200 ms red
-	     yLd = !yLd;                     //                      toggle
+	  for(;runOn;) {                  // red green time/state  yellow
+		  pigpio.gpioWrite(LEDrd, HI);  // on
+		  pigpio.gpioDelay(200);        //          200 ms red
+	     yLd = !yLd;                   //                      toggle
 	     pigpio.gpioWrite(LEDye, yLd);
-	     pigpio.gpioWrite(LEDgn, true);  //      on
-	     pigpio.gpioDelay(100);          //          100 ms both
-	     pigpio.gpioWrite(LEDrd, false); // off
-	     pigpio.gpioDelay(100);          //          100 ms green
-	     pigpio.gpioWrite(LEDgn, false); //     off
-	     pigpio.gpioDelay(200);          //          200 ms dark
+	     pigpio.gpioWrite(LEDgn, HI);  //      on
+	     pigpio.gpioDelay(100);        //          100 ms both
+	     pigpio.gpioWrite(LEDrd, LO);  // off
+	     pigpio.gpioDelay(100);        //          100 ms green
+	     pigpio.gpioWrite(LEDgn, LO);  //     off
+	     pigpio.gpioDelay(200);        //          200 ms dark
       } // for endless
 	} catch (Throwable e) {
 	   e.printStackTrace();

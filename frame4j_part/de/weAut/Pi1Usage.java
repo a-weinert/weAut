@@ -1,13 +1,23 @@
+/** <b>Definitions for the usage of the Raspberry Pi and its I/O. <br />
+ *  <br />
+ *  <a href=./de/weAut/package-summary.html#co>&copy;</a> 
+ *  Copyright 2019 &nbsp; Albrecht Weinert<br />
+ *  <br />
+ *  @author   Albrecht Weinert
+ *  @version  $Revision: 19 $ ($Date: 2019-05-17 18:27:23 +0200 (Fr, 17 Mai 2019) $)
+ */
+package de.weAut;
+
+
 /** <b>Definitions for the usage of the Raspberry Pi1 and its I/O. <br />
  *  <br />
  *  <a href=./de/weAut/package-summary.html#co>&copy;</a> 
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 18 $ ($Date: 2019-05-17 14:18:26 +0200 (Fr, 17 Mai 2019) $)
+ *  @version  $Revision: 19 $ ($Date: 2019-05-17 18:27:23 +0200 (Fr, 17 Mai 2019) $)
  */
-package de.weAut;
-public interface Pi1Usage extends PiUsage {
+public interface Pi1Usage { // extends PiUsage {
 
 /** GPIO to 26 pin header mapping.
  * 
