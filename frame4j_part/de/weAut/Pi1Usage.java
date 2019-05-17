@@ -4,7 +4,7 @@
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 17 $ ($Date: 2019-05-15 21:51:04 +0200 (Mi, 15 Mai 2019) $)
+ *  @version  $Revision: 18 $ ($Date: 2019-05-17 14:18:26 +0200 (Fr, 17 Mai 2019) $)
  */
 package de.weAut;
 public interface Pi1Usage extends PiUsage {
@@ -13,7 +13,6 @@ public interface Pi1Usage extends PiUsage {
  * 
  *  This is ported from arch/config_raspberry_01.h 
  */
-
 //                   26 pin con | GPIO number
   public static final int PIN3  =  0; // 2 on Pi3
   public static final int PIN5  =  1; // 3 on Pi3
@@ -32,8 +31,7 @@ public interface Pi1Usage extends PiUsage {
   public static final int PIN23 = 11;  // SCLK | I
   public static final int PIN24 =  8;  // CE0  /
   public static final int PIN26 =  7;  // CE1 /
-//6 9 14 20 25 : gnd
-//1 17 : 3.3V
-//2 4  : 5V
-
+   // 6 9 14 20 25 : gnd
+   // 1 17 : 3.3V
+   // 2 4  : 5V
 } // Pi1Usage

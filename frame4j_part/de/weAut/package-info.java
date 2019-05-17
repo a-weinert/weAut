@@ -1,10 +1,10 @@
 /**
 <b>weAut &mdash; weinert-automation</b> base package <br />
 <br />
-This package {@link de.weAut} is uniquely named by {@link weAut.de} the
+This package {@link de.weAut} is uniquely named according to weAut.de the
 short form domain of 
-{@link https://weinert-automation.de weinert-automation}'s main domain
-{@link https://weinert-automation.de weinert-automation.de}.<br />
+<a href="https://weinert-automation.de">weinert-automation</a>'s main 
+<a href="https://weinert-automation.de">weinert-automation.de</a>.<br />
 Copyright <a href="#co">&copy;</a>  2019 &nbsp; Albrecht Weinert <br />
 
 <h3><a name="be">Description</a></h3>
@@ -33,6 +33,6 @@ or as <a href="./doc-files/epl.txt">text</a> within the source
 distribution.<br />
 
  @author   Albrecht Weinert
- @version  Revision $Revision: 17 $ ($Date: 2019-05-15 21:51:04 +0200 (Mi, 15 Mai 2019) $) 
+ @version  Revision $Revision: 18 $ ($Date: 2019-05-17 14:18:26 +0200 (Fr, 17 Mai 2019) $) 
 */
 package de.weAut;

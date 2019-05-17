@@ -4,7 +4,7 @@
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 17 $ ($Date: 2019-05-15 21:51:04 +0200 (Mi, 15 Mai 2019) $)
+ *  @version  $Revision: 18 $ ($Date: 2019-05-17 14:18:26 +0200 (Fr, 17 Mai 2019) $)
  */
 package de.weAut;
 
@@ -45,7 +45,4 @@ public interface Pi3Usage extends PiUsage {
    // 1 17 : 3.3V
    // 2 4  : 5V
    // 27 28: ID_SD/SC (HAT board & EEPROM interface)
-
-   
-
 } // Pi3Usage

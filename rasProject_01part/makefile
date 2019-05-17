@@ -7,9 +7,10 @@
 #  Rev. 34 11.08.2017 : default flags for Modbus programmes w/o extra include
 #  Rev.153 25.07.2018 : include handling enhanced; dev. station dep. macro
 #  Rev.191 14.02.2019 : clean_all mentioned in help
+#  Rev.205 16.05.2019 : default targets modified
 
 MAKE_FILE_PROJ = rasProject_01
-LAST_CHANGE_IN = $Revision: 201 $
+LAST_CHANGE_IN = $Revision: 205 $
 LAST_CHANGE_AT = $Date: 2019-04-26 14:27:14 +0200 (Fr, 26 Apr 2019) $ 
 LAST_CHANGE_BY = A. Weinert
 COPYRIGHT_YEAR = 2018
