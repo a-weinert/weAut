@@ -12,8 +12,6 @@ import de.weAut.Pi3Usage;  // Raspberry Pi3 handling
  *  The comment of the C source file: <br />
   A fifth program for Raspberry's GPIO pins
 
-  Rev. $Revision: 19 $  $Date: 2019-05-17 18:27:23 +0200 (Fr, 17 Mai 2019) $
-
   Copyright  (c)  2019   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
 
@@ -32,8 +30,15 @@ import de.weAut.Pi3Usage;  // Raspberry Pi3 handling
  *  In a Java program (i.e. class like this one) one has to decide the
  *  target by implementing either Pi3Usage or Pi1Usage; other targets
  *  might be added later.
+ *
+ *  Copyright  &copy;  2019   Albrecht Weinert <br />
+ *  @author   Albrecht Weinert a-weinert.de
+ *  @version  $Revision: 11 $ ($Date: 2019-02-05 09:07:43 +0100 (Di, 05 Feb 2019) $)
  */
 public class RdGnJPiGpioDBlink implements PiUtil, Pi3Usage {
+ // so far:   V. 18  (17.05.2019) :  new
+ //           V. 20  (19.05.2019) :  minor corrections
+
 	
 /** The LEDs to blink.  */
   public final int LEDrd = PIN11;
@@ -65,7 +70,7 @@ public class RdGnJPiGpioDBlink implements PiUtil, Pi3Usage {
 	  if (pigpio != null) try {
 	     // we consider GPIO input pins as inactive and, in most cases, safe.
         pigpio.gpioSetMode(LEDrd, GPIO_INP);
-        pigpio.gpioSetMode(LEDrd, GPIO_INP);
+        pigpio.gpioSetMode(LEDgn, GPIO_INP);
         pigpio.gpioSetMode(LEDye, GPIO_INP);
         pigpio.gpioTerminate();
       } catch (Throwable e) {
@@ -82,7 +87,7 @@ public class RdGnJPiGpioDBlink implements PiUtil, Pi3Usage {
       pigpio = new PigpioSocket(null, 8888);
       pigpio.gpioInitialize();
       pigpio.gpioSetMode(LEDrd, GPIO_OUT);
-      pigpio.gpioSetMode(LEDrd, GPIO_OUT);
+      pigpio.gpioSetMode(LEDgn, GPIO_OUT);
       pigpio.gpioSetMode(LEDye, GPIO_OUT);
       boolean yLd = true;
 	  for(;runOn;) {                  // red green time/state  yellow
