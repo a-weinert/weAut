@@ -11,7 +11,7 @@
 
 MAKE_FILE_PROJ = rasProject_01
 LAST_CHANGE_IN = $Revision: 205 $
-LAST_CHANGE_AT = $Date: 2019-04-26 14:27:14 +0200 (Fr, 26 Apr 2019) $ 
+LAST_CHANGE_AT = $Date: 2019-05-20 17:53:28 +0200 (Mo, 20 Mai 2019) $ 
 LAST_CHANGE_BY = A. Weinert
 COPYRIGHT_YEAR = 2018
 COPYRIGHT_BY   = Albrecht Weinert, Bochum    < a-weinert.de >   

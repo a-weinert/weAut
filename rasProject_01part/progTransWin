@@ -1,6 +1,6 @@
 # Transfer a program to the target machine
 # Copyright 2017 Albrecht Weinert            a-weinert de
-# $Revision: 3 $ ($Date: 2017-05-31 12:32:49 +0200 (Mi, 31 Mai 2017) $)
+# $Revision: 205 $ ($Date: 2019-05-20 17:53:28 +0200 (Mo, 20 Mai 2019) $)
 # param 1 : user:passwd  (ftp user)     e.g. pi:raspberry
 # param 2 : target machine (IP)        e.g. 192.168.89.67
 # param 3 : target directory (within user's ~)   e.g. bin

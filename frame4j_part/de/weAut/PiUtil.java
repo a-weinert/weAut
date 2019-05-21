@@ -1,4 +1,4 @@
-/*  Copyright 2009 Albrecht Weinert, Bochum, Germany (a-weinert.de)
+/*  Copyright 2019 Albrecht Weinert, Bochum, Germany (a-weinert.de)
  *  All rights reserved.
  *  
  *  This file is part of Frame4J 
@@ -66,12 +66,12 @@ public interface PiUtil {
    public static final int GPIO_OUT = 1;
 
 /** GPIO alternative mode. */
-   public static final int PIO_ALT0 = 2;
-   public static final int PIO_ALT1 = 3;
-   public static final int PIO_ALT2 = 4;
-   public static final int PIO_ALT3 = 5;
-   public static final int PIO_ALT4 = 6;
-   public static final int PIO_ALT5 = 7;
+   public static final int PIO_ALT0 = 4;
+   public static final int PIO_ALT1 = 5;
+   public static final int PIO_ALT2 = 6;
+   public static final int PIO_ALT3 = 7;
+   public static final int PIO_ALT4 = 3;
+   public static final int PIO_ALT5 = 2;
 
    
 // ------------  GPIO lock (file) handling    -----------------------------   
