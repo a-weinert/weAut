@@ -1,11 +1,14 @@
-/** <b>Definitions for the usage of the Raspberry Pi and its I/O. <br />
+/** <b>Definitions for the usage of the Raspberry Pi and its I/O</b>. <br />
  *  <br />
  *  <a href=./de/weAut/package-summary.html#co>&copy;</a> 
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 19 $ ($Date: 2019-05-17 18:27:23 +0200 (Fr, 17 Mai 2019) $)
+ *  @version  $Revision: 21 $ ($Date: 2019-05-22 13:35:56 +0200 (Mi, 22 Mai 2019) $)
  */
+// so far:   V. 19  (17.05.2019) :  new
+//           V. 21  (21.05.2019) :  typo
+
 package de.weAut;
 
 /** <b>Definitions for the usage of the Raspberry Pi3 and its I/O. <br />
@@ -14,7 +17,7 @@ package de.weAut;
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 19 $ ($Date: 2019-05-17 18:27:23 +0200 (Fr, 17 Mai 2019) $)
+ *  @version  $Revision: 21 $ ($Date: 2019-05-22 13:35:56 +0200 (Mi, 22 Mai 2019) $)
  */
 public interface Pi3Usage { // extends PiUsage {
 

@@ -5,15 +5,12 @@ import jpigpio.PigpioSocket; // pigpio Java interface by Neil Kolban
 import de.weAut.PiUtil;     // Raspberry Pi handling utilities (IO lock)
 import de.weAut.Pi3Usage;  // Raspberry Pi3 handling
 
-/** Port of pigpiod test and demo program rdGnPiGpioDBlink.c to Java.
- * 
- *  The port uses the PigpioSocket interface by Neil Kolban.
- * 
- *  The comment of the C source file: <br />
+/** <b>Port of pigpiod test and demo program rdGnPiGpioDBlink from C to Java</b>.<br />
+ *  <br />
+ *  The port uses the PigpioSocket interface by Neil Kolban. <br />
+ *  <br />
+ *  The comment of the C source file: <pre>
   A fifth program for Raspberry's GPIO pins
-
-  Copyright  (c)  2019   Albrecht Weinert <br />
-  weinert-automation.de      a-weinert.de
 
   It uses two/three pins as output assuming two LEDs connected to as H=on
   Pi 1  / Pi 3       Pin
@@ -26,19 +23,18 @@ import de.weAut.Pi3Usage;  // Raspberry Pi3 handling
   except for using the pigpioD library. Our makefiles define
   MCU and PLATFORM as make variables and macros. So we could make the
   GPIO pin and address assignment automatically in the C programmes.
-  
+</pre><br />  
  *  In a Java program (i.e. class like this one) one has to decide the
  *  target by implementing either Pi3Usage or Pi1Usage; other targets
- *  might be added later.
- *
+ *  might be added later. <br />
+ *  <br />
  *  Copyright  &copy;  2019   Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 11 $ ($Date: 2019-02-05 09:07:43 +0100 (Di, 05 Feb 2019) $)
+ *  @version  $Revision: 21 $ ($Date: 2019-05-22 13:35:56 +0200 (Mi, 22 Mai 2019) $)
  */
+// so far:   V. 18  (17.05.2019) :  new
+//           V. 20  (19.05.2019) :  minor corrections
 public class RdGnJPiGpioDBlink implements PiUtil, Pi3Usage {
- // so far:   V. 18  (17.05.2019) :  new
- //           V. 20  (19.05.2019) :  minor corrections
-
 	
 /** The LEDs to blink.  */
   public final int LEDrd = PIN11;

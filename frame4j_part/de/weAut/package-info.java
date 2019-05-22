@@ -1,5 +1,5 @@
 /**
-<b>weAut &mdash; weinert-automation</b> base package <br />
+<b>weAut &mdash; weinert-automation</b> base package.<br />
 <br />
 This package {@link de.weAut} is uniquely named according to weAut.de the
 short form domain of 
@@ -33,6 +33,6 @@ or as <a href="./doc-files/epl.txt">text</a> within the source
 distribution.<br />
 
  @author   Albrecht Weinert
- @version  Revision $Revision: 18 $ ($Date: 2019-05-17 14:18:26 +0200 (Fr, 17 Mai 2019) $) 
+ @version  Revision $Revision: 21 $ ($Date: 2019-05-22 13:35:56 +0200 (Mi, 22 Mai 2019) $) 
 */
 package de.weAut;
