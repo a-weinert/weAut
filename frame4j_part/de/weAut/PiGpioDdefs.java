@@ -1,8 +1,15 @@
-/*
- * Created on 20.05.2019
- *
- * To change the template for this generated file go to
- * Window>Preferences>Java>Code Generation>Code and Comments
+/*  Copyright 2019 Albrecht Weinert, Bochum, Germany (a-weinert.de)
+ *  All rights reserved.
+ *  
+ *  This file is part of Frame4J 
+ *  ( frame4j.de  http://weinert-automation.de/software/frame4j/ )
+ * 
+ *  Frame4J is made available under the terms of the 
+ *  Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  https://www.eclipse.org/legal/epl-2.0/  or as text in
+ *  [frame4jSourceRoot]/de/frame4j/doc-files/epl.txt within 
+ *  the source distribution 
  */
 package de.weAut;
 
@@ -17,7 +24,7 @@ package de.weAut;
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 21 $ ($Date: 2019-05-22 13:35:56 +0200 (Mi, 22 Mai 2019) $)
+ *  @version  $Revision: 22 $ ($Date: 2019-05-22 20:22:28 +0200 (Mi, 22 Mai 2019) $)
  */
 public interface PiGpioDdefs {
 

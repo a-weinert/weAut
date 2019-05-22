@@ -28,7 +28,8 @@ import java.util.concurrent.TimeUnit;
 
 public interface PiUtil {
 
-// ------------  common constants for Pi GPIO -----------------------------   
+// ------------  common constants for Pi GPIO ----------------------------- 
+   
 /** Hi, ON.
  * 
  *  This is the boolean variant of High, On, An, Go. See also the int variant
@@ -155,4 +156,4 @@ public interface PiUtil {
         if (lockProcess != null) lockProcess.destroy();
     } // closeLock()
   } // Impl
-} // PiUsage
+} // PiUsage (20.05.2019)

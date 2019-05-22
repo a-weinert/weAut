@@ -1,14 +1,16 @@
-/** <b>Definitions for the usage of the Raspberry Pi and its I/O</b>. <br />
- *  <br />
- *  <a href=./de/weAut/package-summary.html#co>&copy;</a> 
- *  Copyright 2019 &nbsp; Albrecht Weinert<br />
- *  <br />
- *  @author   Albrecht Weinert
- *  @version  $Revision: 21 $ ($Date: 2019-05-22 13:35:56 +0200 (Mi, 22 Mai 2019) $)
+/*  Copyright 2019 Albrecht Weinert, Bochum, Germany (a-weinert.de)
+ *  All rights reserved.
+ *  
+ *  This file is part of Frame4J 
+ *  ( frame4j.de  http://weinert-automation.de/software/frame4j/ )
+ * 
+ *  Frame4J is made available under the terms of the 
+ *  Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  https://www.eclipse.org/legal/epl-2.0/  or as text in
+ *  [frame4jSourceRoot]/de/frame4j/doc-files/epl.txt within 
+ *  the source distribution 
  */
-// so far:   V. 19  (17.05.2019) :  new
-//           V. 21  (21.05.2019) :  typo
-
 package de.weAut;
 
 /** <b>Definitions for the usage of the Raspberry Pi3 and its I/O. <br />
@@ -19,6 +21,9 @@ package de.weAut;
  *  @author   Albrecht Weinert
  *  @version  $Revision: 21 $ ($Date: 2019-05-22 13:35:56 +0200 (Mi, 22 Mai 2019) $)
  */
+// so far:   V. 19  (17.05.2019) :  new
+//           V. 21  (21.05.2019) :  typo
+
 public interface Pi3Usage { // extends PiUsage {
 
 /** GPIO to 40 pin header mapping.

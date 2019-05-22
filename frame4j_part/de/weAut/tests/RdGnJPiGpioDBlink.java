@@ -7,7 +7,9 @@ import de.weAut.Pi3Usage;  // Raspberry Pi3 handling
 
 /** <b>Port of pigpiod test and demo program rdGnPiGpioDBlink from C to Java</b>.<br />
  *  <br />
- *  The port uses the PigpioSocket interface by Neil Kolban. <br />
+ *  The port uses the PigpioSocket interface by Neil Kolban using an own C
+ *  part with Java native interface (JNI) even when using pigpiod's socket
+ *  interface.<br />
  *  <br />
  *  The comment of the C source file: <pre>
   A fifth program for Raspberry's GPIO pins

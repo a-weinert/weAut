@@ -1,7 +1,9 @@
 ## github.com/a-weinert/weAut
 
-Some publications and public / open source projects respectively parts of
-them will be mirrored here for those preferring Git over SVN or web download.
+The main project presented here implements Raspberry Pi IO with Java; see more
+on the
+[blog post](https://a-weinert.github.io/posts/2019/05/raspiGPIOjava.html "blog post on Raspberry Pi IO with Java")
+hereunto. 
 
 rasProject_01part is a very small subset of 
 [rasProject_01](https://a-weinert.de/pub/raspberry4remoteServices.pdf "Raspberry for remote services"),
@@ -12,6 +14,10 @@ frame4j_part is a very small subset of [frame4j](https://frame4j.de "a Java fram
 containing just the Java version of the Raspberry Pi I/O with pigpiod demo in Java.
 See also
 [on SVN](https://weinert-automation.de/svn/frame4j/ "use guest:guest").
+
+The parts of those projects relevant for the Java PI IO are mirrored here 
+for those preferring Git over SVN or web download.
+
 
 See also 
 

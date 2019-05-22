@@ -36,7 +36,7 @@ import java.util.Arrays;
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 21 $ ($Date: 2019-05-22 13:35:56 +0200 (Mi, 22 Mai 2019) $)
+ *  @version  $Revision: 22 $ ($Date: 2019-05-22 20:22:28 +0200 (Mi, 22 Mai 2019) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 21  (19.05.2019) :  ALT numbers, typo

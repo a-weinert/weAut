@@ -16,7 +16,7 @@ import java.io.IOException;
  *  The comment of the C source file: <br /><pre>
   A fifth program for Raspberry's GPIO pins
 
-  Rev. $Revision: 21 $  $Date: 2019-05-22 13:35:56 +0200 (Mi, 22 Mai 2019) $
+  Rev. $Revision: 22 $  $Date: 2019-05-22 20:22:28 +0200 (Mi, 22 Mai 2019) $
 
   Copyright  (c)  2019   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
@@ -39,7 +39,7 @@ import java.io.IOException;
  *  <br />
  *  Copyright  &copy;  2019   Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 21 $ ($Date: 2019-05-22 13:35:56 +0200 (Mi, 22 Mai 2019) $)
+ *  @version  $Revision: 22 $ ($Date: 2019-05-22 20:22:28 +0200 (Mi, 22 Mai 2019) $)
  */
 // so far:   V. 21  (21.05.2019) :  new, minimal functionality
 //           V. 21  (21.05.2019) :  
