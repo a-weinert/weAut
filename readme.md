@@ -1,9 +1,17 @@
 ## github.com/a-weinert/weAut
 
-The main project presented here implements Raspberry Pi IO with Java; see more
-on the
+#### Raspberry Pi IO with Java &mdash; project
+
+This project implements Raspberry Pi general purpose IO with Java enabling
+Java process control programs on this small system. <br />; 
+See more on the
 [blog post](https://a-weinert.github.io/posts/2019/05/raspiGPIOjava.html "blog post on Raspberry Pi IO with Java")
-hereunto. 
+hereunto.<br />
+Please uses this
+[post's](https://a-weinert.github.io/posts/2019/05/raspiGPIOjava.html "blog post on Raspberry Pi IO with Java")
+comment function for issues and comments on this project.
+
+#### The containing projects 
 
 rasProject_01part is a very small subset of 
 [rasProject_01](https://a-weinert.de/pub/raspberry4remoteServices.pdf "Raspberry for remote services"),
@@ -18,6 +26,7 @@ See also
 The parts of those projects relevant for the Java PI IO are mirrored here 
 for those preferring Git over SVN or web download.
 
+ &nbsp; <br />
 
 See also 
 
