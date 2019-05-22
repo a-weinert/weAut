@@ -203,10 +203,11 @@ public class ClientPigpiod {
       } // bad command nothing done  
       if (ret >= 0 || uint32ret[lastCmd]) { // positive or unsigned
          System.out.println(" LOG stdCmd(" + lastCmd + ", " + lastP1
-                            + ", " + lastP2 +") -> " + (ret & 0xFFFFFFFFL));
+                 + ", " + lastP2 +") -> " + (ret & 0xFFFFFFFFL) 
+                                                + " " + cmdNam[lastCmd]);
       } else {
          System.out.println(" ERR stdCmd(" + lastCmd + ", " + lastP1
-                                             + ", " + lastP2 +") -> " + ret);
+                 + ", " + lastP2 +") -> " + ret + " " + cmdNam[lastCmd]);
       }
       if (cmdExecStage >= 1) { // request used //  logRequest &&
          System.out.println("   request : " + Arrays.toString(command));
@@ -254,6 +255,12 @@ public class ClientPigpiod {
         if (cmd == PI_CMD_MODES && (p2 < 0 || p2 > 7)) return PI_BAD_MODE;
       } // a Command for a specific IO port
       
+      if (cmd == PI_CMD_PADS || cmd == PI_CMD_PADG) { // pad commands
+         if (p1 < 0 || p1 > 2) return PI_BAD_PAD;
+         if (cmd == PI_CMD_PADS 
+                          && (p2 < 1 || p2 > 16)) return  PI_BAD_STRENGTH; 
+      }  // pad commands
+      
       Arrays.fill(command, (byte) 0); // init all 0
       command[0] = (byte)cmd;
       command[4] = (byte)p1;
@@ -292,11 +299,16 @@ public class ClientPigpiod {
       return ret;
    } // stdCmd(3*int)
    
-   public int gpioSetMode(int port, int mode){
+   public int setMode(int port, int mode){
       return stdCmd(PI_CMD_MODES, port, mode);
    } // gpioSetMode(2 * int) 
+   
+   public int setPadS(int pad, int mA){
+      return stdCmd(PI_CMD_PADS, pad, mA);
+   } // gpioSetMode(2 * int) 
+
     
-   public int gpioWrite(int port, boolean val){
+   public int pinWrit(int port, boolean val){
       if (port < 0 || port > 28) return PI_BAD_GPIO;
       return stdCmd(PI_CMD_WRITE, port, val ? 1 : 0);
    }  // gpioWrite(int, boolean) 
@@ -304,29 +316,40 @@ public class ClientPigpiod {
 /** Periodic delay. <br />
  *  <br />
  *  This method delays the calling thread for the given number of 
- *  milliseconds relative to its last call. It is, hence, able, to implement
+ *  milliseconds relative to its last call. Hence, it is able to implement
  *  strong long term periodicity. Called 86400 times with 1000 will end
- *  one day later, e.g.. If the last call is farer away than millies the
- *  delay will start from now.<br />
+ *  one day later, e.g..<br />
  *  <br />
- *  Hint: This method is not threadsafe.<br />
+ *  If this call's (corrected) relative end time would be in the past
+ *  the current delay will be relative to now. In that case an existing long
+ *  term periodicity would be destroyed. This would happen if other threads
+ *  or processes hinder the wake up of this thread for more than 
+ *  millies ms. <br />
  *  <br />
  *  @param millies the number of ms to delay relativ to the last call
  */  
-   public void gpioDelay(int millies){
+   public void thrDelay(int millies){
       if (millies < 1) return; // must be positive
-      now = java.lang.System.currentTimeMillis();
-      long target = lastTick + millies;
-      if (target > now) {
-         millies = (int)(target - now); // keep exact period
-         lastTick = target;
-      } else lastTick = now;
+      long now = java.lang.System.currentTimeMillis();
+      Long lastTick = lastThTick.get();
+      if (lastTick == null) { //
+         lastTick = new Long(now + millies);
+      } else { // have threads last tick
+         long target = lastTick + millies;
+         if (target > now) {
+            millies = (int)(target - now); // keep exact period
+            lastTick = target;
+         } else lastTick = now + millies;  
+      } //  have threads last tick
+      lastThTick.set(lastTick);
       try {
         Thread.sleep(millies);
      } catch (InterruptedException e) { } // ignore exception
    } // gpioDelay(int)
    
-   long lastTick = 0; // java.lang.System.currentTimeMillis()
-   long now;
+      
+   static public final ThreadLocal<Long> lastThTick = new ThreadLocal<>();
+   //  long lastTick = 0; // java.lang.System.currentTimeMillis()
+   //  long now;
  
 } // ClientPigpiod (21.05.2019)
