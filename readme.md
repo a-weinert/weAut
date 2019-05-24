@@ -23,6 +23,7 @@ is a very small subset of [frame4j](https://frame4j.de "a Java framework")
 containing just the Java version of the Raspberry Pi I/O helper and 
 utility classes as well as demos/tests. All uses the pigpiod daemon/server.
 
+<<<<<<< HEAD
 See also
 [Frame4J on SVN](https://weinert-automation.de/svn/frame4j/ "use guest:guest")
 and
@@ -30,6 +31,11 @@ and
 But, for your convenience, the parts of those projects relevant for the Java
 PI IO are mirrored here for those preferring Git over SVN or web download.<br />
 
+=======
+The parts of those projects relevant for the Java PI IO are mirrored here 
+for those preferring Git over SVN or web download.
+&nbsp; <br />
+>>>>>>> 19acfdcf7907a9840f09b63860f2f90b3255824b
 
 See also 
 
