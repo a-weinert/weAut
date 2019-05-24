@@ -3,8 +3,7 @@
 #### Raspberry Pi IO with Java &mdash; project
 
 This project implements Raspberry Pi general purpose IO with Java enabling
-Java process control programs on this small system. <br />; 
-See more on the
+Java process control programs on this small system. See more on the
 [blog post](https://a-weinert.github.io/posts/2019/05/raspiGPIOjava.html "blog post on Raspberry Pi IO with Java")
 hereunto.<br />
 Please uses this
@@ -24,9 +23,8 @@ See also
 [on SVN](https://weinert-automation.de/svn/frame4j/ "use guest:guest").
 
 The parts of those projects relevant for the Java PI IO are mirrored here 
-for those preferring Git over SVN or web download.
+for those preferring Git over SVN or web download.<br />
 
- &nbsp; <br />
 
 See also 
 
