@@ -4,10 +4,10 @@
 
 This project implements Raspberry Pi general purpose IO with Java enabling
 Java process control programs on this small system. See more on the
-[blog post](https://a-weinert.github.io/posts/2019/05/raspiGPIOjava.html "blog post on Raspberry Pi IO with Java")
+[blog post](https://a-weinert.github.io/raspiGPIOjava.html "blog post on Raspberry Pi IO with Java")
 hereunto.<br />
 Please uses this
-[post's](https://a-weinert.github.io/posts/2019/05/raspiGPIOjava.html "blog post on Raspberry Pi IO with Java")
+[post's](https://a-weinert.github.io/raspiGPIOjava.html "blog post on Raspberry Pi IO with Java")
 comment function for issues and comments on this project.
 
 #### The containing projects 
