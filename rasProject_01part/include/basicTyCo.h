@@ -66,14 +66,14 @@
 // --------------------------- constants -----------------------------------
 
 /** \def ON
- *  true  on  an marche go.
+ *  true On  An marche go.
  *
  *  value: 1
  */
 #define ON 1
 
 /** \def OFF
- *  false off aus arr&ecirc;t stop halt.
+ *  false Off Aus arr&ecirc;t stop halt.
  *
  *  value: 0
  */

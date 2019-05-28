@@ -36,7 +36,7 @@ import java.util.Arrays;
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 22 $ ($Date: 2019-05-22 20:22:28 +0200 (Mi, 22 Mai 2019) $)
+ *  @version  $Revision: 25 $ ($Date: 2019-05-28 13:21:30 +0200 (Di, 28 Mai 2019) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 21  (19.05.2019) :  ALT numbers, typo
@@ -239,17 +239,24 @@ public class ClientPigpiod {
    } // logBadCommand(int);
   
 
-/** Implementation of two parameter (standard) commands
+/** Implementation of two parameter (standard) commands.
+ * 
+ *  This method implements (is the swiss army knife for) all (81) socket
+ *  interface command without extension. The most common ones, nevertheless,
+ *  got a more convenient implementation; see {@link #setMode(int, int)},
+ *  {@link #setPadS(int, int)}, 
  *     
  *  @param cmd the command number 
  *  @param p1 first parameter, mostly GPIO number
  *  @param p2 optional second parameter
- *  @return commands return value &gt;= 0; or error number  (&lt;0)
+ *  @return commands return value &gt;= 0; or error number (&lt;0) 
+ *          except for commands returning an unsigned value (see 
+ *          {@link PiGpioDdefs#uint32ret}
  */
    public int stdCmd(final int cmd, final int p1, final int p2){
       lastP1 = p1; lastP2 = p2; lastCmd = cmd; 
       cmdExecStage = 0; lastException = null;
-      if (cmd < 0 || cmd > 117) return PI_CMD_BAD;
+      if (cmd < 0 || cmd > 117 || hasExtension[cmd]) return PI_CMD_BAD;
       if (p1Kind[cmd] == GPIO) { // a Command for a specific IO port
         if (p1 < 0 || p1 > 53) return PI_BAD_GPIO;
         if (cmd == PI_CMD_MODES && (p2 < 0 || p2 > 7)) return PI_BAD_MODE;
@@ -298,58 +305,130 @@ public class ClientPigpiod {
       }
       return ret;
    } // stdCmd(3*int)
-   
+
+
+//-------------------------    Pin / port initialisation  ------------------
+
+/** Set the mode of one GPIO pin.
+ * 
+ *  @param port a legal BCM port 0.. 51
+ *  @param mode a mode like {@link PiGpioDdefs#PI_INPUT}, 
+ *            {@link PiGpioDdefs#PI_OUTPUT}, {@link PiGpioDdefs#PI_ALT0} etc.
+ *  @return 0: OK; &lt; 0: error
+ */
    public int setMode(int port, int mode){
       return stdCmd(PI_CMD_MODES, port, mode);
-   } // gpioSetMode(2 * int) 
-   
+   } // setMode(2 * int) 
+
+/** Get the mode of one GPIO pin.
+ * 
+ *  @param port a legal BCM port 0.. 51
+ *  @return     the mode like {@link PiGpioDdefs#PI_INPUT}, 
+ *            {@link PiGpioDdefs#PI_OUTPUT}, {@link PiGpioDdefs#PI_ALT0} etc.
+ *            or  &lt; 0: error
+ */
+   public int getMode(int port){
+      return stdCmd(PI_CMD_MODEG, port, 0);
+   } // getMode(int) 
+
+/** Set the pull resistor for one GPIO pin.
+ * 
+ *  @param port a legal BCM port 0.. 51
+ *  @param pud  a mode: {@link PiGpioDdefs#PI_PUD_OFF}, 
+ *            {@link PiGpioDdefs#PI_PUD_DOWN} or {@link PiGpioDdefs#PI_PUD_UP}
+ *  @return 0: OK; &lt; 0: error
+ */
+   public int setPullR(int port, int pud){
+      return stdCmd(PI_CMD_PUD, port, pud);
+   } // setMode(2 * int) 
+
+
+/** Set the output strength of a set of GPIO pins.
+ * 
+ *  For pins set as output (by {@link #setMode(int, int)} e.g.)
+ *  this function sets the drive capacity in the range of 2..16 mA.<br />
+ *  Note 1: All pins of the set/pad get the same common value. Hence, one has
+ *  to set the maximum needed for any pin. <br />
+ *  Note 2: This value is no current limit nor pin overload protection. It is
+ *  the maximum load current, which a valid 0 or 1 output voltage can be
+ *  guaranteed under.
+ *  Note 3: The BCM processor can set the strength in 2mA steps (2, 4.. 14, 16).
+ *  Nevertheless, this function accepts all values 2..16 incrementing
+ *  odd values.
+ * 
+ *  @param pad The pad or I/O port set number; 0 is GPIO ports 0..27
+ *  @param mA 2..16, the strength in mA
+ *  @return 0: OK; &lt; 0: error
+ */
    public int setPadS(int pad, int mA){
       return stdCmd(PI_CMD_PADS, pad, mA);
    } // gpioSetMode(2 * int) 
 
-    
+//-------------------------  read and write --------------------------------
+   
+/** Set the pin output (register).
+ *     
+ *  @param port a legal BCM port 0..28
+ *  @param val {@link  PiUtil#HI} or {@link PiUtil#LO}
+ *  @return 0: OK; &lt; 0: error
+ */
    public int pinWrit(int port, boolean val){
       if (port < 0 || port > 28) return PI_BAD_GPIO;
       return stdCmd(PI_CMD_WRITE, port, val ? 1 : 0);
-   }  // gpioWrite(int, boolean) 
-
-/** Periodic delay. <br />
- *  <br />
- *  This method delays the calling thread for the given number of 
- *  milliseconds relative to its last call. Hence, it is able to implement
- *  strong long term periodicity. Called 86400 times with 1000 will end
- *  one day later, e.g..<br />
- *  <br />
- *  If this call's (corrected) relative end time would be in the past
- *  the current delay will be relative to now. In that case an existing long
- *  term periodicity would be destroyed. This would happen if other threads
- *  or processes hinder the wake up of this thread for more than 
- *  millies ms. <br />
- *  <br />
- *  @param millies the number of ms to delay relativ to the last call
- */  
-   public void thrDelay(int millies){
-      if (millies < 1) return; // must be positive
-      long now = java.lang.System.currentTimeMillis();
-      Long lastTick = lastThTick.get();
-      if (lastTick == null) { //
-         lastTick = new Long(now + millies);
-      } else { // have threads last tick
-         long target = lastTick + millies;
-         if (target > now) {
-            millies = (int)(target - now); // keep exact period
-            lastTick = target;
-         } else lastTick = now + millies;  
-      } //  have threads last tick
-      lastThTick.set(lastTick);
-      try {
-        Thread.sleep(millies);
-     } catch (InterruptedException e) { } // ignore exception
-   } // gpioDelay(int)
+   }  // pinWrit(int, boolean) 
    
-      
-   static public final ThreadLocal<Long> lastThTick = new ThreadLocal<>();
-   //  long lastTick = 0; // java.lang.System.currentTimeMillis()
-   //  long now;
- 
+/** Read the pin state.
+ *     
+ *  @param port a legal BCM port 0..28
+ *  @return 0 or 1: OK; &lt; 0: error
+ */
+   public int pinRead(int port){
+      if (port < 0 || port > 28) return PI_BAD_GPIO;
+      return stdCmd(PI_CMD_READ, port, 0);
+   }  // pinRead(int)
+
+
+/** Set the PWM duty cycle.
+ *     
+ *  @param port a legal BCM port 0..28
+ *  @param val  0..255 as 0 .. 100%
+ *  @return 0: OK; &lt; 0: error
+ */
+   public int setPWMcycle(int port, int val){
+      if (port < 0 || port > 28) return PI_BAD_GPIO;
+      return stdCmd(PI_CMD_PWM, port, val);
+   }  // setPWMcycle(2 * int) 
+
+/** Get the PWM duty cycle.
+ *     
+ *  @param port a legal BCM port 0.28
+ *  @return  0..255 as 0 .. 100% or  &lt; 0: error
+ */
+   public int getPWMcycle(int port){
+      if (port < 0 || port > 28) return PI_BAD_GPIO;
+      return stdCmd(PI_CMD_GDC, port, 0);
+   }  // getPWMcycle(int) 
+
+/** Set the PWM frequency.
+*     
+*  @param port a legal BCM port 0..28
+*  @param hz frequency in Hz  5... 40000 depending on duty cycle
+*  @return 0: OK; &lt; 0: error
+*/
+  public int setPWMhertz(int port, int hz){
+     if (port < 0 || port > 28) return PI_BAD_GPIO;
+     return stdCmd(PI_CMD_PFS, port, hz);
+  }  // setPWMhertz(2 * int) 
+
+/** Get the PWM frequency.
+*     
+*  @param port a legal BCM port 0..28
+*  @return  frequency in Hz  5... 40000 depending on duty cycle
+*            or  &lt; 0: error
+*/
+  public int getPWMhertz(int port){
+     if (port < 0 || port > 28) return PI_BAD_GPIO;
+     return stdCmd(PI_CMD_PFG, port, 0);
+  }  // getPWMhertz(int) 
+
 } // ClientPigpiod (21.05.2019)

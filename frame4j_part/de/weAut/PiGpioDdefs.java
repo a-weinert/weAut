@@ -24,7 +24,7 @@ package de.weAut;
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 22 $ ($Date: 2019-05-22 20:22:28 +0200 (Mi, 22 Mai 2019) $)
+ *  @version  $Revision: 25 $ ($Date: 2019-05-28 13:21:30 +0200 (Di, 28 Mai 2019) $)
  */
 public interface PiGpioDdefs {
 
@@ -67,7 +67,7 @@ public interface PiGpioDdefs {
    public static final int PI_CMD_NP    = 20; // 
    public static final int PI_CMD_NC    = 21; // 
    public static final int PI_CMD_PRG   = 22; // 
-   public static final int PI_CMD_PFG   = 23; // get frequency
+   public static final int PI_CMD_PFG   = 23; // get PWM frequency
    public static final int PI_CMD_PRRG  = 24; // 
    public static final int PI_CMD_HELP  = 25; // 
    public static final int PI_CMD_PIGPV = 26; // 
@@ -184,9 +184,16 @@ public interface PiGpioDdefs {
 
    public static final int PI_CMD_PROCU = 117; //
 
+
+//-------------------------------------   Command properties tables   -------
+   
 /** Command short names.
  * 
- *  This array yield a short command name by command number.
+ *  This array yields a short command name by command number. The short
+ *  names are those from the <a href="http://abyz.me.uk/rpi/pigpio/sif.html"
+ *  >socket interface documentation</a>.<br />
+ *  Parameter (index) is the command number in the range 0..117. Names of
+ *  unimplemented commands in that range start with &quot;bad&quot;.
  */
    public static final String[] cmdNam = {
 //   0        1       2      3       4       5      6      7     8      9
@@ -203,7 +210,114 @@ public interface PiGpioDdefs {
 "WVTXM", "WVTAT", "PADS", "PADG", "FO", "FC", "FR", "FW", "FS", "FL",  // 100
 "SHELL", "BSPIC", "BSPIO", "BSPIX", "BSCX", "EVM", "EVT", "PROCU"};  //110
 
-//-------------------------------------   Error codes   ---------------------   
+//-------------------------------------   p1 semantics  ---------------------   
+
+public static final int GPIO = 1;
+public static final int BITS = 2; 
+public static final int PAD  = 2; 
+public static final int MODE = 3; 
+public static final int SUBCMD = 4; 
+
+public static final int MICROS = 5;
+public static final int MILLIS = 6; 
+public static final int BAUD = 7; 
+public static final int COUNT = 8;   
+public static final int SDA = 9; 
+public static final int ARG1 = 10; 
+
+public static final int LEN_NAME = 11; 
+public static final int CONFIG = 12;  
+public static final int CHANNEL = 13;  
+public static final int WAVE_ID = 14; 
+public static final int SCRIPT_ID = 15; 
+public static final int EVENT = 16; 
+public static final int HANDLE = 17; 
+public static final int BUS = 18; 
+public static final int CS = 19; 
+public static final int CONTROL = 20; 
+public static final int IGNORE = 21; 
+
+
+/** Kind of parameter p1 by command number.
+ * 
+ *  The kind on the byte or int parameter p1 depends on the command 
+ *  respectively command number 0..117. <br />
+ *  An entry 0 means p1 must be 0. <br />
+ *  {@link GPIO} means it has to be a GPIO/BCM I/O number in the range
+ *  0..31 or 0..53; and so on. <br />
+ *  There are 22 kinds of p1 semantics.
+ */
+   public static final int[] p1Kind = {
+GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,
+0,     0,  BITS,  BITS,  BITS,  BITS,     0,     0,     0,  HANDLE,
+HANDLE, HANDLE, GPIO, GPIO, GPIO, IGNORE,    0,     0,     0,  GPIO,
+0,     0,     0,     0, SUBCMD, SUBCMD, SUBCMD, GPIO, 0, SCRIPT_ID,
+SCRIPT_ID, SCRIPT_ID, GPIO, GPIO, GPIO, SCRIPT_ID, MICROS, MILLIS, IGNORE, 0,
+WAVE_ID, WAVE_ID, WAVE_ID, 0, BUS, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE,
+HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE,
+HANDLE, CHANNEL, HANDLE, HANDLE, HANDLE, HANDLE,  BAUD, HANDLE, HANDLE, HANDLE,
+HANDLE,  HANDLE,  HANDLE, GPIO, GPIO, GPIO, GPIO, ARG1,  ARG1,  SDA,
+SDA,   SDA, HANDLE,     0,  GPIO,    0, CONFIG,  GPIO,  GPIO,     0,
+WAVE_ID, 0,  PAD,  PAD,  MODE, HANDLE, HANDLE, HANDLE, HANDLE, COUNT,
+LEN_NAME,  CS,  CS,  CS,  CONTROL,  HANDLE,  EVENT,  SCRIPT_ID};  
+
+   
+//-------------------------------------   result/p3 semantics  --------------   
+
+/** Command result type.
+ * 
+ *  Most commands return an int in result/p3. Here any not negative value
+ *  means a good return value or without a return value 0 means command
+ *  was executing OK. A negative value means an error; 
+ *  {@link #PI_INIT_FAILED}..{@link #PI_BAD_EVENT_ID}<br />
+ *  Very few commands return an unsigned 32 bit value (uint32_t in C), where
+ *  the Java int negative value interpretation as error would be utterly 
+ *  wrong.<br />
+ *  These five uint32_t commands are: <br />
+ *  BR1 * 10, BR2 *   11, TICK * 16, HWVER * 17, PIGPV * 26.<br />
+ *  In Joan N.N.'s <a href="http://abyz.me.uk/rpi/pigpio/sif.html"
+ *  >documentation</a> they are marked with *; and they can't fail. 
+ */
+   public static final boolean[] uint32ret = {
+//     0      1      2      3      4      5      6      7      8      9                        
+   false, false, false, false, false, false, false, false, false, false, // 00 
+   true,   true, false, false, false, false, true,   true, false, false, // 10 
+   false, false, false, false, false, false, true,  false, false, false, // 20 
+   false, false, false, false, false, false, false, false, false, false, // 30 
+   false, false, false, false, false, false, false, false, false, false, // 40 
+   false, false, false, false, false, false, false, false, false, false, // 50 
+   false, false, false, false, false, false, false, false, false, false, // 60
+   false, false, false, false, false, false, false, false, false, false, // 70 
+   false, false, false, false, false, false, false, false, false, false, // 80 
+   false, false, false, false, false, false, false, false, false, false, // 90 
+   false, false, false, false, false, false, false, false, false, false, //100 
+   false, false, false, false, false, false, false, false, false, };     //110 
+    
+
+/** Command has extension.
+ * 
+ *  Most commands have just two parameters p1 and p2 and must have p3 = 0 on 
+ *  request. But 37 commands prolong the request by an extension the length
+ *  of which in bytes must be put in p3.<br />
+ *  Those more special command get a true in this table. They can't be 
+ *  handled by {@link ClientPigpiod#stdCmd(int, int, int)}.
+ */
+   public static final boolean[] hasExtension = {
+//     0      1      2      3      4      5      6      7      8      9                        
+   false, false, false, false, false, false, false, false, false, false, // 00
+   false, false, false, false, false, false, false, false, false, false, // 10
+   false, false, false, false, false, false, false, false,  true,  true, // 20
+   false, false, false, false, false, false, false,  true,  true, false, // 30
+    true, false,  true, false, false, false, false, false, false, false, // 40
+   false, false, false, false,  true, false, false,  true, false, false, // 50
+   false, false,  true, false,  true, false,  true,  true,  true,  true, // 60
+    true,  true, false, false,  true,  true,  true, false, false, false, // 70
+   false,  true, false, false, false, false,  true,  true,  true, false, // 80
+    true,  true,  true,  true, false, false, false, false,  true, false, // 90
+   false, false, false, false,  true, false, false,  true,  true,  true, //100
+    true, false,  true,  true,  true, false, false,  true};              //110
+//-------------------------------------   Error codes   ---------------------
+   
    public static final int PI_INIT_FAILED       = -1; // gpioInitialise failed
    public static final int PI_BAD_USER_GPIO     = -2; // GPIO not 0-31
    public static final int PI_BAD_GPIO          = -3; // GPIO not 0-53
@@ -360,85 +474,7 @@ public interface PiGpioDdefs {
    public static final int PI_SOCK_READ_LEN  = -3059; // socket read wrong length
    public static final int PI_CMD_BAD        = -3081; // command bad; not 0..117
    
-//-------------------------------------   p1 semantics  ---------------------   
-   
-   public static final int GPIO = 1;
-   public static final int BITS = 2; 
-   public static final int PAD  = 2; 
-   public static final int MODE = 3; 
-   public static final int SUBCMD = 4; 
-   
-   public static final int MICROS = 5;
-   public static final int MILLIS = 6; 
-   public static final int BAUD = 7; 
-   public static final int COUNT = 8;   
-   public static final int SDA = 9; 
-   public static final int ARG1 = 10; 
-
-   public static final int LEN_NAME = 11; 
-   public static final int CONFIG = 12;  
-   public static final int CHANNEL = 13;  
-   public static final int WAVE_ID = 14; 
-   public static final int SCRIPT_ID = 15; 
-   public static final int EVENT = 16; 
-   public static final int HANDLE = 17; 
-   public static final int BUS = 18; 
-   public static final int CS = 19; 
-   public static final int CONTROL = 20; 
-   public static final int IGNORE = 21; 
    
    
-/** Kind of parameter p1 by command number.
- * 
- *  The kind on the byte or int parameter p1 depends on the command 
- *  respectively command number 0..117. <br />
- *  An entry 0 means p1 must be 0. <br />
- *  {@link GPIO} means it has to be a GPIO/BCM I/O number in the range
- *  0..31 or 0..53; and so on. <br />
- *  There are 22 kinds of p1 semantics.
- */
-   public static final int[] p1Kind = {
-GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,
-0,     0,  BITS,  BITS,  BITS,  BITS,     0,     0,     0,  HANDLE,
-HANDLE, HANDLE, GPIO, GPIO, GPIO, IGNORE,    0,     0,     0,  GPIO,
-0,     0,     0,     0, SUBCMD, SUBCMD, SUBCMD, GPIO, 0, SCRIPT_ID,
-SCRIPT_ID, SCRIPT_ID, GPIO, GPIO, GPIO, SCRIPT_ID, MICROS, MILLIS, IGNORE, 0,
-WAVE_ID, WAVE_ID, WAVE_ID, 0, BUS, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE,
-HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE,
-HANDLE, CHANNEL, HANDLE, HANDLE, HANDLE, HANDLE,  BAUD, HANDLE, HANDLE, HANDLE,
-HANDLE,  HANDLE,  HANDLE, GPIO, GPIO, GPIO, GPIO, ARG1,  ARG1,  SDA,
-SDA,   SDA, HANDLE,     0,  GPIO,    0, CONFIG,  GPIO,  GPIO,     0,
-WAVE_ID, 0,  PAD,  PAD,  MODE, HANDLE, HANDLE, HANDLE, HANDLE, COUNT,
-LEN_NAME,  CS,  CS,  CS,  CONTROL,  HANDLE,  EVENT,  SCRIPT_ID};  
-
-   
-//-------------------------------------   result/p3 semantics  --------------   
-
-/** Command result type.
- * 
- *  Most commands return an int in result/p3, where any not negative value
- *  means a good return value or without return value 0 meaning OK. <br />
- *  Very few commands return an unsigned 32 bit value (uint32_t in C), where
- *  the Java int negative value interpretation as error would be utterly 
- *  wrong.<br />
- *  These five uint32_t commands are: <br />
- *  BR1 * 10, BR2 *   11, TICK * 16, HWVER * 17, PIGPV * 26.<br />
- *  In Joan N.N.'s documentation they are marked with *; and they can't fail. 
- */
-   public static final boolean[] uint32ret = {
-//     0      1      2      3      4      5      6      7      8      9                        
-   false, false, false, false, false, false, false, false, false, false, // 00 
-   true,   true, false, false, false, false, true,   true, false, false, // 10 
-   false, false, false, false, false, false, true,  false, false, false, // 20 
-   false, false, false, false, false, false, false, false, false, false, // 30 
-   false, false, false, false, false, false, false, false, false, false, // 40 
-   false, false, false, false, false, false, false, false, false, false, // 50 
-   false, false, false, false, false, false, false, false, false, false, // 60
-   false, false, false, false, false, false, false, false, false, false, // 70 
-   false, false, false, false, false, false, false, false, false, false, // 80 
-   false, false, false, false, false, false, false, false, false, false, // 90 
-   false, false, false, false, false, false, false, false, false, false, //100 
-   false, false, false, false, false, false, false, false, false, };     //110 
-    
 
 } // PiGpioDdefs (22.05.2019)

@@ -19,12 +19,12 @@ package de.weAut;
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 21 $ ($Date: 2019-05-22 13:35:56 +0200 (Mi, 22 Mai 2019) $)
+ *  @version  $Revision: 24 $ ($Date: 2019-05-27 20:36:56 +0200 (Mo, 27 Mai 2019) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 21  (21.05.2019) :  typo
 
-public interface Pi3Usage { // extends PiUsage {
+public interface Pi3Usage { 
 
 /** GPIO to 40 pin header mapping.
  * 

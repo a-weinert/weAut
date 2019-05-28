@@ -12,6 +12,9 @@ Copyright <a href="#co">&copy;</a>  2019 &nbsp; Albrecht Weinert <br />
 This  package {@link de.weAut} is the base Java process control with small 
 programmable systems, capable of hosting a standard Java JDK/JRE, like the
 Raspberry Pi3, e.g..<br />
+See also the <a href="https://a-weinert.github.io/raspiGPIOjava.html"
+title="on GitHub">post</a> and <a href="https://github.com/a-weinert/weAut/"
+title="on GitHub">sub-projects</a>.<br />
 <br />
 As of Revision 17, May 2019, we keep {@link de.weAut} in the same SVN
 source repository as the framework Frame4J, packages {@link de.frame4j} and
@@ -33,6 +36,6 @@ or as <a href="./doc-files/epl.txt">text</a> within the source
 distribution.<br />
 
  @author   Albrecht Weinert
- @version  Revision $Revision: 21 $ ($Date: 2019-05-22 13:35:56 +0200 (Mi, 22 Mai 2019) $) 
+ @version  Revision $Revision: 23 $ ($Date: 2019-05-25 13:49:07 +0200 (Sa, 25 Mai 2019) $) 
 */
 package de.weAut;

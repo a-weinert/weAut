@@ -16,7 +16,7 @@ import java.io.IOException;
  *  The comment of the C source file: <br /><pre>
   A fifth program for Raspberry's GPIO pins
 
-  Rev. $Revision: 22 $  $Date: 2019-05-22 20:22:28 +0200 (Mi, 22 Mai 2019) $
+  Rev. $Revision: 25 $  $Date: 2019-05-28 13:21:30 +0200 (Di, 28 Mai 2019) $
 
   Copyright  (c)  2019   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
@@ -39,7 +39,7 @@ import java.io.IOException;
  *  <br />
  *  Copyright  &copy;  2019   Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 22 $ ($Date: 2019-05-22 20:22:28 +0200 (Mi, 22 Mai 2019) $)
+ *  @version  $Revision: 25 $ ($Date: 2019-05-28 13:21:30 +0200 (Di, 28 Mai 2019) $)
  */
 // so far:   V. 21  (21.05.2019) :  new, minimal functionality
 //           V. 21  (21.05.2019) :  
@@ -89,7 +89,7 @@ public class RdGnPiGpioDBlink implements PiUtil, Pi3Usage, PiGpioDdefs {
         closeLock();
      })); // shutdownHook.run()
 
-     runOn = openLock(null, true);
+     runOn = openLock(null, true) == 0;
      if (! runOn) return;
      //  System.out.println("RdGnJPiGpioDBlink got lock");
      
@@ -102,22 +102,22 @@ public class RdGnPiGpioDBlink implements PiUtil, Pi3Usage, PiGpioDdefs {
    System.out.println(" TEST set mode output rd gn ye 14 mA");
    pI.logCommand(pI.setMode(LEDrd, GPIO_OUT));
    pI.logCommand(pI.setMode(LEDgn, GPIO_OUT));
-   pI.logCommand(pI.stdCmd(PI_CMD_PUD,  LEDgn, PI_PUD_DOWN));
+   pI.logCommand(pI.setPullR(LEDgn, PI_PUD_DOWN));
    pI.logCommand(pI.setMode(LEDye, GPIO_OUT));
    pI.logCommand(pI.setPadS(0, 14));
    boolean yLd = true;
    System.out.println(" TEST start endless loop");
    for(;runOn;) {                        // red green time/state  yellow
       pI.logIfBad(pI.pinWrit(LEDrd, HI)); // on
-      pI.thrDelay(200);                   //          200 ms red
+      thrDelay(200);                      //          200 ms red
       yLd = !yLd;                         //                      toggle
       pI.logIfBad(pI.pinWrit(LEDye, yLd));
       pI.logIfBad(pI.pinWrit(LEDgn, HI)); //      on
-      pI.thrDelay(100);                   //          100 ms both
+      thrDelay(100);                      //          100 ms both
       pI.logIfBad(pI.pinWrit(LEDrd, LO)); // off
-      pI.thrDelay(100);                   //          100 ms green
+      thrDelay(100);                      //          100 ms green
       pI.logIfBad(pI.pinWrit(LEDgn, LO)); //     off
-      pI.thrDelay(200);                   //          200 ms dark
+      thrDelay(200);                      //          200 ms dark
    } // for endless
   } // doIt()
 } // RdGnPiGpioDBlink

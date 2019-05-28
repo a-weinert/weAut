@@ -10,11 +10,15 @@
 @REM change next two lines according to full SVN repo local paths
 @set frame4j.fLocWD=D:\eclipse18-09WS\frame4j
 @set rasProject_01.fLocWD=D:\eclipCe18-12WS\rasProject_01
+@set frame4j.jar.Loc=C:\util\jdk\jre\lib\ext
 
 java Update %upd.opts% %rasProject_01.fLocWD%\ .\rasProject_01part\
 @echo.
 java Update %upd.opts% %frame4j.fLocWD%\ .\frame4j_part\
 @echo.
+java Update %upd.opts% %frame4j.jar.Loc%\frame4j.jar .\binaries\
+@echo.
+
 git status
 @echo.
 @echo Content? Don't forget to:

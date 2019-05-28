@@ -32,7 +32,7 @@ import de.weAut.Pi3Usage;  // Raspberry Pi3 handling
  *  <br />
  *  Copyright  &copy;  2019   Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 21 $ ($Date: 2019-05-22 13:35:56 +0200 (Mi, 22 Mai 2019) $)
+ *  @version  $Revision: 24 $ ($Date: 2019-05-27 20:36:56 +0200 (Mo, 27 Mai 2019) $)
  */
 // so far:   V. 18  (17.05.2019) :  new
 //           V. 20  (19.05.2019) :  minor corrections
@@ -77,7 +77,7 @@ public class RdGnJPiGpioDBlink implements PiUtil, Pi3Usage {
 	  closeLock();
     })); // shutdownHook.run()
     
-    runOn = openLock(null, true);
+    runOn = openLock(null, true) == 0;
     if (! runOn) return;
     //  System.out.println("RdGnJPiGpioDBlink got lock");
 
