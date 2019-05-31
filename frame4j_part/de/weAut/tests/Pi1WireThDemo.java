@@ -8,7 +8,7 @@ import de.weAut.PiUtil;  // Raspberry Pi handling utilities (IO lock, watchdog)
 
 /** <b>Demo (Test) of using a 1-wire thermometer on Raspberry PI with Java</b>.<br />
  *  <br />
- *  On a Raspberry Pi with initialiesed 1-wire interface this programme 
+ *  On a Raspberry Pi with initialised 1-wire interface this programme 
  *  reads an thermometer device DS28B20 or alike. 
  *  <br />
  *  Run by: <pre><code>
@@ -23,15 +23,15 @@ import de.weAut.PiUtil;  // Raspberry Pi handling utilities (IO lock, watchdog)
  *  <br />
  *  Copyright  &copy;  2019   Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 22 $ ($Date: 2019-05-22 20:22:28 +0200 (Mi, 22 Mai 2019) $)
+ *  @version  $Revision: 26 $ ($Date: 2019-05-31 15:33:23 +0200 (Fr, 31 Mai 2019) $)
  */
 // so far:   V. 25  (27.05.2019) :  new, minimal functionality
-//           V. 26  (30.05.2019) :  minor, typo, docu 
+//           V. 26  (31.05.2019) :  two reads with interpretation 
 
 public class Pi1WireThDemo implements PiUtil {
 
 
-   /** The application start.
+/** The application start.
  *  
  *  Can be stopped by signal (cntlC), kill command and the like.
  *  @param args start parameters, none or --boot
@@ -52,12 +52,14 @@ public class Pi1WireThDemo implements PiUtil {
   BufferedReader thermometer;
   String line1;
   String line2;
+  StringBuilder erg = new StringBuilder(14);
+  boolean run = true;
   
 
 /** The application's work.  */
   public void doIt(String[] args){ 
      Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-        System.out.println("\nPi1WireThDemo shutdown");
+        if (run) System.out.println("\nPi1WireThDemo shutdown\n");
         try {
          thermometer.close();
       } catch (IOException e) { } // ignore
@@ -65,39 +67,66 @@ public class Pi1WireThDemo implements PiUtil {
 
      thermPath = "/sys/bus/w1/devices/w1_bus_master1/" + args[0] + "/w1_slave";
 
-     try {
-        thermometer = new BufferedReader(new FileReader(thermPath));
-     } catch (FileNotFoundException e) {
-        System.out.println("Pi1WireThDemo open error");
-        e.printStackTrace();
-        System.exit(13);
-     }
+     for(int i = 2;;) {
+        try { // try open
+           thermometer = new BufferedReader(new FileReader(thermPath));
+        } catch (FileNotFoundException e) {
+           System.out.println("Pi1WireThDemo open error");
+           e.printStackTrace();
+           System.exit(13);
+        }  // try open
+        try {  // try read
+           line1 = thermometer.readLine();
+           line2 = thermometer.readLine();
+        } catch (IOException e) {
+           System.out.println("Pi1WireThDemo read error");
+           e.printStackTrace();
+           System.exit(14);
+        } // try read
+        System.out.println(line1);
+        System.out.println(line2);
 
-     try {
-        line1 = thermometer.readLine();
-        line2 = thermometer.readLine();
-     } catch (IOException e) {
-        System.out.println("Pi1WireThDemo read error");
-        e.printStackTrace();
-        System.exit(14);
+// 0123456789x123456789v123456789t123456789
+// 63 01 55 05 7f 7e 81 66 74 : crc=74 YES
+// 63 01 55 05 7f 7e 81 66 74 t=22187
 
-     }
-     
-     System.out.println(line1);
-     System.out.println(line2);
-     
-     try {
+        if (line1.charAt(36) != 'Y') { // good
+           System.out.println("              measurement bad\n");
+        } else { // good else bad
+           erg.setLength(0);// 01234567 9x    // grd symbol at
+           erg.append(        "   0.000gC"); // position 
+           erg.setCharAt(8, (char)0x00B0);  // work around for IS889-1 source
+           for (int li2i = line2.length() -1, 
+                                       ergI = 7; ergI > 0; --ergI,--li2i) {
+              char c = line2.charAt(li2i);
+              if (c >= '0' && c <= '9') {
+                 erg.setCharAt(ergI, c); // copy digits
+                 if (ergI == 5) ergI = 4; // jump over 
+              } else if (c == '-') {
+                 if (ergI >= 3) ergI = 2;
+                 erg.setCharAt(ergI, '-');
+                 break;
+              } else break; // end of value in line2
+           }
+           
+           System.out.println("              measurement " + erg);
+       
+        } // bad
+        if (--i == 0) break;
+        thrDelay(2000);
+     } // for
+
+// Closing can probably be omitted, as the device as pseudo file seems to
+// auto-close after the two line measurement has been read.
+     try { // try close 
       thermometer.close();
      } catch (IOException e) {
-        System.out.println("Pi1WireThDemo read error");
+        System.out.println("Pi1WireThDemo close error");
         e.printStackTrace();
         System.exit(15);
-     }
-     
-
-
-
+     } // try close
+     run = false;
      System.out.println("Pi1WireThDemo stop\n");
      return;
   } // doIt()
-} // PiWDogDemo (28.05.2019)
+} // PiWDogDemo (28.05.2019, 31.05.2019)

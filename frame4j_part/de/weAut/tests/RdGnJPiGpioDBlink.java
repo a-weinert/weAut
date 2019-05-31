@@ -3,15 +3,20 @@ package de.weAut.tests;
 import jpigpio.PigpioSocket; // pigpio Java interface by Neil Kolban  
 
 import de.weAut.PiUtil;     // Raspberry Pi handling utilities (IO lock)
+import de.weAut.ClientPigpiod;
 import de.weAut.Pi3Usage;  // Raspberry Pi3 handling
 
 /** <b>Port of pigpiod test and demo program rdGnPiGpioDBlink from C to Java</b>.<br />
  *  <br />
- *  The port uses the PigpioSocket interface by Neil Kolban using an own C
- *  part with Java native interface (JNI) even when using pigpiod's socket
- *  interface.<br />
+ *  This port uses the PigpioSocket interface Jpigdio by Neil Kolban; see 
+  <a href="https://github.com/nkolban/jpigpio">github.com/nkolban/jpigpio</a>.
+ *  This library uses an own C part with Java native interface (JNI) even
+ *  when using pigpiod's socket interface.<br />
+ *  We deprecate this approach as sheer overhead, recommending the 100% pure
+ *  Java approach implemented by {@link ClientPigpiod} and with equal
+ *  functionality demonstrated by {@link RdGnPiGpioDBlink}.
  *  <br />
- *  The comment of the C source file: <pre>
+ *  Comment excerpt of the original/ported C source file: <pre>
   A fifth program for Raspberry's GPIO pins
 
   It uses two/three pins as output assuming two LEDs connected to as H=on
@@ -22,17 +27,17 @@ import de.weAut.Pi3Usage;  // Raspberry Pi3 handling
   This program forces application singleton and may be used as service.
 
   Its functions are the same as rdGnBlinkBlink (even sharing the lockFile)
-  except for using the pigpioD library. Our makefiles define
-  MCU and PLATFORM as make variables and macros. So we could make the
-  GPIO pin and address assignment automatically in the C programmes.
+  except for using the pigpioD library. Our makefiles define MCU and 
+  PLATFORM as make variables and macros. So we could make the GPIO pin and
+  address assignment automatically in the C programmes.
 </pre><br />  
- *  In a Java program (i.e. class like this one) one has to decide the
- *  target by implementing either Pi3Usage or Pi1Usage; other targets
- *  might be added later. <br />
+ *  In a Java program (i.e. in a class like this one) one has to decide the
+ *  target by implementing either {@link de.weAut.Pi3Usage} or 
+ *  {@link de.weAut.Pi1Usage}; other targets might be added later. <br />
  *  <br />
  *  Copyright  &copy;  2019   Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 24 $ ($Date: 2019-05-27 20:36:56 +0200 (Mo, 27 Mai 2019) $)
+ *  @version  $Revision: 26 $ ($Date: 2019-05-31 15:33:23 +0200 (Fr, 31 Mai 2019) $)
  */
 // so far:   V. 18  (17.05.2019) :  new
 //           V. 20  (19.05.2019) :  minor corrections

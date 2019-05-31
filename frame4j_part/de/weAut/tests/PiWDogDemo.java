@@ -21,7 +21,7 @@ import de.weAut.PiUtil;  // Raspberry Pi handling utilities (IO lock, watchdog)
  *  <br />
  *  Copyright  &copy;  2019   Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 22 $ ($Date: 2019-05-22 20:22:28 +0200 (Mi, 22 Mai 2019) $)
+ *  @version  $Revision: 26 $ ($Date: 2019-05-31 15:33:23 +0200 (Fr, 31 Mai 2019) $)
  */
 // so far:   V. 25  (27.05.2019) :  new, minimal functionality
 //           V. 26  (30.05.2019) :  minor, typo, docu 

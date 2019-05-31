@@ -11,12 +11,12 @@ import java.io.IOException;
  *  <br />
  *  This port uses Joan N.N's pigpio library's 
  *  <a href="http://abyz.me.uk/rpi/pigpio/sif.html">socket interface</a> 
- *  directly. <br />
+ *  directly. Hence, it is 100% pure Java, i.e. no JNI.<br />
  *  <br />
- *  The comment of the C source file: <br /><pre>
+ *  Comment excerpt of the original/ported C source file: <br /><pre>
   A fifth program for Raspberry's GPIO pins
 
-  Rev. $Revision: 25 $  $Date: 2019-05-28 13:21:30 +0200 (Di, 28 Mai 2019) $
+  Rev. $Revision: 26 $  $Date: 2019-05-31 15:33:23 +0200 (Fr, 31 Mai 2019) $
 
   Copyright  (c)  2019   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
@@ -33,16 +33,21 @@ import java.io.IOException;
   MCU and PLATFORM as make variables and macros. So we could make the
   GPIO pin and address assignment automatically in the C programmes.
 </pre><br />  
- *  In a Java program (i.e. class like this one) one has to decide the
- *  target by implementing either Pi3Usage or Pi1Usage; other targets
+ *  In Java, for good reasons, we do not have the "make and macro and all can
+ *  be automatically changed" mechanism. In a Java program (i.e. in a class
+ *  like this one) one has to decide the target by implementing either
+ *  {@link de.weAut.Pi3Usage} or {@link de.weAut.Pi1Usage}; other targets 
  *  might be added later.<br />
+ *  Compared to the C/make solution , this approach has the disadvantage of
+ *  one source file per different Raspberry Pi target version, even when just 
+ *  changing one import and one implements.<br />
  *  <br />
  *  Copyright  &copy;  2019   Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 25 $ ($Date: 2019-05-28 13:21:30 +0200 (Di, 28 Mai 2019) $)
+ *  @version  $Revision: 26 $ ($Date: 2019-05-31 15:33:23 +0200 (Fr, 31 Mai 2019) $)
  */
-// so far:   V. 21  (21.05.2019) :  new, minimal functionality
-//           V. 21  (21.05.2019) :  
+// so far:   V.  21  (21.05.2019) : new, minimal functionality
+//           V. -26  (31.05.2019) : three LEDs, IO lock 
 
 public class RdGnPiGpioDBlink implements PiUtil, Pi3Usage, PiGpioDdefs {
 

@@ -2,10 +2,9 @@
 <b>weAut &mdash; weinert-automation</b> base package.<br />
 <br />
 This package {@link de.weAut} is uniquely named according to weAut.de the
-short form domain of 
-<a href="https://weinert-automation.de">weinert-automation</a>'s main 
+second and short domain of 
+<a href="https://weinert-automation.de">weinert-automation</a>'s main domain
 <a href="https://weinert-automation.de">weinert-automation.de</a>.<br />
-Copyright <a href="#co">&copy;</a>  2019 &nbsp; Albrecht Weinert <br />
 
 <h3><a name="be">Description</a></h3>
 
@@ -24,7 +23,8 @@ mechanism.<br />
 <br />
 <br />
 <h3>Conditions of use / license, <a name="co" id="co">Copyright</a></h3>
-Copyright 2019 Albrecht Weinert, Bochum, Germany (a-weinert.de) <br />
+Copyright  <a href="#co">&copy;</a> 2019 Albrecht Weinert, Bochum,
+ Germany (a-weinert.de) <br />
 All rights reserved. <br />
 <br />
 This package and its subpackages are, as well as 
@@ -36,6 +36,6 @@ or as <a href="./doc-files/epl.txt">text</a> within the source
 distribution.<br />
 
  @author   Albrecht Weinert
- @version  Revision $Revision: 23 $ ($Date: 2019-05-25 13:49:07 +0200 (Sa, 25 Mai 2019) $) 
+ @version  Revision $Revision: 28 $ ($Date: 2019-05-31 15:43:04 +0200 (Fr, 31 Mai 2019) $) 
 */
 package de.weAut;
