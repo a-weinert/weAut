@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.File;
 import de.weAut.PiUtil;  // Raspberry Pi handling utilities (IO lock, watchdog)
 
 /** <b>Demo (Test) of using a 1-wire thermometer on Raspberry PI with Java</b>.<br />
@@ -23,13 +24,12 @@ import de.weAut.PiUtil;  // Raspberry Pi handling utilities (IO lock, watchdog)
  *  <br />
  *  Copyright  &copy;  2019   Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 26 $ ($Date: 2019-05-31 15:33:23 +0200 (Fr, 31 Mai 2019) $)
+ *  @version  $Revision: 29 $ ($Date: 2019-06-01 18:47:20 +0200 (Sa, 01 Jun 2019) $)
  */
 // so far:   V. 25  (27.05.2019) :  new, minimal functionality
 //           V. 26  (31.05.2019) :  two reads with interpretation 
 
 public class Pi1WireThDemo implements PiUtil {
-
 
 /** The application start.
  *  
@@ -48,7 +48,7 @@ public class Pi1WireThDemo implements PiUtil {
      new Pi1WireThDemo().doIt(args);  // need be an PiUtil object
   } // main(String[])
   
-  String thermPath;
+  File thermPath;
   BufferedReader thermometer;
   String line1;
   String line2;
@@ -65,9 +65,10 @@ public class Pi1WireThDemo implements PiUtil {
       } catch (IOException e) { } // ignore
      })); // shutdownHook.run()
 
-     thermPath = "/sys/bus/w1/devices/w1_bus_master1/" + args[0] + "/w1_slave";
+     thermPath = new File(
+              "/sys/bus/w1/devices/w1_bus_master1/" + args[0] + "/w1_slave");
 
-     for(int i = 2;;) {
+     for(int i = 3;;) {
         try { // try open
            thermometer = new BufferedReader(new FileReader(thermPath));
         } catch (FileNotFoundException e) {
@@ -83,19 +84,20 @@ public class Pi1WireThDemo implements PiUtil {
            e.printStackTrace();
            System.exit(14);
         } // try read
-        System.out.println(line1);
-        System.out.println(line2);
 
 // 0123456789x123456789v123456789t123456789
-// 63 01 55 05 7f 7e 81 66 74 : crc=74 YES
-// 63 01 55 05 7f 7e 81 66 74 t=22187
+// 63 01 55 05 7f 7e 81 66 74 : crc=74 YES   line1
+// 63 01 55 05 7f 7e 81 66 74 t=22187        line2
 
         if (line1.charAt(36) != 'Y') { // good
+           System.out.println(line1);
+           System.out.println(line2);
            System.out.println("              measurement bad\n");
         } else { // good else bad
-           erg.setLength(0);// 01234567 9x    // grd symbol at
-           erg.append(        "   0.000gC"); // position 
-           erg.setCharAt(8, (char)0x00B0);  // work around for IS889-1 source
+           System.out.println(line2);
+           erg.setLength(0);// 0123456789x    // clear
+           erg.append(        "   0.000°C"); // position 
+      //   erg.setCharAt(8, (char)0x00B0);  // work around for IS889-1 source
            for (int li2i = line2.length() -1, 
                                        ergI = 7; ergI > 0; --ergI,--li2i) {
               char c = line2.charAt(li2i);

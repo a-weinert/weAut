@@ -1,0 +1,15 @@
+# Transfer a program respectively a class to the target machine
+# Copyright 2017, 2019 Albrecht Weinert          a-weinert de
+# $Revision: 29 $ ($Date: 2019-06-01 18:47:20 +0200 (Sa, 01 Jun 2019) $)
+# param 1 : user:passwd  (ftp user)     e.g. pi:raspberry
+# param 2 : target machine (IP)        e.g. 192.168.178.97
+# param 3 : target directory (within user's ~)   e.g. de/weAut/test
+# param 4 : program        e.g. Pi1WireThDemo.class (wildcards allowed) 
+# use by  : 
+#   winscp.com /script=progTransWin /parameter pi:raspberry 192.168.178.97 bin rdGnBlinkBlink
+open sftp://%1%@%2%
+cd %3%
+option batch continue
+option confirm off
+put %4% -preservetime -permissions=775
+exit

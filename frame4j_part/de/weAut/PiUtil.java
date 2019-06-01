@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  *  Copyright <a href=./de/weAut/package-summary.html#co>&copy;</a> 2019
  *           &nbsp; Albrecht Weinert<br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 25 $ ($Date: 2019-05-28 13:21:30 +0200 (Di, 28 Mai 2019) $)
+ *  @version  $Revision: 29 $ ($Date: 2019-06-01 18:47:20 +0200 (Sa, 01 Jun 2019) $)
  */
 // so far:   V. o19  (17.05.2019) : new
 //           V.  21  (19.05.2019) : ALT numbers, typo
@@ -207,7 +207,22 @@ public interface PiUtil {
  */  
    public default void thrDelay(int millies){ impl.thrDelay(millies); }
 
-
+/** A tick as mutable object. 
+ * 
+ *  Objects of this class essentially hold a mutable long variable intended 
+ *  for absolute times in ms.
+ */
+   public final class LeTick {
+      long tick;
+      public long getTick(){ return tick; }
+      public void setTick(final long tick){ this.tick = tick; }
+      
+      public long add(final long adv) { return this.tick += adv; }
+      
+      public LeTick(long tick) {this.tick = tick; }
+   } // LeTick
+   
+   
 // ------------  method (default) implementations    ---------------------  
    
 /** Some (default) implementations. */  
@@ -220,7 +235,7 @@ public interface PiUtil {
  *  methods and their (minimal) state. In most cases these are sufficient
  *  and would not be overridden.
  */
-  public class Impl {
+  public final class Impl {
      private Impl() {}; // singleton
      
 
@@ -366,23 +381,23 @@ public interface PiUtil {
    public void thrDelay(int millies){
       if (millies < 1) return; // must be positive
       long now = java.lang.System.currentTimeMillis();
-      Long lastTick = lastThTick.get();
-      if (lastTick == null) { //
-         lastTick = new Long(now + millies);
+      LeTick leTick = lastThTick.get();
+      if (leTick == null) { //
+         leTick = new LeTick(now + millies); // first time: start now
       } else { // have threads last tick
-         long target = lastTick + millies;
+         long target = leTick.add(millies);
          if (target > now) {
             millies = (int)(target - now); // keep exact period
-            lastTick = target;
-         } else lastTick = now + millies;  
+            // no new Long object leTick = target;
+         } else leTick.setTick(now + millies); // lost exact period start now  
       } //  have threads last tick
-      lastThTick.set(lastTick);
+      // no new long object lastThTick.set(leTick);
       try {
         Thread.sleep(millies);
      } catch (InterruptedException e) { } // ignore exception
    } // gpioDelay(int)
       
-   static public final ThreadLocal<Long> lastThTick = new ThreadLocal<>();
+   static public final ThreadLocal<LeTick> lastThTick = new ThreadLocal<>();
    //  long lastTick = 0; // java.lang.System.currentTimeMillis()
    //  long now;
        
