@@ -34,8 +34,9 @@ endif
 
 
 # Evaluate target device if given (overiden by TARGET=name)
+# set a workstation specific and a common default
 ifeq ($(MAKE_WORKSTAT),papaBig)
-  TARGET ?= meterPi
+  TARGET ?= raspi61
 else
   TARGET ?= raspi61
 endif
@@ -387,7 +388,6 @@ progapp prog_app : $(MAIN_F)
 openFTP openWinSCP :
 	@$(EC) $(MSG_OPEN_FTP) $@
 	$(FTPopen) $(FTPuser) $(FTPtarget) $(FTPdir) $(subst /,\,$(MAIN_F))
-	
 
 
 # clean the project         ------------------------------------------------

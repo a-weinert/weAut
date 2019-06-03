@@ -2,11 +2,12 @@
 # Copyright 2017 Albrecht Weinert            a-weinert de
 # $Revision: 205 $ ($Date: 2019-05-20 17:53:28 +0200 (Mo, 20 Mai 2019) $)
 # param 1 : user:passwd  (ftp user)     e.g. pi:raspberry
-# param 2 : target machine (IP)        e.g. 192.168.89.67
+# param 2 : target machine (IP)       e.g. 192.168.178.123 or raspberrypi
 # param 3 : target directory (within user's ~)   e.g. bin
-# param 4 : program                 e.g. rdGnPiGpioDBlink 
-# use by  : 
-#   winscp.com /script=progTransWin /parameter pi:raspberry 192.168.89.67 bin rdGnBlinkBlink
+# param 4 : program                e.g. rdGnPiGpioDBlink 
+# use by  : in one line
+#   winscp.com /script=progTransWin /parameter pi:raspberry 
+#                          192.168.178.123 bin rdGnPiGpioDBlink
 open sftp://%1%@%2%
 cd %3%
 option batch continue

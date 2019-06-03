@@ -8,7 +8,7 @@
   Copyright  (c)  2017   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
 
-  It uses two/three pins as output assuming two LEDs connected to as H=on
+  It uses three pins as output assuming LEDs connected to as Hi=On
   Pi 1  / Pi 3       Pin
   GPIO17/ 17 : red    11
   GPIO21/ 27 : green  13
@@ -16,9 +16,9 @@
   This program forces application singleton and may be used as service.
 
   Its functions are the same as rdGnBlinkBlink (even sharing the lockfile)
-  except for using the pigpioD library. Our makefiles define
-  MCU and PLATFORM as make variables and makros. So we could make the
-  GPIO pin and address assignment automatically.
+  except for using the pigpioD library. Our makefiles define MCU and PLATFORM
+  as make variables and makros.
+  So we make the GPIO pin and address assignment automatically.
 
   Library use: This programme uses the pigpiod socket interface, requiring a
   piGpio server/daemon running. This programme needs no sudo to run.
@@ -92,5 +92,5 @@ int main(int argc, char * * argv){
       timeStep(&actEnd, 100000);   //          100 ms green
       gpio_write(thePi, PIN13, 0); //      off
       timeStep(&actEnd, 200000);   //          200 ms dark
-   } // while endless              //          600 ms loop (exact! long term)
+   } // while endless 600 ms loop; long term exact(!)
 } // main()
