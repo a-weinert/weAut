@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  *  Copyright <a href=./de/weAut/package-summary.html#co>&copy;</a> 2019
  *           &nbsp; Albrecht Weinert<br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 29 $ ($Date: 2019-06-01 18:47:20 +0200 (Sa, 01 Jun 2019) $)
+ *  @version  $Revision: 30 $ ($Date: 2019-06-07 19:32:55 +0200 (Fr, 07 Jun 2019) $)
  */
 // so far:   V. o19  (17.05.2019) : new
 //           V.  21  (19.05.2019) : ALT numbers, typo
@@ -139,7 +139,12 @@ public interface PiUtil {
    } // getErrorText(int)
  
   
-//------------  GPIO lock (file) handling    -----------------------------   
+//------------  GPIO lock (file) handling    -----------------------------  
+   
+
+/** Common path to a lock file for GpIO use. */
+   static public final String lckPiGpioPth = "/home/pi/bin/.lockPiGpio";
+
   
   
 /** Open and lock lock file. 
@@ -280,10 +285,10 @@ public interface PiUtil {
  *                       default one ({@link lckPiGpioPth})
  *  @param verbose true: make the lock process verbose (by option -v) on
  *                       standard output                     
- *  @return  err 0: OK; else: error, see {@link #ERR_NOLOCKFILE}, 
+ *  @return  err 0: OK; else: error, see {@link #ERR_NoLOCKFILE}, 
  *                    {@link #ERR_NOT_LOCKED}
  */
-    int openLock(final String lckPiGpioFil, boolean verbose){
+    public int openLock(final String lckPiGpioFil, boolean verbose){
        final String lckPiGpio = lckPiGpioFil != null
              &&  lckPiGpioFil.length() > 3 ? lckPiGpioFil : "";
        try {
@@ -303,7 +308,7 @@ public interface PiUtil {
     } // openLock(String, boolean)
 
 /**  Unlock the lock file. */
-    void closeLock(){
+    public void closeLock(){
         if (lockProcess != null) lockProcess.destroy();
     } // closeLock()
     

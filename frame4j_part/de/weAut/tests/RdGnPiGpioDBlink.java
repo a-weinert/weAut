@@ -16,7 +16,7 @@ import java.io.IOException;
  *  Comment excerpt of the original/ported C source file: <br /><pre>
   A fifth program for Raspberry's GPIO pins
 
-  Rev. $Revision: 26 $  $Date: 2019-05-31 15:33:23 +0200 (Fr, 31 Mai 2019) $
+  Rev. $Revision: 30 $  $Date: 2019-06-07 19:32:55 +0200 (Fr, 07 Jun 2019) $
 
   Copyright  (c)  2019   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
@@ -44,7 +44,7 @@ import java.io.IOException;
  *  <br />
  *  Copyright  &copy;  2019   Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 26 $ ($Date: 2019-05-31 15:33:23 +0200 (Fr, 31 Mai 2019) $)
+ *  @version  $Revision: 30 $ ($Date: 2019-06-07 19:32:55 +0200 (Fr, 07 Jun 2019) $)
  */
 // so far:   V.  21  (21.05.2019) : new, minimal functionality
 //           V. -26  (31.05.2019) : three LEDs, IO lock 
@@ -94,9 +94,12 @@ public class RdGnPiGpioDBlink implements PiUtil, Pi3Usage, PiGpioDdefs {
         closeLock();
      })); // shutdownHook.run()
 
-     runOn = openLock(null, true) == 0;
-     if (! runOn) return;
-     //  System.out.println("RdGnJPiGpioDBlink got lock");
+     final int oL = openLock(null, false);
+     runOn = oL == 0;
+     if (! runOn) {
+       System.out.println("RdGnJPiGpioDBlink getIOlock error: " + errorText(oL));
+       return;
+     }
      
      try {
       pI = new ClientPigpiod(); // local connect
