@@ -13,19 +13,19 @@
  *      \/  \/   \__/        \__/|_                                 \endcode
 
    Revision history \code
-   Rev. $Revision: 201 $ $Date: 2019-04-26 14:27:14 +0200 (Fr, 26 Apr 2019) $
+   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
    Rev. 66+ 16.11.2017 : new, excerpted from weUtil.h V.66
                           weModbus.h V.66 (and others)
-   Rev. 108 12.02.2018 : Started to get Doxygen usable. Note: Not yet done.
    Rev. 147 16.06.2018 : time handling enhanced improved, Hippogreiff relay
    Rev. 152 21.06.2018 : some definitions put to basicTyCo.h
    Rev. 164 11.07.2018 : sunset/sunrise location parameters; string functions
    Rev. 190 14.02.2019 : minor, comments only
+   Rev. 209 22.07.2019 : work around a Doxygen bug
 \endcode
 
- *  This file contains some definitions concerning system values and
- *  platform properties. <br />
- *  The latter are mainly made and probed with Raspberry Pi.
+  This file contains some definitions concerning system values and
+  platform properties. <br />
+  The latter are mainly made and probed with Raspberry Pi.
  */
 
 #ifndef SYSBASIC_H
@@ -118,6 +118,14 @@ uint8_t errLogIsStd(void);
 /** Event log (outLog) is standard stream. */
 uint8_t outLogIsStd(void);
 
+/** Log an event/log message on outLog.
+ *
+ *  If txt is not null it will be output to outLog and outLog will be flushed.
+ *  No line feed will be appended; the text is put as is.
+ *
+ *  @param txt text to be output; n.b not LF appended
+ */
+void logEventText(char const * txt);
 
 // -----------------------  utilities    ------------------------------------
 
@@ -163,6 +171,112 @@ size_t strlcat(char * dest, char const * src, size_t num);
 
 
 //-------------------------  time handling basics ----------------------------
+
+/** /def ABS_MONOTIME
+ * @brief Clock used for absolutely monotonic delays, cycles and intervals.
+ *
+ *  This clock must never jump and just run on in a monotonic way.
+ *  We accept it <br />
+ *    A) having no relation to any calendar date and time and <br />
+ *    B) getting no corrections by NTP clients, DCF77 receivers or what else,
+ *       as well as <br />
+ *    C) this clock being slightly inaccurate and (cf. B)) never be tuned or
+ *       corrected. <br />
+ *
+ *  Short note on A): In most literature it is said the monotonic clocks would
+ *  start at boot. Even if this is observed, it is not mandatory. Assume an
+ *  arbitrary zero-point.
+ *
+ *  The inaccuracy C) is explained by some implementations deriving monotonic
+ *  clocks with no further ado from an µP/µC's quartz oscillator, usually the
+ *  same oscillator used for communication links timing.
+ *  On Raspberry Pi 3s with Raspian Jessie (early 2017) we observed +5s in an
+ *  24h interval (i.e. being a bit late) growing linear. This stable deviation
+ *  is in the range of mid prized quartz watches.
+ *
+ *  Until August 2017, we had adapted to C) by allowing a millisecond used for
+ *  chained steps or as base for delays not having 1000000ns of this
+ *  (::ABS_MONOTIME) clock, allowing up to +-110ns difference. The value
+ *  (::vcoCorrNs) was then preset at compile by a device specific macro. Its
+ *  default value -40 was good for a couple of Raspberry Pi 3s. An automatic
+ *  correction of this adjusted millisecond by standard time sources (with
+ *  simplified VCO PLL algorithm) was used.
+ *
+ *  Update on C) since August 2017: <br />
+ *  In the latest Jessies (8) CLOCK_MONOTONIC is frequency adjusted to NTP.
+ *  Hence B) and C) above are obsolete and ::vcoCorrNs will be initialised as
+ *  0. Nevertheless, this corrective +/-100 ns value ::vcoCorrNs is kept
+ *  for catching up or slowing down the derived second tick to CLOCK_REALTIME
+ *  after the latter's jumps due to corrections.
+ *  As the derived (monotonic) second's tick is started synchronised with the
+ *  CLOCK_REALTIME one's, this would hardly happen. On a leap second 1000s slow
+ *  down (the current "solution) on a leap second, we would 1000s slow down
+ *  and afterwards catch up, without getting an extra "monotonic" second.
+ *
+ *  Candidates (Raspbian lite) for an absolute monotonic clock are: <br />
+ *  CLOCK_MONOTONIC        (should always be available and OK, default) <br />
+ *  CLOCK_MONOTONIC_RAW    (same without NTP tuning) <br />
+ *
+ *  value: CLOCK_MONOTONIC (NTP tuning now assumed)
+ */
+#define ABS_MONOTIME CLOCK_MONOTONIC
+
+
+/** Absolute timer initialisation.
+ *
+ *  This function sets the time structure provided to the current absolute
+ *  monotonic ::ABS_MONOTIME.
+ *
+ *  Note: Error returns, suppressed here, cannot occur, as long as the time
+ *  library functions and used clock IDs are implemented. Otherwise all else
+ *  timing done here would fail completely.
+ *
+ *  @param timer the time structure to be used (never NULL!)
+ */
+void monoTimeInit(timespec * timer);
+
+/** A delay to an absolute step specified in number of µs to a given time.
+ *
+ *  This function does an absolute monotonic real time delay until
+ *    timer += micros;
+ *
+ *  Chaining this calls can give absolute triggers relative to a given start.
+ *  One must initialise the time structure  ::timespec  before every start of
+ *  a new cycle chain. Afterwards the structure time must not be written to.
+ *  See ::timeAddNs, ::ABS_MONOTIME and ::monoTimeInit (or clock_gettime).
+ *
+ *  Chaining absolute delays accomplishes long term exact periods respectively
+ *  cycles. See also explanations in ::ABS_MONOTIME.
+ *
+ *  @param timeSp the time structure to be used (never NULL!)
+ *  @param micros delay in µs (recommended 100µs .. 1h)
+ *  @return sleep's return value if of interest (0: uninterrupted)
+ */
+int timeStep(timespec * timeSp, unsigned int micros);
+
+/** Add a ns increment to a time overwriting it.
+ *
+ *  @param  t1 the time structure to add to (not NULL!, will be modified)
+ *  @param  ns the increment in nanoseconds
+ */
+void timeAddNs(timespec * t1, long ns);
+
+/** \def MS1_ns
+ *  One millisecond in ns.
+ */
+#define MS1_ns     1000000
+
+/** \def MS10_ns
+ *  Ten milliseconds in ns.
+ */
+#define MS10_ns   10000000
+
+/** \def MS100_ns
+ *  Hundred milliseconds in ns.
+ */
+#define MS100_ns 100000000
+
+
 
 /** Actual time (structure, real time clock). */
 extern timespec actRTime;

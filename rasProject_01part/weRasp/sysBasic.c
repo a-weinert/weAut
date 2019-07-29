@@ -13,7 +13,7 @@
  *      \/  \/   \__/        \__/|_                                 \endcode
 
    Revision history \code
-   Rev. $Revision: 190 $ $Date: 2019-02-14 19:40:38 +0100 (Do, 14 Feb 2019) $
+   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
    Rev.  105 06.02.2018 : new (transfered parts from sysutil.c)
    Rev.  108 12.02.2018 : parts moved out, one event file; Started to get
                          Doxygen usable. Note: Not yet done.
@@ -27,7 +27,7 @@
    This is a (basic) library to support CGI programmes written in C to be used
    under a web sever --  as e.g. Apache 2.4 here.
 
-   For documentation see the include file sysBasic.h
+   For documentation see the include file \ref sysBasic.h
 */
 #include "sysBasic.h" // indirectly includes ...
 
@@ -144,8 +144,41 @@ uint8_t errLogIsStd(void){
 /* Event log (outLog) is standard stream. */
 uint8_t outLogIsStd(void){ return (outLog == stderr) || (outLog == stdout); }
 
+/** Log an event/log message on outLog.
+ *
+ *  If txt is not null it will be output to outLog and outLog will be flushed.
+ *
+ *  @param txt text to be prepended
+ */
+void logEventText(char const * txt){
+   if (txt == NULL || ! *txt) return;
+   fputs(txt, outLog);
+   fflush(outLog);
+} // logEventText(char const *)
+
 
 //------------------------------   times -------------------------------------
+
+
+/*  Absolute time instant initialisation.  */
+void monoTimeInit(timespec * timer){ clock_gettime(ABS_MONOTIME, timer); }
+
+/*  Absolute delay for the specified number of µs. */
+int timeStep(timespec * timeSp, unsigned int micros){
+   timeAddNs(timeSp, (long)(micros) * 1000); // timer += micros
+   return clock_nanosleep(ABS_MONOTIME, TIMER_ABSTIME, timeSp, NULL);
+} // delay(unsigned int)
+
+/*  Add a ns increment to a time overwriting it. */
+void timeAddNs(timespec * t1, long ns){
+   (*t1).tv_nsec += ns;
+   if ((*t1).tv_nsec >= MILLIARD) {
+       (*t1).tv_nsec -= MILLIARD;
+       ++(*t1).tv_sec;
+   }
+} // timeAddNs(timT v*, long)
+
+
 
 /*  Actual time (structure, real time clock). */
 timespec actRTime;

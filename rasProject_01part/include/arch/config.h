@@ -13,13 +13,14 @@
  *      \/  \/   \__/        \__/|_                                 \endcode
 
    Revision history \code
-   Rev. $Revision: 190 $ $Date: 2019-02-14 19:40:38 +0100 (Do, 14 Feb 2019) $
+   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
    Rev. 150 18.06.2018 : minor, comments only
+   Rev. 209 22.07.2019 : work around a Doxygen bug
 \endcode
- *
- *  This file contains some definitions concerning hardware configuration.
- *  These settings influence the compilation and building process and can't
- *  be changed later at runtime.
+
+  This file contains some definitions concerning hardware configuration.
+  These settings influence the compilation and building process and can't
+  be changed later at runtime.
  */
 
 #ifndef CONFIG_H

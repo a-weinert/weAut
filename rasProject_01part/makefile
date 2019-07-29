@@ -10,8 +10,8 @@
 #  Rev.205 16.05.2019 : default targets modified
 
 MAKE_FILE_PROJ = rasProject_01
-LAST_CHANGE_IN = $Revision: 205 $
-LAST_CHANGE_AT = $Date: 2019-05-20 17:53:28 +0200 (Mo, 20 Mai 2019) $ 
+LAST_CHANGE_IN = $Revision: 209 $
+LAST_CHANGE_AT = $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $ 
 LAST_CHANGE_BY = A. Weinert
 COPYRIGHT_YEAR = 2018
 COPYRIGHT_BY   = Albrecht Weinert, Bochum    < a-weinert.de >   
@@ -34,9 +34,8 @@ endif
 
 
 # Evaluate target device if given (overiden by TARGET=name)
-# set a workstation specific and a common default
 ifeq ($(MAKE_WORKSTAT),papaBig)
-  TARGET ?= raspi61
+  TARGET ?= meterPi
 else
   TARGET ?= raspi61
 endif
@@ -82,7 +81,9 @@ ifeq ($(origin MAIN_F), undefined)
 	ifeq ($(origin PROGRAM), undefined)
 #		MAIN_F = rdGnBlinkBlink
 #		MAIN_F = keysPiGpioD
-   	MAIN_F = hometersControl
+#  	MAIN_F = hometersControl
+# 	MAIN_F = minTerm
+   	MAIN_F = growattRead
 	else
 		MAIN_F =$(PROGRAM)
 	endif
@@ -388,6 +389,7 @@ progapp prog_app : $(MAIN_F)
 openFTP openWinSCP :
 	@$(EC) $(MSG_OPEN_FTP) $@
 	$(FTPopen) $(FTPuser) $(FTPtarget) $(FTPdir) $(subst /,\,$(MAIN_F))
+	
 
 
 # clean the project         ------------------------------------------------

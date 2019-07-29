@@ -13,25 +13,24 @@
  *      \/  \/   \__/        \__/|_                                 \endcode
 
    Revision history \code
-   Rev. $Revision: 203 $ $Date: 2019-05-14 16:43:03 +0200 (Di, 14 Mai 2019) $
+   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
    Rev. 50+ 16.10.2017 : cycTask_t->mutex now pointer (allows common mutex)
    Rev. 54+ 23.10.2017 : timing enhanced, common mutex forced/standard
-   Rev. 182 12.08.2018 : minor cleaning
-   Rev. 187 14.10.2018 : minor typos
    Rev. 200 16.04.2019 : logging improved; formatting enh.
    Rev. 201 26.04.2019 : renamed from sysUtil.h
    Rev. 202 28.04.2019 : timer macro change, more formatting functions
+   Rev. 209 22.07.2019 : work around a Doxygen bug, formFixed.. not void
 \endcode
 
- *  This file contains some definitions concerning system, time and IO.
- *  The IO part will work with the gpio/gpiod library as defined in
- *  pigpiod_if2.h.
+  This file contains some definitions concerning system, time and IO.
+  The IO part will work with the gpio/gpiod library as defined in
+  the library's include file pigpiod_if2.h.
  */
 
 #ifndef SYSUTIL_H
 #define SYSUTIL_H
 #ifndef __DOXYGEN__
-#include "sysBasic.h" // stdint.h time.h stdio.h string.h (struct timespec
+#include "sysBasic.h" // stdint.h time.h stdio.h string.h (struct timespec)
 
 #include <fcntl.h>    // O_RDWR
 
@@ -126,8 +125,10 @@ void strRinto(char * dest,  char const * src, size_t n);
  *  @param targetLen field length 2..16; number of characters changed
  *  @param value     the fixed point value
  *  @param dotPos    where the fixed point is 0..6 < targetLen
+ *  @return          points to the most significant digit set
+ *                   or NULL on error / no formatting
  */
-void formFixed16(char * target, uint8_t targetLen, uint16_t value,
+char * formFixed16(char * target, uint8_t targetLen, uint16_t value,
                                                            uint8_t dotPos);
 
 /** Format 32 bit unsigned fixed point, right aligned.
@@ -139,8 +140,10 @@ void formFixed16(char * target, uint8_t targetLen, uint16_t value,
  *  @param targetLen field length 2..16; number of characters changed
  *  @param value     the fixed point value
  *  @param dotPos    where the fixed point is 0..6 < targetLen
+ *  @return          points to the most significant digit set
+ *                   or NULL on error / no formatting
  */
-void formFixed32(char * target, uint8_t targetLen, uint32_t value,
+char * formFixed32(char * target, uint8_t targetLen, uint32_t value,
                                                              uint8_t dotPos);
 
 // -----------------------  parsing   ---------------------------------------
@@ -207,13 +210,6 @@ timespec timeAdd(timespec const t1, timespec const t2);
  */
 void timeAddTo(timespec * t1, timespec const t2);
 
-/** Add a ns increment to a time overwriting it.
- *
- *  @param  t1 the time structure to add to (not NULL!, will be modified)
- *  @param  ns the increment in nanoseconds
- */
-void timeAddNs(timespec * t1, long ns);
-
 /** Compare two times.
  *
  *  @param  t1 the time structure to compare to t2 (not NULL!)
@@ -221,56 +217,6 @@ void timeAddNs(timespec * t1, long ns);
  *  @return 0: equal; +: t1 is greater (2 by s, 1 by ns); -: t1 is smaller
  */
 int timeCmp(timespec const  t1, timespec const t2);
-
-
-/** /def ABS_MONOTIME
- * @brief Clock used for absolutely monotonic delays, cycles and intervals.
- *
- *  This clock must never jump and just run on in a monotonic way.
- *  We accept it <br />
- *    A) having no relation to any calendar date and time and <br />
- *    B) getting no corrections by NTP clients, DCF77 receivers or what else,
- *       as well as <br />
- *    C) this clock being slightly inaccurate and (cf. B)) never be tuned or
- *       corrected. <br />
- *
- *  Short note on A): In most literature it is said the monotonic clocks would
- *  start at boot. Even if this is observed, it is not mandatory. Assume an
- *  arbitrary zero-point.
- *
- *  The inaccuracy C) is explained by some implementations deriving monotonic
- *  clocks with no further ado from an µP/µC's quartz oscillator, usually the
- *  same oscillator used for communication links timing.
- *  On Raspberry Pi 3s with Raspian Jessie (early 2017) we observed +5s in an
- *  24h interval (i.e. being a bit late) growing linear. This stable deviation
- *  is in the range of mid prized quartz watches.
- *
- *  Until August 2017, we had adapted to C) by allowing a millisecond used for
- *  chained steps or as base for delays not having 1000000ns of this
- *  (::ABS_MONOTIME) clock, allowing up to +-110ns difference. The value
- *  (::vcoCorrNs) was then preset at compile by a device specific macro. Its
- *  default value -40 was good for a couple of Raspberry Pi 3s. An automatic
- *  correction of this adjusted millisecond by standard time sources (with
- *  simplified VCO PLL algorithm) was used.
- *
- *  Update on C) since August 2017: <br />
- *  In the latest Jessies (8) CLOCK_MONOTONIC is frequency adjusted to NTP.
- *  Hence B) and C) above are obsolete and ::vcoCorrNs will be initialised as
- *  0. Nevertheless, this corrective +/-100 ns value ::vcoCorrNs is kept
- *  for catching up or slowing down the derived second tick to CLOCK_REALTIME
- *  after the latter's jumps due to corrections.
- *  As the derived (monotonic) second's tick is started synchronised with the
- *  CLOCK_REALTIME one's, this would hardly happen. On a leap second 1000s slow
- *  down (the current "solution) on a leap second, we would 1000s slow down
- *  and afterwards catch up, without getting an extra "monotonic" second.
- *
- *  Candidates (Raspbian lite) for an absolute monotonic clock are: <br />
- *  CLOCK_MONOTONIC        (should always be available and OK, default) <br />
- *  CLOCK_MONOTONIC_RAW    (same without NTP tuning) <br />
- *
- *  value: CLOCK_MONOTONIC (NTP tuning now assumed)
- */
-#define ABS_MONOTIME CLOCK_MONOTONIC
 
 
 /** Absolute time (source) resolution.
@@ -285,38 +231,6 @@ int timeCmp(timespec const  t1, timespec const t2);
  */
 void monoTimeResol(timespec * timeRes);
 
-/** Absolute timer initialisation.
- *
- *  This function sets the time structure provided to the current absolute
- *  monotonic ::ABS_MONOTIME.
- *
- *  Note: Error returns, suppressed here, cannot occur, as long as the time
- *  library functions and used clock IDs are implemented. Otherwise all else
- *  timing done here would fail completely.
- *
- *  @param timer the time structure to be used (never NULL!)
- */
-void monoTimeInit(timespec * timer);
-
-
-/** A delay to an absolute step specified in number of µs to a given time.
- *
- *  This function does an absolute monotonic real time delay until
- *    timer += micros;
- *
- *  Chaining this calls can give absolute triggers relative to a given start.
- *  One must initialise the time structure  ::timespec  before every start of
- *  a new cycle chain. Afterwards the structure time must not be written to.
- *  See ::timeAddNs, ::ABS_MONOTIME and ::monoTimeInit (or clock_gettime).
- *
- *  Chaining absolute delays accomplishes long term exact periods respectively
- *  cycles. See also explanations in ::ABS_MONOTIME.
- *
- *  @param timeSp the time structure to be used (never NULL!)
- *  @param micros delay in µs (recommended 100µs .. 1h)
- *  @return sleep's return value if of interest (0: uninterrupted)
- */
-int timeStep(timespec * timeSp, unsigned int micros);
 
 /** Relative delay for the specified number of µs.
  *
@@ -450,15 +364,6 @@ void logErrorText(void);
  */
 void logErrText(char const * txt);
 
-/** Log an event/log message on outLog.
- *
- *  If txt is not null it will be output to outLog and outLog will be flushed.
- *  No line feed will be appended; the text is put as is.
- *
- *  @param txt text to be output; n.b not LF appended
- */
-void logEventText(char const * txt);
-
 /** Log an event or a message on outLog as line with time stamp.
  *
  *  If txt is not null it will be output to outLog. A time stamp is prepended
@@ -506,7 +411,7 @@ extern int retCode;
 
 /** Open and lock the lock file.
  *
- *  This function as the basic implementation of ::openLock. Applications not
+ *  This function is the basic implementation of ::openLock. Applications not
  *  wanting its optional logging or doing their own should use this function
  *  directly.
  *

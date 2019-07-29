@@ -1,24 +1,115 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <tagfile>
   <compound kind="file">
+    <name>getLocalWeatherData.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
+    <filename>get_local_weather_data_8c</filename>
+    <includes id="sys_basic_8h" name="sysBasic.h" local="yes" imported="no">sysBasic.h</includes>
+    <includes id="we1wire_8h" name="we1wire.h" local="yes" imported="no">we1wire.h</includes>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <includes id="sweet_home_local_8h" name="sweetHomeLocal.h" local="yes" imported="no">sweetHomeLocal.h</includes>
+    <class kind="struct">memAlloc_t</class>
+  </compound>
+  <compound kind="file">
+    <name>growattRead.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
+    <filename>growatt_read_8c</filename>
+    <includes id="sys_basic_8h" name="sysBasic.h" local="yes" imported="no">sysBasic.h</includes>
+    <includes id="config_8h" name="config.h" local="yes" imported="no">arch/config.h</includes>
+    <includes id="we_c_g_iajax_8h" name="weCGIajax.h" local="yes" imported="no">weCGIajax.h</includes>
+    <includes id="we_modbus_8h" name="weModbus.h" local="yes" imported="no">weModbus.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>growatt_read_8c.html</anchorfile>
+      <anchor>a3c04138a5bfe5d72780bb7e82a18e627</anchor>
+      <arglist>(int argc, char **argv)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>hometersConsol.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
+    <filename>hometers_consol_8c</filename>
+    <includes id="sweet_home_8h" name="sweetHome.h" local="yes" imported="no">sweetHome.h</includes>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <includes id="we_modbus_8h" name="weModbus.h" local="yes" imported="no">weModbus.h</includes>
+    <includes id="we_share_mem_8h" name="weShareMem.h" local="yes" imported="no">weShareMem.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>hometers_consol_8c.html</anchorfile>
+      <anchor>a3c04138a5bfe5d72780bb7e82a18e627</anchor>
+      <arglist>(int argc, char **argv)</arglist>
+    </member>
+    <member kind="variable">
+      <type>valsSharMem_t</type>
+      <name>sharMirr</name>
+      <anchorfile>hometers_consol_8c.html</anchorfile>
+      <anchor>a06d007d6c378ca3c0f92217c18e9bafb</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>hometersDayVal.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
+    <filename>hometers_day_val_8c</filename>
+    <includes id="sweet_home_8h" name="sweetHome.h" local="yes" imported="no">sweetHome.h</includes>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>hometers_day_val_8c.html</anchorfile>
+      <anchor>a3c04138a5bfe5d72780bb7e82a18e627</anchor>
+      <arglist>(int argc, char **argv)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>readRetFil</name>
+      <anchorfile>hometers_day_val_8c.html</anchorfile>
+      <anchor>a5453e255749968798d9ee12a47a69f3d</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>writeRetFil</name>
+      <anchorfile>hometers_day_val_8c.html</anchorfile>
+      <anchor>aed8193875f3a1d14d1d870624c913bdc</anchor>
+      <arglist>(void)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>config.h</name>
-    <path>D:/mapa/gitPapa/weAut/rasProject_01part/include/arch/</path>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/arch/</path>
     <filename>config_8h</filename>
     <includes id="config__raspberry__03_8h" name="config_raspberry_03.h" local="yes" imported="no">arch/config_raspberry_03.h</includes>
   </compound>
   <compound kind="file">
     <name>config_raspberry_01.h</name>
-    <path>D:/mapa/gitPapa/weAut/rasProject_01part/include/arch/</path>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/arch/</path>
     <filename>config__raspberry__01_8h</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>stdUARTpath</name>
+      <anchorfile>config__raspberry__01_8h.html</anchorfile>
+      <anchor>a7a47354bb3d6eab8f96f4da6552455f0</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>config_raspberry_03.h</name>
-    <path>D:/mapa/gitPapa/weAut/rasProject_01part/include/arch/</path>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/arch/</path>
     <filename>config__raspberry__03_8h</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>stdUARTpath</name>
+      <anchorfile>config__raspberry__03_8h.html</anchorfile>
+      <anchor>a7a47354bb3d6eab8f96f4da6552455f0</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>basicTyCo.h</name>
-    <path>D:/mapa/gitPapa/weAut/rasProject_01part/include/</path>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
     <filename>basic_ty_co_8h</filename>
     <class kind="union">dualReg_t</class>
     <class kind="union">sdm80regs_t</class>
@@ -229,9 +320,1044 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>sweetHome.h</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
+    <filename>sweet_home_8h</filename>
+    <includes id="config_8h" name="config.h" local="yes" imported="no">arch/config.h</includes>
+    <includes id="we_batt_8h" name="weBatt.h" local="yes" imported="no">weBatt.h</includes>
+    <class kind="struct">cmdLookUp_t</class>
+    <class kind="struct">dayStrtVal_t</class>
+    <class kind="struct">meterVal_t</class>
+    <class kind="struct">phPckSwSet_t</class>
+    <class kind="struct">valFilVal_t</class>
+    <class kind="struct">valsSharMem_t</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>ANZ_SEMAS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a4ee63128d08cc56884c5b217df89c2a4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ANZmodSLAVES</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a3a1335769e5c7499460ccd390f62ef26</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>AUTO_PPSWI_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a0774f478cf8e5476cd2484a054c0e06f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BAT_COMMANDS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>af5489604446f38be182bb7cbedad723a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BATLOAD_COMMANDS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a1daf7ffcb390ced3b792eec0a247459f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BATUNL_COMMANDS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a9e84fa7bd7c00bc35b7080f0b0d6b4b1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>Bmsk</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a57f9a653af281a9fa928281815f0a99a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>C250W_COMMANDS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>ae699a5c1e5fd9f78cc3519f9804fc269</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>cmdBits_t</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>aa53d493bdd2b884225116fa2ee9c5e3f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>DECR_PPSWI_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a42d4a4d4fc9809c0984fea03ef2220ac</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>GIVE250_COMMANDS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a79a70ced8d91f9ce83214aa780a0dd8b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>Gmsk</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a925b0ce0bdb11fd5d713e0ad722141cf</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>HIPPO_COMMANDS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>aed0fad5d337c533b508c470feace53fe</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>HWPUMP_COMMANDS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a30f2694d8edb108dd598e03003daf5d2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>INC_PPSWI_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a77da411f16aee6319ebd28d30b00cb20</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>inv2Panel</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a61d93b21412d8b2d099c4ccd26ed2f08</anchor>
+      <arglist>(x)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>Kmsk</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>ac7ee55e1f7062fa1576d5ea19d31c646</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>Lmsk</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a5d7d5a74bb64553a1b17784861bb3c14</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>LOWER_BATLOAD_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a919f7937fbd6bc3f6e54a1f9e6ff2271</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>LOWER_PPSWI_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a06c75bca9c4f0f01f5f28702c3ea5f75</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>OFF_C250W_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a4dd0a217af92ed852d835712ace4ba14</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>OFF_HIPPO_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a26f9284a1fdb0683f13598bfc4ebd8be</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>OFF_PLG1_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a01b7aabd1c60ba27910ad61c8522adf2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>OFF_PLG2_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>ad1714ecd261da1e899413f9f5ddc203d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>OFF_PLG3_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a1ffdbd033c06a60f9597c96df13a9ad4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>OFF_PLG4_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>ac217f8a2f5ffd576a47002e3960000ab</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>OFF_PPSWI_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a92bcb38d76b4fbcc82000d4cd01ff679</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ON_C250W_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a9b40ff15d7dc465f6a9bdb6bf9a9cc1a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ON_HIPPO_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>aafda55f43f6551536b312f2afa817d98</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ON_PLG1_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>abe38da4f49331796c94b681d8ae1cb6c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ON_PLG2_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>afe53f2940a606ed0917a70fa5225a378</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ON_PLG3_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>ab08bc2ddff6683c858ab6a62d2e11bbd</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ON_PLG4_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a81e39d9466ff705a7bfce3eadb768a4e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ONMAN_PPSWI_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>aada9384007000d9977c5239a49f484a0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PCK100PERC_POWER</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>ab2473e65f37867e011bbd56058e97d7a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PCK1PERC_POWER</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a43c658ca5debdb981bc8355b307445db</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PLG1_COMMANDS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>aa4d48b6dece5b426df4608c1a483f3d0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PLG2_COMMANDS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>ac929c8b1798028ebd473a4dc7137f2e3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PLG3_COMMANDS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a4806b5035645a9dd66473f91a17a91c7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PLG4_COMMANDS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>ae8ab3f24fc20450ac76d41940a2207a0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PPSMmsk</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>acf6a8f2a9d423e49ac2042f909357d73</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PPSWI_COMMANDS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a942bbd01d3f8587757dd7a98512cb3c9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>RAISE_BATLOAD_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>ac1c10ae1b45d70930dda947a76f6014e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>RAISE_PPSWI_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a805f1bddc1ecbaff8d547308a1ec7b8c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SEMAPHORE_KEY</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a463aff5fdad02b9a7290b72fe58c11c9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SHARED_MEM_DATA_SIZE</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a28ee933333256d4848693755d4c2f860</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SHARED_MEM_FILL_SIZE</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>aca367030a1ae6b8e03222ccc096887df</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SHARED_MEMORY_KEY</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a0b80156f23e93853d4f405d8eb823a9b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SHARED_MEMORY_SIZE</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a21a16aec41293c80beb10d71f79ad7a2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>Smsk</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a86fbf1531b479cbaf895685d9a2cca6f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>START_BATKEEP_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a2e4150dddef86a2487f73872b0e24c30</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>START_BATLOAD_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>adac6c89ae1cc5886eae8b694362a2996</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>START_BATUNL_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a0560bc71db2858acb91c3f7044606dc8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>START_HWPUMP_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a3fc4f1e99dabb8f81ba2a8c8e173090e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>STOP_BAT_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a5f551da1cfd3f853b7a50b65d304062e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>STOP_HWPUMP_COMMAND</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a0610fdc574477befde9f531871d73513</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>Umsk</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a94b657ab7afec8f6d34ec9e62dbc836c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>UNUSED_COMMANDS</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a487beb84500d85e1ef896a5f05365c73</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>wMsk</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>aad6c5aec580101ffdcf4414a3ec7b5b7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>Wmsk</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a9a00c841b0d1ceeb5af0ac9684a90ef7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>float</type>
+      <name>pwmToVolt</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>ae0451d3febeb079767ec558b697b3e1f</anchor>
+      <arglist>(uint8_t const pwm)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>switchValFil</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a243aaebfe691d18ece2b2401998fa8a5</anchor>
+      <arglist>(char const *const valFilNam, char const *const headline)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>valFilGenHeader</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a63648abe1cb245ea73a6a4be1014db23</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>valFilPutValues</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a15baf384399098cb0409215b698fd23e</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>voltToPWM</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a6a362854edd36d0384b3e72f1b7c94ef</anchor>
+      <arglist>(float const u)</arglist>
+    </member>
+    <member kind="variable">
+      <type>cmdLookUp_t</type>
+      <name>cmdLookUp</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a3036f3bc131e8a5bfb2c74bb4243756d</anchor>
+      <arglist>[]</arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile float</type>
+      <name>fLine</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a0ea2df3c692cfa583652edf9c6a471d2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t const</type>
+      <name>loadModUlookup</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a66418a77dd240f99aba97ebcbd72443e</anchor>
+      <arglist>[256]</arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>makeCVSfiles</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a77369a652ed244595207f759c5686c4b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float const</type>
+      <name>phPckSwPow</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a7e0fdc62cd30062f9f8a7f566e20cf7f</anchor>
+      <arglist>[101]</arglist>
+    </member>
+    <member kind="variable">
+      <type>phPckSwSet_t const</type>
+      <name>phPckSwSets</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a7e3cfa4f0c0c59c56098bd3a909159fe</anchor>
+      <arglist>[101]</arglist>
+    </member>
+    <member kind="variable">
+      <type>smdX30modbus_t</type>
+      <name>smdX30modbus</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>adaee28764824782ab50fd190a67aabe4</anchor>
+      <arglist>[2]</arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile int</type>
+      <name>tempTankWater</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a1e7d89a19d366fc312876d820f6d3d75</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>tempWaterBadCnt</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>a9e8a020368f3143b74488e3a11e410bc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>valFHeadLin</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>afc92e39aa9a2d20795bd6b83c7b15686</anchor>
+      <arglist>[428]</arglist>
+    </member>
+    <member kind="variable">
+      <type>FILE *</type>
+      <name>valFil</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>ad096ddfbf197fbb45378061bf469349a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>valFilVal_t</type>
+      <name>valFilVal</name>
+      <anchorfile>sweet_home_8h.html</anchorfile>
+      <anchor>ab95e7f93049e3ebcac960b8f09b20e1b</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>sweetHome2.h</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
+    <filename>sweet_home2_8h</filename>
+    <includes id="sweet_home_8h" name="sweetHome.h" local="yes" imported="no">sweetHome.h</includes>
+    <includes id="we_g_p_i_od_8h" name="weGPIOd.h" local="yes" imported="no">weGPIOd.h</includes>
+    <includes id="we_modbus_8h" name="weModbus.h" local="yes" imported="no">weModbus.h</includes>
+    <includes id="we1wire_8h" name="we1wire.h" local="yes" imported="no">we1wire.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>BAT_KEEP_PWM</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>acf0f3f3cc2fc445e2c86bf465095d564</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BAT_LDBA_PWM</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a3d7aea38c88907fa0a193a952f1a17fb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BAT_LDBAL_TIM</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a4018de1a1313f55b8bae0c47e8ec549a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BEFORE_RISE</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a47f460e6f347a44fede964318a1df141</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>isOnPPSrel</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a1cf513e20594b5ed7dcdbec62b846ce8</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>offPort</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>ad595e11d82741dde33db9c35a3f73cdb</anchor>
+      <arglist>(N)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>offRel</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a8b120ecaf3ad34f9e3ff9375e2c8c49a</anchor>
+      <arglist>(N)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>onPort</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a67c6800770c9188cd1c7cc258c755141</anchor>
+      <arglist>(N)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>onRel</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a05972f74914eb10828d87fe87799b66c</anchor>
+      <arglist>(N)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PCK_POWER_REL</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a6f07611e8c7cff70a5ca79a112d08c5a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PDEL_BALEND</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a9c72caf79f581617ab681df3cb4d1a0c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PDEL_BALINC</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a99087a29f98ebe60311ba586f6c6f2fb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PDEL_BALRED</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a2b0f0f11abeacb018faac236fe2fe35b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PDEL_SGCONS</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a618ec1ca545508f161a79896f51921ea</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PDEL_SGGIVE</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a96a939f9d85fe6f44b0a3b868ea2b16d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>POWH</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a9676f5f9e8c754004368413d9369c56d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SENS0PATH</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a5c5fc7c29fdb19dab6284e8dd79212dc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SENS1PATH</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>ace3b461a175f8d6ec77cc861f772006a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SENS2PATH</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a70b2aaf6cb6d801366947712bef05b45</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>switchRel</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a90c2febd3c73c4cef4e0fd5fe9828944</anchor>
+      <arglist>(N, V)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logBatteryStress</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>af23c1889ec6433407c938bcf6f1c6d56</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>mqttClean</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>ab12cabb971079bf75de9f1e0ecccccb9</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>mqttInit</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>ad7079e6ced949c1077b6dd3ffc4d6366</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>mqttPlg01Set</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>af9a669019713e77ccaa3fb68faa325c7</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>mqttPlg02Set</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>aefd8ae4378a341adfa394b9b41a31fa8</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>mqttPlg03Set</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a76ef605f585d5d95a4168a042e9443a4</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>mqttPlg04Set</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a6a0d7b4f041f1a5d88e34183627f4b89</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>pckSwPec</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>aad68bbfa84dbdb996265a76ed4837aa6</anchor>
+      <arglist>(float power)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>reduceBatLoadPWM</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>adcd644883a2cec22a8e9cff706265d1e</anchor>
+      <arglist>(uint8_t const pwmRed)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>setBatLoadPWM</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a2e686c03e2215b70795a28d6f2755911</anchor>
+      <arglist>(uint8_t const pwm)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>setPckSwPerc</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a62adb160385b0d7ccc20b26732aafef9</anchor>
+      <arglist>(uint8_t const perc)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>switchBatToStepUp</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>aa8fff70868bc4d21150a39f623985e78</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>switchHotWpump</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>afb271f085fb0a43665c626c309c43ee0</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>switchInvToBatUnl</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a47ea53744f92e54f25320b1d911bdd24</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>switchPPSrel</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a8561b20a117d1249602014a3f7fd0cc6</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>batCntBalSeq</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a64e343577dc601e54686ad192198634a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>batCntLodSeq</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>ae6476d712b5e5dcfa6a73596abccfb66</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>batKeepInh</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a5f201b3a5f6b88754c7dbadfd4890404</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>batUnloadAllowed</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a1e744cd12d342f1df48dbd2a54269df2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>batUnloadSeq</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>abbf4021e2dbb810402d49505123a9490</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>batVoltValid</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a7a45fdc2afb8c534c1236e16ba559f2c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>befRiseTimer</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a3f632dc378ddaa916f054a937179a6b5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>clientId</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>af3bfc0ee5f56cf9949f4f1a410fd48ad</anchor>
+      <arglist>[38]</arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>consumeGiveHyst</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>ae75bd22270c5b585ea3a2948bb15ca3d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>consumeGiveSFC</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>acab365c492ca1f392f26c47003ca06e9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>heaterAllowed</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a9bbe2ba7abdd55a539baef4c3bf4be0c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint16_t</type>
+      <name>hundredsV</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a1d4e11e4206bb3b59fe07c68296a6189</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>hundVsecAbove</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a71c52b28d7dfcdb5f1a179c5b8005560</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>hundVsecBelow</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>ae50f0359940b72db4da6e32647f5f1f6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>load250Wcont</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>acdd1692d0cc1397cbe2df2239ea1274a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>phPckCnt</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a404a46a3db82bdf0adaa822e64727620</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>phPckOff</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a9aef66c5ac737c9a981dc53ed8e6a577</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>phPckOn</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a200af3a81d309eec168c2c3d834931b0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>phPckRelOffDelay</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a306bb6c84fa29fce5204ce05358a16b3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>phPckSw</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>ab7b833d4e2088eea1d044072e0bca7e7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>phPckSwIndex</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a078d1682f71822ae579af277d5b3975d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>oneWireDevice_t</type>
+      <name>sensors</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>ac3da499e01c9edcdf3afab2faa2fce61</anchor>
+      <arglist>[3]</arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>solarPowerHyst</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a67d256fa13b3bd27111a6d8f088c6162</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>subTopStPlg01</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a24688fe6eb3ef5f6c614dc1f88d76b34</anchor>
+      <arglist>[14]</arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>sunriseTimer</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>af94c47ccb7ef65022375a66252544c4c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>sunsetTimer</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a3721a34b83c2b33200ba4cafcac6dd8f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>wouldGive250WHyst</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a5a4fcfb42a603e6e32c8d1861ae83720</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>wouldGiveAwayHyst</name>
+      <anchorfile>sweet_home2_8h.html</anchorfile>
+      <anchor>a2585f7fbd1b887758e5732d881d1bd49</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>sweetHomeLocal.h</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
+    <filename>sweet_home_local_8h</filename>
+  </compound>
+  <compound kind="file">
     <name>sysBasic.h</name>
-    <path>D:/mapa/gitPapa/weAut/rasProject_01part/include/</path>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
     <filename>sys_basic_8h</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>ABS_MONOTIME</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a10594594cf2c588a3a99508dc8b3af17</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>MS100_ns</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>afd5cca9c99cf3ddd8e36b63cb4410729</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>MS10_ns</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a0e17f395bdc43af3290f5a2597de7d1d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>MS1_ns</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a8ac5b972457185a84b0a0c8eb5de8c27</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="typedef">
       <type>struct timespec</type>
       <name>timespec</name>
@@ -296,6 +1422,20 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <type>void</type>
+      <name>logEventText</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a91085d81a46c7b046179c188197850dd</anchor>
+      <arglist>(char const *txt)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>monoTimeInit</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a6afbbb06267fbee5885213d9fc223e1e</anchor>
+      <arglist>(timespec *timer)</arglist>
+    </member>
+    <member kind="function">
       <type>uint8_t</type>
       <name>outLogIsStd</name>
       <anchorfile>sys_basic_8h.html</anchorfile>
@@ -329,6 +1469,20 @@
       <anchorfile>sys_basic_8h.html</anchorfile>
       <anchor>a36700af15db48dd9018a259f3ed31670</anchor>
       <arglist>(char const *const logFilNam)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>timeAddNs</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a695f77f1228fd21889298b9af4d19a37</anchor>
+      <arglist>(timespec *t1, long ns)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>timeStep</name>
+      <anchorfile>sys_basic_8h.html</anchorfile>
+      <anchor>a310c50b608cbc8d21df2c993869e007e</anchor>
+      <arglist>(timespec *timeSp, unsigned int micros)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -437,18 +1591,1177 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>we1wire.h</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
+    <filename>we1wire_8h</filename>
+    <includes id="sys_basic_8h" name="sysBasic.h" local="yes" imported="no">sysBasic.h</includes>
+    <class kind="struct">oneWireDevice_t</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>BAD_TEMP_FLOAT</name>
+      <anchorfile>we1wire_8h.html</anchorfile>
+      <anchor>a9071ea85b3b18e9c98ed7821bcb9560f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BAD_TEMP_READ</name>
+      <anchorfile>we1wire_8h.html</anchorfile>
+      <anchor>aa2c910cfb52b6581a44d4a8ebaeb7d16</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SAFE_TEMP_WAT</name>
+      <anchorfile>we1wire_8h.html</anchorfile>
+      <anchor>ae5d1141f234bb60ad4f4e1d9bdf12365</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>STD_DEVICES_PATH</name>
+      <anchorfile>we1wire_8h.html</anchorfile>
+      <anchor>a30f741fa719bedc8c0a42b8ad4024212</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>STD_DEVICES_PATH_LEN</name>
+      <anchorfile>we1wire_8h.html</anchorfile>
+      <anchor>a500c577fd63d1c0f85ac99a2868e1f82</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>getTemp</name>
+      <anchorfile>we1wire_8h.html</anchorfile>
+      <anchor>a765ca24460a0d926e7d72966b12926a6</anchor>
+      <arglist>(oneWireDevice_t *const tempSensor)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>initTempSensor</name>
+      <anchorfile>we1wire_8h.html</anchorfile>
+      <anchor>a4e83350b799f77edaed04cdf3eb2c4a3</anchor>
+      <arglist>(oneWireDevice_t *const tempSensor, char const *const name, char const *const valueFile)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weAR_N4105.h</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
+    <filename>we_a_r___n4105_8h</filename>
+    <includes id="sys_basic_8h" name="sysBasic.h" local="yes" imported="no">sysBasic.h</includes>
+    <includes id="we_state_m_8h" name="weStateM.h" local="yes" imported="no">weStateM.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>L1Msk</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>ab8d1ea76511153ac403fef2a7e472d7b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>L2Msk</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>ae49067ac0613bbbc56df89807535c9bd</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>L3Msk</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>a59c0ced31f10b421ec3d3c5bd268ed29</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>LeMsk</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>a4d9f8004b8d900a8898d3350e654bf4b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>LfMsk</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>a9ac298c493e69ccc2f591974e64ce198</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>LwMsk</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>adc5fb4e9b26f918df341ba544c427a10</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>newLineFcheck</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>a4e4c81610accd8080492a0e6f58af13c</anchor>
+      <arglist>(N, C)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>newLineUcheck</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>a3e27e9cf3d0ad8522cc07f1b98eea752</anchor>
+      <arglist>(N, C)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>setARN4105state</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>a2fb95ea7a4563d8cdd4ed61bb4b23539</anchor>
+      <arglist>(uint8_t const state, uint8_t const select)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>switchARN4105</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>a5c196bfc4ca6c21235372b501e4aec36</anchor>
+      <arglist>(uint8_t const off)</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>arn4105state</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>a308c90f5066216f640eb8172d8325b40</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>arn4105Timer</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>a82c43efd1602a9f7c3952e1a9472c720</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>checkL1_U</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>a15ec4f826fa427da4d120376ae62c06e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>checkL2_U</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>ad9191f4e7fe230755c252454b0a58785</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>checkL3_U</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>a98a686b84408063d6d170ff817cbf02c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>checkLineFrq</name>
+      <anchorfile>we_a_r___n4105_8h.html</anchorfile>
+      <anchor>ac46fddb16eb69096422659b6d16b1e76</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weBatt.h</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
+    <filename>we_batt_8h</filename>
+    <includes id="basic_ty_co_8h" name="basicTyCo.h" local="yes" imported="no">basicTyCo.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>BAT100M_STRESS_LO_LIM</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>a1cf929c3678fe8c4b54022bedf52a009</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BAT100M_STRESS_UNL_LIM</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>a2c225d177c28d112c19d4db951e82470</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BAT100M_STRESS_UP_LIM</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>a6bb996ba4e3574aa0daaf61e781570de</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BAT100MVS_HI_LIM</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>a80b0befaa349de411c196a91db58df52</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BAT100MVS_LO_LIM</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>a055c9c66bf1311caefc7b48fdd321857</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BATmaxUNLODtime</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>af53994f96417444a7480caf811f2b00b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BATVOLT_IDLE_100</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>a60c9587aed07c4337e9a0f92a3c5f3c6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BATVOLT_IDLE_20</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>ae56f017e1e0f67076e315c7bff333468</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BATVOLT_IDLE_50</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>add3f4704df7d024cf34d8e3227dc8ea5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BATVOLT_IDLE_60</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>a187e4d3346b0750f3017990e2c68dfef</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BATVOLT_IDLE_70</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>a18174766bc9cdea46b4c65124d1f7524</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BATVOLT_IDLE_80</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>a5367099bbca0fadfe928ac97bb9c0f01</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BATVOLT_LO_LIM_UNLD</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>a72f91f7adc68fa74f6f7e289b46f8f34</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BATVOLT_LO_STP_UNLD</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>a432ab836b1fda15de52e1de090776496</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BATVOLT_UP_LIM_BLST</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>a9dfe309f5f8cdc258ad8e12e970725ca</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>BATVOLT_UP_LIM_LOAD</name>
+      <anchorfile>we_batt_8h.html</anchorfile>
+      <anchor>a5b6f79c2e752055e8ae064fc011bf76b</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weCGIajax.h</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
+    <filename>we_c_g_iajax_8h</filename>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>QS_MAX_KEY_LEN</name>
+      <anchorfile>we_c_g_iajax_8h.html</anchorfile>
+      <anchor>affdbd1b95a27e542cbd103b1fbc7042f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>QS_MAX_STRING_LEN</name>
+      <anchorfile>we_c_g_iajax_8h.html</anchorfile>
+      <anchor>ac6932e54211f72ebbcde4d8c4c43e71c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>QS_MAX_VAL_LEN</name>
+      <anchorfile>we_c_g_iajax_8h.html</anchorfile>
+      <anchor>a13078bc26ebdb61cb6f696dea9735d85</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>getQSparam</name>
+      <anchorfile>we_c_g_iajax_8h.html</anchorfile>
+      <anchor>aa3d6863b5463e7ea6f025e096b36ca3c</anchor>
+      <arglist>(char const *name, char *const value, int const vLen)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>getQueryString</name>
+      <anchorfile>we_c_g_iajax_8h.html</anchorfile>
+      <anchor>a7dc09b560913af0bc265b51c89bcb0b0</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>jsonBinForm</name>
+      <anchorfile>we_c_g_iajax_8h.html</anchorfile>
+      <anchor>a17d3cb96dd422951e9b9f9c80abac047</anchor>
+      <arglist>(uint8_t const indent, char const *const name, uint8_t const value, char *end)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>jsonBreading</name>
+      <anchorfile>we_c_g_iajax_8h.html</anchorfile>
+      <anchor>a673aeec0b77e90c300492f330461d0f1</anchor>
+      <arglist>(uint8_t const indent, char const *const name, uint8_t const value, char *end)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>jsonFreading</name>
+      <anchorfile>we_c_g_iajax_8h.html</anchorfile>
+      <anchor>a3a9cf924b64aafad147747abe07089fc</anchor>
+      <arglist>(uint8_t const indent, char const *const name, float const value, char const *const unit, uint8_t const fractional, char *end)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>jsonFreadingT</name>
+      <anchorfile>we_c_g_iajax_8h.html</anchorfile>
+      <anchor>a5659750ab50fbebbc4463211a7e0b09c</anchor>
+      <arglist>(uint8_t const indent, char const *const name, float const value, char const *const unit, uint8_t const fractional, char *end, char *title)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>jsonIreading</name>
+      <anchorfile>we_c_g_iajax_8h.html</anchorfile>
+      <anchor>a18569be0d3ceb8bb95c8f6e440f1ec66</anchor>
+      <arglist>(uint8_t const indent, char const *const name, int const value, char *end)</arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>actQSPvalue</name>
+      <anchorfile>we_c_g_iajax_8h.html</anchorfile>
+      <anchor>af6edadc572d721909d1f9c68203fd17e</anchor>
+      <arglist>[64]</arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>queryString</name>
+      <anchorfile>we_c_g_iajax_8h.html</anchorfile>
+      <anchor>a4f80f9f50c08805a3e194372539328f9</anchor>
+      <arglist>[512]</arglist>
+    </member>
+    <member kind="variable">
+      <type>char const  *</type>
+      <name>requestMethod</name>
+      <anchorfile>we_c_g_iajax_8h.html</anchorfile>
+      <anchor>a68196232afe1bd0fef492ff9bdd9b258</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weGPIOd.h</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
+    <filename>we_g_p_i_od_8h</filename>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <member kind="function">
+      <type>void</type>
+      <name>initAsDrive</name>
+      <anchorfile>we_g_p_i_od_8h.html</anchorfile>
+      <anchor>ad246f969f0f2d0d96d28f2acda0332a1</anchor>
+      <arglist>(int thePi, unsigned gpio, unsigned init)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>initAsHiDrive</name>
+      <anchorfile>we_g_p_i_od_8h.html</anchorfile>
+      <anchor>ab6ea4d1b32489300274ac5c6c2313cca</anchor>
+      <arglist>(int thePi, unsigned gpio, unsigned init)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>setPadStrength</name>
+      <anchorfile>we_g_p_i_od_8h.html</anchorfile>
+      <anchor>ab0098452b3a538bfde6a8446e9389fa0</anchor>
+      <arglist>(int thePi, unsigned mA)</arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>thePi</name>
+      <anchorfile>we_g_p_i_od_8h.html</anchorfile>
+      <anchor>ad2183665f43852063da061a0016c5c2f</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weGPIOkeyM.h</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
+    <filename>we_g_p_i_okey_m_8h</filename>
+    <includes id="we_g_p_i_od_8h" name="weGPIOd.h" local="yes" imported="no">weGPIOd.h</includes>
+    <class kind="struct">_km</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>MAX_MATRIX_GPIO</name>
+      <anchorfile>we_g_p_i_okey_m_8h.html</anchorfile>
+      <anchor>ac98f2e6e34e9b918bee8b205850088d8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>MAX_MATRIX_KEYS</name>
+      <anchorfile>we_g_p_i_okey_m_8h.html</anchorfile>
+      <anchor>a3c1f8923b6853039299abe496a77c54c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>struct _km</type>
+      <name>keyMatrix</name>
+      <anchorfile>we_g_p_i_okey_m_8h.html</anchorfile>
+      <anchor>aacf425a8ee4b7d18c550719dd521b8e3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>void(*</type>
+      <name>pt2lastScanStep</name>
+      <anchorfile>we_g_p_i_okey_m_8h.html</anchorfile>
+      <anchor>a1e62e054f5a8e68bbabc40db8f81431a</anchor>
+      <arglist>)(struct _km *thePad, uint8_t changes)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>colRowInp</name>
+      <anchorfile>we_g_p_i_okey_m_8h.html</anchorfile>
+      <anchor>a9552fec3c99bd14c80109de146deeabe</anchor>
+      <arglist>(keyMatrix thePad)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>crScanStep</name>
+      <anchorfile>we_g_p_i_okey_m_8h.html</anchorfile>
+      <anchor>a4fedd6145b9b48c9fb2e40160b3b36c0</anchor>
+      <arglist>(keyMatrix *thePad, uint32_t cnt1ms)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>keyMatrixInit</name>
+      <anchorfile>we_g_p_i_okey_m_8h.html</anchorfile>
+      <anchor>af1337a7fe717f8dfb69e87dc98bd0b06</anchor>
+      <arglist>(keyMatrix *thePad, int thePi)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>keyPadInit</name>
+      <anchorfile>we_g_p_i_okey_m_8h.html</anchorfile>
+      <anchor>adfec97b442c953472c390cb6402f78b4</anchor>
+      <arglist>(keyMatrix *thePad, int thePi)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>printMatrixConfig</name>
+      <anchorfile>we_g_p_i_okey_m_8h.html</anchorfile>
+      <anchor>a33c58652fd0daa08c9c1e9df7c11e8b3</anchor>
+      <arglist>(FILE *stream, keyMatrix thePad)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>printMatrixPressState</name>
+      <anchorfile>we_g_p_i_okey_m_8h.html</anchorfile>
+      <anchor>ac37a3a73100f4ab99e11c633e36e8bbb</anchor>
+      <arglist>(FILE *stream, keyMatrix thePad, uint8_t cmp)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>setKeyMatrixScanFunct</name>
+      <anchorfile>we_g_p_i_okey_m_8h.html</anchorfile>
+      <anchor>a5f52764205c7c522a3022ed4f084fd00</anchor>
+      <arglist>(keyMatrix *thePad, pt2lastScanStep fun)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weModbus.h</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
+    <filename>we_modbus_8h</filename>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <class kind="struct">modRS_t</class>
+    <class kind="struct">modTCP_t</class>
+    <member kind="typedef">
+      <type>enum modRS485state_t</type>
+      <name>modRS485state_t</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>af4d56f727ffe72b5cf2d97c48575ef21</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <type></type>
+      <name>modRS485state_t</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a0d43fc954b55fe6a60aae8a21683b78e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>RS_OFF</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a0d43fc954b55fe6a60aae8a21683b78ea95ff4983ed6f580acf0f73c245a323a6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>RS_ON</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a0d43fc954b55fe6a60aae8a21683b78ea6323a55bfa6ca8d1010650d300d9db0c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>RS_INICOM</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a0d43fc954b55fe6a60aae8a21683b78ea031ba0e2d4b9ab6ad956175a178e8a09</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>RS_ERR_ANY</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a0d43fc954b55fe6a60aae8a21683b78ea3d93055a9e539164dc91748bd228d088</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>RS_ERR_CTX</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a0d43fc954b55fe6a60aae8a21683b78ea9e465def4ed5564ef0bc5366e2f89e10</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>RS_ERR_CON</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a0d43fc954b55fe6a60aae8a21683b78eaecc45463c0b4d554179b7e4d3cbcbfe6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>RS_ERR_SLA</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a0d43fc954b55fe6a60aae8a21683b78ead8a35ce08113b6e8e202b655bab6a8b9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>RS_ERR_BAD</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a0d43fc954b55fe6a60aae8a21683b78ea0e5d5a6bb15b6973a2131918a92add01</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>modRSclose</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a5db6ba0c6edeec495debc2f5dffbbbe4</anchor>
+      <arglist>(modRS_t *modRS)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>modRSconnect</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a8c97e1ad974033a7474a5da7d60fbe36</anchor>
+      <arglist>(modRS_t *modRS, int currentSlave)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>modRSctxNew</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a0cc43ccc003cb578d6842d9ba93f698f</anchor>
+      <arglist>(modRS_t *modRS, int currentSlave)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>modRSswitchSlave</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a95a7b0db447ce4bfc6b81f758e9b7129</anchor>
+      <arglist>(modRS_t *modRS, int currentSlave)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>modTCPclose</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a619a0ca84e777f90b1577fe88c3f2320</anchor>
+      <arglist>(modTCP_t *modTCP)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>modTCPconnect</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>af983d766cd5c19954d23241dbb825f9e</anchor>
+      <arglist>(modTCP_t *modTCP)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>modTCPctxNew</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>aae1c92147d4535f34e3d20f1c8dea064</anchor>
+      <arglist>(modTCP_t *modTCP)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>modTCPlisten</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a89acf4e3b6f5021c73b0c0c77aac1f20</anchor>
+      <arglist>(modTCP_t *modTCP)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>parseModPort</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a4287bcdfbf70971a01f3f43f8da1897d</anchor>
+      <arglist>(const char *str)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>reg2val32</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a22785188edef8cbbf2b39d83582251e7</anchor>
+      <arglist>(dualReg_t *const dest, dualReg_t const *const source)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>regs2vals32</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a0e58ee5e343cc9a156f0df5d34268197</anchor>
+      <arglist>(float *const dest, dualReg_t const *const source, int const n)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>setIP4add</name>
+      <anchorfile>we_modbus_8h.html</anchorfile>
+      <anchor>a0443c41e1de23665f0514c55c8992440</anchor>
+      <arglist>(char *dest, const char *src)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weSerial.h</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
+    <filename>we_serial_8h</filename>
+    <includes id="config_8h" name="config.h" local="yes" imported="no">arch/config.h</includes>
+    <includes id="sys_basic_8h" name="sysBasic.h" local="yes" imported="no">sysBasic.h</includes>
+    <member kind="function">
+      <type>tcflag_t</type>
+      <name>baudFlag</name>
+      <anchorfile>we_serial_8h.html</anchorfile>
+      <anchor>a7afc3ce8ae5c2aa9111b989ae92bfcb0</anchor>
+      <arglist>(unsigned int const speed)</arglist>
+    </member>
+    <member kind="function">
+      <type>unsigned int</type>
+      <name>baudRate</name>
+      <anchorfile>we_serial_8h.html</anchorfile>
+      <anchor>a971bfc0320756c18fbf6902d45d21b97</anchor>
+      <arglist>(tcflag_t baudFlag)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>closeUART</name>
+      <anchorfile>we_serial_8h.html</anchorfile>
+      <anchor>a5ab34ca98cbddd27bdf189fd9f107586</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>openUART</name>
+      <anchorfile>we_serial_8h.html</anchorfile>
+      <anchor>a2fb8526b08acf2e8a2a2479c111121f3</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="variable">
+      <type>tcflag_t</type>
+      <name>baud</name>
+      <anchorfile>we_serial_8h.html</anchorfile>
+      <anchor>ac5d7e2500519be44ef92964c4c34b0a3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>struct termios</type>
+      <name>options</name>
+      <anchorfile>we_serial_8h.html</anchorfile>
+      <anchor>a8be987d10fb60344b30a20d212a89740</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>unsigned int</type>
+      <name>speed</name>
+      <anchorfile>we_serial_8h.html</anchorfile>
+      <anchor>a481cb487704fc7f8c8ddc6613aed3785</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>timespec</type>
+      <name>startReceive</name>
+      <anchorfile>we_serial_8h.html</anchorfile>
+      <anchor>ab06718ddf611de94d5f22aaf038ef95b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>uartFilestream</name>
+      <anchorfile>we_serial_8h.html</anchorfile>
+      <anchor>a8b8c8cb044af817d2a17119db109186e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char *</type>
+      <name>uartPath</name>
+      <anchorfile>we_serial_8h.html</anchorfile>
+      <anchor>aa6ba4363aa5f996cabe20d3008e47e3d</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weShareMem.h</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
+    <filename>we_share_mem_8h</filename>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <class kind="union">semCtlPar_t</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>ANZ_SEMAS</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>a4ee63128d08cc56884c5b217df89c2a4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>PERM</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>ac807e65b8c2cf0d924823993c5d3e99d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SEMAPHORE_KEY</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>a463aff5fdad02b9a7290b72fe58c11c9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SHARED_MEMORY_KEY</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>a0b80156f23e93853d4f405d8eb823a9b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SHARED_MEMORY_SIZE</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>a21a16aec41293c80beb10d71f79ad7a2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>deleteSemas</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>aa9d819fbd7b604256b1364410c47e680</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>deleteSharedMem</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>a87e4edb36bf58cf18e0c0b5f2fcefd61</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>detachSharedMem</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>a668b8b1c31de6114818f66a34ccbad79</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>getSemas</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>a64d0da5177aa65782668195876e8d3c0</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>initialiseSemas</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>ab0f8f3129ec98620c51b894ca2be32f0</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void *</type>
+      <name>initialiseSharedMem</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>a03a26d9a8304a8709c20716666fc3797</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>semaphoreClt</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>a88a18623cd356f03e7a48a31b92a9469</anchor>
+      <arglist>(int const semNum, int const op, semCtlPar_t par)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>semaphoreLock</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>aac40126c1523247a13456ddfbc127023</anchor>
+      <arglist>(int const semNum, int ms)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>semaphoreOperation</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>a7217c049690368729b3b0d333e9ef13a</anchor>
+      <arglist>(int const semNum, int const op, int ms)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>semaphoreUnlock</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>a050c835947a2d6886d1df7e158513121</anchor>
+      <arglist>(int const semNum)</arglist>
+    </member>
+    <member kind="variable">
+      <type>const semCtlPar_t</type>
+      <name>VAL0</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>adc3529db5ba72b8419726bc55d9a9c36</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>const semCtlPar_t</type>
+      <name>VAL1</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>abe23fa82bb588381a4919c44658277b1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>const semCtlPar_t</type>
+      <name>VAL9</name>
+      <anchorfile>we_share_mem_8h.html</anchorfile>
+      <anchor>a84dbfedc8369ee0d62448a5ac7aaf9a1</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weStateM.h</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
+    <filename>we_state_m_8h</filename>
+    <includes id="sys_basic_8h" name="sysBasic.h" local="yes" imported="no">sysBasic.h</includes>
+    <class kind="struct">state_t</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>newFiveBand</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>aeedbd4b8b0ee39d8e79a658a29ca20e1</anchor>
+      <arglist>(N, C, V, T, R, S)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>newFloatHyst</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a6f07e12c3c1ab09ebb13804eab7b0f92</anchor>
+      <arglist>(N, C, O, R, S)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>newSeqCont</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a542d4422613846f0a27f28fac3f72332</anchor>
+      <arglist>(N, C, n, m, S)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>newSwitchDeb</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a3e577060947b948c2920b72796c81464</anchor>
+      <arglist>(N, C, S, R)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>newTimer</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>aa96427a57a0abaede9af475d8b28f420</anchor>
+      <arglist>(N, C, S)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>uint8_t(*</type>
+      <name>enterState_t</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a65404fa0820c8dd6f3f9631b45b27d89</anchor>
+      <arglist>)(state_t *const me, uint32_t controlV)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>uint8_t(*</type>
+      <name>enterStateF_t</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>ae0b0efe8f5107dd2619d44fc78d578c4</anchor>
+      <arglist>)(state_t *const me, float controlF)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>uint8_t(*</type>
+      <name>enterStateS_t</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>abcd92a234cf8e8b796be4311354adc5c</anchor>
+      <arglist>)(state_t *const me, char const *controlS)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>void(*</type>
+      <name>genStateText_t</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a9cd97bd58bd5ed42ab64690de881de4e</anchor>
+      <arglist>)(char *stateText, state_t const *const me, char const *stamp)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>uint8_t(*</type>
+      <name>leaveState_t</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>aa3ae61f8bbed993aa1ce1e5c805ea063</anchor>
+      <arglist>)(state_t *const me, uint32_t controlV)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>uint8_t(*</type>
+      <name>leaveStateF_t</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a20bb9d4a07eb8e063c16dee0d8634126</anchor>
+      <arglist>)(state_t *const me, float controlF)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>uint8_t(*</type>
+      <name>leaveStateS_t</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a6381027bf9d416a24c2ee876b52b6d48</anchor>
+      <arglist>)(state_t *const me, char const *controlS)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>void(*</type>
+      <name>onStateChange_t</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a560d5c822ef848b48b9fceafc13ecc69</anchor>
+      <arglist>)(state_t *const me)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>struct state_t</type>
+      <name>state_t</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>ada7f57e4496770ed2d5a0a0e673cdca5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>uint8_t(*</type>
+      <name>tickCheckState_t</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a72da60550161a4f87d33156a5de098fc</anchor>
+      <arglist>)(state_t *const me, uint32_t controlV)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>uint8_t(*</type>
+      <name>tickCheckStateF_t</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a27087b8957776f15c8767eb70573e37f</anchor>
+      <arglist>)(state_t *const me, float controlF)</arglist>
+    </member>
+    <member kind="typedef">
+      <type>uint8_t(*</type>
+      <name>tickCheckStateN_t</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a60955471e9e8f3e940eadd83a263e95a</anchor>
+      <arglist>)(state_t *const me)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>fiveBandDoEnter</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a0c795e6b602db48cb8dab8ed47b21565</anchor>
+      <arglist>(state_t *const me, float analogueVal)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>fiveBandDoLeave</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>aa9dd5e78e7e29ed0b35282096ff0efd5</anchor>
+      <arglist>(state_t *const me, float analogueVal)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>fiveBandTick</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a6850e42d0e5a1f367cde67f63a5f14e2</anchor>
+      <arglist>(state_t *const me, float controlV)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>floatHystDoEnter</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>ace62f80b7ab57f1221c4a7868595bdb6</anchor>
+      <arglist>(state_t *const me, float analogueVal)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>floatHystDoLeave</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>aba5e47dfe126a06cd4a77824ff6129e7</anchor>
+      <arglist>(state_t *const me, float analogueVal)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>floatHystTick</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a0a78ba1950b90a60c1232752fa9c073d</anchor>
+      <arglist>(state_t *const me, float controlV)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>genStateText</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a3c19a13ce88765e7d879c31d0bce8a37</anchor>
+      <arglist>(char *stateText, state_t const *const me, char const *stamp)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logStateReason</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a43e9f7a7b70bd12b0acce948e09cdf77</anchor>
+      <arglist>(state_t const *const me, char const *stamp, char const *cause)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logStateText</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>adbd24b50edfd0be2e1ac3485cc640d3b</anchor>
+      <arglist>(state_t const *const me, char const *stamp)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>seqContDoEnter</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a29abc3548acd70000419efb1d088679b</anchor>
+      <arglist>(state_t *const me, char const *startCommand)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>seqContDoLeave</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a67e03290d39322a37d2291d236bc9f1f</anchor>
+      <arglist>(state_t *const me, char const *stopCommand)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>seqContTick</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>aca56116045dc4879211c77eff07859c8</anchor>
+      <arglist>(state_t *const me)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>setGenStateText</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a56ecd4109af2d6cb664c095634451f14</anchor>
+      <arglist>(state_t *const me, genStateText_t const fun)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>startStateText</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a485e1c867a6ebd1ec31c0240d1a963f9</anchor>
+      <arglist>(char *stateText, state_t const *const me, char const *stamp)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>switchDebDoEnter</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>ade754e2122d27adec3b15717dfd5f26f</anchor>
+      <arglist>(state_t *const me, uint32_t controlV)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>switchDebDoLeave</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>ad017ed545cd63565ac268ce002972172</anchor>
+      <arglist>(state_t *const me, uint32_t controlV)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>switchDebTick</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a0bff51d4c1b6f2a1d55501b31bb8563f</anchor>
+      <arglist>(state_t *const me, uint32_t controlV)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerDoEnter</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a05f81eead0ce9c0ac5947f8a8b4f6832</anchor>
+      <arglist>(state_t *const me, uint32_t secFromNow)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerDoLeave</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a31fa4fd47f6e0882dc5ca6d2afb5b43e</anchor>
+      <arglist>(state_t *const me, uint32_t ignored)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerDoStart</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a3c1e797da5b412766221c966d0790f8a</anchor>
+      <arglist>(state_t *const me, uint32_t secFromNow)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerDoStart4ever</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a26fc87f1f755ed6df50dea91eceb75d3</anchor>
+      <arglist>(state_t *const me)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerDoTrigger</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>ac01a95af477fa64dddc56802db3137b6</anchor>
+      <arglist>(state_t *const me, uint32_t secFromNow)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerEndTrigger</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a50de77abbe3aac47f1ed58e68b236b13</anchor>
+      <arglist>(state_t *const me, uint32_t const secUTCend)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerTickCheck</name>
+      <anchorfile>we_state_m_8h.html</anchorfile>
+      <anchor>a9b92fc75a6e48e5f91999fc9bada642c</anchor>
+      <arglist>(state_t *const me, uint32_t controlV)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>weUtil.h</name>
-    <path>D:/mapa/gitPapa/weAut/rasProject_01part/include/</path>
+    <path>D:/eclipCe18-12WS/rasProject_01/include/</path>
     <filename>we_util_8h</filename>
     <class kind="struct">cycTask_t</class>
     <class kind="struct">cycTaskEventData_t</class>
-    <member kind="define">
-      <type>#define</type>
-      <name>ABS_MONOTIME</name>
-      <anchorfile>we_util_8h.html</anchorfile>
-      <anchor>a10594594cf2c588a3a99508dc8b3af17</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="function">
       <type>int</type>
       <name>advanceTmTim</name>
@@ -506,17 +2819,17 @@
       <arglist>(void)</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
+      <type>char *</type>
       <name>formFixed16</name>
       <anchorfile>we_util_8h.html</anchorfile>
-      <anchor>a0aaf311ec5beaf5fcd8ace6cd93d05d9</anchor>
+      <anchor>a8ba696d071f0dcff820b4aa6ca2105df</anchor>
       <arglist>(char *target, uint8_t targetLen, uint16_t value, uint8_t dotPos)</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
+      <type>char *</type>
       <name>formFixed32</name>
       <anchorfile>we_util_8h.html</anchorfile>
-      <anchor>a7fe36b348722fbf9b74f106535c42e54</anchor>
+      <anchor>a8d00150a65be830d1d07d999b3d5e04b</anchor>
       <arglist>(char *target, uint8_t targetLen, uint32_t value, uint8_t dotPos)</arglist>
     </member>
     <member kind="function">
@@ -605,24 +2918,10 @@
     </member>
     <member kind="function">
       <type>void</type>
-      <name>logEventText</name>
-      <anchorfile>we_util_8h.html</anchorfile>
-      <anchor>a91085d81a46c7b046179c188197850dd</anchor>
-      <arglist>(char const *txt)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
       <name>logStampedText</name>
       <anchorfile>we_util_8h.html</anchorfile>
       <anchor>a7d11086712897d2fa0ef5268700448ad</anchor>
       <arglist>(char const *txt)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>monoTimeInit</name>
-      <anchorfile>we_util_8h.html</anchorfile>
-      <anchor>a6afbbb06267fbee5885213d9fc223e1e</anchor>
-      <arglist>(timespec *timer)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -717,13 +3016,6 @@
     </member>
     <member kind="function">
       <type>void</type>
-      <name>timeAddNs</name>
-      <anchorfile>we_util_8h.html</anchorfile>
-      <anchor>a695f77f1228fd21889298b9af4d19a37</anchor>
-      <arglist>(timespec *t1, long ns)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
       <name>timeAddTo</name>
       <anchorfile>we_util_8h.html</anchorfile>
       <anchor>a0c5234d2dce740c5c20802edbf38de36</anchor>
@@ -742,13 +3034,6 @@
       <anchorfile>we_util_8h.html</anchorfile>
       <anchor>a43c8f4a5d06dd873a271b2b250dccf4c</anchor>
       <arglist>(unsigned int micros)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>timeStep</name>
-      <anchorfile>we_util_8h.html</anchorfile>
-      <anchor>a310c50b608cbc8d21df2c993869e007e</anchor>
-      <arglist>(timespec *timeSp, unsigned int micros)</arglist>
     </member>
     <member kind="variable">
       <type>char</type>
@@ -893,7 +3178,7 @@
   </compound>
   <compound kind="file">
     <name>justLock.c</name>
-    <path>D:/mapa/gitPapa/weAut/rasProject_01part/</path>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
     <filename>just_lock_8c</filename>
     <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
     <member kind="function">
@@ -926,20 +3211,616 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>keysModClient.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
+    <filename>keys_mod_client_8c</filename>
+    <includes id="config_8h" name="config.h" local="yes" imported="no">arch/config.h</includes>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <includes id="we_modbus_8h" name="weModbus.h" local="yes" imported="no">weModbus.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>keys_mod_client_8c.html</anchorfile>
+      <anchor>a3c04138a5bfe5d72780bb7e82a18e627</anchor>
+      <arglist>(int argc, char **argv)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>keysModTCP.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
+    <filename>keys_mod_t_c_p_8c</filename>
+    <includes id="config_8h" name="config.h" local="yes" imported="no">arch/config.h</includes>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <includes id="we_g_p_i_okey_m_8h" name="weGPIOkeyM.h" local="yes" imported="no">weGPIOkeyM.h</includes>
+    <includes id="we_modbus_8h" name="weModbus.h" local="yes" imported="no">weModbus.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>keys_mod_t_c_p_8c.html</anchorfile>
+      <anchor>a3c04138a5bfe5d72780bb7e82a18e627</anchor>
+      <arglist>(int argc, char **argv)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>keysPiGpioTest.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
+    <filename>keys_pi_gpio_test_8c</filename>
+    <includes id="config_8h" name="config.h" local="yes" imported="no">arch/config.h</includes>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <includes id="we_g_p_i_okey_m_8h" name="weGPIOkeyM.h" local="yes" imported="no">weGPIOkeyM.h</includes>
+    <member kind="function">
+      <type>void *</type>
+      <name>matrixScanThread</name>
+      <anchorfile>keys_pi_gpio_test_8c.html</anchorfile>
+      <anchor>a52aa4e84996c60ff302035d8fd28200d</anchor>
+      <arglist>(void *args)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>main_page.dox</name>
-    <path>D:/mapa/gitPapa/weAut/rasProject_01part/</path>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
     <filename>main__page_8dox</filename>
   </compound>
   <compound kind="file">
+    <name>meteRead.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
+    <filename>mete_read_8c</filename>
+    <includes id="sys_basic_8h" name="sysBasic.h" local="yes" imported="no">sysBasic.h</includes>
+    <includes id="sweet_home_8h" name="sweetHome.h" local="yes" imported="no">sweetHome.h</includes>
+    <includes id="we_c_g_iajax_8h" name="weCGIajax.h" local="yes" imported="no">weCGIajax.h</includes>
+    <includes id="we_share_mem_8h" name="weShareMem.h" local="yes" imported="no">weShareMem.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>mete_read_8c.html</anchorfile>
+      <anchor>a3c04138a5bfe5d72780bb7e82a18e627</anchor>
+      <arglist>(int argc, char **argv)</arglist>
+    </member>
+    <member kind="variable">
+      <type>valsSharMem_t</type>
+      <name>sharMirr</name>
+      <anchorfile>mete_read_8c.html</anchorfile>
+      <anchor>a06d007d6c378ca3c0f92217c18e9bafb</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>metersModbusClient.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
+    <filename>meters_modbus_client_8c</filename>
+    <includes id="config_8h" name="config.h" local="yes" imported="no">arch/config.h</includes>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <includes id="we_modbus_8h" name="weModbus.h" local="yes" imported="no">weModbus.h</includes>
+    <includes id="we_g_p_i_od_8h" name="weGPIOd.h" local="yes" imported="no">weGPIOd.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>meters_modbus_client_8c.html</anchorfile>
+      <anchor>a3c04138a5bfe5d72780bb7e82a18e627</anchor>
+      <arglist>(int argc, char **argv)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>minTerm.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
+    <filename>min_term_8c</filename>
+    <includes id="we_serial_8h" name="weSerial.h" local="yes" imported="no">weSerial.h</includes>
+    <includes id="we_modbus_8h" name="weModbus.h" local="yes" imported="no">weModbus.h</includes>
+  </compound>
+  <compound kind="file">
     <name>rdGnPiGpioDBlink.c</name>
-    <path>D:/mapa/gitPapa/weAut/rasProject_01part/</path>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
     <filename>rd_gn_pi_gpio_d_blink_8c</filename>
     <includes id="config_8h" name="config.h" local="yes" imported="no">arch/config.h</includes>
     <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <member kind="variable">
+      <type>int</type>
+      <name>thePi</name>
+      <anchorfile>rd_gn_pi_gpio_d_blink_8c.html</anchorfile>
+      <anchor>ad2183665f43852063da061a0016c5c2f</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>serPiGpioDbase.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/</path>
+    <filename>ser_pi_gpio_dbase_8c</filename>
+    <includes id="config_8h" name="config.h" local="yes" imported="no">arch/config.h</includes>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <includes id="we_modbus_8h" name="weModbus.h" local="yes" imported="no">weModbus.h</includes>
+    <includes id="we_g_p_i_od_8h" name="weGPIOd.h" local="yes" imported="no">weGPIOd.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>ser_pi_gpio_dbase_8c.html</anchorfile>
+      <anchor>a3c04138a5bfe5d72780bb7e82a18e627</anchor>
+      <arglist>(int argc, char **argv)</arglist>
+    </member>
+    <member kind="function">
+      <type>void *</type>
+      <name>oneMeterThread</name>
+      <anchorfile>ser_pi_gpio_dbase_8c.html</anchorfile>
+      <anchor>acdafa0b1b143951cb132d92aedbc3f40</anchor>
+      <arglist>(void *args)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>sweetHome.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/weRasp/</path>
+    <filename>sweet_home_8c</filename>
+    <includes id="sweet_home_8h" name="sweetHome.h" local="yes" imported="no">sweetHome.h</includes>
+    <member kind="function">
+      <type>float</type>
+      <name>pwmToVolt</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>ae0451d3febeb079767ec558b697b3e1f</anchor>
+      <arglist>(uint8_t const pwm)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>switchValFil</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>a243aaebfe691d18ece2b2401998fa8a5</anchor>
+      <arglist>(char const *const valFilNam, char const *const headline)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>valFilGenHeader</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>a63648abe1cb245ea73a6a4be1014db23</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>valFilPutValues</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>a15baf384399098cb0409215b698fd23e</anchor>
+      <arglist>(void)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>voltToPWM</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>a6a362854edd36d0384b3e72f1b7c94ef</anchor>
+      <arglist>(float const u)</arglist>
+    </member>
+    <member kind="variable">
+      <type>cmdLookUp_t</type>
+      <name>cmdLookUp</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>a3036f3bc131e8a5bfb2c74bb4243756d</anchor>
+      <arglist>[]</arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile float</type>
+      <name>fLine</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>a0ea2df3c692cfa583652edf9c6a471d2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t const</type>
+      <name>loadModUlookup</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>a66418a77dd240f99aba97ebcbd72443e</anchor>
+      <arglist>[256]</arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>makeCVSfiles</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>a77369a652ed244595207f759c5686c4b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float const</type>
+      <name>phPckSwPow</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>a7e0fdc62cd30062f9f8a7f566e20cf7f</anchor>
+      <arglist>[101]</arglist>
+    </member>
+    <member kind="variable">
+      <type>phPckSwSet_t const</type>
+      <name>phPckSwSets</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>a7e3cfa4f0c0c59c56098bd3a909159fe</anchor>
+      <arglist>[101]</arglist>
+    </member>
+    <member kind="variable">
+      <type>smdX30modbus_t</type>
+      <name>smdX30modbus</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>acdb279a94a7ed00def1566bf78945bb5</anchor>
+      <arglist>[ANZmodSLAVES]</arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile int</type>
+      <name>tempTankWater</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>a1e7d89a19d366fc312876d820f6d3d75</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>tempWaterBadCnt</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>a9e8a020368f3143b74488e3a11e410bc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>valFHeadLin</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>afc92e39aa9a2d20795bd6b83c7b15686</anchor>
+      <arglist>[428]</arglist>
+    </member>
+    <member kind="variable">
+      <type>valFilVal_t</type>
+      <name>valFilVal</name>
+      <anchorfile>sweet_home_8c.html</anchorfile>
+      <anchor>ab95e7f93049e3ebcac960b8f09b20e1b</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>sweetHome2.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/weRasp/</path>
+    <filename>sweet_home2_8c</filename>
+    <includes id="sweet_home2_8h" name="sweetHome2.h" local="yes" imported="no">sweetHome2.h</includes>
+    <member kind="function">
+      <type>void</type>
+      <name>befRiseTimChg</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>ab52bb6f246e67d51aa1d5b74ff446130</anchor>
+      <arglist>(state_t *const me)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>genSunStateText</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a648ebfaf3ac441268f2f549b92b55b63</anchor>
+      <arglist>(char *stateText, state_t const *const me, char const *stamp)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logBatteryStress</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>af23c1889ec6433407c938bcf6f1c6d56</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>mqttClean</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>ab12cabb971079bf75de9f1e0ecccccb9</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>mqttInit</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>ad7079e6ced949c1077b6dd3ffc4d6366</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>mqttPlg01Set</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>af9a669019713e77ccaa3fb68faa325c7</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>mqttPlg02Set</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>aefd8ae4378a341adfa394b9b41a31fa8</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>mqttPlg03Set</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a76ef605f585d5d95a4168a042e9443a4</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>mqttPlg04Set</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a6a0d7b4f041f1a5d88e34183627f4b89</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>pckSwPec</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>aad68bbfa84dbdb996265a76ed4837aa6</anchor>
+      <arglist>(float power)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>reduceBatLoadPWM</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>adcd644883a2cec22a8e9cff706265d1e</anchor>
+      <arglist>(uint8_t const pwmRed)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>setBatLoadPWM</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a2e686c03e2215b70795a28d6f2755911</anchor>
+      <arglist>(uint8_t const pwm)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>setConsGiv</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a67c985a8202faf67cf34c354510d197e</anchor>
+      <arglist>(state_t *const me)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>setPckSwPerc</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a62adb160385b0d7ccc20b26732aafef9</anchor>
+      <arglist>(uint8_t const perc)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>solPowStateText</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a206364124acd5778faf5e3900856fda1</anchor>
+      <arglist>(char *stateText, state_t const *const me, char const *stamp)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>sunriseTimChg</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a66997adc26f13f7eb6ee04d1bfdc777a</anchor>
+      <arglist>(state_t *const me)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>sunsetTimChg</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a771320ae52f0d830afd7ed5f97f4c684</anchor>
+      <arglist>(state_t *const me)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>surplStateText</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>acc0122df1205a0dcc929cfb3827b9793</anchor>
+      <arglist>(char *stateText, state_t const *const me, char const *stamp)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>switchBatToStepUp</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>aa8fff70868bc4d21150a39f623985e78</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>switchConsGiv</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>ad4cd5fd3499b7d68a7d98127597e5bca</anchor>
+      <arglist>(state_t *const me)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>switchHotWpump</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>afb271f085fb0a43665c626c309c43ee0</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>switchInvToBatUnl</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a47ea53744f92e54f25320b1d911bdd24</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>switchPPSrel</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a8561b20a117d1249602014a3f7fd0cc6</anchor>
+      <arglist>(uint8_t const on)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>switchSolPow</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>ac2d9b64b986791c91b4b5036a862f0f2</anchor>
+      <arglist>(state_t *const me)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>switchWouldGiv250W</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a5ad9cf458c90cb0254754e356a1cfe9e</anchor>
+      <arglist>(state_t *const me)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>switchWouldGivAway</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>ada9d48c9b61adf19f7d953aca9564501</anchor>
+      <arglist>(state_t *const me)</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>batKeepInh</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a5f201b3a5f6b88754c7dbadfd4890404</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>batUnloadAllowed</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a1e744cd12d342f1df48dbd2a54269df2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>batVoltValid</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a7a45fdc2afb8c534c1236e16ba559f2c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>befRiseTimer</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a3f632dc378ddaa916f054a937179a6b5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>clientId</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>af3bfc0ee5f56cf9949f4f1a410fd48ad</anchor>
+      <arglist>[38]</arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>consumeGiveHyst</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>ae75bd22270c5b585ea3a2948bb15ca3d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>consumeGiveSFC</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>acab365c492ca1f392f26c47003ca06e9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>heaterAllowed</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a9bbe2ba7abdd55a539baef4c3bf4be0c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint16_t</type>
+      <name>hundredsV</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a1d4e11e4206bb3b59fe07c68296a6189</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>hundVsecAbove</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a71c52b28d7dfcdb5f1a179c5b8005560</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>hundVsecBelow</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>ae50f0359940b72db4da6e32647f5f1f6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>phPckCnt</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a404a46a3db82bdf0adaa822e64727620</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>phPckOff</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a9aef66c5ac737c9a981dc53ed8e6a577</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>phPckOn</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a200af3a81d309eec168c2c3d834931b0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>phPckRelOffDelay</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a306bb6c84fa29fce5204ce05358a16b3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>phPckSw</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>ab7b833d4e2088eea1d044072e0bca7e7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volatile uint8_t</type>
+      <name>phPckSwIndex</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a078d1682f71822ae579af277d5b3975d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>oneWireDevice_t</type>
+      <name>sensors</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>acefeb068549251a346e85c81f5e397eb</anchor>
+      <arglist>[NUM1W_SENSORS]</arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>solarPowerHyst</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a67d256fa13b3bd27111a6d8f088c6162</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>subTopStPlg01</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a24688fe6eb3ef5f6c614dc1f88d76b34</anchor>
+      <arglist>[14]</arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>sunriseTimer</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>af94c47ccb7ef65022375a66252544c4c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>sunsetTimer</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a3721a34b83c2b33200ba4cafcac6dd8f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>wouldGive250WHyst</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a5a4fcfb42a603e6e32c8d1861ae83720</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>wouldGiveAwayHyst</name>
+      <anchorfile>sweet_home2_8c.html</anchorfile>
+      <anchor>a2585f7fbd1b887758e5732d881d1bd49</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>sysBasic.c</name>
-    <path>D:/mapa/gitPapa/weAut/rasProject_01part/weRasp/</path>
+    <path>D:/eclipCe18-12WS/rasProject_01/weRasp/</path>
     <filename>sys_basic_8c</filename>
     <includes id="sys_basic_8h" name="sysBasic.h" local="yes" imported="no">sysBasic.h</includes>
     <member kind="function">
@@ -978,6 +3859,20 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <type>void</type>
+      <name>logEventText</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a91085d81a46c7b046179c188197850dd</anchor>
+      <arglist>(char const *txt)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>monoTimeInit</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a6afbbb06267fbee5885213d9fc223e1e</anchor>
+      <arglist>(timespec *timer)</arglist>
+    </member>
+    <member kind="function">
       <type>uint8_t</type>
       <name>outLogIsStd</name>
       <anchorfile>sys_basic_8c.html</anchorfile>
@@ -1011,6 +3906,20 @@
       <anchorfile>sys_basic_8c.html</anchorfile>
       <anchor>a36700af15db48dd9018a259f3ed31670</anchor>
       <arglist>(char const *const logFilNam)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>timeAddNs</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a695f77f1228fd21889298b9af4d19a37</anchor>
+      <arglist>(timespec *t1, long ns)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>timeStep</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>a310c50b608cbc8d21df2c993869e007e</anchor>
+      <arglist>(timespec *timeSp, unsigned int micros)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1111,6 +4020,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>FILE *</type>
+      <name>valFil</name>
+      <anchorfile>sys_basic_8c.html</anchorfile>
+      <anchor>ad096ddfbf197fbb45378061bf469349a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>char const</type>
       <name>zif2charMod10</name>
       <anchorfile>sys_basic_8c.html</anchorfile>
@@ -1119,8 +4035,716 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>we1wire.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/weRasp/</path>
+    <filename>we1wire_8c</filename>
+    <includes id="we1wire_8h" name="we1wire.h" local="yes" imported="no">we1wire.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>getTemp</name>
+      <anchorfile>we1wire_8c.html</anchorfile>
+      <anchor>a765ca24460a0d926e7d72966b12926a6</anchor>
+      <arglist>(oneWireDevice_t *const tempSensor)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>initTempSensor</name>
+      <anchorfile>we1wire_8c.html</anchorfile>
+      <anchor>a4e83350b799f77edaed04cdf3eb2c4a3</anchor>
+      <arglist>(oneWireDevice_t *const tempSensor, char const *const name, char const *const valueFile)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weAR_N4105.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/weRasp/</path>
+    <filename>we_a_r___n4105_8c</filename>
+    <includes id="we_a_r___n4105_8h" name="weAR_N4105.h" local="yes" imported="no">weAR_N4105.h</includes>
+    <includes id="we_state_m_8h" name="weStateM.h" local="yes" imported="no">weStateM.h</includes>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <member kind="function">
+      <type>void</type>
+      <name>arn4105TimChg</name>
+      <anchorfile>we_a_r___n4105_8c.html</anchorfile>
+      <anchor>a275b78ef520367f284574a57b9cb01dd</anchor>
+      <arglist>(state_t *const me)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>setARN4105state</name>
+      <anchorfile>we_a_r___n4105_8c.html</anchorfile>
+      <anchor>a2fb95ea7a4563d8cdd4ed61bb4b23539</anchor>
+      <arglist>(uint8_t const state, uint8_t const select)</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>arn4105state</name>
+      <anchorfile>we_a_r___n4105_8c.html</anchorfile>
+      <anchor>a308c90f5066216f640eb8172d8325b40</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>arn4105Timer</name>
+      <anchorfile>we_a_r___n4105_8c.html</anchorfile>
+      <anchor>a82c43efd1602a9f7c3952e1a9472c720</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>checkL1_U</name>
+      <anchorfile>we_a_r___n4105_8c.html</anchorfile>
+      <anchor>a15ec4f826fa427da4d120376ae62c06e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>checkL2_U</name>
+      <anchorfile>we_a_r___n4105_8c.html</anchorfile>
+      <anchor>ad9191f4e7fe230755c252454b0a58785</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>checkL3_U</name>
+      <anchorfile>we_a_r___n4105_8c.html</anchorfile>
+      <anchor>a98a686b84408063d6d170ff817cbf02c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>state_t</type>
+      <name>checkLineFrq</name>
+      <anchorfile>we_a_r___n4105_8c.html</anchorfile>
+      <anchor>ac46fddb16eb69096422659b6d16b1e76</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weCGIajax.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/weRasp/</path>
+    <filename>we_c_g_iajax_8c</filename>
+    <includes id="we_c_g_iajax_8h" name="weCGIajax.h" local="yes" imported="no">weCGIajax.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>getQSparam</name>
+      <anchorfile>we_c_g_iajax_8c.html</anchorfile>
+      <anchor>a0e67285b60adc0fddbe41c0c4d8802a5</anchor>
+      <arglist>(char const *const name, char *const value, int const vLen)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>getQueryString</name>
+      <anchorfile>we_c_g_iajax_8c.html</anchorfile>
+      <anchor>a7dc09b560913af0bc265b51c89bcb0b0</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>jsonBinForm</name>
+      <anchorfile>we_c_g_iajax_8c.html</anchorfile>
+      <anchor>a17d3cb96dd422951e9b9f9c80abac047</anchor>
+      <arglist>(uint8_t const indent, char const *const name, uint8_t const value, char *end)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>jsonBreading</name>
+      <anchorfile>we_c_g_iajax_8c.html</anchorfile>
+      <anchor>a673aeec0b77e90c300492f330461d0f1</anchor>
+      <arglist>(uint8_t const indent, char const *const name, uint8_t const value, char *end)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>jsonFreading</name>
+      <anchorfile>we_c_g_iajax_8c.html</anchorfile>
+      <anchor>a3a9cf924b64aafad147747abe07089fc</anchor>
+      <arglist>(uint8_t const indent, char const *const name, float const value, char const *const unit, uint8_t const fractional, char *end)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>jsonFreadingT</name>
+      <anchorfile>we_c_g_iajax_8c.html</anchorfile>
+      <anchor>a5659750ab50fbebbc4463211a7e0b09c</anchor>
+      <arglist>(uint8_t const indent, char const *const name, float const value, char const *const unit, uint8_t const fractional, char *end, char *title)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>jsonIreading</name>
+      <anchorfile>we_c_g_iajax_8c.html</anchorfile>
+      <anchor>a18569be0d3ceb8bb95c8f6e440f1ec66</anchor>
+      <arglist>(uint8_t const indent, char const *const name, int const value, char *end)</arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>actQSPvalue</name>
+      <anchorfile>we_c_g_iajax_8c.html</anchorfile>
+      <anchor>a7489a6adfc8d184ad818b1628283d84b</anchor>
+      <arglist>[QS_MAX_VAL_LEN]</arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>queryString</name>
+      <anchorfile>we_c_g_iajax_8c.html</anchorfile>
+      <anchor>a476be876f36d2465bd688c1672a5bebf</anchor>
+      <arglist>[QS_MAX_STRING_LEN]</arglist>
+    </member>
+    <member kind="variable">
+      <type>char const  *</type>
+      <name>requestMethod</name>
+      <anchorfile>we_c_g_iajax_8c.html</anchorfile>
+      <anchor>a68196232afe1bd0fef492ff9bdd9b258</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weGPIOd.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/weRasp/</path>
+    <filename>we_g_p_i_od_8c</filename>
+    <includes id="we_g_p_i_od_8h" name="weGPIOd.h" local="yes" imported="no">weGPIOd.h</includes>
+    <member kind="function">
+      <type>void</type>
+      <name>initAsDrive</name>
+      <anchorfile>we_g_p_i_od_8c.html</anchorfile>
+      <anchor>ad246f969f0f2d0d96d28f2acda0332a1</anchor>
+      <arglist>(int thePi, unsigned gpio, unsigned init)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>initAsHiDrive</name>
+      <anchorfile>we_g_p_i_od_8c.html</anchorfile>
+      <anchor>ab6ea4d1b32489300274ac5c6c2313cca</anchor>
+      <arglist>(int thePi, unsigned gpio, unsigned init)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>setPadStrength</name>
+      <anchorfile>we_g_p_i_od_8c.html</anchorfile>
+      <anchor>ab0098452b3a538bfde6a8446e9389fa0</anchor>
+      <arglist>(int thePi, unsigned mA)</arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>thePi</name>
+      <anchorfile>we_g_p_i_od_8c.html</anchorfile>
+      <anchor>ad2183665f43852063da061a0016c5c2f</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weGPIOkeyM.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/weRasp/</path>
+    <filename>we_g_p_i_okey_m_8c</filename>
+    <includes id="we_g_p_i_okey_m_8h" name="weGPIOkeyM.h" local="yes" imported="no">weGPIOkeyM.h</includes>
+    <member kind="function">
+      <type>void</type>
+      <name>colRowInp</name>
+      <anchorfile>we_g_p_i_okey_m_8c.html</anchorfile>
+      <anchor>a9552fec3c99bd14c80109de146deeabe</anchor>
+      <arglist>(keyMatrix thePad)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>crScanStep</name>
+      <anchorfile>we_g_p_i_okey_m_8c.html</anchorfile>
+      <anchor>a4fedd6145b9b48c9fb2e40160b3b36c0</anchor>
+      <arglist>(keyMatrix *thePad, uint32_t cnt1ms)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>keyMatrixInit</name>
+      <anchorfile>we_g_p_i_okey_m_8c.html</anchorfile>
+      <anchor>af1337a7fe717f8dfb69e87dc98bd0b06</anchor>
+      <arglist>(keyMatrix *thePad, int thePi)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>keyPadInit</name>
+      <anchorfile>we_g_p_i_okey_m_8c.html</anchorfile>
+      <anchor>adfec97b442c953472c390cb6402f78b4</anchor>
+      <arglist>(keyMatrix *thePad, int thePi)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>printMatrixConfig</name>
+      <anchorfile>we_g_p_i_okey_m_8c.html</anchorfile>
+      <anchor>a33c58652fd0daa08c9c1e9df7c11e8b3</anchor>
+      <arglist>(FILE *stream, keyMatrix thePad)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>setKeyMatrixScanFunct</name>
+      <anchorfile>we_g_p_i_okey_m_8c.html</anchorfile>
+      <anchor>a5f52764205c7c522a3022ed4f084fd00</anchor>
+      <arglist>(keyMatrix *thePad, pt2lastScanStep fun)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weModbus.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/weRasp/</path>
+    <filename>we_modbus_8c</filename>
+    <includes id="we_modbus_8h" name="weModbus.h" local="yes" imported="no">weModbus.h</includes>
+    <member kind="function">
+      <type>void</type>
+      <name>modRSclose</name>
+      <anchorfile>we_modbus_8c.html</anchorfile>
+      <anchor>a5db6ba0c6edeec495debc2f5dffbbbe4</anchor>
+      <arglist>(modRS_t *modRS)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>modRSconnect</name>
+      <anchorfile>we_modbus_8c.html</anchorfile>
+      <anchor>a8c97e1ad974033a7474a5da7d60fbe36</anchor>
+      <arglist>(modRS_t *modRS, int currentSlave)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>modRSctxNew</name>
+      <anchorfile>we_modbus_8c.html</anchorfile>
+      <anchor>a0cc43ccc003cb578d6842d9ba93f698f</anchor>
+      <arglist>(modRS_t *modRS, int currentSlave)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>modRSswitchSlave</name>
+      <anchorfile>we_modbus_8c.html</anchorfile>
+      <anchor>a95a7b0db447ce4bfc6b81f758e9b7129</anchor>
+      <arglist>(modRS_t *modRS, int currentSlave)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>modTCPclose</name>
+      <anchorfile>we_modbus_8c.html</anchorfile>
+      <anchor>a619a0ca84e777f90b1577fe88c3f2320</anchor>
+      <arglist>(modTCP_t *modTCP)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>modTCPconnect</name>
+      <anchorfile>we_modbus_8c.html</anchorfile>
+      <anchor>af983d766cd5c19954d23241dbb825f9e</anchor>
+      <arglist>(modTCP_t *modTCP)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>modTCPctxNew</name>
+      <anchorfile>we_modbus_8c.html</anchorfile>
+      <anchor>aae1c92147d4535f34e3d20f1c8dea064</anchor>
+      <arglist>(modTCP_t *modTCP)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>modTCPlisten</name>
+      <anchorfile>we_modbus_8c.html</anchorfile>
+      <anchor>a89acf4e3b6f5021c73b0c0c77aac1f20</anchor>
+      <arglist>(modTCP_t *modTCP)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>parseModPort</name>
+      <anchorfile>we_modbus_8c.html</anchorfile>
+      <anchor>a4287bcdfbf70971a01f3f43f8da1897d</anchor>
+      <arglist>(const char *str)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>reg2val32</name>
+      <anchorfile>we_modbus_8c.html</anchorfile>
+      <anchor>a22785188edef8cbbf2b39d83582251e7</anchor>
+      <arglist>(dualReg_t *const dest, dualReg_t const *const source)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>regs2vals32</name>
+      <anchorfile>we_modbus_8c.html</anchorfile>
+      <anchor>a0e58ee5e343cc9a156f0df5d34268197</anchor>
+      <arglist>(float *const dest, dualReg_t const *const source, int const n)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>setIP4add</name>
+      <anchorfile>we_modbus_8c.html</anchorfile>
+      <anchor>a0443c41e1de23665f0514c55c8992440</anchor>
+      <arglist>(char *dest, const char *src)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weSerial.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/weRasp/</path>
+    <filename>we_serial_8c</filename>
+    <includes id="we_serial_8h" name="weSerial.h" local="yes" imported="no">weSerial.h</includes>
+    <member kind="function">
+      <type>tcflag_t</type>
+      <name>baudFlag</name>
+      <anchorfile>we_serial_8c.html</anchorfile>
+      <anchor>a7afc3ce8ae5c2aa9111b989ae92bfcb0</anchor>
+      <arglist>(unsigned int const speed)</arglist>
+    </member>
+    <member kind="function">
+      <type>unsigned int</type>
+      <name>baudRate</name>
+      <anchorfile>we_serial_8c.html</anchorfile>
+      <anchor>a971bfc0320756c18fbf6902d45d21b97</anchor>
+      <arglist>(tcflag_t baudFlag)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>closeUART</name>
+      <anchorfile>we_serial_8c.html</anchorfile>
+      <anchor>a5ab34ca98cbddd27bdf189fd9f107586</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>openUART</name>
+      <anchorfile>we_serial_8c.html</anchorfile>
+      <anchor>a2fb8526b08acf2e8a2a2479c111121f3</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="variable">
+      <type>tcflag_t</type>
+      <name>baud</name>
+      <anchorfile>we_serial_8c.html</anchorfile>
+      <anchor>ac5d7e2500519be44ef92964c4c34b0a3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>struct termios</type>
+      <name>options</name>
+      <anchorfile>we_serial_8c.html</anchorfile>
+      <anchor>a8be987d10fb60344b30a20d212a89740</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>unsigned int</type>
+      <name>speed</name>
+      <anchorfile>we_serial_8c.html</anchorfile>
+      <anchor>a481cb487704fc7f8c8ddc6613aed3785</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>timespec</type>
+      <name>startReceive</name>
+      <anchorfile>we_serial_8c.html</anchorfile>
+      <anchor>ab06718ddf611de94d5f22aaf038ef95b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>uartFilestream</name>
+      <anchorfile>we_serial_8c.html</anchorfile>
+      <anchor>a8b8c8cb044af817d2a17119db109186e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char *</type>
+      <name>uartPath</name>
+      <anchorfile>we_serial_8c.html</anchorfile>
+      <anchor>aa6ba4363aa5f996cabe20d3008e47e3d</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weShareMem.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/weRasp/</path>
+    <filename>we_share_mem_8c</filename>
+    <includes id="we_share_mem_8h" name="weShareMem.h" local="yes" imported="no">weShareMem.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>ANZ_SEMAS</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>a4ee63128d08cc56884c5b217df89c2a4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SEMAPHORE_KEY</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>a463aff5fdad02b9a7290b72fe58c11c9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SHARED_MEMORY_KEY</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>a0b80156f23e93853d4f405d8eb823a9b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SHARED_MEMORY_SIZE</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>a21a16aec41293c80beb10d71f79ad7a2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>deleteSemas</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>aa9d819fbd7b604256b1364410c47e680</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>deleteSharedMem</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>a87e4edb36bf58cf18e0c0b5f2fcefd61</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>detachSharedMem</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>a668b8b1c31de6114818f66a34ccbad79</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>getSemas</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>a64d0da5177aa65782668195876e8d3c0</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>initialiseSemas</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>ab0f8f3129ec98620c51b894ca2be32f0</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void *</type>
+      <name>initialiseSharedMem</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>a03a26d9a8304a8709c20716666fc3797</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>semaphoreClt</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>a88a18623cd356f03e7a48a31b92a9469</anchor>
+      <arglist>(int const semNum, int const op, semCtlPar_t par)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>semaphoreLock</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>aaad5befb0019abc7ab383211d71ae7d1</anchor>
+      <arglist>(int const semNum, int const ms)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>semaphoreOperation</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>ae6cc54b175453f6f8301d41033e736cc</anchor>
+      <arglist>(int const semNum, int op, int const ms)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>semaphoreUnlock</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>a050c835947a2d6886d1df7e158513121</anchor>
+      <arglist>(int const semNum)</arglist>
+    </member>
+    <member kind="variable">
+      <type>const semCtlPar_t</type>
+      <name>VAL0</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>adc3529db5ba72b8419726bc55d9a9c36</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>const semCtlPar_t</type>
+      <name>VAL1</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>abe23fa82bb588381a4919c44658277b1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>const semCtlPar_t</type>
+      <name>VAL9</name>
+      <anchorfile>we_share_mem_8c.html</anchorfile>
+      <anchor>a84dbfedc8369ee0d62448a5ac7aaf9a1</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>weStateM.c</name>
+    <path>D:/eclipCe18-12WS/rasProject_01/weRasp/</path>
+    <filename>we_state_m_8c</filename>
+    <includes id="we_state_m_8h" name="weStateM.h" local="yes" imported="no">weStateM.h</includes>
+    <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>fiveBandDoEnter</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a0c795e6b602db48cb8dab8ed47b21565</anchor>
+      <arglist>(state_t *const me, float analogueVal)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>fiveBandDoLeave</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>aa9dd5e78e7e29ed0b35282096ff0efd5</anchor>
+      <arglist>(state_t *const me, float analogueVal)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>fiveBandTick</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a6850e42d0e5a1f367cde67f63a5f14e2</anchor>
+      <arglist>(state_t *const me, float controlV)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>floatHystDoEnter</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>ace62f80b7ab57f1221c4a7868595bdb6</anchor>
+      <arglist>(state_t *const me, float analogueVal)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>floatHystDoLeave</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>aba5e47dfe126a06cd4a77824ff6129e7</anchor>
+      <arglist>(state_t *const me, float analogueVal)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>floatHystTick</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>adcc6917bcd48df5715871a067353fe67</anchor>
+      <arglist>(state_t *const me, float const controlV)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>genStateText</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a3c19a13ce88765e7d879c31d0bce8a37</anchor>
+      <arglist>(char *stateText, state_t const *const me, char const *stamp)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logStateReason</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a43e9f7a7b70bd12b0acce948e09cdf77</anchor>
+      <arglist>(state_t const *const me, char const *stamp, char const *cause)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>logStateText</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>adbd24b50edfd0be2e1ac3485cc640d3b</anchor>
+      <arglist>(state_t const *const me, char const *stamp)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>seqContDoEnter</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a29abc3548acd70000419efb1d088679b</anchor>
+      <arglist>(state_t *const me, char const *startCommand)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>seqContDoLeave</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a62f0a34b3c2bc81a64b7e18296872299</anchor>
+      <arglist>(state_t *const me, char const *const stopCommand)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>seqContTick</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>aca56116045dc4879211c77eff07859c8</anchor>
+      <arglist>(state_t *const me)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>setGenStateText</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a56ecd4109af2d6cb664c095634451f14</anchor>
+      <arglist>(state_t *const me, genStateText_t const fun)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>startStateText</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a485e1c867a6ebd1ec31c0240d1a963f9</anchor>
+      <arglist>(char *stateText, state_t const *const me, char const *stamp)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>switchDebDoEnter</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>ade754e2122d27adec3b15717dfd5f26f</anchor>
+      <arglist>(state_t *const me, uint32_t controlV)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>switchDebDoLeave</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>ad017ed545cd63565ac268ce002972172</anchor>
+      <arglist>(state_t *const me, uint32_t controlV)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>switchDebTick</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a0bff51d4c1b6f2a1d55501b31bb8563f</anchor>
+      <arglist>(state_t *const me, uint32_t controlV)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerDoEnter</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a05f81eead0ce9c0ac5947f8a8b4f6832</anchor>
+      <arglist>(state_t *const me, uint32_t secFromNow)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerDoLeave</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a31fa4fd47f6e0882dc5ca6d2afb5b43e</anchor>
+      <arglist>(state_t *const me, uint32_t ignored)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerDoStart</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a3c1e797da5b412766221c966d0790f8a</anchor>
+      <arglist>(state_t *const me, uint32_t secFromNow)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerDoStart4ever</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a26fc87f1f755ed6df50dea91eceb75d3</anchor>
+      <arglist>(state_t *const me)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerDoTrigger</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>ac01a95af477fa64dddc56802db3137b6</anchor>
+      <arglist>(state_t *const me, uint32_t secFromNow)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerEndTrigger</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a50de77abbe3aac47f1ed58e68b236b13</anchor>
+      <arglist>(state_t *const me, uint32_t const secUTCend)</arglist>
+    </member>
+    <member kind="function">
+      <type>uint8_t</type>
+      <name>timerTickCheck</name>
+      <anchorfile>we_state_m_8c.html</anchorfile>
+      <anchor>a9b92fc75a6e48e5f91999fc9bada642c</anchor>
+      <arglist>(state_t *const me, uint32_t controlV)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>weUtil.c</name>
-    <path>D:/mapa/gitPapa/weAut/rasProject_01part/weRasp/</path>
+    <path>D:/eclipCe18-12WS/rasProject_01/weRasp/</path>
     <filename>we_util_8c</filename>
     <includes id="we_util_8h" name="weUtil.h" local="yes" imported="no">weUtil.h</includes>
     <member kind="function">
@@ -1180,17 +4804,17 @@
       <arglist>(void)</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
+      <type>char *</type>
       <name>formFixed16</name>
       <anchorfile>we_util_8c.html</anchorfile>
-      <anchor>a0aaf311ec5beaf5fcd8ace6cd93d05d9</anchor>
+      <anchor>a8ba696d071f0dcff820b4aa6ca2105df</anchor>
       <arglist>(char *target, uint8_t targetLen, uint16_t value, uint8_t dotPos)</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
+      <type>char *</type>
       <name>formFixed32</name>
       <anchorfile>we_util_8c.html</anchorfile>
-      <anchor>a7fe36b348722fbf9b74f106535c42e54</anchor>
+      <anchor>a8d00150a65be830d1d07d999b3d5e04b</anchor>
       <arglist>(char *target, uint8_t targetLen, uint32_t value, uint8_t dotPos)</arglist>
     </member>
     <member kind="function">
@@ -1279,24 +4903,10 @@
     </member>
     <member kind="function">
       <type>void</type>
-      <name>logEventText</name>
-      <anchorfile>we_util_8c.html</anchorfile>
-      <anchor>a91085d81a46c7b046179c188197850dd</anchor>
-      <arglist>(char const *txt)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
       <name>logStampedText</name>
       <anchorfile>we_util_8c.html</anchorfile>
       <anchor>a7d11086712897d2fa0ef5268700448ad</anchor>
       <arglist>(char const *txt)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>monoTimeInit</name>
-      <anchorfile>we_util_8c.html</anchorfile>
-      <anchor>a6afbbb06267fbee5885213d9fc223e1e</anchor>
-      <arglist>(timespec *timer)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1391,13 +5001,6 @@
     </member>
     <member kind="function">
       <type>void</type>
-      <name>timeAddNs</name>
-      <anchorfile>we_util_8c.html</anchorfile>
-      <anchor>a695f77f1228fd21889298b9af4d19a37</anchor>
-      <arglist>(timespec *t1, long ns)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
       <name>timeAddTo</name>
       <anchorfile>we_util_8c.html</anchorfile>
       <anchor>a0c5234d2dce740c5c20802edbf38de36</anchor>
@@ -1416,13 +5019,6 @@
       <anchorfile>we_util_8c.html</anchorfile>
       <anchor>a43c8f4a5d06dd873a271b2b250dccf4c</anchor>
       <arglist>(unsigned int micros)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>timeStep</name>
-      <anchorfile>we_util_8c.html</anchorfile>
-      <anchor>a310c50b608cbc8d21df2c993869e007e</anchor>
-      <arglist>(timespec *timeSp, unsigned int micros)</arglist>
     </member>
     <member kind="variable">
       <type>char</type>
@@ -1566,6 +5162,168 @@
     </member>
   </compound>
   <compound kind="struct">
+    <name>_km</name>
+    <filename>struct__km.html</filename>
+    <member kind="variable">
+      <type>int</type>
+      <name>colRow</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>a8dbee9da4a59d7d9f478f037f7a55415</anchor>
+      <arglist>[13]</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>colRowMsk</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>add20e34b0e55920d7e248aa31ed7cb2a</anchor>
+      <arglist>[13]</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>colsMsk</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>a330a23bb1e1096ec1b595417d0ac2cfd</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>keyChange</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>a90deb7cd57509eb8d75532ce56325320</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>keyError</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>a678f4fd65ceb610b66246f1fb3f00f5c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>keyPresLast</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>a6663da8f1ca4a1f9ae233d1717a36454</anchor>
+      <arglist>[30]</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>keyPressed</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>a9d8fe5fe51789584506b12c42a1f16e3</anchor>
+      <arglist>[30]</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>keyState</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>a01d6cb4b389bcf9daae05adab9861c33</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>keyStateLast</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>a72b26d1004483da8e0bdd636f2f0549e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>keyVal</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>a0e50ed67a8d66433c4ce80378d67d160</anchor>
+      <arglist>[30]</arglist>
+    </member>
+    <member kind="variable">
+      <type>pt2lastScanStep</type>
+      <name>lastScanStep</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>a3e00f16a87a1eed2db9e637a824d0c1d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>const uint8_t</type>
+      <name>noCols</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>ac96e94ebd3c22573b0b2adcea7be2e25</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>noCoRo</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>acb39b17f861dfa2805c1d88efa5065d8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>noKeys</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>afdb21d24427c5fa6103d76cc69b92cc7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>const uint8_t</type>
+      <name>noRows</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>a7e9a613ac02a0683183abdf3cb2eefa0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>roCoMsk</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>ab15c69bfc7461061b93e7e285b96548b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>rowsMsk</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>ae69ced7567dcb173e3299f3763ffd5e6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>stateStamp</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>adc9ead3dc1a239ba6f56c41e545cae4b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>stateStampLast</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>a009b6ae7456400569dfe2ad94f583726</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>thePi</name>
+      <anchorfile>struct__km.html</anchorfile>
+      <anchor>ad2183665f43852063da061a0016c5c2f</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>cmdLookUp_t</name>
+    <filename>structcmd_look_up__t.html</filename>
+    <member kind="variable">
+      <type>char</type>
+      <name>command</name>
+      <anchorfile>structcmd_look_up__t.html</anchorfile>
+      <anchor>a7019688e21d490bb0c96724f006f29cc</anchor>
+      <arglist>[22]</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>mask</name>
+      <anchorfile>structcmd_look_up__t.html</anchorfile>
+      <anchor>ad3bee21df6875eeccd25d3c577e0600a</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
     <name>cycTask_t</name>
     <filename>structcyc_task__t.html</filename>
     <member kind="variable">
@@ -1671,13 +5429,304 @@
       <arglist>[34]</arglist>
     </member>
   </compound>
+  <compound kind="struct">
+    <name>dayStrtVal_t</name>
+    <filename>structday_strt_val__t.html</filename>
+    <member kind="variable">
+      <type>int</type>
+      <name>dayInYear</name>
+      <anchorfile>structday_strt_val__t.html</anchorfile>
+      <anchor>a70447b75f55bff1ae8bba7ec444cb334</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>__time_t</type>
+      <name>localMidnight</name>
+      <anchorfile>structday_strt_val__t.html</anchorfile>
+      <anchor>a85b12788371655281b31fc09971673b7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>meterValDay</name>
+      <anchorfile>structday_strt_val__t.html</anchorfile>
+      <anchor>a63601b86e8aa6075923fa123977423df</anchor>
+      <arglist>[2][2]</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>stmpSDay</name>
+      <anchorfile>structday_strt_val__t.html</anchorfile>
+      <anchor>ab46b0b3bc1c47211796ee108ff5727e1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>__time_t</type>
+      <name>utcMidnight</name>
+      <anchorfile>structday_strt_val__t.html</anchorfile>
+      <anchor>ab42d34d5189f8958dd38df9a1ca16746</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>valQual</name>
+      <anchorfile>structday_strt_val__t.html</anchorfile>
+      <anchor>a08d9bbfe8b948c14a9174ba7e13c18f1</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
   <compound kind="union">
     <name>dualReg_t</name>
     <filename>uniondual_reg__t.html</filename>
   </compound>
+  <compound kind="struct">
+    <name>memAlloc_t</name>
+    <filename>structmem_alloc__t.html</filename>
+  </compound>
+  <compound kind="struct">
+    <name>meterVal_t</name>
+    <filename>structmeter_val__t.html</filename>
+    <member kind="variable">
+      <type>int</type>
+      <name>err</name>
+      <anchorfile>structmeter_val__t.html</anchorfile>
+      <anchor>a6ce68847c12434f60d1b2654a3dc3409</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>hourOffs</name>
+      <anchorfile>structmeter_val__t.html</anchorfile>
+      <anchor>a3e12f9444bb7c732a06417ff0c74d52d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint16_t</type>
+      <name>ms</name>
+      <anchorfile>structmeter_val__t.html</anchorfile>
+      <anchor>a8d03256977e8f265177523adc9bab6c0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint16_t</type>
+      <name>msDurRead</name>
+      <anchorfile>structmeter_val__t.html</anchorfile>
+      <anchor>a3241d4a7e3bec2783f11685b0619a4fc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>pSum</name>
+      <anchorfile>structmeter_val__t.html</anchorfile>
+      <anchor>af55b6cc913741604af3517f0ccc6092f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>rTmTxt</name>
+      <anchorfile>structmeter_val__t.html</anchorfile>
+      <anchor>accce9c220b9f3bdedca4000fced47b6f</anchor>
+      <arglist>[34]</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>stmpS</name>
+      <anchorfile>structmeter_val__t.html</anchorfile>
+      <anchor>a2cf40b5e3b890702b8cab4484228d54b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>vals</name>
+      <anchorfile>structmeter_val__t.html</anchorfile>
+      <anchor>a843c08316916bdf0ff6757dfbdd12c1e</anchor>
+      <arglist>[18]</arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>modRS_t</name>
+    <filename>structmod_r_s__t.html</filename>
+    <member kind="variable">
+      <type>int</type>
+      <name>baud</name>
+      <anchorfile>structmod_r_s__t.html</anchorfile>
+      <anchor>a4858bb3109a37110e12bd7765d6f18ee</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>conErr</name>
+      <anchorfile>structmod_r_s__t.html</anchorfile>
+      <anchor>aa375ee6b9389788c7d39a5fa4c0714df</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint16_t</type>
+      <name>conErrCnt</name>
+      <anchorfile>structmod_r_s__t.html</anchorfile>
+      <anchor>aec94f00c2ed2fb60985d78e425fca818</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>modbus_t *</type>
+      <name>ctx</name>
+      <anchorfile>structmod_r_s__t.html</anchorfile>
+      <anchor>a65b629df22e3e4397451ce47bde4eba6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>device</name>
+      <anchorfile>structmod_r_s__t.html</anchorfile>
+      <anchor>a54fa9c99c7c3d72e7409faa897660ddf</anchor>
+      <arglist>[21]</arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>hourOffs</name>
+      <anchorfile>structmod_r_s__t.html</anchorfile>
+      <anchor>a3e12f9444bb7c732a06417ff0c74d52d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint16_t</type>
+      <name>ms</name>
+      <anchorfile>structmod_r_s__t.html</anchorfile>
+      <anchor>a8d03256977e8f265177523adc9bab6c0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>parity</name>
+      <anchorfile>structmod_r_s__t.html</anchorfile>
+      <anchor>ad14da60f9217c7f12ee2224d23872b45</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>modRS485state_t</type>
+      <name>rsState</name>
+      <anchorfile>structmod_r_s__t.html</anchorfile>
+      <anchor>ac23ef82744b9bda9614390639a69ed1d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>rTmTxt</name>
+      <anchorfile>structmod_r_s__t.html</anchorfile>
+      <anchor>accce9c220b9f3bdedca4000fced47b6f</anchor>
+      <arglist>[34]</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>stmpS</name>
+      <anchorfile>structmod_r_s__t.html</anchorfile>
+      <anchor>a2cf40b5e3b890702b8cab4484228d54b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>stopBits</name>
+      <anchorfile>structmod_r_s__t.html</anchorfile>
+      <anchor>ab1d103cbb226aee1eec5afa303057c71</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>modTCP_t</name>
+    <filename>structmod_t_c_p__t.html</filename>
+    <member kind="variable">
+      <type>char</type>
+      <name>addr</name>
+      <anchorfile>structmod_t_c_p__t.html</anchorfile>
+      <anchor>ab2a11908ecda8401e2ddd52b75a83433</anchor>
+      <arglist>[21]</arglist>
+    </member>
+    <member kind="variable">
+      <type>modbus_t *</type>
+      <name>ctx</name>
+      <anchorfile>structmod_t_c_p__t.html</anchorfile>
+      <anchor>a65b629df22e3e4397451ce47bde4eba6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>modBusLinkState_t</type>
+      <name>mlStat</name>
+      <anchorfile>structmod_t_c_p__t.html</anchorfile>
+      <anchor>ae1d7fa0f3e8bf7be843e5606a4e77e4b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint16_t</type>
+      <name>port</name>
+      <anchorfile>structmod_t_c_p__t.html</anchorfile>
+      <anchor>a8e0798404bf2cf5dabb84c5ba9a4f236</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>oneWireDevice_t</name>
+    <filename>structone_wire_device__t.html</filename>
+    <member kind="variable">
+      <type>char</type>
+      <name>contBuf</name>
+      <anchorfile>structone_wire_device__t.html</anchorfile>
+      <anchor>a0f26cbbd36a572c134930ddd09e85b90</anchor>
+      <arglist>[80]</arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>name</name>
+      <anchorfile>structone_wire_device__t.html</anchorfile>
+      <anchor>acd328517a6cf718155c2e6e22b671ca9</anchor>
+      <arglist>[16]</arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>value</name>
+      <anchorfile>structone_wire_device__t.html</anchorfile>
+      <anchor>ac4f474c82e82cbb89ca7c36dd52be0ed</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>valueFile</name>
+      <anchorfile>structone_wire_device__t.html</anchorfile>
+      <anchor>af6ac5e3da92b7e53d535838ec2ec5ef4</anchor>
+      <arglist>[56]</arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>valueGrdC</name>
+      <anchorfile>structone_wire_device__t.html</anchorfile>
+      <anchor>ae64c43121047abd18596cc350025c311</anchor>
+      <arglist>[8]</arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>phPckSwSet_t</name>
+    <filename>structph_pck_sw_set__t.html</filename>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>offPhases</name>
+      <anchorfile>structph_pck_sw_set__t.html</anchorfile>
+      <anchor>af2bf38f58f65047b41f9ae1320d11a7a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>onPhases</name>
+      <anchorfile>structph_pck_sw_set__t.html</anchorfile>
+      <anchor>a2e4127c9bd7b34c5a239c958a1b038b4</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
   <compound kind="union">
     <name>sdm80regs_t</name>
     <filename>unionsdm80regs__t.html</filename>
+  </compound>
+  <compound kind="union">
+    <name>semCtlPar_t</name>
+    <filename>unionsem_ctl_par__t.html</filename>
   </compound>
   <compound kind="struct">
     <name>smdX30modbus_t</name>
@@ -1715,6 +5764,347 @@
       <name>slave</name>
       <anchorfile>structsmd_x30modbus__t.html</anchorfile>
       <anchor>a7f46665d1fe6d01a75a90942bb34cfaf</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>state_t</name>
+    <filename>structstate__t.html</filename>
+    <member kind="variable">
+      <type>float</type>
+      <name>controlF</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a9340f59b5808b98f622900e2e2d5bb84</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>controlV</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a3ed340976b2f8fa1911d328e00afe42f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>controlVS</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>af350c7eca57bd47dc62cef934f2e2e0f</anchor>
+      <arglist>[6]</arglist>
+    </member>
+    <member kind="variable">
+      <type>enterState_t const</type>
+      <name>doEnter</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>ab84e1e1ed88fbb911e365949685c9094</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>enterStateF_t const</type>
+      <name>doEnterF</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a03ba0b8dba2d6936fa0ede6dfe8f1acf</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>enterStateS_t const</type>
+      <name>doEnterS</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a261b7aafd4343285856ee91508067e44</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>genStateText_t</type>
+      <name>doGenStateText</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a7c031a2f81a205257c727a30da21d8cc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>endTime</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a31db024b35c25f93c2dd2dae2fcc0cf8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>infoTxt</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>aaa30de8bd68408d71d73d9218aff9e87</anchor>
+      <arglist>[36]</arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>instanceF</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a95f10eed2bdd07b3cf1dda3267d953a4</anchor>
+      <arglist>[4]</arglist>
+    </member>
+    <member kind="variable">
+      <type>char const</type>
+      <name>name</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a0910a1428f54f810fc46d90deedff466</anchor>
+      <arglist>[22]</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>offChainLen</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a82d331290fa794873583fa08b07c4d19</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>onChainLen</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a2d05c8162a76ad08cfcf61f86feb63c5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>onStateChange_t const</type>
+      <name>onStateChange</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a2adbd1308d2605e23865adc8c60a0bd1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>realSecOff</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>acbb2479356457a9a629aaafd366ab38c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>realSecOn</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a3d3ecd9a4feb40deac679233774eca68</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>status</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>ade818037fd6c985038ff29656089758d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>subStatus</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>ababff17355c514d87db880a85ce22d7c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>threshBadLo</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>ae3833b4e93c3ebacb04aa2fcc48e2c88</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>threshCritLo</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a7f5f92203b265c146f2297912973e6da</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>threshOFF</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a8edbec90699a8ce703968935885faf5f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>threshON</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a13deb77ee00dad6a7d01ec6592a596c8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t const</type>
+      <name>typ</name>
+      <anchorfile>structstate__t.html</anchorfile>
+      <anchor>a17275788dba88bdb023fa3d7881c34a7</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>valFilVal_t</name>
+    <filename>structval_fil_val__t.html</filename>
+    <member kind="variable">
+      <type>float</type>
+      <name>batVolt</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a9250d96e29c36e0ffdb075a4cc9ef091</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint8_t</type>
+      <name>by</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a5e7ff013dee9ecf346b26ac7c17025d1</anchor>
+      <arglist>[8]</arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>fLine</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a288c28d4e84694b5040e173d5c701ec5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>hourOffs</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a3e12f9444bb7c732a06417ff0c74d52d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint16_t</type>
+      <name>ms</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a8d03256977e8f265177523adc9bab6c0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>pAll</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a77d1064931e61791f808fe737884a4c8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>pBatUnl</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>afb22f3a2dfd56434ea04bbe9b275a4f8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>pGiveAway</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a0133d65325b62b9d7a6c1fc07f07fd06</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>phPckpower</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a0b0fb28b671e55e4ee6ec1bf5e6f4db8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>pSolar</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a8330d367858282e02b7931c25722a381</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>pWaste</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a229ae5a9d35d6421bfd413af3e514fd6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>char</type>
+      <name>rTmTxt</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>accce9c220b9f3bdedca4000fced47b6f</anchor>
+      <arglist>[34]</arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>stmpS</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a2cf40b5e3b890702b8cab4484228d54b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>stmpS1stStartSol</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a3e01f110de9d006e15b7a0b3bd55643d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>stmpSCurStartSol</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a38211163e86b5de97c8f083cdf1e6e93</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>stmpSLstStopSol</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>abce8a7d04dc35172735e0c489690c596</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>tempPipe</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a83698ffad6f24d83708ca1461a672e25</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>tempTankBott</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a56029ed2c0ed49650e98be9fb6e6a814</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>tempTankTop</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a596662486266cdd0fd5859e208cb604d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>wSumExp</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>a8737b89f7e33b32e5a3dc12812df7a10</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>float</type>
+      <name>wSumIn</name>
+      <anchorfile>structval_fil_val__t.html</anchorfile>
+      <anchor>aaca6158e5e866e5a7570661ddc81b9dd</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>valsSharMem_t</name>
+    <filename>structvals_shar_mem__t.html</filename>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>clientCommand</name>
+      <anchorfile>structvals_shar_mem__t.html</anchorfile>
+      <anchor>a9ad24861104eb6ef8088c8a4b1b39a14</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint16_t</type>
+      <name>copInCnt</name>
+      <anchorfile>structvals_shar_mem__t.html</anchorfile>
+      <anchor>a1463cb18ab7f713daba6f33ac37798d0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>valFilVal_t</type>
+      <name>valFilVal</name>
+      <anchorfile>structvals_shar_mem__t.html</anchorfile>
+      <anchor>ab95e7f93049e3ebcac960b8f09b20e1b</anchor>
       <arglist></arglist>
     </member>
   </compound>

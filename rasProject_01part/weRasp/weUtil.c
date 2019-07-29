@@ -6,7 +6,7 @@
    weinert-automation.de      a-weinert.de
 
   Revision history \code
-   Rev. $Revision: 203 $ $Date: 2019-05-14 16:43:03 +0200 (Di, 14 Mai 2019) $
+   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
    Rev. 050+ 2017-10-16 : cycTask_t->mutex now pointer (allows common mutex)
    Rev. 054+ 2017-10-23 : timing enhanced, common mutex forced/standard
    Rev. 076  2017-12-01 : advanceTim month change debug.; ret 7 for offs. chg.
@@ -16,6 +16,7 @@
    Rev. 187  14.10.2018 : minor typos
    Rev. 200  16.04.2019 : logging improved; formatting enh.
    Rev. 201  26.04.2019 : renamed from sysUtil.c
+   Rev. 209  22.07.2019 : formFixed.. not void
 \endcode
 
    cross-compile by: \code
@@ -29,7 +30,7 @@
    and run sudo ldconfig there. N.b.: In most cases, it brings no disadvantage
    and it is easier to link instead of building and using an own library.
 
-   For documentation see the include files weUtil.h and sysBasic.h
+   For documentation see the include files \ref weUtil.h and \ref sysBasic.h
 */
 #include "weUtil.h" // indirectly includes some six system include files
 #include <errno.h>   // strerror()
@@ -58,14 +59,6 @@ void timeAddTo(timespec * t1, timespec const t2){
    }
 } // timeAddTo(timespec *, timespec const)
 
-/*  Add a ns increment to a time overwriting it. */
-void timeAddNs(timespec * t1, long ns){
-   (*t1).tv_nsec += ns;
-   if ((*t1).tv_nsec >= MILLIARD) {
-       (*t1).tv_nsec -= MILLIARD;
-       ++(*t1).tv_sec;
-   }
-} // timeAddNs(timT v*, long)
 
 /*  Compare two times. */
 int timeCmp(timespec const  t1, timespec const t2){
@@ -83,15 +76,6 @@ int timeSleep(unsigned int micros){
    sleepTime.tv_nsec = (long)micros * 1000;
    return nanosleep(&sleepTime, NULL);
 } // delay(unsigned int)
-
-/*  Absolute delay for the specified number of µs. */
-int timeStep(timespec * timeSp, unsigned int micros){
-   timeAddNs(timeSp, (long)(micros) * 1000); // timer += micros
-   return clock_nanosleep(ABS_MONOTIME, TIMER_ABSTIME, timeSp, NULL);
-} // delay(unsigned int)
-
-/*  Absolute time instant initialisation.  */
-void monoTimeInit(timespec * timer){ clock_gettime(ABS_MONOTIME, timer); }
 
 /*  Absolute time (source) resolution. */
 void monoTimeResol(timespec * timeRes){ clock_getres(ABS_MONOTIME, timeRes); }
@@ -216,13 +200,17 @@ void strRinto(char * dest,  char const * src, size_t n){
  *  @param targetLen field length 2..16; number of characters changed
  *  @param value     the fixed point value
  *  @param dotPos    where the fixed point is 0..6 < targetLen
+ *  @return          points to the most significant digit set
+ *                   or NULL on error / no formatting
  */
-void formFixed16(char * target, uint8_t targetLen, uint16_t value,
+char * formFixed16(char * target, uint8_t targetLen, uint16_t value,
                                                            uint8_t dotPos){
-   if (! target) return;
-   if (targetLen > 16 || targetLen < 2) return;
+   char * ret = NULL;
+   if (! target) return NULL;
+   if (targetLen > 16 || targetLen < 2) return NULL;
    target += (targetLen -1);
    uint16_t rem = value;
+
 
    do {
       if (value > 9) {
@@ -232,36 +220,40 @@ void formFixed16(char * target, uint8_t targetLen, uint16_t value,
         rem = value;
         value = 0;
      }
-     *target = (char)(rem + '0'); --target;
+     *target = (char)(rem + '0'); ret = target; --target;
      if (dotPos && targetLen > 1 && !(--dotPos)) {
-        *target = '.'; --target; --targetLen;
+        *target = '.'; ret = target; --target; --targetLen;
         if (value == 0 && targetLen > 1) {
-            *target = '0'; --target; --targetLen;
+            *target = '0'; ret = target; --target; --targetLen;
          }
      }
      if (value == 0 && !dotPos) while(targetLen > 1) {
          *target = ' '; --target; --targetLen;
      } // if while
    } while (--targetLen);
+   return ret;
 } // formFixed16(char *, uint8_t, uint16_t, uint8_t)
 
 
 /*  Format 32 bit unsigned fixed point, right aligned.
  *
- *
+ *   dotPos wrong by +1
  *  @param target    pointer to first of targLen characters changed
  *  @param targetLen field length 2..16; number of characters changed
  *  @param value     the fixed point value
  *  @param dotPos    where the fixed point is 0..6 < targetLen
+ *  @return          points to the most significant digit set
+ *                   or NULL on error / no formatting
  */
-void formFixed32(char * target, uint8_t targetLen, uint32_t value,
+char * formFixed32(char * target, uint8_t targetLen, uint32_t value,
                                                            uint8_t dotPos){
-   if (! target) return;
-   if (targetLen > 16 || targetLen < 2) return;
+   char * ret = NULL;
+   if (! target) return NULL;
+   if (targetLen > 16 || targetLen < 2) return NULL;
    target += (targetLen -1);
    uint8_t rem = 0;
- //  fprintf(outLog, "  TEST len: %4d, val: %11d, dotPos: %4d\n",
-   //                                           targetLen, value, dotPos);
+   //fprintf(outLog, "  TEST len: %4d, val: %11d, dotPos: %4d\n",
+     //                                        targetLen, value, dotPos);
    do {
       if (value > 9) {
          rem = value % 10;
@@ -270,20 +262,21 @@ void formFixed32(char * target, uint8_t targetLen, uint32_t value,
          rem = value;
          value = 0;
      }
-//      fprintf(outLog, " #TEST len: %4d, val: %11d, rem: %4d, dotPos: %4d\n",
-  //                  targetLen, value, rem, dotPos);
+     // fprintf(outLog, " #TEST len: %4d, val: %11d, rem: %4d, dotPos: %4d\n",
+       //             targetLen, value, rem, dotPos);
 
-      *target = (char)(rem + '0'); --target;
-      if (dotPos && targetLen > 1 && !(--dotPos)) {
-         *target = '.'; --target; --targetLen;
+      *target = (char)(rem + '0'); ret = target; --target;
+      if (dotPos && targetLen > 1 && !(--dotPos)) { // now the .
+         *target = '.'; ret = target; --target; --targetLen;
          if (value == 0 && targetLen > 1) {
-            *target = '0'; --target; --targetLen;
+            *target = '0'; ret = target; --target; --targetLen;
          }
-      }
+      }  // now the .
       if (value == 0 && !dotPos) while(targetLen > 1) {
          *target = ' '; --target; --targetLen;
       } // if while
    } while (--targetLen);
+   return ret;
 } // formFixed16(char *, uint8_t, uint32_t, uint8_t)
 
 char const bin8digs[256][10] = {
@@ -452,18 +445,6 @@ void logErrText(char const * txt){
    fflush(errLog);
 } // logErrText(char const *)
 
-/** Log an event/log message on outLog.
- *
- *  If txt is not null it will be output to outLog and outLog will be flushed.
- *
- *  @param txt text to be prepended
- */
-void logEventText(char const * txt){
-   if (txt == NULL || ! *txt) return;
-   fputs(txt, outLog);
-   fflush(outLog);
-} // logEventText(char const *)
-
 /*  Log an event or a message on outLog as line with time stamp.
  *
  *  If txt is not null it will be output to outLog. A time stamp is prepended
@@ -492,12 +473,12 @@ int retCode;
 
 /*  Open and lock the lock file.
  *
- *  This function as the basic implementation of ::openLock. Applications not
+ *  This function is the basic implementation of ::openLock. Applications not
  *  wanting its optional logging or doing their own should use this function
  *  directly.
  *
  *  @param lckPiGpioFil   lock file path name
- *  @return 0: OK, locked; 97: fd does not exist; 98: can't be locked
+ *  @return 0: OK, locked; 97: lckPiGpioFil does not exist; 98: can't be locked
  */
 int justLock(char const * lckPiGpioFil){
    char const * lckPiGpio = lckPiGpioFil != NULL ? lckPiGpioFil : lckPiGpioPth;
@@ -513,10 +494,10 @@ int justLock(char const * lckPiGpioFil){
 
 /*  Open and lock the lock file.
  *
- *  @param fd   lock file name
+ *  @param lckPiGpioFil   lock file name
  *  @param perr make error message
  *              when lock file does not exist or can't be locked
- *  @return 0: OK, locked; 97: fd does not exist; 98: can't be locked
+ *  @return 0: OK, locked; 97: lckPiGpioFil does not exist; 98: can't be locked
  */
 int openLock(char const * lckPiGpioFil, uint8_t const perr){
    const int ret = justLock(lckPiGpioFil);

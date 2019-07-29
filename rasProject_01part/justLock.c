@@ -2,12 +2,20 @@
  * \file justLock.c
  *
   A small program just to lock the piGpoi lock file
+\code
+   Copyright  (c)  2017   Albrecht Weinert
+   weinert-automation.de      a-weinert.de
 
-  Rev. $Revision: 205 $  $Date: 2019-05-20 17:53:28 +0200 (Mo, 20 Mai 2019) $
+ *     /         /      /\
+ *    /         /___   /  \      |
+ *    \        /____\ /____\ |  _|__
+ *     \  /\  / \    /      \|   |
+ *      \/  \/   \__/        \__/|_                                 \endcode
 
-  Copyright  (c)  2019   Albrecht Weinert <br />
-  weinert-automation.de      a-weinert.de
-
+   Revision history \code
+   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
+   Rev. 209 22.07.2019 : minor improvements (docu)
+\endcode
 
   This program tries to lock the standard lock file for piGpoi if it exists.
   On success it will run respectively sleep until getting a signal, on which
@@ -18,9 +26,9 @@
 
 //---------  basic configuration and names  --------------------------------
 
-char svnRevTxt[] = "$Revision: 205 $   ";
+char svnRevTxt[] = "$Revision: 209 $   ";
 //..................0123456789x123456789v123456789t123456789q
-char svnDatTxt[] = "$Date: 2019-05-20 17:53:28 +0200 (Mo, 20 Mai 2019) $ ";
+char svnDatTxt[] = "$Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $ ";
 //                         0123456789x123456
 
 char prgDesTxt[] = "\n"

@@ -5,10 +5,10 @@
  * Copyright (c) 2018 Albrecht Weinert, Bochum
 
    Revision history \code
-   Rev. $Revision: 190 $ $Date: 2019-02-14 19:40:38 +0100 (Do, 14 Feb 2019) $
-   Rev. 108 13.02.2018 : modified from weAutSys (2014)
+   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
+   Rev. 108 13.02.2018 : new, modified from weAutSys (2014)
    Rev. 109 15.02.2018 : directory descriptions included (trial)
-   Rev. 189 12.11.2018 : remove weAutSys past
+   Rev. 209 21.07.2019 : more links
  \endcode
 
 \dir weRasp

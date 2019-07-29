@@ -17,17 +17,17 @@
  *      \/  \/   \__/        \__/|_                                 \endcode
 
    Revision history \code
-   Rev. $Revision: 198 $ $Date: 2019-03-04 09:51:22 +0100 (Mo, 04 Mrz 2019) $
+   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
    Rev. 152 21.06.2018 : new, excerpted from sysBasic.h V.151
    Rev. 182 12.08.2018 : types reduced
    Rev. 190 12.02.2019 : minor, comments only
+   Rev. 209 13.07.2019 : include stdint.h only (string.h no more)
 \endcode
  */
 
 #ifndef BASICTYCO_H
 #define BASICTYCO_H
 #include <stdint.h>   // uint32_t
-#include <string.h>  // memset
 
 
 // ------------------ platform property endianess  -------------------------
