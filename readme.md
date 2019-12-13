@@ -21,7 +21,8 @@ see also
 [frame4j_part(de.weAut)](https://github.com/a-weinert/weAut/tree/master/frame4j_part/de/weAut)
 is a very small subset of [frame4j](https://frame4j.de "a Java framework")
 containing just the Java version of the Raspberry Pi I/O helper and 
-utility classes as well as demos/tests. All uses the pigpiod daemon/server.
+utility classes as well as demos/tests. All those I/O with Java programs
+use the pigpiod daemon/server.
 
 See also
 [Frame4J on SVN](https://weinert-automation.de/svn/frame4j/ "use guest:guest")
