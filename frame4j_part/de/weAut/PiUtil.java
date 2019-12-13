@@ -34,8 +34,8 @@ public interface PiUtil {
 
 // ------------  common constants for Pi GPIO ----------------------------- 
    
-/** Hi, ON.
- * 
+/** Hi, ON. <br />
+ *  <br />
  *  This is the boolean variant of High, On, An, Go. See also the int variant
  *  {@link H1}. In pure C software this distinction is not necessary as there
  *  is no boolean and 0 is false and any other value, as e.g. 1, is considered
@@ -48,21 +48,21 @@ public interface PiUtil {
  */
    public static final boolean HI = true;
    
-/** Lo, OFF.
- * 
+/** Lo, OFF. <br />
+ *  <br />
  *  This is the boolean variant of Low, Off, Aus, Halt.<br />
  *  See the explanation at {@link HI}.
  */
    public static final boolean LO = false;
 
-/**  Hi, ON.
- * 
+/** Hi, ON. <br />
+ *  <br />
  *  See the explanation at {@link HI}; see also {@link L0}.
  */
    public static final int H1 = 1;
 
-/** Lo, OFF.
- * 
+/** Lo, OFF. <br />
+ *  <br />
  *  See the explanation at {@link HI}; see also {@link H1}.
  */
    public static final int L0 = 0;
@@ -89,28 +89,28 @@ public interface PiUtil {
    
 // ------------ de.weAut (Java on Pi) error handling ----------------------   
 
-/** Lock process can not be started.
- * 
- *   This usually means no lock process existing on the Raspberry
- *   platform. More info in {@link Impl#lastExept}.
+/** Lock process can not be started. <br />
+ *  <br />
+ *  This usually means no lock process existing on the Raspberry
+ *  platform. More info in {@link Impl#lastExept}.
  */ 
    public static final int ERR_NoLOCKPROC = 96; // no lock process start
 
-/** Lock file does not exist.
- * 
+/** Lock file does not exist. <br />
+ *  <br />
  *  This usually means locking respectively using GPIO is forbidden for now.
  */ 
    public static final int ERR_NoLOCKFILE = 97; // lock process exit value *)
    
-/** Lock file could not be locked.
- * 
+/** Lock file could not be locked. <br />
+ *  <br />
  *  This usually means locking respectively using GPIO is momentarily 
  *  forbidden.
  */ 
    public static final int ERR_NOT_LOCKED = 98; // lock process exit value *)
 
-/** Program has no GPIO lock.
- * 
+/** Program has no GPIO lock. <br />
+ *  <br />
  *  Some operations (like e.g. {@link #openWatchdog()}) will be rejected 
  *  when the program is not owning the GPIO lock.
  */ 
@@ -119,18 +119,18 @@ public interface PiUtil {
 /** Can't open watchdog. */
    public static final int ERR_OPEN_W_DOG = 100;
    
-/** Can't close the watchdog. 
- * 
+/** Can't close the watchdog. <br />
+ *  <br />
  *  Not being able to close the watchdog usually leads to a reset.   
  */
    public static final int ERR_CLOSE_WDOG = 101;
 
 // *) Other programmes / librariy's exit values; do NOT change here    
 
-/** Get error text. 
- * 
+/** Get error text. <br />
+ *  <br >
  *  This function returns an error text for this type's error numbers.
- * 
+ *  
  *  @param errNum the error number; 0: OK gets an empty String
  *  @return  the error text (never null)
  */
@@ -147,15 +147,15 @@ public interface PiUtil {
 
   
   
-/** Open and lock lock file. 
-* 
-*  @param lckPiGpioFil if not null or empty use this path instead of the
-*                       platform default one (/home/pi/bin/.lockPiGpio)
-*  @param verbose true: make the lock process verbose (by option -v) on
-*                       standard output                     
-*  @return  err 0: OK; else: error, see {@link #ERR_NoLOCKFILE}, 
-*                    {@link #ERR_NOT_LOCKED}
-*/
+/** Open and lock lock file. <br />
+ * 
+ *  @param lckPiGpioFil if not null or empty use this path instead of the
+ *                       platform default one (/home/pi/bin/.lockPiGpio)
+ *  @param verbose true: make the lock process verbose (by option -v) on
+ *                       standard output                     
+ *  @return  err 0: OK; else: error, see {@link #ERR_NoLOCKFILE}, 
+ *                    {@link #ERR_NOT_LOCKED}
+ */
    public default int openLock(final String lckPiGpioFil, boolean verbose){
        return impl.openLock(lckPiGpioFil,verbose);
    } // openLock(String, boolean)
@@ -166,8 +166,8 @@ public interface PiUtil {
   
 //------------  Raspberry Pi / BCM watchdog handling   -------------------   
 
-/** Initialise respectively start the watchdog.
- * 
+/** Initialise respectively start the watchdog. <br />
+ *  <br />
  *  Starting the watchdog will only be allowed when having got the GPIO lock
  *  by #openLock(). Additionally the watchdog will work only when allowed 
  *  for non root.<br />
@@ -182,13 +182,11 @@ public interface PiUtil {
  */
   public default int openWatchdog(){ return impl.openWatchdog(); }
   
-/** Trigger the watchdog.
- * 
- */
+/** Trigger the watchdog. */
   public default void triggerWatchdog(){ impl.triggerWatchdog(); } 
 
-/** Close the watchdog.
- * 
+/** Close the watchdog. <br />
+ *  <br />
  *  @return  err 0: OK; else: error
  */
   public default int closeWatchdog(){ return impl.closeWatchdog(); }
@@ -212,8 +210,8 @@ public interface PiUtil {
  */  
    public default void thrDelay(int millies){ impl.thrDelay(millies); }
 
-/** A tick as mutable object. 
- * 
+/** A tick as mutable object. <br />
+ *  <br />
  *  Objects of this class essentially hold a mutable long variable intended 
  *  for absolute times in ms.
  */
@@ -235,7 +233,7 @@ public interface PiUtil {
 
 
 /** <b>Implementations for Raspberry Pi IO</b>.
- *  
+ *  <br />
  *  This class provides implementations for the enclosing interface's 
  *  methods and their (minimal) state. In most cases these are sufficient
  *  and would not be overridden.
@@ -244,8 +242,8 @@ public interface PiUtil {
      private Impl() {}; // singleton
      
 
-/** Get error text. 
- * 
+/** Get error text. <br />
+ *  <br />
  *  This function returns an error text for this type's error numbers.
  * 
  *  @param errNum the error number; 0: OK gets an empty String
@@ -270,8 +268,8 @@ public interface PiUtil {
       return "error " + errNum;
    } // getErrorText(int)
 
-/** The process holding the lock file.
- * 
+/** The process holding the lock file. <br />
+ *  <br />
  *  Not to be touched except when overriding {@link openLock}. 
  */
      public Process lockProcess;
@@ -314,8 +312,8 @@ public interface PiUtil {
     
     FileOutputStream wDog;
 
-/** Initialise respectively start the watchdog.
- * 
+/** Initialise respectively start the watchdog. <br />
+ *  <vr />
  *  Starting the watchdog will only be allowed when having got the GPIO lock
  *  by #openLock(). Additionally the watchdog will work only when allowed 
  *  for non root. To use the watchdog in Java programs with this library the
@@ -342,9 +340,7 @@ public interface PiUtil {
         return 0; 
      } // openWatchdog()
   
-/** Trigger the watchdog.
- * 
- */
+/** Trigger the watchdog. */
      public void triggerWatchdog(){ 
         if (wDog != null) try {
            wDog.write('X'); // write(watchdog, "X", 1);

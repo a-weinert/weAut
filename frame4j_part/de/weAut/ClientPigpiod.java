@@ -185,8 +185,8 @@ public class ClientPigpiod {
    public int lastCmd, lastP1, lastP2;
    int cmdExecStage; // 0: none; 2..15: request; 16..31: + response
    
-/** Log of last command execution. 
- * 
+/** Log of last command execution. <br />
+ *  <br />
  *  When this method is called immediately after a command method it will 
  *  log the command on <code>System.out</code>.
  *  
@@ -221,8 +221,8 @@ public class ClientPigpiod {
       return ret;
    } // logCommand(int)
 
-/** Log of last bad command execution. 
- * 
+/** Log of last bad command execution. <br />
+ *  <br />
  *  When this method is called immediately after a command method it will 
  *  log the command on <code>System.out</code> if and only if the execution
  *  failed (with a negative return code). In that case it will delegate to
