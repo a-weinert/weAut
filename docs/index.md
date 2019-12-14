@@ -4,7 +4,7 @@
 + [Albrecht Weinert](https://a-weinert.de/index_en.html "Albrecht's web site")
 + [weinert-automation](https://weinert-automation.de/index_en.html "development service consulting")
 + [Umlaut demo](https://a-weinert.github.io/umlautGitHubPages.html "No way to use other enconding but utf-8")
-   ([source](https://a-weinert.github.io/umlautGitHubPages.html))
+   &nbsp;  ([source](umlautGitHubPages.html))
 
 This is just a test for integrating one GitHub project's docs directory 
 generated at the development machine to a GitHub project  
@@ -15,7 +15,7 @@ generated at the development machine to a GitHub project
 - [Albrecht Weinert](https://a-weinert.de/index.html "Albrecht Weinerts Web-Bereich")
 - [weinert-automation](https://weinert-automation.de/index.html "Entwicklung Service Beratung")
 - [Umlaut demo](https://a-weinert.github.io/umlautGitHubPages.html "Bei Github und Jekyll kommt man um utf-8 nicht herum")
-   ([source](https://a-weinert.github.io/umlautGitHubPages.html))
+   &nbsp;  ([source](umlautGitHubPages.html))
 
 Dies ist (noch) ein Test der Integration des docs-Verzeichnisses eines 
 GitHub-Projekts in einen GitHub-Web-Auftritt.
