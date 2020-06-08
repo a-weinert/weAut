@@ -15,7 +15,7 @@ generated at the development machine to a GitHub project
 - [Albrecht Weinert](https://a-weinert.de/index.html "Albrecht Weinerts Web-Bereich")
 - [weinert-automation](https://weinert-automation.de/index.html "Entwicklung Service Beratung")
 - [Umlaut demo \(blog\)](https://a-weinert.github.io/umlautGitHubPages.html "Bei Github und Jekyll kommt man um utf-8 nicht herum")
-   &nbsp;  ([here](umlautGitHubPages.html))
+   &nbsp;  ([Quelle, hier)](umlautGitHubPages.html))
 
 Dies ist (noch) ein Test der Integration des docs-Verzeichnisses eines 
 GitHub-Projekts in einen GitHub-Web-Auftritt.
