@@ -1,0 +1,20 @@
+# List of javaDoc extra files in \de\frame4j\doc-files\
+# Copyright (c) 2016 A. Weinert
+# V.$Revision: 1 $, $Date: 2017-01-14 13:19:07 +0100 (Sa, 14 Jan 2017) $
+
+SVNkeys.properties
+Update.properties
+Del.properties
+AskAlert.properties
+AskAlert.java
+FuR.properties
+Era.properties
+Era.java
+FS.properties
+SendMail.properties
+UCopy.properties
+PKextr.properties
+PKextr.java
+XMLio.properties
+MakeDigest.properties
+MakeDigest.java

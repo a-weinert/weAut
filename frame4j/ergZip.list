@@ -1,0 +1,68 @@
+# List of the JDK extensions to go into erg.zip (the "all inclusive" deploy)
+
+# (c) A. Weinert, a-weinert.de
+# V.$Revision: 33 $, $Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $
+ 
+#  14.12.2006 RXTX added but comm.jar still in
+#  15.01.2007 bsDoesItNative.dll added
+#  25.04.2007 jmx tools out
+#  12.12.2007 servletapi, googlegwtdocs .. in; rxtx...dll out
+#  31.01.2008 iText-2.0.7.jar+toolbox.jar;   .. in; rxtx_we.jar out
+#  27.03.2008 For iText bc**.jar;  deluxe soundbank
+#  30.04.2008 gwt-servlet.jar
+#  26.03.2009 Frame4J based
+#  02.11.2012 RXTX in again
+#  V. 31 12.03.2021 : predecessor (1999 .. 2006) removed
+#  V. 33 25.05.2021 : hamcrest-2.2.jar added (repair junit stopped working)
+
+
+docs/frame4j/**
+docs/commapidocs/**
+docs/mailapidocs/**
+docs/servletapi/**
+docs/googlegwtdocs/**
+docs/junit/**
+
+jre\lib\ext\javax.mail.jar
+jre/lib/ext/mail.jar
+jre/lib/ext/activation.jar
+jre/lib/ext/aweinertbib.jar
+jre/lib/ext/frame4j.jar
+jre/lib/ext/jSerialComm-2.4.1.jar
+
+# empty at present:  jre/lib/endorsed/**
+jre/lib/ext/jsp-api.jar
+jre/lib/ext/servlet-api.jar
+jre/lib/ext/mysql-connector.jar
+jre/lib/ext/saxon9.jar
+jre/lib/ext/saxon9-dom.jar
+jre/lib/ext/gwt-servlet.jar
+jre/lib/ext/mysql-connector.jar
+
+#jre/lib/audio/soundbank-deluxe.gm
+
+# omit one
+# jre\lib\ext\junit-4.10.jar
+jre\lib\ext\junit-4.12.jar
+jre\lib\ext\hamcrest-2.2.jar
+
+
+# javax + win does it native (?? perhaps out ??)
+jre/lib/ext/comm.jar
+jre/lib/javax.comm.properties
+jre/bin/win32com.dll
+jre/bin/bsDoesItNative.dll
+
+# use RXTX new 02.11.2012 win .. 64 bit (if build there)
+jre/lib/ext/RXTXcomm.jar
+jre/bin/rxtxParallel.dll
+jre/bin/rxtxSerial.dll
+
+
+#jre/lib/ext/toolbox.jar
+#jre/lib/ext/bcmail-jdk14-137.jar
+#jre/lib/ext/bcprov-jdk14-137.jar
+jre/lib/ext/bcmail.jar
+jre/lib/ext/bcprov.jar
+
+

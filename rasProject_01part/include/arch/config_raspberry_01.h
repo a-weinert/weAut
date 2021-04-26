@@ -1,5 +1,4 @@
-/**
- * \file config_raspberry_01.h
+/** @file config_raspberry_01.h
  *
  *  Configuration settings for Raspberry Pi1
  *
@@ -19,9 +18,10 @@
  *      \/  \/   \__/        \__/|_                                 \endcode
 
    Revision history \code
-   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
+   Rev. $Revision: 238 $ $Date: 2021-03-01 14:38:58 +0100 (Mo, 01 Mrz 2021) $
    Rev. 190 12.02.2019 : minor, comments only
    Rev. 209 10.07.2019 : stdUARTpath
+   Rev. 231 13.08.2020 : two digit PIN0x  and  GPIO2pin added
 \endcode
  */
 
@@ -31,7 +31,7 @@
 # error "more than one platform specific config_platform.h file"
 #endif
 
-// by using Joan NN's pigpio(d) we don't need  those address values
+// by using Joan NN's pigpio(d) we don't need those address values
 //#define ARM_PERI_BASE 0x20000000
 //#define ARM_GPIO_BASE 0x20000000
 //#define ARM_PERI_SIZE 0x01000000
@@ -40,7 +40,11 @@
 #define PIN3   0 // 2 on Pi3
 #define PIN5   1 // 3 on Pi3
 #define PIN7   4
-#define PIN8  14  //TXDI
+#define PIN8  14   //TXDI
+#define PIN03  0 // 2 on Pi3
+#define PIN05  1 // 3 on Pi3
+#define PIN07  4
+#define PIN08 14   // TXDI
 #define PIN10 15  //RXDI
 #define PIN11 17
 #define PIN12 18
@@ -58,16 +62,21 @@
 // 1 17 : 3.3V
 // 2 4  : 5V
 
+//                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,
+#define GPIO2pin   3, 5, 0, 0, 7, 0, 0, 0,24,21,19,23, 0, 0, 8,10, 0,11,12, 0,\
+                   0,13,15,16,18,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+//                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,
+#define PIN2gpio  99,93,95, 0,95, 1,90, 4,14,90,15,17,18,21,90,22,23,93,24,10,\
+                  90, 9,25,11, 8,90, 7,99,99,99,99,99,99,99,99,99,99,99,99,99,\
+                  99,99,99,99
+//                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,
+// 0..56(?) GPIO; 95: 5V; 93: 3.3V; 90: Earth 0V;
+// 99: not existent; [1..40]: valid pin number/index; [1..26]: existing pins
+
 /** /def stdUARTpath
  *  Pi's standard UART.
  *
  *  It is the one on the Pins 8 (GPIO14) for Tx and 10 (GPIO15) for Rx.
  */
 #define stdUARTpath "/dev/ttyS0"
-
-
-
-
-
-
-

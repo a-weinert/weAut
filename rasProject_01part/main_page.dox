@@ -2,18 +2,19 @@
  *
  * This file is for extra Doxygen documentation texts, only.
  * It contains no software.
- * Copyright (c) 2018 Albrecht Weinert, Bochum
+ * Copyright (c) 2018 2020 Albrecht Weinert, Bochum
 
    Revision history \code
-   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
+   Rev. $Revision: 234 $ $Date: 2021-01-20 19:25:03 +0100 (Mi, 20 Jan 2021) $
    Rev. 108 13.02.2018 : new, modified from weAutSys (2014)
    Rev. 109 15.02.2018 : directory descriptions included (trial)
    Rev. 209 21.07.2019 : more links
+   Rev. 233 20.10.2020 : minor corrections and updates 
  \endcode
 
 \dir weRasp
 
-Raspberry Pi 3 Process control &mdash; C sources by A. Weinert
+Raspberry Pi process control &mdash; C sources by A. Weinert
 
 \dir include 
 
@@ -21,8 +22,8 @@ Raspberry Pi Process control &mdash; definitions
 
 \defgroup raspArchGrp Raspberries architecture differences
 
-The different Raspberry types, like Pi1 and P3, can mostly be handled 
-transparently to the control programmes. This is done by make variables by 
+The different Raspberry types, like Pi1, 3, 4  and Zero, can mostly be handled 
+transparently to the control programs. This is done by make variables by 
 a make variable TARGET identifying a concrete target machine and, hence, the
 architecture, i.e the PLATFORM variable.The latter can also be set directly as
 PLATFORM = raspberry_03 e.g.. raspberry_03 is the default by the way.
@@ -34,7 +35,7 @@ The mechanism used is calculated make includes and calculated C includes.
 Raspberry Pi variants &mdash; architecture definitions
 
 The preferred Raspberry test and target platform for control applications
-is a Pi3 with a non graphical OS. But other and older platforms may be 
+is a Pi3 or Pi4 with a non graphical OS. But other and older platforms may be 
 sufficient sometimes. To handle differences (GPIO pinning e.g.) in a uniform
 way, the include files in this directory describe those platforms.
 
@@ -43,37 +44,54 @@ way, the include files in this directory describe those platforms.
 \mainpage rasProject1 - process control with Raspberry Pi 3
 
   The ideas behind using a Raspberry Pi3 for process control are published in
-  &lt;<a href="http://a-weinert.de/pub/raspberry4remoteServices.pdf"
-  >raspberry4remoteServices.pdf</a>&gt; at
-  &lt;<a href="http://a-weinert.de/pub/">a-weinert.de/pub/</a>&gt;. 
+  <a href="https://a-weinert.de/pub/raspberry4remoteServices.pdf"
+   title="a-weinert.de/pub/raspberry4remoteServices.pdf"
+  ><b>raspberry4remoteServices.pdf</b></a> 
+  (<a href="https://a-weinert.de/pub/" title="a-weinert.de/pub/">dir</a>)
+  at <a href="https://a-weinert.de/publication_en.html"
+  title="a-weinert.de/publication_en.html"
+  ><b>a-weinert.de</b></a>.
 
   \section intro_secH Process control features
+ * \image latex raspi4rs485_IO.jpg "RasPi4 with RS485 and GPIO" width=\textwidth
+  \image html raspi4rs485_IO.jpg "RasPi4 with RS485 and other GPIO"
   
   By certain configuration and utilising constraints we get 24/7 base for 
   control software with <ul> 
-    <li> cycles (1ms,  10ms, 100ms, 1s and multiples) </li>
+    <li> cycles (1ms,  10ms, 20ms, 100ms, 1s) </li>
     <li> support for Modbus, MQTT, 1-wire and more</li>
     <li> HMI via Web-interface </li>
     <li> watchdog </li>
  * </ul>
-  Compared with industrial PLCs and weAut01 there is <ul>
+  Compared with industrial PLCs and 
+  <a href="https://weinert-automation.de/entw_hw.html#proj">weAut01</a>
+  there is <ul>
     <li> no supervising of power supply, and, hence </li>
     <li> no (cycle for) programmable reaction on power outages </li>
- *
+ * </ul>
+  Devices supported by the library include <ul>
+    <li> electronic electricity meter </li>
+    <li> PV inverter </li>
+    <li> bar code / QR code reader </li>
+   </ul>
   
  * \section copyLicNote A note on Copyright and License
  *
  * For software and documentation developed for this project:
  *
- * &nbsp; &nbsp; &nbsp; Copyright &copy;&nbsp;2018 Prof. Dr.-Ing. Albrecht Weinert
+ * &nbsp; &nbsp; &nbsp; Copyright &copy;&nbsp;2018&nbsp; 
+     2020 &nbsp; A. Weinert <br />
+ * &nbsp; &nbsp; &nbsp; Prof. Dr.-Ing. Albrecht Weinert
  *  &nbsp; &nbsp; &lt;<a href="http://a-weinert.de">a-weinert.de</a>&gt;<br />
- * &nbsp; &nbsp; &nbsp; weinert - automation &nbsp; Bochum &nbsp; &nbsp; &nbsp;
+ * &nbsp; &nbsp; &nbsp; weinert - automation &nbsp; Bochum &nbsp;&nbsp;
  * &lt;<a href="http://weinert-automation.de">weinert-automation.de</a>&gt;
  *  <br />
  * &nbsp; &nbsp; &nbsp; All right reserved.<br />
  *
- * The software is open source and available by SVN checkout.
+ * The software is open source and available by
  
+ <a href="https://weinert-automation.de/svn/" title="needs an account"
+ ><b>SVN</b></a> checkout. 
  * It uses open source libraries by other authors. Those parts 
  * keep their original license and author's copyright.
  *

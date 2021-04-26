@@ -1,0 +1,44 @@
+# Frame4J (javadoc) Documentation  V$Revision: 31 $ ($Date: 2021-03-12 16:58:39 +0100 (Fr, 12 Mrz 2021) $) Albrecht Weinert
+
+# List of source files and packages for de.frame4j.... under Java11 
+# This is Frame4Jdoc.list - those sources that cannot be compiled nor
+# documented cause of Java >= 9 lacking installed extensions.
+# If Frame4Jdoc.list changes keep this file consistent
+
+# V.o08  23.11.07.01.2018: new, excerpt from Frame4Jdoc.list
+
+# Copyright  2018 Albrecht Weinert
+
+de.frame4j
+de.frame4j.util
+de.frame4j.graf
+de.frame4j.io
+de.frame4j.xml
+de.frame4j.text
+de.frame4j.time
+de.frame4j.net
+de.frame4j.demos
+de.frame4j.math
+# de.frame4j.automation
+
+
+# by a javaDoc bug  single files are not found relative to -sourcepath
+# so (very ugly) it has to be repeated here for every no named package
+# convenience starter (or Applet)
+# if D:\temp\frame4j is not the source path (=%theSource%) use
+# java de.frame4j.FuR %theSource%\Frame4Jdoc.list "D:\temp\frame4j" %theSource%
+
+D:\temp\frame4j\Del.java
+D:\temp\frame4j\Update.java
+D:\temp\frame4j\TimeHelper.java
+D:\temp\frame4j\ShowProps.java
+D:\temp\frame4j\FuR.java
+D:\temp\frame4j\FS.java
+D:\temp\frame4j\AskAlert.java
+#D:\temp\frame4j\Calculator.java
+D:\temp\frame4j\Exec.java
+# D:\temp\frame4j\ComplDemo.java
+D:\temp\frame4j\UCopy.java
+D:\temp\frame4j\MakeDigest.java
+D:\temp\frame4j\ClientLil.java
+D:\temp\frame4j\SVNkeys.java

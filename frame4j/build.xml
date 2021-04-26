@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1"?> 
+<project name="Helper jobs for building Frame4J" default="help" basedir=".">
+<!-- (c) A. Weinert, V.$Revision: 41 $, $Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $ -->	
+
+ <target name="help">
+<!-- There is no Ant way, to get rid of the obnoxious [echo] in  front of
+      every line. If you write to a file and dispay it with  <exec cmd type,
+      you get the even more ugly [exec] as reward. Hence just <echo. -->
+ 	<echo level="error"  >
+ Some little helper jobs for building and deploying of
+ Frame4J, the Java framework, (de.frame4j..)
+ (c) A. Weinert, V.$Revision: 41 $, $Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $ 
+
+ jobs: help, copDocFiles 
+ 		
+ help:        displays this help message (ignore the obnoxious [echo] 
+ 		        put in front of every line by Ant 		
+ 
+ copDocFiles: copies referred sources and ressources from the 
+ 		        source tree (flattened) into the dirs \doc-files
+ 		        governed by \doc-files\doc-files.list (there)
+ 		        to be done prior (!) to running javadoc
+
+ jobs, obsolete or not implemented yet: copExamp, copExampX, ..
+ 		
+ ergZip:      Makes a .zip archive including all Frame4J 
+ 		        supplements to a (Windows based) JDK, including
+ 		        docu, installed extensions, binaries and so on
+		
+ 	</echo>	
+ </target>	
+
+ <target name="ergZip"
+  description="Generates an archive of all framework supplements to the JDK">
+	  <!-- delete wg. zip-file-date  -->
+	  <delete file="./erg.zip" quiet="true" />
+	  <property environment="env"/>
+	  <zip zipfile="./erg.zip" 
+	               includesfile="./ergZip.list" basedir="${env.JAVA_HOME}" />
+ </target>
+
+ <target name="copDocFiles"
+                description="copies sources into packages doc-files dirs">
+    <copy todir="de\frame4j\util\doc-files"
+                                  flatten="yes" preservelastmodified="yes">
+      <fileset dir="de\frame4j\util" 
+         includesfile="de\frame4j\util\doc-files\doc-files.list" />
+      <fileset dir="de\frame4j\util" 
+         includesfile="de\frame4j\util\doc-files\doc-files.list" />
+    </copy>
+  	
+    <copy todir="de\frame4j\doc-files"
+                     flatten="yes" preservelastmodified="yes" >
+      <fileset dir="de\frame4j" 
+       includesfile="de\frame4j\doc-files\doc-files.list" />
+    </copy>
+
+    <copy todir="de\frame4j\demos\doc-files"
+                     flatten="yes" preservelastmodified="yes" >
+      <fileset dir="de\frame4j\demos" 
+       includesfile="de\frame4j\demos\doc-files\doc-files.list" />
+    </copy>
+
+   <copy todir="de\frame4j\graf\doc-files"
+                     flatten="yes" preservelastmodified="yes" >
+     <fileset dir="." 
+       includesfile="de\frame4j\graf\doc-files\doc-files.list" />
+   </copy>
+ </target>
+
+ <target name="test">
+   <java classname="AskAlert">
+	  <arg value="-en"/>
+	</java>
+ </target>
+	
+	<target name="noop">
+		</target>
+
+</project>

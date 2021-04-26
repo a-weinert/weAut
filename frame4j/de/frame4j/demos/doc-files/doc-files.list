@@ -1,0 +1,9 @@
+# List of javaDoc extra files in \de\frame4j\demos\doc-files\
+# (c) A. Weinert, V.$Revision: 1 $, $Date: 2017-01-14 13:19:07 +0100 (Sa, 14 Jan 2017) $
+
+SAXdemo.properties
+SAXdemo.java
+HelloFrame4J.java
+HelloFrame4J.properties
+HelloFrame4J_pl.properties
+

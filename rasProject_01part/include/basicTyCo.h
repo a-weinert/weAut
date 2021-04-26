@@ -17,11 +17,12 @@
  *      \/  \/   \__/        \__/|_                                 \endcode
 
    Revision history \code
-   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
+   Rev. $Revision: 236 $ $Date: 2021-02-02 18:11:02 +0100 (Di, 02 Feb 2021) $
    Rev. 152 21.06.2018 : new, excerpted from sysBasic.h V.151
    Rev. 182 12.08.2018 : types reduced
    Rev. 190 12.02.2019 : minor, comments only
    Rev. 209 13.07.2019 : include stdint.h only (string.h no more)
+   Rev. 215 26.08.2019 : type sdm124regs_t added
 \endcode
  */
 
@@ -177,7 +178,7 @@ typedef union {
 } dualReg_t;
 
 
-/** A type for 80 registers respectively 40 32 bit values.
+/** A type for 80 registers respectively 40 values of 32 bit.
  *
  *  Modbus RS484 has a very restricted maximum telegram length of 256,
  *  allowing for 252 data bytes, respectively 248 value bytes or 124 registers
@@ -192,6 +193,21 @@ typedef union {
    uint16_t regs[80];
    uint8_t b[160];
 } sdm80regs_t;
+
+/** A type for 124 registers respectively 62 values of 32 bit.
+ *
+ *  Modbus RS484 has a very restricted maximum telegram length of 256,
+ *  allowing for 252 data bytes, respectively 248 value bytes or 124 registers
+ *  in say FC4 (read input registers).
+ */
+typedef union {
+   dualReg_t dRegs[62];
+   float f[62];
+   uint32_t i[62];
+   uint16_t regs[124];
+   uint8_t b[248];
+} sdm124regs_t;
+
 
 
 //--------------------------   Serial link states and types
@@ -238,7 +254,9 @@ typedef enum modBusLinkState_t {
  */
 typedef struct {
    char name[10]; //!< short meter name (8 characters max., 6..8 recommended)
+   char title[32]; //!< meter explanation name (30 characters max.)
    char naPh[3][6]; //!> short phase i name (max. 5, 2 or 3 recommended; L1 e.g.)
+   char tiPh[3][32]; //!> phase i title (max. 30; line1 e.g. or battery/heater)
    int slave; //!< Modbus slave number 1..247; 0: all undefined
    modBusLinkState_t linkState; //!< state of the (slave's) communication link
    uint16_t errorCount; //!< for the application to handle recurring errors
@@ -294,7 +312,7 @@ typedef struct {
  *
  *  That's quite clear and applies to BCM2836 and BCM2837, too (we have no
  *  data sheet for those, only for BCM2835).
- *  And to repeat: Too many volatiles and memory fences makes programmes
+ *  And to repeat: Too many volatiles and memory fences makes programs
  *  longer and slower. But one too less is good for disaster.
  *
  *  Language hint: In Java this would be volatile, transient and synchronised.
@@ -305,4 +323,4 @@ typedef struct {
  */
 #define memBarrier() __sync_synchronize()
 
-#endif /// BASICTYCO_H
+#endif // BASICTYCO_H

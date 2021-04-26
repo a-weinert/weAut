@@ -1,4 +1,4 @@
-/** \file weRasp/weUtil.c
+/** @file weRasp/weUtil.c
 
    Some system related time and utility functions for Raspberry Pi
 
@@ -6,7 +6,7 @@
    weinert-automation.de      a-weinert.de
 
   Revision history \code
-   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
+   Rev. $Revision: 240 $ $Date: 2021-04-10 09:45:45 +0200 (Sa, 10 Apr 2021) $
    Rev. 050+ 2017-10-16 : cycTask_t->mutex now pointer (allows common mutex)
    Rev. 054+ 2017-10-23 : timing enhanced, common mutex forced/standard
    Rev. 076  2017-12-01 : advanceTim month change debug.; ret 7 for offs. chg.
@@ -17,6 +17,7 @@
    Rev. 200  16.04.2019 : logging improved; formatting enh.
    Rev. 201  26.04.2019 : renamed from sysUtil.c
    Rev. 209  22.07.2019 : formFixed.. not void
+   Rev. 233  26.09.2020 : 10 ms cycle added
 \endcode
 
    cross-compile by: \code
@@ -68,7 +69,7 @@ int timeCmp(timespec const  t1, timespec const t2){
 } // timeCmp(2* timespec const)
 
 
-/*  Relative delay for the specified number of µs. */
+/*  Relative delay for the specified number of ï¿½s. */
 int timeSleep(unsigned int micros){
    if (micros < 30) return 0;
    struct timespec sleepTime;
@@ -378,6 +379,8 @@ int parsInt(const char * str, const int lower, const int upper, const int def){
    return val > upper ? def: val;
 } //  parsInt(const char *, 3 * int)
 
+//---------------- parsing ----
+
 /*  Character to hexadecimal.  */
 int char2hexDig(char c){
    if (c <'0') return -1;
@@ -386,6 +389,52 @@ int char2hexDig(char c){
    if (c < 'a' || c > 'f') return -1;
    return c - ('A' - 10);
 } //  char2hexDig(char)
+
+/*  Long array of length 14.
+ *
+ *  Prepared for non thread safe use with ::parse2Long()
+ */
+long int parsResult[14];
+
+/*  Parse a string of integer numbers.
+ *
+ *  The string optArg will be tokenised taking any occurrences of the
+ *  characters " +,;" (blank, plus, comma, semicolon) as border. "Any
+ *  occurrences" means two commas ",,", e.g., acting as one separator and
+ *  not denoting an empty number. <br />
+ *  N.b.: The string optArg will be modified (by replacing the first character
+ *  of the token separators found by zero ('\0').
+ *
+ *  The number format accepted and parsed is decimal and hexadecimal.
+ *  Hexadecimal starts with 0x or 0X. Leading zeros have no significance (in
+ *  C stone age sense of being octal).
+ *
+ *  @param optArg the string to be passed to a number of integer numbers,
+ *                passed as program parameter, e.g.
+ *  @param parsResult pointer to an array of long int, minimal length 14 (!)
+ *  @return the number of integer numbers parsed ab put into parsResult[],
+ *          0..14
+ */
+unsigned int parse2Long(char * const optArg, long int * parsResult){
+   if (!optArg || !parsResult) return 0; // no results with NULL pointer
+   char * nxtPar = optarg;
+   char * stPars;
+   unsigned int numVal = 0;
+   for (;numVal < 14; ++numVal, ++parsResult){
+      stPars = strtok(nxtPar, " +,;");
+      if (!stPars) break; // no more
+      nxtPar = NULL;
+      long int res = 0L;
+      char c = *stPars;
+      uint8_t neg = c == '-';
+      if (neg) { ++stPars; c = *stPars; } // skip -  and skip zeros (0) to ...
+      for(;c == '0';) { ++stPars; c = *stPars; } // ... avoid C's stupid octal
+      if (c) res = strtol(stPars, NULL, 0); // string to long if not 0 00..
+      *parsResult = neg ? -res : res;
+   } // for
+   return numVal;
+} // parse2Long(char *, long int *)
+
 
 
 //--------------------- too early definitions ------------------------------
@@ -406,8 +455,8 @@ void logErrWithText(char const * txt){
    genErrWithText(txt);
    fputs(errorText, errLog);
    fputc('\n', errLog);
-   //   fprintf(errLog, "%s\n", errorText);
    fflush(errLog);
+   if (useOutLog4errLog) ++noLgdEvnt;
 } //  logErrWithText(char const *)
 
 
@@ -417,6 +466,7 @@ void logErrorText(){
    fputc('\n', errLog);
    //   fprintf(errLog, "%s\n", errorText);
    fflush(errLog);
+   if (useOutLog4errLog) ++noLgdEvnt;
 } // logErrorText()
 
 
@@ -443,6 +493,7 @@ void logErrText(char const * txt){
    if (txt == NULL) return;
    fputs(txt, errLog);
    fflush(errLog);
+   if (useOutLog4errLog) ++noLgdEvnt;
 } // logErrText(char const *)
 
 /*  Log an event or a message on outLog as line with time stamp.
@@ -457,65 +508,10 @@ void logStampedText(char const * txt){
    if (txt == NULL || ! *txt) return;
    fprintf(outLog, " %.23s # %.50s\n", cycTaskMED.rTmTxt + 3, txt);
    fflush(outLog);
+   ++noLgdEvnt;
 } // logStampedText(char const *)
 
 
-// -----------------------  singleton support (application lock)  -----------
-
-/*  Lock file handle. */
-int lockFd;
-
-/* Common path to a lock file for GpIO use */
-char const  * const lckPiGpioPth = "/home/pi/bin/.lockPiGpio";
-
-/*  Basic start-up function failure. */
-int retCode;
-
-/*  Open and lock the lock file.
- *
- *  This function is the basic implementation of ::openLock. Applications not
- *  wanting its optional logging or doing their own should use this function
- *  directly.
- *
- *  @param lckPiGpioFil   lock file path name
- *  @return 0: OK, locked; 97: lckPiGpioFil does not exist; 98: can't be locked
- */
-int justLock(char const * lckPiGpioFil){
-   char const * lckPiGpio = lckPiGpioFil != NULL ? lckPiGpioFil : lckPiGpioPth;
-   if ((lockFd = open(lckPiGpio, O_RDWR, 0666))  < 0) {
-      return retCode = 97;
-   } // can't open lock file (must exist)
-   if (flock(lockFd, LOCK_EX | LOCK_NB) < 0) {
-      close (lockFd);
-      return retCode = 98;
-   } // can't lock lock file
-   return retCode = 0;
-} // justLock(char const *)
-
-/*  Open and lock the lock file.
- *
- *  @param lckPiGpioFil   lock file name
- *  @param perr make error message
- *              when lock file does not exist or can't be locked
- *  @return 0: OK, locked; 97: lckPiGpioFil does not exist; 98: can't be locked
- */
-int openLock(char const * lckPiGpioFil, uint8_t const perr){
-   const int ret = justLock(lckPiGpioFil);
-   if (ret && perr) {
-      if (ret == 97) {
-         logErrWithText("can't open lock file  (must exist)");
-      } else if (ret == 98) {
-         logErrWithText("can't lock lock file (other instance running)");
-      }
-   }
-   return ret;
-} // openLock(char const *, uint8_t const)
-
-/*  Unlock the lock file. */
-void closeLock(void){
-   flock(lockFd, LOCK_UN);
-   close(lockFd);
-} // closeLock()
 
 
 // ------------------------------------  signalling and exiting  ------------
@@ -612,15 +608,16 @@ int8_t vcoCorrNs = 0;  // ns count correct -: faster, +: slower
 long absNanos1ms = 1000000;  // the adjusted 1ms of the ABS_MONOTIME clock
 int msReal;
 
+cycTask_t cyc1sec;  // 1s cycle (data structure)
 cycTask_t cyc100ms; // 100ms cycle (data structure)
 cycTask_t cyc20ms;  // 20ms cycle (data structure)
+cycTask_t cyc10ms;  // 10ms cycle (data structure)
 cycTask_t cyc1ms;   // 1ms cycle (data structure)
-cycTask_t cyc1sec;  // 1s cycle (data structure)
-
-int startDelay[1];  // if set as 1..100, start delay for 1&100ms cycles
 
 pthread_t threadCyclist;  // the thread running date time and cycles
+// having 1ms and 100ms cycle is the published default setting, relied on.
 uint8_t have1msCyc = ON;
+uint8_t have10msCyc = OFF;
 uint8_t have20msCyc = OFF;
 uint8_t have100msCyc = ON;
 uint8_t have1secCyc = OFF;
@@ -669,10 +666,7 @@ void  * theCyclistThread(void * args){
          if (advRet >= 2) { // advanced min
            if (advRet > 2) {  // hour change
               localtime_r(&actRTime.tv_sec, &actRTm); // structure safe
-              //  todo put update RT here
-              //    clock_gettime(CLOCK_REALTIME, &actRTime);  // epoch time
-              //  localtime_r(&actRTime.tv_sec, &actRTm); // structure safe
-              // Attention this is copy and paste
+              // Attention this is copy and paste from ??
               todayInYear = actRTm.tm_yday;
               __time_t const utcSecInDay = actRTime.tv_sec % 86400;
               utcMidnight = actRTime.tv_sec - utcSecInDay;
@@ -716,17 +710,26 @@ void  * theCyclistThread(void * args){
       if (!commonRun) break;
       if (have1msCyc)
         cycTaskEvent(&cyc1ms, 1, cyc1msEnd, cycTaskMED); // signal 1ms cycle t.
-      if (have100msCyc && !cycTaskMED.msTo100Cnt)
-        cycTaskEvent(&cyc100ms, 1, cyc1msEnd, cycTaskMED); // 100ms cyc. tasks
-      if (have1secCyc && cycTaskMED.cycStartMillis == 0)
-        cycTaskEvent(&cyc1sec, 1, cyc1msEnd, cycTaskMED); // signal 1s cycle t.
-      if (have20msCyc && cycTaskMED.msTo100Cnt % 20 == 0)
-         cycTaskEvent(&cyc20ms, 1, cyc1msEnd, cycTaskMED); // signal 1s cycle t.
-
-     //  ++cycTaskMED.cnt1ms; // adding 1ms cycle counter put up under lock
+      if (!cycTaskMED.msTo100Cnt) { // millisecond 0: fire all cycles
+         if (have10msCyc) cycTaskEvent(&cyc10ms, 1, cyc1msEnd, cycTaskMED);
+         if (have20msCyc) cycTaskEvent(&cyc20ms, 1, cyc1msEnd, cycTaskMED);
+         if (have100msCyc) cycTaskEvent(&cyc100ms, 1, cyc1msEnd, cycTaskMED);
+         if (have1secCyc && cycTaskMED.cycStartMillis == 0)
+           cycTaskEvent(&cyc1sec, 1, cyc1msEnd, cycTaskMED); // signal 1s cycle t.
+      } else { // 0ms  else handle non 0ms cases for 10 or 20 ms cycle
+         uint8_t const modTmp = cycTaskMED.msTo100Cnt % 20;
+         if (have10msCyc && (modTmp == 0 || modTmp == 10)) {
+            cycTaskEvent(&cyc10ms, 1, cyc1msEnd, cycTaskMED);
+         }
+         if (have20msCyc && modTmp == 0) {
+            cycTaskEvent(&cyc20ms, 1, cyc1msEnd, cycTaskMED); // 20ms cycle
+         }
+      } //  handle non 0ms cases
    } // timing loop
+
    // run all cycles a last time w/o commonRun to allow cleanup
    cycTaskEvent(&cyc1ms, 1, cyc1msEnd, cycTaskMED); // sign. 1ms cycle tasks
+   cycTaskEvent(&cyc10ms, 1, cyc1msEnd, cycTaskMED);
    cycTaskEvent(&cyc20ms, 1, cyc1msEnd, cycTaskMED); // sign. 20ms cycle tasks
    cycTaskEvent(&cyc100ms, 1, cyc1msEnd, cycTaskMED); // 100ms cyc. tasks
    cycTaskEvent(&cyc1sec, 1, cyc1msEnd, cycTaskMED); // signal 1s cycle task
@@ -785,6 +788,8 @@ uint8_t get10inS(){ return cycTaskMED.cnt10inSec; }
  *  with periods > 1s.
  */
 uint32_t getAbsS(){ return cycTaskMED.realSec; }
+
+int startDelay[1];  // if set as 1..100, start delay for 1&100ms cycles
 
 /* The cycles handler  */
 int theCyclistStart(int startMsDelay){
@@ -923,7 +928,7 @@ int advanceTmTim(struct tm  * rTm,  char * rTmTxt, uint8_t sec){
    if (v) return 5; // not January --> not year change
 
    v2 = rTm->tm_year % 100; // assume 2000 .. 2099 (200..299)
-                          ////  BUG its the month
+                           //  BUG its the month
    memcpy(rTmTxt + 5, dec2digs[v2], 2); // update last two year digits
    return 6;
 } // advanceTmTim(struct tm  *, uint8_t)

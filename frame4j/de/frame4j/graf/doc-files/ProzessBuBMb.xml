@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="ISO-8859-1"?> 
+
+<!-- MenuBar's description fo a process control GUI application
+     German and English
+     Copyright 2003, 2005  Albrecht Weinert
+     Revision V.$Revision: 32 $ ($Date: 2021-03-22 18:35:41 +0100 (Mo, 22 Mrz 2021) $)
+--> 
+
+<menubar version="02.20" date="26.04.2005 16:27"
+            application="ProzessBuB"  id="StartMenuLeiste">
+  <menu id="file" de.label="Datei" en.label="file">
+    <menuitem action="FileShow" de.label="Zeigen" en.label="show"
+                  de.shortcut="Z" en.shortcut="S" />
+    <separator />
+    <menuitem action="loadMenus" de.label="Menus laden"
+                en.label="load menus" />
+    <menuitem action="storeMenus" de.label="Menus speichern"
+                en.label="store menus" />
+    <separator />
+    <menuitem action="loadState" de.label="Zustand laden"
+                en.label="load state" />
+    <menuitem action="storeState" de.label="Zustand speichern"
+                en.label="store state" />
+    <separator />
+    <menuitem action="logClose" de.label="Log -> Datei schließen"
+                en.label="log -> close file" />
+    <menuitem action="logConnect" de.label="Log -> Datei verbinden"
+                en.label="log -> connect file" />
+    <separator />
+    <menuitem action="outClose" de.label="Out -> Datei schließen"
+                en.label="our -> close file" />
+    <menuitem action="outConnect" de.label="Out -> Datei verbinden"
+                en.label="out -> connect file" />
+    <separator />
+    <menuitem action="Exit" de.label="Beenden" en.label="exit"
+                  shortcut="C" />
+  </menu>
+
+  <menu id="report" de.label="Meldung" en.label="report">
+    <checkbox  action="setVerbose" de.label="ausführlich"
+               en.label="verbose" set="false" />
+    <separator />
+    <menuitem action="logShowEarly" de.label="Log alt"
+                en.label="log old" />
+    <menuitem action="logShowLate" de.label="Log neu"
+                en.label="log new" />
+    <separator />
+    <menuitem action="outShowEarly" de.label="Out alt"
+                en.label="out old" />
+    <menuitem action="outShowLate" de.label="Out neu"
+                en.label="out new" />
+    <menuitem action="outShowLateConti" de.label="Out konti."
+                en.label="out continously" />
+    <separator />
+    <menuitem action="CanvasShow" de.label="Graphische BO"
+                en.label="show GUI" />
+  </menu>
+
+  <menu id="prozess" de.label="Prozess" en.label="prozess">
+    <checkbox  action="setSimu" de.label="Simulation (Maus)"
+               en.label="simulation (mouse)" set="true" />
+    <checkbox  action="setAnim" de.label="Animation (Film)"
+               en.label="animation (movie)" set="false" />
+    <separator />
+    <checkbox  action="setFileClient" de.label="Datei/URL -> Status"
+               en.label="file/URL -> state" set="false" />
+
+    <menu id="urlSet" de.label="Einstellungen" en.label="settings">
+       <menuitem action="urlReadNow" de.label="jetzt lesen"
+                en.label="read now" />
+       <menuitem action="urlConnect" de.label="neu verbinden"
+                en.label="re-connect" />
+    </menu>
+    <separator />
+    <checkbox  action="halt" de.label="Stop"
+               en.label="stop" set="false" />
+  </menu>
+
+  <menu id="server" de.label="Server" en.label="server">
+    <checkbox  action="setMcServer" de.label="Status -> Multicast"
+               en.label="state -> multicast" set="false" />
+    <checkbox  action="setSendAll" de.label="jeden Zustandswechsel"
+               en.label="each change of state" set="true" />
+    <menuitem action="mcWriteNow" de.label="jetzt schreiben"
+                en.label="write now" />
+    <separator />
+    <checkbox  action="setFileSender" de.label="Status -> Datei"
+               en.label="state -> file" set="false" />
+    <menu id="fileSenderSettings" de.label="Einstellungen" en.label="settings">
+       <menuitem action="destFileWriteNow" de.label="jetzt schreiben"
+                en.label="write now" />
+       <menuitem action="destFileConnect" de.label="neu verbinden"
+                en.label="re-connect" />
+    </menu>
+  </menu>
+
+  <menu id="show" de.label="Ansicht" en.label="show">
+    <menuitem action="Help" de.label="Hilfe"  en.label="help" />
+    <menuitem action="About" de.label="About"  en.label="about" />
+    <menuitem action="PropShow" de.label="Properties" 
+          de.shortcut="P" en.shortcut="P"  en.label="properties" />
+    <menuitem action="EVAshow" de.label="E V A"  en.label="In Proc Out" />
+    <separator />
+    <menuitem action="outShowLateConti" de.label="Protokoll (konti.)"
+         en.label="logs, conti." />
+    <menuitem action="CanvasShow" de.label="Graphische BO"
+                en.label="show GUI" />
+    <checkbox  action="setGrid" de.label="Gitter"
+               en.label="grid" set="false" />
+  </menu>
+</menubar>

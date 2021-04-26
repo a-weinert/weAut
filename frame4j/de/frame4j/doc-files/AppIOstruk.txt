@@ -1,0 +1,28 @@
+
+       Console      :  Encoding  :           I / O  facilities ++
+
+       (Standard-Streams)        :  (Reader, Writer, etc.pp.)
+                    :            :
+       System.err -<-[ encoding ]--[PrintWriter]---- < -- err
+                    :            :
+       System.in -->-[ encoding ]--[BufferedReader]-- > -- in
+                    :         :..............................
+                    : 
+       System.out -<-[ enc.]----[ Thread ]--------- > -- out2 
+                    :       :                 /    Alternative
+       .....................                 /   graph. Display
+                          :                 /
+       out               :                 /     TeeWrtiter
+       -- > -[PrintWriter]---[ Buffer ]---/      outTW
+                       :   |
+       ..................  \------------<--------\    ........
+                                                  |
+        out1 -- < ----X-[ Thread ]----------- > ---
+                                       /      Output to out
+                                      /
+                                     /    TeeWrtiter
+       log                          /     logTW
+       -- > ------[ Buffer ]-------/ 
+
+     AppIO's I / O structure 
+     (as ugly pseudo graphic for .png hostile browsers)

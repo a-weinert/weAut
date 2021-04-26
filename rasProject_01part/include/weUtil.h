@@ -1,4 +1,4 @@
-/** \file include/weUtil.h
+/** @file include/weUtil.h
  *
  *  Some system related time and utility functions for Raspberry Pis
 
@@ -13,13 +13,14 @@
  *      \/  \/   \__/        \__/|_                                 \endcode
 
    Revision history \code
-   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
+   Rev. $Revision: 240 $ $Date: 2021-04-10 09:45:45 +0200 (Sa, 10 Apr 2021) $
    Rev. 50+ 16.10.2017 : cycTask_t->mutex now pointer (allows common mutex)
    Rev. 54+ 23.10.2017 : timing enhanced, common mutex forced/standard
    Rev. 200 16.04.2019 : logging improved; formatting enh.
    Rev. 201 26.04.2019 : renamed from sysUtil.h
    Rev. 202 28.04.2019 : timer macro change, more formatting functions
    Rev. 209 22.07.2019 : work around a Doxygen bug, formFixed.. not void
+   Rev. 233  26.09.2020 : 10 ms cycle added
 \endcode
 
   This file contains some definitions concerning system, time and IO.
@@ -27,9 +28,9 @@
   the library's include file pigpiod_if2.h.
  */
 
-#ifndef SYSUTIL_H
-#define SYSUTIL_H
-#ifndef __DOXYGEN__
+#ifndef WEUTIL_H
+#define WEUTIL_H
+//  #ifndef __DOXYGEN__  omitted as Doxygen improved
 #include "sysBasic.h" // stdint.h time.h stdio.h string.h (struct timespec)
 
 #include <fcntl.h>    // O_RDWR
@@ -43,7 +44,7 @@
 # define __USE_GNU 1  // just for Eclipse CDT's wrongly handling cross platform
 #endif
 #include <pthread.h>  // pthread_t pthread_mutex_t pthread_cond_t
-#endif
+// #endif omitted as Doxygen improved
 
 // ----------------------- formatting ---------------------------------------
 
@@ -62,7 +63,6 @@
  *
  *  Hint: Contrary to strncpy there's no padding with 0. If you want dest to
  *  end after the insertion use ::strLappend().
- *
  *  @param dest the pointer to / into the destination sequence
  *              where src is to be copied to. If NULL nothing happens.
  *  @param src  the sequence to be copied. If NULL or empty fill is used
@@ -79,7 +79,6 @@ void strLinto(char * dest,  char const * src, size_t n);
  *
  *  Attention: dest[n] respectively dest [-n + 1] must be within the char
  *  array provided by dest. This cannot and will not be checked!
- *
  *  @param dest the pointer to / into the destination sequence
  *              where src is to be copied to. If Null nothing happens.
  *  @param src  the sequence to be copied. If Null or empty fill is used
@@ -103,7 +102,6 @@ void strLappend(char * dest,  char const * src, int n);
  *  of the changed char sequence do <br />
  *  dest[n] = 0; <br />
  *  Then, of course, dest[n] must be within the char array provided by dest.
-
  *  @param dest the pointer to / into the destination sequence
  *              where src is to be copied to. If NULL nothing happens.
  *  @param src  the sequence to be copied. If NULL or empty fill is used
@@ -187,6 +185,33 @@ int char2hexDig(char c);
  */
 int parsInt(const char * str, const int lower, const int upper, const int def);
 
+/** Long array of length 14.
+ *
+ *  Prepared for non thread safe use with ::parse2Long()
+ */
+extern long int parsResult[];
+
+/** Parse a string of integer numbers.
+ *
+ *  The string optArg will be tokenised taking any occurrences of the
+ *  characters " +,;" (blank, plus, comma, semicolon) as border. "Any
+ *  occurrences" means two commas ",,", e.g., acting as one separator and
+ *  not denoting an empty number. <br />
+ *  N.b.: The string optArg will be modified (by replacing the first character
+ *  of the token separators found by zero ('\0').
+ *
+ *  The number format accepted and parsed is decimal and hexadecimal.
+ *  Hexadecimal starts with 0x or 0X. Leading zeros have no significance (in
+ *  C stone age sense of being octal).
+ *
+ *  @param optArg the string to be passed to a number of integer numbers,
+ *                passed as program parameter, e.g.
+ *  @param parsResult pointer to an array of long int, minimal length 14 (!)
+ *  @return the number of integer numbers parsed ab put into parsResult[],
+ *          0..14
+ */
+unsigned int parse2Long(char * const optArg, long int * parsResult);
+
 
 // ----------------------- time correction (may be obsolete in between) -----
 
@@ -218,7 +243,6 @@ void timeAddTo(timespec * t1, timespec const t2);
  */
 int timeCmp(timespec const  t1, timespec const t2);
 
-
 /** Absolute time (source) resolution.
  *
  *  This function sets the time structure provided to the absolute time's
@@ -231,14 +255,13 @@ int timeCmp(timespec const  t1, timespec const t2);
  */
 void monoTimeResol(timespec * timeRes);
 
-
-/** Relative delay for the specified number of µs.
+/** Relative delay for the specified number of ï¿½s.
  *
  *  This is local sleep. It should not be used in combination with absolute
  *  times and cyclic threads. It is just an utility for test or very short
  *  delays (as a better replacement for spinning).
  *
- *  @param micros sleep time in µs; allowed 30 .. 63000
+ *  @param micros sleep time in ï¿½s; allowed 30 .. 63000
  *  @return sleep's return value if of interest (0: uninterrupted)
  */
 int timeSleep(unsigned int micros);
@@ -254,7 +277,6 @@ int timeSleep(unsigned int micros);
  * */
 extern timespec startRTime;
 
-
 /** Actual broken down time (text).
  *
  *                  |-3|-  10  -|1|- 12     -|
@@ -265,7 +287,6 @@ extern timespec startRTime;
  */
 extern char actRTmTxt[];
 
-
 /** Initialise start (real) time.
  *
  *  This will be done in theCyclistStart(int). Hence, this function is for
@@ -274,7 +295,6 @@ extern char actRTmTxt[];
  *  repeated therein.
  */
 void initStartRTime();
-
 
 /** Advance broken down real time by seconds.
  *
@@ -289,7 +309,6 @@ void initStartRTime();
  *  Depending on OS, that might be an expensive operation with extra locks.
  *
  *  With wrong parameter values this function does nothing (returns 0).
- *
  *  @param rTm    pointer to broken down real time
  *  @param rTmTxt date text,
  *                length 32, format Fr 2017-10-20 13:55:12.987 UTC+20
@@ -309,7 +328,6 @@ extern const uint32_t csBit[]; //!< single bit set. 1 2 4 8 ... 0x80000000
  *
  *  For the masks to set or clear GPIO bits each bit 0..31 selects the
  *  GPIO pin 0..31 respectively 32..53.
- *
  *  @param pin GPIO pin number (only 5 bits relevant here)
  *  @return the the function select bit (a value with one bit set)
  */
@@ -323,12 +341,23 @@ extern char const bin8digs[256][10]; //!< "0000_0000" .. "1111_1111"
  *  Gives a (English) clear text translation of the latest system stored error.
  *  If txt is not null it will be prepended. <br />
  *  This function appends a linefeed and flushes errLog.
- *
  *  @param txt text to be prepended (should nod be longer than 58 characters)
  */
 void logErrWithText(char const * txt);
 
+/** The current time as text.
+ *  /code
+ *  The format is:  2017-10-20 13:55:12.987 UTC+20
+ *  ................0123456789x123456789v123456789 /endcode
+ *  The length is 30. <br />
+ *  Do NOT change the value provided by this pointer.
+ */
 extern char const * const stmp23;
+
+/** The real time epoch seconds.
+ *
+ *  Do NOT change the value provided by this pointer.
+ */
 extern uint32_t const * const stmpSec;
 
 /** Common error text.
@@ -375,68 +404,6 @@ void logErrText(char const * txt);
 void logStampedText(char const * txt);
 
 
-// --------------------    singleton support (application lock)   ------------
-
-/** Lock file handle.
- *
- *  Do not use directly.
- */
-extern int lockFd;
-
-/** Common path to a lock file for GpIO use.
- *
- *  Programmes using GPIO in any form usually (and forced by some libraries)
- *  have to do this exclusively. This is implemented here by locking a file
- *  named /home/pi/bin/.lockPiGpio <br />
- *  Make the lock file by: touch /home/pi/bin/.lockPiGpio
- *
- *  Without locking this file those programmes must not start. <br />
- *  So, deleting this file inhibits the start even by cron etc.
- */
-extern char const  * const lckPiGpioPth;
-
-/** Basic start-up function failure
- *
- *  Allows for compact code without saving the (error) return: <br />
- *  if (openLock(lckPiGpioPth, ON)) return retCode;
- *
- *  Storage for return/error codes.
- *  Used by: openLock(char const *, uint8_t)
- *           theCyclistStart(int)
- *           theCyclistWaitEnd()
- *
- *  Value: 0: OK, else: error
- */
-extern int retCode;
-
-/** Open and lock the lock file.
- *
- *  This function is the basic implementation of ::openLock. Applications not
- *  wanting its optional logging or doing their own should use this function
- *  directly.
- *
- *  @param lckPiGpioFil   lock file name
- *  @return 0: OK, locked; 97: fd does not exist; 98: can't be locked
- */
-int justLock(char const * lckPiGpioFil);
-
-/** Open and lock the lock file.
- *
- *  This function may use logging and streams not available on smaller
- *  applications. Those applications not wanting that optional logging or
- *  doing their own should use the function ::justLock().
- *
- *  @param lckPiGpioFil   lock file path name
- *  @param perr make error message
- *              when lock file does not exist or can't be locked
- *  @return 0: OK, locked; 97: fd does not exist; 98: can't be locked
- */
-int openLock(char const * lckPiGpioFil, uint8_t const perr);
-
-/** Unlock the lock file  */
-void closeLock(void);
-
-
 // ------------------------------------  signalling and exiting  ------------
 
 /** On signal exit.
@@ -464,11 +431,11 @@ void onSignalExit0(int s);
  *
  *  When set false, all threads must exit as soon as possible.
  *  On any case, a thread has to exit and clean up on next signal.
- *  Setting commonRun false implies the end of the application/programme
+ *  Setting commonRun false implies the end of the application/program
  *  and all of its threads as soon as possible.
  *
  *  Initialised as 1 (true)
- *  Set 0 by onSignalStop() (or application programme)
+ *  Set 0 by onSignalStop() (or application program)
  */
 extern volatile uint8_t commonRun;
 
@@ -536,7 +503,7 @@ typedef struct {
    uint64_t cnt1ms;
 
    uint8_t msTo100Cnt;     //!< 0..99; at 0 we will have a 100ms event
-   uint8_t cnt10inSec;     //!< 0..9; at counts 100ms events in the second
+   uint8_t cnt10inSec;     //!< 0..9; counts 100ms events in the second
    uint8_t cnt210sec;      //!< 0..209 s counter (to provide n s periods)
 } cycTaskEventData_t;
 
@@ -554,9 +521,15 @@ typedef struct {
  *  usually by holding and updating an event counter value at which to do the
  *  work.
  *
- *  Note: For the standard cycles provided here, 1ms, 100ms .., the handler
+ *  The main purpose are absolute time driven cyclic tasks as usual in
+ *  industrial PLCs. <br />
+ *  For the standard cycles provided here, 1ms, 10ms .. 100ms, 1s the handler
  *  thread is provided as singleton doing other time and date related jobs
- *  for all; see ::theCyclistStart(), ::theCyclistWaitEnd() and ::endCyclist().
+ *  for all; see ::theCyclistStart(), ::theCyclistWaitEnd() and
+ *  ::endCyclist().
+ *
+ *  See ::cyc1ms, ::cyc10ms, ::cyc20ms, ::cyc100ms, ::cyc1sec <br />
+ *  See also ::have1msCyc, ::have10msCyc ... ::have1secCyc
  */
 typedef struct {
    pthread_cond_t cond;  //!< the event occurred condition
@@ -644,19 +617,61 @@ uint32_t getCykTaskCount(cycTask_t const * const cycTask);
 
 /** Common absolute / monotonic start time of all cycles.
  *
- *  May be considered as programme's start time when cycles are started
+ *  May be considered as program's start time when cycles are started
  *  early by theCyclist. Normally not to be modified.
  */
 extern timespec allCycStart;
 
-extern cycTask_t cyc100ms;   //!< 100ms cycle (data structure)
 extern cycTask_t cyc1ms;     //!< 1ms cycle (data structure)
+extern cycTask_t cyc10ms;    //!< 10ms cycle (data structure)
 extern cycTask_t cyc20ms;    //!< 20ms cycle (data structure)
+extern cycTask_t cyc100ms;   //!< 100ms cycle (data structure)
 extern cycTask_t cyc1sec;    //!< 1s cycle (data structure)
-extern uint8_t have1msCyc;   //!< ON (default): signal to 1ms cycle tasks
-extern uint8_t have20msCyc;  //!< OFF (default): signal to 1ms cycle tasks
-extern uint8_t have100msCyc; //!< ON (default): signal to 100ms cycle tasks
-extern uint8_t have1secCyc;  //!< OFF (default): signal to 1s cycle tasks
+
+/** Flag to enable the 1ms cycle.
+ *
+ *  As a rule no more than two oft the cycles offered &mdash;
+ *  ::cyc1ms, ::cyc10ms, ::cyc20ms, ::cyc100ms, ::cyc1sec &mdash; shall be
+ *  enabled. This is no restriction as a faster cycle can easily (and often
+ *  should) implement slower cycles by sub-division.
+ *
+ *  The default setting is 1ms and 100ms ON and all others OFF. <br />
+ *  If other settings are used the flags should be set at the program's early
+ *  initialisation phase and afterwards left untouched.
+ *
+ *  default: ON
+ *  @see cycTask_t cyc1ms
+ */
+extern uint8_t have1msCyc;
+
+/** Flag to enable the 10ms cycle.
+ *
+ *  default: OFF
+ *  @see have1msCyc cycTask_t cyc10ms
+ */
+extern uint8_t have10msCyc;
+
+
+/** Flag to enable the 20ms cycle.
+ *
+ *  default: OFF
+ *  @see have1msCyc cycTask_t cyc20ms
+ */
+extern uint8_t have20msCyc;
+
+/** Flag to enable the 100ms cycle.
+ *
+ *  default: ON
+ *  @see have1msCyc cycTask_t cyc100ms
+ */
+extern uint8_t have100msCyc;
+
+/** Flag to enable the 1s cycle
+ *
+ *  default: OFF
+ *  @see have1msCyc cycTask_t cyc1s
+ */
+extern uint8_t have1secCyc;
 
 // Note: hide instead of commanding r/o by comment
 //extern cycTaskEventData_t cycTaskMED; //!< cyclic tasks master data (r/o!)
@@ -726,25 +741,25 @@ uint32_t getAbsS();
 /** Start the cycles handler.
  *
  *  This function initialises and then runs the predefined cycles
- *  cycles (as of February 2018: 1ms, 100ms and 1s) when enabled.
+ *  cycles (as of Sept. 2020: 1ms, 10ms, 20ms, 100ms and 1s; see ::have1msCyc)
+ *  when enabled.
  *
  *  Besides the absolute / monotonic times for the cycles it also
- *  initialises real time times and timers (usable for date and time).
+ *  initialises real time and timers handling.
  *
  *  Timers and cycles are run in an extra thread made by this function.
  *  And to be precise, the cycles are not run here; instead, cyclic
  *  events are generated and broadcast.
  *
- *  As the thread startet by this function also provides monotonic and
- *  civil times and stamps it should be started with the programme (i.e.
+ *  As the thread started by this function also provides monotonic and
+ *  civil times and stamps it should be started with the program (i.e.
  *  earliest in main()). Preparation time before the cycles should start
  *  can be handled by the delay parameter.
  *
- *  As of July 2017 two cycles, 1ms and 100ms, are defined and handled.
- *  For multiples of those periods like 1s <br />
- *   a) either subdivide the 100ms cycle thread by 10 <br />
- *   b) or make an extra threads as (as 1s cycle in the example)
- *      and step its eventThreshold by multiples of 10 (in the example).
+ *  As of September 2020 five cycles (see above) are defined and handled.
+ *  It is strongly recommended not to use more than two of them and implement
+ *  other cycles with multiple periods by sub-division. That means, e.g.,
+ *  do not enable the 20ms cycle when having the 10ms one.
  *
  *  @param startMsDelay number of ms before generating the first
  *                      cyclic event; allowed range 12 .. 1200; default 1
@@ -776,4 +791,4 @@ extern long absNanos1ms; //!< extern for debug TEST outputs only
  */
 int endCyclist(void);
 
-#endif /// SYSUTIL_H
+#endif // WEUTIL_H

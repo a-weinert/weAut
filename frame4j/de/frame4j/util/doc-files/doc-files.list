@@ -1,0 +1,7 @@
+# List of javadoc extra files in \de\frame4j\util\doc-files\
+# (c) A. Weinert, V.$Revision: 41 $, $Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $
+
+AppLangMap.properties
+ServeJMBWMBean.xml
+# AppMBean.xml
+

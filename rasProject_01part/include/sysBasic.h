@@ -3,7 +3,7 @@
  *  Some very basic definitions
  *
 \code
-   Copyright  (c)  2019   Albrecht Weinert
+   Copyright  (c)  2020   Albrecht Weinert
    weinert-automation.de      a-weinert.de
 
  *     /         /      /\
@@ -13,7 +13,7 @@
  *      \/  \/   \__/        \__/|_                                 \endcode
 
    Revision history \code
-   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
+   Rev. $Revision: 236 $ $Date: 2021-02-02 18:11:02 +0100 (Di, 02 Feb 2021) $
    Rev. 66+ 16.11.2017 : new, excerpted from weUtil.h V.66
                           weModbus.h V.66 (and others)
    Rev. 147 16.06.2018 : time handling enhanced improved, Hippogreiff relay
@@ -21,22 +21,102 @@
    Rev. 164 11.07.2018 : sunset/sunrise location parameters; string functions
    Rev. 190 14.02.2019 : minor, comments only
    Rev. 209 22.07.2019 : work around a Doxygen bug
+   Rev. 229 23.07.2020 : UTF 8 BOM for log and error file
 \endcode
 
   This file contains some definitions concerning system values and
-  platform properties. <br />
-  The latter are mainly made and probed with Raspberry Pi.
+  platform properties, made and probed with Raspberry Pis.
  */
 
 #ifndef SYSBASIC_H
 #define SYSBASIC_H
-#ifndef __DOXYGEN__
+
+//-- program name revision and date  ----
+
+#ifndef DOXYGEN
+/** Frame for program data definition
+ *
+ *  To prevent Doxygen to duplicate the documentation of extern variables,
+ *  like ::prgNamPure,  ::prgSVNrev, ::prgSVNdat etc., in the program's source
+ *  frame those definition in \#if SETPRGDATA ... \#endif.
+ *
+ */
+# define SETPRGDATA 1
+#endif
+
+/** The pure program name.
+ *
+ *  To be provided in the application's / program's source.
+ *  @see progNam() progNamB()
+ */
+extern char const prgNamPure[];
+
+/** The complete SVN revision string.
+ *
+ *  To be provided in the application's / program's source.
+ *  @see progRev()
+ */
+extern char const prgSVNrev[];
+
+/** The complete SVN date string.
+ *
+ *  To be provided in the application's / program's source.
+ *  @see progDat()
+ */
+extern char const prgSVNdat[];
+
+
+/** The program name.
+ *
+ *  @return the program's name as pure text, "homeDoorPhone", e.g.
+ */
+char const * progNam();
+
+/** The program name with blank.
+ *
+ *  Same as ::progNam but with at least one trailing blank or so many blanks
+ *  to get a minimal length of 17, , "homeDoorPhone    ", e.g.
+ *  @return the program's name with trailing blank(s)
+ */
+char const * progNamB();
+
+
+/** The program revision.
+ *
+ *  @return the program's SVN revision as pure text, "0", "341" e.g.
+ */
+char const * progRev();
+
+/** The program date.
+ *
+ *  @return the program's SVN date "2020-07-23" e.g., length 10
+ */
+char const * progDat();
+
+
+/** Print the program SVN revision and date.
+ *
+ *  This function prints a line in the form (4 leading blanks) \code
+    Revision  229 (2020-07-23)  \endcode
+ *  to ::outLog
+ */
+void printRevDat(void);
+
+/** Print the program name, SVN revision and date.
+ *
+ *  This function prints a line in the form (4 leading blanks) \code
+    theLittleProg    R.  229 (2020-07-23)  \endcode
+ *  to ::outLog
+ */
+void printNamRevDat(void);
+
+//#ifndef __DOXYGEN__ omitted as Doxygen improved
 #include <basicTyCo.h>  // uint32_t
 #include <time.h>      // timespec, nanosleep
 #include <stdio.h>    // FILE
 #include <string.h>  // memset
 // #include "sweetHomeLocal.h" // location data (macros): MEAN_SUN_RISE &c.
-#endif
+//#endif
 
 /** The Linux time structure.
  *
@@ -45,6 +125,33 @@
  *  Note: This is to allow using timespec without prepending struct, only.
  */
 typedef struct timespec timespec;
+
+
+/** Basic start-up function failure
+ *
+ *  Allows for compact code without saving the (error) return: <br />
+ *  if (openLock(lckPiGpioPth, ON)) return retCode;
+ *
+ *  Storage for return/error codes.
+ *  Used by: openLock(char const *, uint8_t)
+ *           theCyclistStart(int)
+ *           theCyclistWaitEnd()
+ *
+ *  Value: 0: OK, else: error
+ */
+extern int retCode;
+
+/** Common path to a lock file for GpIO use.
+ *
+ *  Programs using GPIO in any form usually (and forced by some libraries)
+ *  have to do this exclusively. This is implemented here by locking a file
+ *  named /home/pi/bin/.lockPiGpio <br />
+ *  Make the lock file by: touch /home/pi/bin/.lockPiGpio
+ *
+ *  Without locking this file those programs must not start. <br />
+ *  So, deleting this file inhibits the start even by cron etc.
+ */
+extern char const  * const lckPiGpioPth;
 
 
 // ------------------ platform property endianess  ----------- -------------
@@ -56,7 +163,6 @@ typedef struct timespec timespec;
  *  To save runtime resources use the marco ::PLATFlittlE instead, which
  *  would fall back to littleEndian() (this function) when no target platform
  *  informations on endianness are available.
- *
  *  @return true when platform is little endian (evaluated at run time)
  */
 uint8_t littleEndian();
@@ -71,11 +177,24 @@ uint8_t isFNaN(float const val);
 
 //---------------------------- logging and standard streams ---------------
 
+/** Log on files
+ *
+ *  If true (default) logging and errors go to files or one file, otherwise
+ *  to console
+ */
+extern int useErrLogFiles;
+
 /** Event log output.
  *
  *  default: standard output; may be put to a file.
  */
 extern FILE * outLog;
+
+/** Number of events logged.
+ *
+ *  Counter for lines put to or events logged on ::outLog.
+ */
+extern uint32_t noLgdEvnt;
 
 /** Use outLog for errors too.
  *
@@ -123,7 +242,8 @@ uint8_t outLogIsStd(void);
  *  If txt is not null it will be output to outLog and outLog will be flushed.
  *  No line feed will be appended; the text is put as is.
  *
- *  @param txt text to be output; n.b not LF appended
+ *  @param txt text to be output;
+ *             n.b not LF appended and not counted as line
  */
 void logEventText(char const * txt);
 
@@ -140,7 +260,6 @@ void logEventText(char const * txt);
  *
  *  Hint: This function resembles the one from bsd/string.h usually not
  *  available with standard Linuxes and Raspbians .
- *
  *  @param dest the character array to copy to; must not be shorter than num
  *  @param src  the string to copy from
  *  @param num  the maximum allowed string length of dest
@@ -150,18 +269,14 @@ size_t strlcpy(char * dest, char const * src, size_t const num);
 
 /** String concatenation with limit.
  *
- *  This function appends at most num - 1 characters from src to dst the end
+ *  This function appends at most num - 1 characters from src to the end
  *  of dest. If not terminated by a 0 from src, dest[num-1] will be set 0.
  *  Hence, except for num == 0, dest will be 0-terminated.
  *
- *  num is the
- *
- *  The value returned is the length of string src; if this value is not
- *  less than num truncation occurred.
+ *  The value returned is the length of string src (if no truncation occurred).
  *
  *  Hint: This function resembles the one from bsd/string.h usually not
  *  available with standard Linuxes and Raspbians .
- *
  *  @param dest the character array to copy to; must not be shorter than num
  *  @param src  the string to copy from
  *  @param num  the maximum allowed string length of dest
@@ -171,7 +286,7 @@ size_t strlcat(char * dest, char const * src, size_t num);
 
 
 //-------------------------  time handling basics ----------------------------
-
+// &mu; is Âµ (my spoiled in Doxygen documentation viewed in European browser)
 /** /def ABS_MONOTIME
  * @brief Clock used for absolutely monotonic delays, cycles and intervals.
  *
@@ -188,7 +303,7 @@ size_t strlcat(char * dest, char const * src, size_t num);
  *  arbitrary zero-point.
  *
  *  The inaccuracy C) is explained by some implementations deriving monotonic
- *  clocks with no further ado from an µP/µC's quartz oscillator, usually the
+ *  clocks with no further ado from an &mu;C's quartz oscillator, usually the
  *  same oscillator used for communication links timing.
  *  On Raspberry Pi 3s with Raspian Jessie (early 2017) we observed +5s in an
  *  24h interval (i.e. being a bit late) growing linear. This stable deviation
@@ -225,7 +340,7 @@ size_t strlcat(char * dest, char const * src, size_t num);
 /** Absolute timer initialisation.
  *
  *  This function sets the time structure provided to the current absolute
- *  monotonic ::ABS_MONOTIME.
+ *  monotonic ::ABS_MONOTIME (default: CLOCK_MONOTONIC).
  *
  *  Note: Error returns, suppressed here, cannot occur, as long as the time
  *  library functions and used clock IDs are implemented. Otherwise all else
@@ -235,7 +350,7 @@ size_t strlcat(char * dest, char const * src, size_t num);
  */
 void monoTimeInit(timespec * timer);
 
-/** A delay to an absolute step specified in number of µs to a given time.
+/** A delay to an absolute step specified in number of ï¿½s to a given time.
  *
  *  This function does an absolute monotonic real time delay until
  *    timer += micros;
@@ -246,10 +361,9 @@ void monoTimeInit(timespec * timer);
  *  See ::timeAddNs, ::ABS_MONOTIME and ::monoTimeInit (or clock_gettime).
  *
  *  Chaining absolute delays accomplishes long term exact periods respectively
- *  cycles. See also explanations in ::ABS_MONOTIME.
- *
+ *  cycles. See also explanations in ::ABS_MONOTIME (default: CLOCK_MONOTONIC).
  *  @param timeSp the time structure to be used (never NULL!)
- *  @param micros delay in µs (recommended 100µs .. 1h)
+ *  @param micros delay in ï¿½s (recommended 100ï¿½s .. 1h)
  *  @return sleep's return value if of interest (0: uninterrupted)
  */
 int timeStep(timespec * timeSp, unsigned int micros);
@@ -291,7 +405,7 @@ extern struct tm  actRTm;
 /** Today's day in year.
  *
  *  The value should be set at start (will be by ::updateReaLocalTime()) and
- *  updated at midnight (when used).
+ *  updated at midnight.
  */
 extern int todayInYear;
 
@@ -401,7 +515,6 @@ int16_t cosDay60(int16_t dayInYear);
  *  @param dayInYear day in the year
  *  @param meanSunriseSec location's mean sunrise time in s from midnight UTC
  *  @param halfRiseDeltaMin the location's half sunrise time swing in minutes
- *
  *  @return that days's sunrise in seconds from UTC midnight
  */
 __time_t getDaySunrise(int16_t const dayInYear,
@@ -431,11 +544,50 @@ __time_t getDaySunset(int16_t const dayInYear,
  */
 extern char const zif2charMod10[44];
 
-extern char const dec2digs[102][2]; //!< "00" .. "99" + "00", "XX"
+/** Format two digit decimal, leading zero, by lookup. */
+extern char const dec2digs[128][2]; //!< "00" .. "99" + "00", "_1" .. "_7"
+
+
+/** Format number as two digit decimal number with leading zeroes.
+ *
+ *  The format is:  00 to 99
+ *
+ *  The length is always 2. There is no trailing character zero appended. <br />
+ *  returned is the number of leading zeroes in the range 0 o 1. N.B.
+ *  the value 0 yielding "00" is considered to have one leading zero.
+ *  @see dec2digs formatDec3Digs
+ *  @param targTxt pointer to the target text buffer,
+ *                 must have place for 3 characters (!)
+ *  @param value   the value to be formatted; values outside 0 .. 999
+ *                 will yield incorrect results
+ *  @return        the number of leading zeroes (0 or 1)
+ */
+int formatDec2Digs(char * targTxt, uint32_t value);
+
+/** Format three digit decimal, leading zero, 0-terminated, by lookup. */
+extern char const dec3digs[1024][4]; //!< "000" .. "999" + "000" .. "023"
+
+
+/** Format number as three digit decimal number with leading zeroes.
+ *
+ *  The format is:  000 to 999
+ *
+ *  The length is always 3. There is no trailing character zero appended.<br />
+ *  returned is the number of leading zeroes in the range 0 to 2. N.B.
+ *  the value 0 yielding "000" is considered to have 2 leading zeroes.
+ *  @see dec3digs formatDec2Digs
+ *  @param targTxt pointer to the target text buffer,
+ *                 must have place for 3 characters (!)
+ *  @param value   the value to be formatted; values outside 0 .. 999
+ *                 will yield incorrect results
+ *  @return        the number of leading zeroes (0..2)
+ */
+int formatDec3Digs(char * targTxt, uint32_t value);
+
 
 /** English weekdays, two letter abbreviation.
  *
- *  Monday (Mo) is 1; Sunday (Su) is 0 or  also 8.
+ *  Monday (Mo) is 1; Sunday (Su) is 7 or, also, 0.
  */
 extern char const dow[9][4];
 
@@ -446,7 +598,6 @@ extern char const dow[9][4];
  *  ................0123456789x123456789v123456789t
  *  The length is 29.
  *  See ::formatTmTiMs() for a longer format with 3 digit ms.
- *
  *  @param rTmTxt pointer to the target text buffer,
  *                must have place for 30 characters (!)
  *  @param rTm    pointer to broken down real time; NULL will take ::actRTm
@@ -456,14 +607,12 @@ extern char const dow[9][4];
 int formatTmTim(char * rTmTxt, struct tm  * rTm);
 
 /** Format broken down real time clock+ms as standard text.
- *
+ *  /code
  *  The format is:  Fr 2017-10-20 13:55:12.987 UTC+20
  *  ................0123456789x123456789v123456789t123
- *  +3 ................0123456789x123456789v123456789t
+ *  +3 ................0123456789x123456789v123456789t  /endcode
  *  The length is 33.
  *  See ::formatTmTim() for a shorter format without ms.
- *
- *
  *  @param rTmTxt pointer to the target text buffer,
  *                must have place for 34 characters (!)
  *  @param rTm    pointer to broken down real time; NULL will take ::actRTm
@@ -481,4 +630,4 @@ int formatTmTiMs(char * rTmTxt, struct tm  * rTm, int millis);
  */
 extern char const fType[16][8];
 
-#endif /// SYSBASIC_H
+#endif // SYSBASIC_H

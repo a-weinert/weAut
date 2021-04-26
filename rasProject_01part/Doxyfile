@@ -9,27 +9,29 @@
 # This file describes the settings used by Doxygen, a generator
 # system for development documentation        (www.doxygen.org) 
 
-#  last change in Rev. $Revision: 189 $
-#  last change at $Date: 2018-11-12 18:26:37 +0100 (Mo, 12 Nov 2018) $
+#  last change in Rev. $Revision: 239 $
+#  last change at $Date: 2021-03-04 14:11:18 +0100 (Do, 04 Mrz 2021) $
 #  last change by Albrecht Weinert
 
 #  Rev. <99 10.02.2018 : used Doxygen 1.8.0 (had many C-Problems)
 #  Rev. 107 13.02.2018 : Settings unrelated to this C project removed
 #                        Obsolete settings for Doxygen 1.8.14 removed
 #                        Hint: Never (!) use doxygen -u
+#  Rev. 236 01.02.2021: alphabetical index in pdf output (2 columns)
 
 
 # This file's encoding (should conform to Eclipse text file encoding)
-DOXYFILE_ENCODING  = ISO-8859-1
+DOXYFILE_ENCODING  =  UTF-8
+# DOXYFILE_ENCODING  = ISO-8859-1
 #  DOXYFILE_ENCODING      = cp1252
 
 # The source files' encoding (see Eclipse: cp1252 ~ ISO-8859-1)
-INPUT_ENCODING  = ISO-8859-1
-
+# INPUT_ENCODING  = ISO-8859-1
+INPUT_ENCODING  = UTF-8
 
 PROJECT_NAME   = "rasProject_01   /  weSweetHome &nbsp; "
-PROJECT_NUMBER = "R 1.1b"
-PROJECT_BRIEF  = "process control  &nbsp; &nbsp; &nbsp; / &nbsp; &nbsp; Pi3 software &nbsp; &nbsp; &nbsp; &nbsp; by &nbsp; weinert - automation"
+PROJECT_NUMBER = "R 1.234"
+PROJECT_BRIEF  = "process control  &nbsp; &nbsp; &nbsp; / &nbsp; &nbsp; RasPi software &nbsp; &nbsp; &nbsp; &nbsp; by &nbsp; weinert-automation"
 OUTPUT_DIRECTORY       = ./doxydocu
 
 # PROJECT_LOGO can specify a logo or icon included in the documentation. The
@@ -41,17 +43,20 @@ PROJECT_LOGO   = WeAut_70-ic.jpg
 # configuration options related to the input files
 #---------------------------------------------------------------------------
 
+# Hint (A.W.): Files which don't have a doxygen header are not documented
+#              and do not appear in the file list. 
+
 # The INPUT tag can be used to specify the files and/or directories for files
 # to be documented. Sub-directories can be included by RECURSIVE = YES   
 RECURSIVE = NO
 EXCLUDE_SYMLINKS = YES
-INPUT     = . ./include/arch ./include  ./modbus  ./weRasp \
+INPUT     = . ./include/arch ./include  ./modbus  ./weRasp
 
 # Including system includes or other's open source library files is usually
 # no good idea. It gave older versions a lot of long lasting work and produced
 # a lot of warnings on mostly unused files. 
-# Hence we do not include respectively explicitly exclude:of  
-# C:\util\WinRaspi\arm-linux-gnueabihf\include
+# Hence we do not include respectively explicitly exclude:
+# of C:\util\WinRaspi\arm-linux-gnueabihf\include
 EXCLUDE    = .settings  ./include/bcm2835.h  ./include/bcmGPIO.h \
             ./include/pigpio.h .svn .dep .includemaketime_utc.h
 # ./include/pigpiod_if2.h 
@@ -713,7 +718,7 @@ ALPHABETICAL_INDEX     = YES
 # the COLS_IN_ALPHA_INDEX tag can be used to specify the number of columns 
 # in which this list will be split (can be a number in the range [1..20])
 
-COLS_IN_ALPHA_INDEX    = 5
+COLS_IN_ALPHA_INDEX    = 2
 
 # In case all classes in a project start with a common prefix, all 
 # classes will be put under the same header in the alphabetical index. 
@@ -747,7 +752,8 @@ HTML_FILE_EXTENSION    = .html
 # each generated HTML page. If it is left blank Doxygen will generate a 
 # standard header.
 
-HTML_HEADER   =
+HTML_HEADER   = forDocu/headerFile
+HTML_EXTRA_FILES       += forDocu/weAut.ico
 
 # The HTML_FOOTER tag can be used to specify a personal HTML footer for 
 # each generated HTML page. If it is left blank Doxygen will generate a 
@@ -1121,7 +1127,7 @@ LATEX_BATCHMODE        = YES
 # include the index chapters (such as File Index, Compound Index, etc.) 
 # in the output.
 
-LATEX_HIDE_INDICES     = YES
+LATEX_HIDE_INDICES     = NO
 
 # If LATEX_SOURCE_CODE is set to YES then Doxygen will include 
 # source code with syntax highlighting in the LaTeX output. 
@@ -1138,7 +1144,7 @@ LATEX_SOURCE_CODE      = NO
 # The RTF output is optimized for Word 97 and may not look very pretty with 
 # other RTF readers or editors.
 
-GENERATE_RTF           = NO
+GENERATE_RTF           = YES
 
 # The RTF_OUTPUT tag is used to specify where the RTF docs will be put. 
 # If a relative path is entered the value of OUTPUT_DIRECTORY will be 
@@ -1159,7 +1165,7 @@ COMPACT_RTF            = NO
 # programs which support those fields. 
 # Note: wordpad (write) and others do not support links.
 
-RTF_HYPERLINKS         = NO
+RTF_HYPERLINKS         = YES
 
 # Load stylesheet definitions from file. Syntax is similar to Doxygen's 
 # config file, i.e. a series of assignments. You only have to provide 

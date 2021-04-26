@@ -1,7 +1,6 @@
-/**
- * \file config.h
+/** @file config.h
  *
-   Organising platform specific includes for the make process
+ *  Organising platform specific includes for the make process
 \code
    Copyright  (c)  2018   Albrecht Weinert
    weinert-automation.de      a-weinert.de
@@ -13,7 +12,7 @@
  *      \/  \/   \__/        \__/|_                                 \endcode
 
    Revision history \code
-   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
+   Rev. $Revision: 238 $ $Date: 2021-03-01 14:38:58 +0100 (Mo, 01 Mrz 2021) $
    Rev. 150 18.06.2018 : minor, comments only
    Rev. 209 22.07.2019 : work around a Doxygen bug
 \endcode
@@ -31,12 +30,18 @@
 #define _header(x) __header(arch/config_##x.h) // of
 #define header(x) _header(x)                  // magic
 
-#ifndef PLATFORM
+#ifndef DOXYGEN
+# ifndef PLATFORM
 #  define PLATFORM raspberry_03
 #  warning "undefined PLATFORM defaulted to raspberry_03"
+# endif
+
+# include header(PLATFORM)
+#else
+# define PLATFORM raspberry_04
+# include arch/config_raspberry_04.h
 #endif
 
-#include header(PLATFORM)
 
 #ifndef PIN13
 #  define PIN13 27  // PI3 (default) (Pi1 would be 21)

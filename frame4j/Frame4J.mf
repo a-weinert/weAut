@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Extension-Name: de.frame4j
+Application-Name: Frame4J framework
+Implementation-URL: weinert-automation.de/software/frame4j/frame4j.jar
+Created-By: Albrecht Weinert
+Specification-Title: Frame4J
+Implementation-Title: Frame4J
+Specification-Vendor: Albrecht Weinert
+Specification-Version:  1.19.01
+Implementation-Version: 1.19.01
+Implementation-Vendor: Albrecht Weinert
+Permissions: all-permissions
+Main-Class: de.frame4j.Exec
+Trusted-Library: true
+Codebase: weinert-automation.de a-weinert.de
+Caller-Allowable-Codebase: weinert-automation.de a-weinert.de
+Sealed: true
+
+Name: de/frame4j/demos/
+Sealed: false
+
+Name: de/frame4j/math/
+Sealed: false
+
+Name: de/weAut/tests/
+Sealed: false

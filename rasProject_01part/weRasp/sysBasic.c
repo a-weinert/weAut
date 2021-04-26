@@ -1,9 +1,9 @@
-/** \file weRasp/sysBasic.c
+/** @file weRasp/sysBasic.c
  *
    Some system related basic functions for Raspberry Pis
 
 \code
-   Copyright  (c)  2018   Albrecht Weinert
+   Copyright  (c)  2020   Albrecht Weinert
    weinert-automation.de      a-weinert.de
 
  *     /         /      /\
@@ -13,24 +13,141 @@
  *      \/  \/   \__/        \__/|_                                 \endcode
 
    Revision history \code
-   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
+   Rev. $Revision: 236 $ $Date: 2021-02-02 18:11:02 +0100 (Di, 02 Feb 2021) $
    Rev.  105 06.02.2018 : new (transfered parts from sysutil.c)
    Rev.  108 12.02.2018 : parts moved out, one event file; Started to get
                          Doxygen usable. Note: Not yet done.
    Rev. 147 16.06.2018 : time handling enhanced improved
    Rev. 155 27.06.2018 : time handling debugged
    Rev. 164 11.07.2018 : sunset/sunrise location parameters; string functions
+   Rev. 229 23.07.2020 : UTF 8 BOM for log and error file
 \endcode
    cross-compile by: \code
    arm-linux-gnueabihf-gcc -DMCU=BCM2837 -I./include -c -o weRasp/sysBasic.o weRasp/sysBasic.c
 \endcode
-   This is a (basic) library to support CGI programmes written in C to be used
-   under a web sever --  as e.g. Apache 2.4 here.
 
    For documentation see the include file \ref sysBasic.h
 */
 #include "sysBasic.h" // indirectly includes ...
 
+/*  Basic start-up function failure. */
+int retCode;
+
+/* Common path to a lock file for GpIO use */
+char const  * const lckPiGpioPth = "/home/pi/bin/.lockPiGpio";
+
+
+//----------------------------   program name date etc.  ------------------
+
+///  char progNamPure[] = PROGNAME;
+uint8_t progNamLen = 0;
+char progNamBlnk[] = "                                       \0\0";
+//                  01234 fixed length 4 right justified
+char progSVNrevi[] = "   ?\0\0";
+char progSVNdate[] = "yyyy-mm-dd\0\0\0";
+
+/*  The program name length.
+ *
+ *  This function determines the programs name's length and prepares the
+ *  program strings if not yet done
+ *
+ *  @return the programs name's length
+ */
+uint8_t progNameLen() {
+   if (progNamLen) return progNamLen;
+   char c = prgNamPure[0];
+   for (;;) {
+      if (c == '\0') break;
+      progNamBlnk[progNamLen] = c;
+      c = prgNamPure[++progNamLen];
+   } // for copy and find end
+   progNamBlnk[progNamLen < 17 ? 17 : progNamLen + 1] = '\0';
+
+   int i = 11;
+   while (prgSVNrev[i] >= '0' ) { ++i; }
+   int j = 3;
+   for (; j >= 0; --j) {
+      c = prgSVNrev[--i];
+      if (c < '0') break;
+      progSVNrevi[j] = c;
+   } // for
+
+   j = 7; i = 0;
+   for (; i < 10; ++j, ++i) {  progSVNdate[i] = prgSVNdat[j]; }
+/*  TEST xxxx
+   fprintf(outLog,
+      "T E S T \n"
+      "progNamLen  = %d \n"
+      "prgNamPure  = %s \n"
+      "progNamBlnk = #%s#\n"
+      "progSVNrevi = %s (%s)\n",
+   progNamLen, prgNamPure, progNamBlnk, progSVNrevi, progSVNdate);
+xxxxx TEST */
+
+   return progNamLen;
+} // progNamLen()
+
+/*  The program name.
+ *
+ *  @return the program's name as pure text, "homeDoorPhone", e.g.
+ */
+char  const * progNam(){
+   if (progNamLen) return prgNamPure;
+   progNameLen();
+   return prgNamPure;
+} // progNam()
+
+/** The program name with blank.
+ *
+ *  Same as ::progNam but with at least one trailing blank or so many blanks
+ *  to get a minimal length of 17, , "homeDoorPhone    ", e.g.
+ *
+ *  @return the program's name with trailing blank(s)
+ */
+char const * progNamB(){
+   if (progNamLen) return progNamBlnk;
+   progNameLen();
+   return progNamBlnk;
+} // progNamB()
+
+
+/*  The program revision.
+ *
+ *  @return the program's SVN revision as pure text, "0", "341" e.g.
+ */
+char const * progRev(){
+   if (progNamLen) return progSVNrevi;
+   progNameLen();
+   return progSVNrevi;
+} // progRev()
+
+/*  The program date.
+ *
+ *  @return the program's SVN date "2020-07-23" e.g., length 10
+ */
+char const * progDat(){
+   if (progNamLen) return progSVNdate;
+   progNameLen();
+   return progSVNdate;
+} // progDat()
+
+
+char const revDatFrm[] = "    Revision %s (%.16s)\n";
+
+/* Print the program SVN revision and date. */
+void printRevDat(void){
+   progNameLen(); // ensure prepared strings
+   fprintf(outLog, "    Revision %s (%s)\n", progSVNrevi, progSVNdate);
+} // printRevDat()
+
+/*  Print the program name, SVN revision and date. */
+void printNamRevDat(void){
+   progNameLen(); // ensure prepared strings
+   fprintf(outLog, "    %sR. %s (%s)\n",
+           progNamBlnk, progSVNrevi, progSVNdate);
+} // printNamRevDat()
+
+//----------------------------   floating point helper  -------------------
 
 /*  Floating point NaN. */
 uint8_t isFNaN(float const val){
@@ -50,10 +167,24 @@ uint8_t littleEndian(){ return *(char *)&numForEndianTest == 0x21; }
 
 //---------------------------- logging and standard streams ---------------
 
+/* Log on files
+ *
+ *  If true (default) logging and errors go to files or one file, otherwise
+ *  to console
+ */
+int useErrLogFiles = ON; // if logging, then on files
+
+
 /*  Event log output.
  *  default: standard output; may be put to a file.
  */
 FILE * outLog;
+
+/*  Number of events logged.
+ *
+ *  Counter for lines put to or events logged on ::outLog.
+ */
+uint32_t noLgdEvnt;
 
 /*  Use outLog for errors too.
  *
@@ -68,18 +199,10 @@ uint8_t useOutLog4errLog = OFF;
  */
 FILE * errLog;
 
-
-/*  Value output file.
- *  Normally a text file opened for append.
- *  For example CSV: one line = one value set.
- */
-FILE * valFil;
-
 static void initStreams(void) __attribute__((constructor));
 static void initStreams(void){ // Warning by Eclipse: Unused static function
    outLog = stdout;          // Eclipse bugs: 474776 and 389577 (2014..2017)
    errLog = stderr;        // Eclipse bugs have a long life, partly.
-   valFil = NULL; // should not be necessary
 } // initStreams()   static initialiser
 
 
@@ -94,10 +217,11 @@ int switchErrorLog(char const * const errFilNam){
    if (useOutLog4errLog) return 97;
    FILE * oldErr = errLog;
    FILE* f = stderr;
-   if (errFilNam != NULL && errFilNam[0]) {
+   if (errFilNam != NULL && errFilNam[0]) { // real file name
       f = fopen(errFilNam, "a"); // create or append to
       if (f == NULL) return 96; // no open
-   }
+      fputs("\xEF\xBB\xBF", f); // append UTF8 BOM
+   } // name of a real file (hopefully)
    if (oldErr != stderr && oldErr != stdout && oldErr != NULL) {
       fflush(oldErr);
       fclose(oldErr);
@@ -116,10 +240,11 @@ int switchEventLog(char const * const logFilNam){
    FILE * oldOut = outLog;
    FILE * oldErr = errLog;
    FILE* f = stdout;
-   if (logFilNam != NULL && logFilNam[0]) {
+   if (logFilNam != NULL && logFilNam[0]) { // real file name
       f = fopen(logFilNam, "a"); // create or append to
       if (f == NULL) return 96; // no open
-   }
+      fputs("\xEF\xBB\xBF", f); // append UTF8 BOM
+   } // name of a real file (hopefully)
    if (oldOut != stderr && oldOut != stdout && oldOut != NULL) {
       fflush(oldOut);
       fclose(oldOut);
@@ -132,9 +257,10 @@ int switchEventLog(char const * const logFilNam){
       }
       errLog = f;
    }
+   noLgdEvnt = 0;
    outLog = f;
    return 0; // success
-} // switchErrorLog(char const * const)
+} // switchEventLog(char const * const)
 
 /*  Error log (errLog) is standard stream or outLog. */
 uint8_t errLogIsStd(void){
@@ -148,25 +274,27 @@ uint8_t outLogIsStd(void){ return (outLog == stderr) || (outLog == stdout); }
  *
  *  If txt is not null it will be output to outLog and outLog will be flushed.
  *
- *  @param txt text to be prepended
+ *  @param txt text to be output
  */
 void logEventText(char const * txt){
    if (txt == NULL || ! *txt) return;
    fputs(txt, outLog);
    fflush(outLog);
+   //  ??? ++noLgdEvnt;
 } // logEventText(char const *)
 
 
 //------------------------------   times -------------------------------------
 
-
 /*  Absolute time instant initialisation.  */
 void monoTimeInit(timespec * timer){ clock_gettime(ABS_MONOTIME, timer); }
 
-/*  Absolute delay for the specified number of µs. */
+// &mu; is Âµ (my spoiled in Doxygen documentation viewed in European browser)
+/*  Absolute delay for the specified number of &mu;s. */
 int timeStep(timespec * timeSp, unsigned int micros){
    timeAddNs(timeSp, (long)(micros) * 1000); // timer += micros
-   return clock_nanosleep(ABS_MONOTIME, TIMER_ABSTIME, timeSp, NULL);
+   return clock_nanosleep(ABS_MONOTIME,  // default: CLOCK_MONOTONIC
+                         TIMER_ABSTIME, timeSp, NULL);
 } // delay(unsigned int)
 
 /*  Add a ns increment to a time overwriting it. */
@@ -177,7 +305,6 @@ void timeAddNs(timespec * t1, long ns){
        ++(*t1).tv_sec;
    }
 } // timeAddNs(timT v*, long)
-
 
 
 /*  Actual time (structure, real time clock). */
@@ -212,6 +339,7 @@ void updateReaLocalTime(void){
    } // west of Greenwich
    localMidnight = utcMidnight - actRTm.tm_gmtoff;
 } // updateReaLocalTime()
+
 
 /*  Cosine of day in year.
  *
@@ -373,7 +501,7 @@ __time_t getDaySunset(int16_t const dayInYear,
 
 
 
-//---------------------- sting utilities ------------------------------------
+//---------------------- string utilities -----------------------------------
 
 /*  String copy with limit. */
 size_t strlcpy(char * dest, char const * src, size_t const num){
@@ -391,14 +519,11 @@ size_t strlcpy(char * dest, char const * src, size_t const num){
 
 /*  String cat with limit.
  *
- *  This function appends at most num - 1 characters from src to dst the end
+ *  This function appends at most num - 1 characters from src to the end
  *  of dest. If not terminated by a 0 from src, dest[num-1] will be set 0.
  *  Hence, except for num == 0, dest will be 0-terminated.
  *
- *  num is the
- *
- *  The value returned is the length of string src; if this value is not
- *  less than num truncation occurred.
+ *  The value returned is the length of string src (if no truncation occurred).
  *
  *  Hint: This function resembles the one from bsd/string.h usually not
  *  available with standard Linuxes and Raspbians .
@@ -436,11 +561,11 @@ size_t strlcat(char * dest, char const * src, size_t num){
 
 //---------------------- formatting -----------------------------------------
 
-/* English weekdays, two letter abbreviation (Su 0) */
+/* English weekdays, two letter abbreviation (Su 0 & 7) */
 char const dow[9][4] = {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su", "--\0"};
 
 
-char const dec2digs[102][2] = {
+char const dec2digs[128][2] = {
   "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
   "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
   "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
@@ -451,8 +576,173 @@ char const dec2digs[102][2] = {
   "70", "71", "72", "73", "74", "75", "76", "77", "78", "79",
   "80", "81", "82", "83", "84", "85", "86", "87", "88", "89",
   "90", "91", "92", "93", "94", "95", "96", "97", "98", "99",
-  "00", "_1" // 00 for an optimisation; "_1" for fault
+  "00", "_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8", "_9", // 00 optimise
+  "_0", "_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8", "_9", // "_x" for fault
+  "_0", "_1", "_2", "_3", "_4", "_5", "_6", "_7" };
+
+/* Format number as two digit decimal number with leading zeroes.
+ *
+ *  The format is:  00 to 99
+ *
+ *  The length is always 2. There is no trailing character zero appended. <br />
+ *  returned is the number of leading zeroes in the range 0 o 1. N.B.
+ *  the value 0 yielding "00" is considered to have one leading zero.
+ *  @see dec2digs formatDec3Digs
+ *  @param targTxt pointer to the target text buffer,
+ *                 must have place for 3 characters (!)
+ *  @param value   the value to be formatted; values outside 0 .. 999
+ *                 will yield incorrect results
+ *  @return        the number of leading zeroes (0 or 1)
+ */
+int formatDec2Digs(char * targTxt, uint32_t value){
+  value &= 127;
+  char const * sp = dec2digs[value];
+  char * dp = targTxt;
+  *dp = *sp;
+  *++dp = *++sp;
+  return value > 9 ? 0 : 1;
+} // formatDec2Digs(char *, uint32_t)
+
+
+char const dec3digs[1024][4] = {
+    "000", "001", "002", "003", "004", "005", "006", "007", "008", "009",
+    "010", "011", "012", "013", "014", "015", "016", "017", "018", "019",
+    "020", "021", "022", "023", "024", "025", "026", "027", "028", "029",
+    "030", "031", "032", "033", "034", "035", "036", "037", "038", "039",
+    "040", "041", "042", "043", "044", "045", "046", "047", "048", "049",
+    "050", "051", "052", "053", "054", "055", "056", "057", "058", "059",
+    "060", "061", "062", "063", "064", "065", "066", "067", "068", "069",
+    "070", "071", "072", "073", "074", "075", "076", "077", "078", "079",
+    "080", "081", "082", "083", "084", "085", "086", "087", "088", "089",
+    "090", "091", "092", "093", "094", "095", "096", "097", "098", "099",
+
+    "100", "101", "102", "103", "104", "105", "106", "107", "108", "109",
+    "110", "111", "112", "113", "114", "115", "116", "117", "118", "119",
+    "120", "121", "122", "123", "124", "125", "126", "127", "128", "129",
+    "130", "131", "132", "133", "134", "135", "136", "137", "138", "139",
+    "140", "141", "142", "143", "144", "145", "146", "147", "148", "149",
+    "150", "151", "152", "153", "154", "155", "156", "157", "158", "159",
+    "160", "161", "162", "163", "164", "165", "166", "167", "168", "169",
+    "170", "171", "172", "173", "174", "175", "176", "177", "178", "179",
+    "180", "181", "182", "183", "184", "185", "186", "187", "188", "189",
+    "190", "191", "192", "193", "194", "195", "196", "197", "198", "199",
+
+    "200", "201", "202", "203", "204", "205", "206", "207", "208", "209",
+    "210", "211", "212", "213", "214", "215", "216", "217", "218", "219",
+    "220", "221", "222", "223", "224", "225", "226", "227", "228", "229",
+    "230", "231", "232", "233", "234", "235", "236", "237", "238", "239",
+    "240", "241", "242", "243", "244", "245", "246", "247", "248", "249",
+    "250", "251", "252", "253", "254", "255", "256", "257", "258", "259",
+    "260", "261", "262", "263", "264", "265", "266", "267", "268", "269",
+    "270", "271", "272", "273", "274", "275", "276", "277", "278", "279",
+    "280", "281", "282", "283", "284", "285", "286", "287", "288", "289",
+    "290", "291", "292", "293", "294", "295", "296", "297", "298", "299",
+
+    "300", "301", "302", "303", "304", "305", "306", "307", "308", "309",
+    "310", "311", "312", "313", "314", "315", "316", "317", "318", "319",
+    "320", "321", "322", "323", "324", "325", "326", "327", "328", "329",
+    "330", "331", "332", "333", "334", "335", "336", "337", "338", "339",
+    "340", "341", "342", "343", "344", "345", "346", "347", "348", "349",
+    "350", "351", "352", "353", "354", "355", "356", "357", "358", "359",
+    "360", "361", "362", "363", "364", "365", "366", "367", "368", "369",
+    "370", "371", "372", "373", "374", "375", "376", "377", "378", "379",
+    "380", "381", "382", "383", "384", "385", "386", "387", "388", "389",
+    "390", "391", "392", "393", "394", "395", "396", "397", "398", "399",
+
+    "400", "401", "402", "403", "404", "405", "406", "407", "408", "409",
+    "410", "411", "412", "413", "414", "415", "416", "417", "418", "419",
+    "420", "421", "422", "423", "424", "425", "426", "427", "428", "429",
+    "430", "431", "432", "433", "434", "435", "436", "437", "438", "439",
+    "440", "441", "442", "443", "444", "445", "446", "447", "448", "449",
+    "450", "451", "452", "453", "454", "455", "456", "457", "458", "459",
+    "460", "461", "462", "463", "464", "465", "466", "467", "468", "469",
+    "470", "471", "472", "473", "474", "475", "476", "477", "478", "479",
+    "480", "481", "482", "483", "484", "485", "486", "487", "488", "489",
+    "490", "491", "492", "493", "494", "495", "496", "497", "498", "499",
+
+    "500", "501", "502", "503", "504", "505", "506", "507", "508", "509",
+    "510", "511", "512", "513", "514", "515", "516", "517", "518", "519",
+    "520", "521", "522", "523", "524", "525", "526", "527", "528", "529",
+    "530", "531", "532", "533", "534", "535", "536", "537", "538", "539",
+    "540", "541", "542", "543", "544", "545", "546", "547", "548", "549",
+    "550", "551", "552", "553", "554", "555", "556", "557", "558", "559",
+    "560", "561", "562", "563", "564", "565", "566", "567", "568", "569",
+    "570", "571", "572", "573", "574", "575", "576", "577", "578", "579",
+    "580", "581", "582", "583", "584", "585", "586", "587", "588", "589",
+    "590", "591", "592", "593", "594", "595", "596", "597", "598", "599",
+
+    "600", "601", "602", "603", "604", "605", "606", "607", "608", "609",
+    "610", "611", "612", "613", "614", "615", "616", "617", "618", "619",
+    "620", "621", "622", "623", "624", "625", "626", "627", "628", "629",
+    "630", "631", "632", "633", "634", "635", "636", "637", "638", "639",
+    "640", "641", "642", "643", "644", "645", "646", "647", "648", "649",
+    "650", "651", "652", "653", "654", "655", "656", "657", "658", "659",
+    "660", "661", "662", "663", "664", "665", "666", "667", "668", "669",
+    "670", "671", "672", "673", "674", "675", "676", "677", "678", "679",
+    "680", "681", "682", "683", "684", "685", "686", "687", "688", "689",
+    "690", "691", "692", "693", "694", "695", "696", "697", "698", "699",
+
+    "700", "701", "702", "703", "704", "705", "706", "707", "708", "709",
+    "710", "711", "712", "713", "714", "715", "716", "717", "718", "719",
+    "720", "721", "722", "723", "724", "725", "726", "727", "728", "729",
+    "730", "731", "732", "733", "734", "735", "736", "737", "738", "739",
+    "740", "741", "742", "743", "744", "745", "746", "747", "748", "749",
+    "750", "751", "752", "753", "754", "755", "756", "757", "758", "759",
+    "760", "761", "762", "763", "764", "765", "766", "767", "768", "769",
+    "770", "771", "772", "773", "774", "775", "776", "777", "778", "779",
+    "780", "781", "782", "783", "784", "785", "786", "787", "788", "789",
+    "790", "791", "792", "793", "794", "795", "796", "797", "798", "799",
+
+    "800", "801", "802", "803", "804", "805", "806", "807", "808", "809",
+    "810", "811", "812", "813", "814", "815", "816", "817", "818", "819",
+    "820", "821", "822", "823", "824", "825", "826", "827", "828", "829",
+    "830", "831", "832", "833", "834", "835", "836", "837", "838", "839",
+    "840", "841", "842", "843", "844", "845", "846", "847", "848", "849",
+    "850", "851", "852", "853", "854", "855", "856", "857", "858", "859",
+    "860", "861", "862", "863", "864", "865", "866", "867", "868", "869",
+    "870", "871", "872", "873", "874", "875", "876", "877", "878", "879",
+    "880", "881", "882", "883", "884", "885", "886", "887", "888", "889",
+    "890", "891", "892", "893", "894", "895", "896", "897", "898", "899",
+
+    "900", "901", "902", "903", "904", "905", "906", "907", "908", "909",
+    "910", "911", "912", "913", "914", "915", "916", "917", "918", "919",
+    "920", "921", "922", "923", "924", "925", "926", "927", "928", "929",
+    "930", "931", "932", "933", "934", "935", "936", "937", "938", "939",
+    "940", "941", "942", "943", "944", "945", "946", "947", "948", "949",
+    "950", "951", "952", "953", "954", "955", "956", "957", "958", "959",
+    "960", "961", "962", "963", "964", "965", "966", "967", "968", "969",
+    "970", "971", "972", "973", "974", "975", "976", "977", "978", "979",
+    "980", "981", "982", "983", "984", "985", "986", "987", "988", "989",
+    "990", "991", "992", "993", "994", "995", "996", "997", "998", "999",
+
+    "000", "001", "002", "003", "004", "005", "006", "007", "008", "009",
+    "010", "011", "012", "013", "014", "015", "016", "017", "018", "019",
+    "020", "021", "022", "023"  // 000 .. 023 for an optimisation
 };
+
+/*  Format number as three digit decimal number with leading zeroes.
+ *
+ *  The format is:  000 to 999
+ *
+ *  The length is always 3. There is no trailing zero appended.
+ *  See ::dec3digs
+ *
+ *  @param targTxt pointer to the target text buffer,
+ *                 must have place for 3 characters (!)
+ *  @param value   the value to be formatted; values outside 0 .. 999
+ *                 will yield incorrect results
+ *  @return        the number of leading zeroes (0..2)
+ */
+int formatDec3Digs(char * targTxt, uint32_t value){
+  value &= 1023;
+  char const * sp = dec3digs[value];
+  char * dp = targTxt;
+  *dp = *sp;
+  *++dp = *++sp;
+  *++dp = *++sp;
+  return value > 99 ? 0 : value > 9 ? 1 : 2;
+} // formatDec3Digs(char *, uint32_t)
+
 
 
 char const zif2charMod10[44] = "01234567890123456789012345678901234567890123";

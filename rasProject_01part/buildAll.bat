@@ -2,7 +2,7 @@
 @echo buildAll.bat (c) 2017 Albrecht Weinert   a-weinert.de
 @echo Revision $Revision : 1.0 $ ($Date : now $)
 @echo.
-@REM Windows batch to make PROGRAM=* clean all for all existing programmes
+@REM Windows batch to make PROGRAM=* clean all for all existing programs
 @REM identified by existence of make include makeProg_*_settings.mk
 
 @del  programList.txt
@@ -27,7 +27,7 @@ uniq programList.tmp programList.txt
 @sleep 2
 @del programList.tmp
 @echo.
-
+@goto :noClean
 @echo cleaning all before
 @for /F  %%i in (programList.txt) do @(
  @set varLoop=%%i
@@ -44,6 +44,7 @@ uniq programList.tmp programList.txt
  @echo.
 )
 @echo.
+:noClean
 @echo building all now
 
 @for /F  %%i in (programList.txt) do @(
@@ -59,7 +60,7 @@ uniq programList.tmp programList.txt
  ) else (
    @echo.
    @echo No errors and warnings for %%i
-   @sleep 2
+   @sleep 1
  )
  @echo.
  @echo.

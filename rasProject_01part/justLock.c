@@ -3,7 +3,7 @@
  *
   A small program just to lock the piGpoi lock file
 \code
-   Copyright  (c)  2017   Albrecht Weinert
+   Copyright  (c)  2019   Albrecht Weinert
    weinert-automation.de      a-weinert.de
 
  *     /         /      /\
@@ -13,23 +13,27 @@
  *      \/  \/   \__/        \__/|_                                 \endcode
 
    Revision history \code
-   Rev. $Revision: 209 $ $Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $
+   Rev. $Revision: 236 $ $Date: 2021-02-02 18:11:02 +0100 (Di, 02 Feb 2021) $
    Rev. 209 22.07.2019 : minor improvements (docu)
 \endcode
 
-  This program tries to lock the standard lock file for piGpoi if it exists.
+  This program tries to lock the standard lock file for piGPio if it exists.
   On success it will run respectively sleep until getting a signal, on which
   it will unlock the file and terminate.
 */
 #include <getopt.h>  // no_argument, required_argument, optarg,
 #include "weUtil.h"  // timeAdd timeCmp
+#include "weLockWatch.h"
+
 
 //---------  basic configuration and names  --------------------------------
 
-char svnRevTxt[] = "$Revision: 209 $   ";
-//..................0123456789x123456789v123456789t123456789q
-char svnDatTxt[] = "$Date: 2019-07-24 11:31:10 +0200 (Mi, 24 Jul 2019) $ ";
-//                         0123456789x123456
+char const prgNamPure[] = "justLock";
+//............        ....0123456789x1234567
+char const prgSVNrev[] = "$Revision: 236 $   ";
+//........      ..........0123456789x123456789v123456789t123456789q
+char const prgSVNdat[] = "$Date: 2021-02-02 18:11:02 +0100 (Di, 02 Feb 2021) $ ";
+//                               0123456789x123456
 
 char prgDesTxt[] = "\n"
    "    justLock  \n"
@@ -45,7 +49,7 @@ char optHlpTxt[] =
    "    a signal, on which it will unlock the file and terminate. \n\n"
    "    The start options: \n"
    "    --help -h -? (this) help output \n"
-   "    --version -v show programme revision and date  \n"
+   "    --version -v show program revision and date  \n"
    "    --verbose    be verbose on console (for logging or debugging) \n"
    "    --normal     be silent except for errors (default) \n"
    "    --silent     be totally silent  \n"
@@ -53,33 +57,18 @@ char optHlpTxt[] =
    "    The return codes:    \n"
    "          0  OK  had lock file locked until signal \n"
    "         97      can't open the the lock file (probably not existing) \n"
-   "         98      can't get the lock (probably other instance running) \n"
-;
+   "         98      can't get the lock (probably other instance running) \n" ;
 
 int verbose = 1;  // 1 normal 2 verbose 0 silent
 
 static struct option longOptions[] = {
-  {"silent",      no_argument, &verbose, 0}, // default
-  {"normal",      no_argument, &verbose, 0}, // default
+  {"silent",      no_argument, &verbose, 0}, // say nothing
+  {"normal",      no_argument, &verbose, 1}, // default
   {"verbose",     no_argument, &verbose, 2}, // do talk
 
   {"help",        no_argument,     NULL, 'h'},
   {"version",     no_argument,     NULL, 'v'},
   {NULL, 0, NULL, 0} }; // longOptions (end marker)
-
-char const revDatTxt[] = "    Revision %s (%.16s)\n";
-
-/** Beautify SVN revision number. */
-char const * revTxt(){
-  char * puten = svnRevTxt + 12;
-  for (;; ++puten) if (*puten < '0' || *puten > '9') {*puten = 0; break; }
-  return svnRevTxt + 11;
-} // revTxt() // SVN revision number as text
-
-/** Print the program SVN revision and date. */
-void printRevDat(void){
-   fprintf(outLog, revDatTxt, revTxt(), svnDatTxt + 7);
-} // printRevDat()
 
 char const * lckPiGpio; //!< The file path used
 
@@ -98,7 +87,7 @@ static void onExit(int status, void * arg){
    closeLock();
 } // onExit(int, void*)
 
-/** The programme.
+/** The program.
  *
  *  run by:  justLock [options] [lockFilePath]
  *
