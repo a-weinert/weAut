@@ -206,7 +206,7 @@ import de.frame4j.text.TextHelper;
  *  @see #setFields(Object)
  *  @see PropMapHelper#setField(Object, String, String)
  *  @author   Albrecht Weinert
- *  @version  $Revision: 41 $ ($Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $)
+ *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
  */
  // so far    V00.00 (05.04.1999) : new
  //           V00.02 (11.07.2000) : Inter nationalising, extensions
@@ -241,8 +241,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 1999 - 2006, 2009, 2016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 41 $",
-   lastModified   = "$Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $",
+   version   = "V.$Revision: 42 $",
+   lastModified   = "$Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "3 phase: make, populate, use (preferably not further modified)",  
    purpose = 
@@ -378,7 +378,7 @@ import de.frame4j.text.TextHelper;
  *  (inserting this by %hlpfwopt% its help texts) would get misleading.<br />
  *  <br />
  *  @see #load(CharSequence, CharSequence) load()
- *  @see #Prop(Class, String, boolean)
+ *  @see #Prop(Class, String, boolean, String)
  *  @see #Prop(URL, String, CharSequence) Prop(URL, String, CharSequence)
  */
    public Prop() {  
@@ -545,7 +545,7 @@ import de.frame4j.text.TextHelper;
  *  @param fileName the name of properties text file
  *  @exception FileNotFoundException if file fileName is nor readable.
  *  @see #load(CharSequence, CharSequence)
- *  @see #Prop(Class, String, boolean)
+ *  @see #Prop(Class, String, boolean, String)
  *  @see #Prop(URL, String, CharSequence)
  *  @see #Prop()
  */
@@ -573,7 +573,7 @@ import de.frame4j.text.TextHelper;
  *  @param fileName the name of properties text file
  *  @exception FileNotFoundException if no such file readable
  *  @see #load(CharSequence, CharSequence)
- *  @see #Prop(Class, String, boolean)
+ *  @see #Prop(Class, String, boolean, String)
  *  @see #Prop(CharSequence, CharSequence)
  *  @see #Prop()
  */
@@ -597,7 +597,7 @@ import de.frame4j.text.TextHelper;
  *  is empty. It will also not contain any standard or default entries made
  *  by other constructors like {@link #Prop()}.<br />
  *  <br />
- *  @see #Prop(Class, String, boolean)
+ *  @see #Prop(Class, String, boolean, String)
  *  @see #Prop(CharSequence, CharSequence)
  *  @see #Prop()
  */
@@ -620,7 +620,7 @@ import de.frame4j.text.TextHelper;
  *  A Prop object will be made with all standard / default entries as made
  *  by the parameterless constructor {@link #Prop() Prop()}. Then, using
  *  {@link #load(CharSequence, CharSequence)} all properties from the file
- *  className+.properties" are added. Used therefore is the pure (short)
+ *  className+".properties" are added. Used therefore is the pure (short)
  *  class name of the class {@code cl}, that means without packages and 
  *  else.<br />
  *  <br />
@@ -643,21 +643,27 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  @param allowNoPropFile if true the absence of an own .properties file will
  *              be allowed; otherwise an exception would be thrown
+ *  @param extraProp if not null or empty, the name of extra properties
+ *              to be loaded before the class related ones   
  *  @exception FileNotFoundException if the base .properties file is not 
  *              readable and allowNoPropFile is false
  *  @see #load(CharSequence, CharSequence) load()
  *  @see #Prop(CharSequence, CharSequence)
  */
    public Prop(Class<?> cl, String shortClassName, 
-                final boolean allowNoPropFile)  throws FileNotFoundException {
+                 final boolean allowNoPropFile,
+                 final String extraProp) throws FileNotFoundException {
       this();
       this.allowNoPropFile = allowNoPropFile; // since 06.04.2020 (remember)
       baseClass = cl;
       if (cl == null) return;
-      
       String n = cl.getName();
       String className = n; 
-
+      if (extraProp != null && extraProp.length() > 2) {
+        boolean loadExtra = load1(cl, extraProp, null);
+        if (RESTEST) System.out.println(" ///  TEST Prop loadExtra "
+                + extraProp + (loadExtra ? " OK" : " failed.")); // TEST out
+      } // extraProp load
       parentSearch: while (true) { // basePropFill < MAX_HIER
          baseClassHierarch[basePropFill] = cl;
          
@@ -753,7 +759,8 @@ import de.frame4j.text.TextHelper;
  *  the nationalising according to all available .properties files for that
  *  application.<br />
  *  <br />
- *  The {@link Prop} object is made by {@link #Prop(Class, String, boolean)}.
+ *  The {@link Prop} object is made by 
+ *  {@link #Prop(Class, String, boolean, String)}.
  *  If the {@link App} object {@code app} has a mother application the 
  *  properties help and verbosity take its values as defaults (instead of
  *  false and {@link AppHelper#NORMAL NORMAL}.<br />
@@ -794,13 +801,11 @@ import de.frame4j.text.TextHelper;
  *  @see #setFields setFields()
  *  @see #getText getText()
  *  @see #Prop(CharSequence, CharSequence)
- *  @see #Prop(Class, String, boolean)
+ *  @see #Prop(Class, String, boolean, String)
  */
    public Prop(App app, CharSequence commBeg) throws FileNotFoundException {
-//   Prop(App app, CharSequence commBeg)
-  //         throws FileNotFoundException, SecurityException,
-    //                                               IllegalArgumentException {
-      this(app.myClass, app.shortClassName, app.allowNoPropertiesFile());
+      this(app.myClass, app.shortClassName, app.allowNoPropertiesFile(),
+                                                app.extraPropertiesFile());
       Object ba = app.appBase.baseApp;
       if (app != ba && ba instanceof App) {
          put("verbosity", ((App)ba).getVerbose());
@@ -1337,8 +1342,6 @@ import de.frame4j.text.TextHelper;
       }
       return ret;     
    } // getAsResourceStream(String)
-
-
 
 
 /** Get an input stream for a file name as file or as resource.  <br />

@@ -13,22 +13,20 @@
  */
 package de.frame4j.util;
 
-// import javax.management.AttributeNotFoundException;
 import de.frame4j.text.TextHelper;
 
-/** <b>Frame4J application as MBean</b>.
- * 
+/** <b>Frame4J application as MBean</b>. <br />
+ *  <br />
  *  This interface describes the actions and properties an App (inheritor) 
  *  can expose e.g. via JConsole. An interface named TheAppInheritorMBean may
- *  extend this interface.
- *
- *  
+ *  extend this interface. <br />
+ *  <br />
  *  Copyright  &copy;  2021  Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 35 $ ($Date: 2021-04-04 12:58:39 +0200 (So, 04 Apr 2021) $)
+ *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
  */
 // so far:   V.  36  (07.04.2021) : new, replace AppMBean.xml
-//           V.  3x  (04.04.2021) :   
+//           V.  41  (04.04.2021) : registration method put here   
 
 public interface AppMBean {
   
@@ -48,7 +46,7 @@ public interface AppMBean {
    public String getStartTime();
 
 /** The start parameters. <br />
- *  
+ *  <br />
  *  This method returns the originally supplied start parameters (see
  *  {@link de.frame4j.util.App#args args}) space separated (as from the
  *  shell's command line).<br />
@@ -58,23 +56,17 @@ public interface AppMBean {
  *  @return the application's start parameters
  */
    public String getArgs();
-
-/* * More than normal reports. */ 
- //  public boolean isVerbose();
-
-/* * Almost no reports. */   
- //  public boolean isSilent();
    
 /** Detailedness of reports or logging. */   
    public String getVerbose();
    
-/** Get the short (2 character) notation of the user's language. */
+/** Get the short (2 character) notation of the user's language. <br />*/
    public String getLanguage();
    
 /** The actual (system) time as text. */
    public String getActTime();
    
-/** The application's execution time (milliseconds) so far.
+/** The application's execution time (milliseconds) so far. <br />
  * 
  * @return Elapsed (not CPU) time in (Long) milliseconds since startup;
  * @see de.frame4j.util.App#getExecTimeMsL()
@@ -82,7 +74,7 @@ public interface AppMBean {
    public Long getExecTimeMsL();
 
 
-/** The copyright notice.
+/** The copyright notice. <br />
  *     
  * @see de.frame4j.util.App#getCopyright()
  */
@@ -100,7 +92,7 @@ public interface AppMBean {
  */
 //   public String getAboutText();
    
-/** The program's version and revision date. */    
+/** The program's version and revision date. <br /> */    
    public String getVersDate();
 
 /** The program's name. */     

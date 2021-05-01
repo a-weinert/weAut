@@ -17,25 +17,69 @@ import de.frame4j.util.AppMBean;
 
 /** <b>Test and demo program BlinkOnPi as MBean</b>. <br />
  *  <br />
- *  Contrary to {@link  de.weAut.demos.RdGnPiGpioDBlink} the test and demo
+ *  Contrary to {@link de.weAut.demos.RdGnPiGpioDBlink} the test and demo
  *  program {@link  de.weAut.demos.BlinkOnPi} makes full use of Frame4J
  *  by inheriting {@link de.frame4j.util.App}. <br />
- *  Hence, additionally to the operations and properties of 
- *  {@link  de.weAut.demos.RdGnPiGpioDBlink} respectively
- *  {@link  de.weAut.demos.RdGnPiGpioDBlinkMBean} extended here we have also
+ *  Hence, additionally to own operations and properties here we can have also
  *  {@link de.frame4j.util.AppMBean}.<br />
  *  Optionally, also {@link de.frame4j.util.UIInfo} (implemented by 
- *  {@link de.frame4j.util.App} can be extended (not recommended).<br />
- *  <br />
- *  As for standard MBeans the interface shall be named according to the 
- *  applications class one can't use interface multiple inheritance there.
- *  Hence, this interface just bundles those needed for JMX/JConsole.<br />
+ *  {@link de.frame4j.util.App} could be extended to make those also 
+ *  available as MBen operations (not recommended).<br />
  *  <br />
  *  Copyright  &copy;  2021  Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 41 $ ($Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $)
+ *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
  */
 // so far:   V.  33  (27.03.2021) : new, minimal functionality
 //           V.  34  (04.04.2021) : getPiType added 
 
-public interface BlinkOnPiMBean extends RdGnPiGpioDBlinkMBean, AppMBean { }
+public interface BlinkOnPiMBean extends AppMBean {
+  
+/** The state of the yellow LED(s). <br />
+ *  <br />
+ *  The yellow LED(s) are inverted only once in a
+ *  {@link #getCycCount() cycle}.  
+ *  @return true when ON
+ */
+ public Boolean getLEDye();
+
+/** The state of the red LED(s). <br />
+ *  <br />
+ *  The red LED(s) are inverted twice in a {@link #getCycCount() cycle}.  
+ *  @return true when ON
+ */
+ public Boolean getLEDrd();
+
+/** The state of the green LED(s). <br />
+ *  <br />
+ *  The yellow LED(s) are inverted twice in a {@link #getCycCount() cycle}.  
+ *  @return true when ON
+ */
+ public Boolean getLEDgn();
+     
+/** See the number of cycles. <br />
+ *  <br />
+ *  As the duration of one cycle is 600ms it would take more than 40 years to
+ *  overflow to negative.<br />
+ *  Note: Java has no unsigned number type. int is int32_t there is 
+ *  no uint32_t. 
+ *  @return the loop count
+ *  @see #resetCycCount()
+ */
+  public Integer getCycCount();
+      
+/** Set the number of cycles. <br /> */   
+  public void setCycCount(Integer cycCount);
+  
+/** Reset the number of cycles counter. <br />
+ *  <br />
+ *  If you don't want to wait almost 82 years to see low positive numbers 
+ *  again, you may reset the counter (via JConsole e.g.).
+ *  @see #getCycCount()
+ */
+  public void resetCycCount();
+      
+/** Get the Pi type. <br /> */
+  public Integer getPiType();
+
+} // BlinkOnPiMBean (29.04.2021)

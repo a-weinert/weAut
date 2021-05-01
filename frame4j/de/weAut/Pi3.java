@@ -15,25 +15,32 @@ package de.weAut;
 
 /** <b>Definitions for the usage of the Raspberry Pi3, 4 and 0's I/O. <br />
  *  <br />
+ *  The {@link Pi3} introduced the 40 pin IO connector &ndash; currently 
+ *  <i>the</i> standard &ndash; also used by the Pi 4 and the Pi zero. Hence,
+ *  this type {@link Pi3} represents the IO behaviour of all those modern 
+ *  Paspberry Pis. <br />
+ *  <br />
  *  <a href=package-summary.html#co>&copy;</a> 
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  @see Pi1 Pi2 ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 40 $ ($Date: 2021-04-19 21:47:30 +0200 (Mo, 19 Apr 2021) $)
+ *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
-//           V. 36  (06.04.2021) :  polymorphism
+//           V. 36  (06.04.2021) :  polymorphism; type 3 4 0
 
 public interface Pi3 extends ThePi {
   
 /** Make a Pi3 object for a given host. <br />
+ * 
+ *  This is equivalent to
+ *  {@link #make(String, int, int, int) make(host, 0, 0, 3)}.
  *   
  *  @return a Pi3 object with the given {@link #host() host},
  *     port 8888 and  timeout 10000 (10s)
  *  @param host might be given as name "raspi67" if known to DNS or IP
  *     address "192.168.178.67". null or empty will be
  *     {@link de.weAut.ThePi#defaultHost defaultHost}
- *  @see #make(String, int, int, int)        
  */
   static public Pi3 make(final String host){
     return make(host, 0, 0, 3);
@@ -44,7 +51,7 @@ public interface Pi3 extends ThePi {
  *  @return a Pi3 object with the given {@link #host() host},
  *     {@link #port() port}, {@link #timeout() timeout} and
  *     {@link #type() type}
- *  @param type 3, 4 and 0 are accepted
+ *  @param type 3, 4 and 0 are accepted; all else defaults to 3
  *  @param port 20..65535 will be accepted; other values default to 8888
  *  @param timeout for socket connection in ms, 300..50000 will be accepted;
  *           other values default to 10s 

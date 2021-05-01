@@ -29,7 +29,7 @@ import java.io.PrintWriter;
  *  Comment excerpt of the original/ported C source file: <br /><pre>
   A fifth program for Raspberry's GPIO pins
 
-  Rev. $Revision: 41 $  $Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $
+  Rev. $Revision: 42 $  $Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $
   Copyright  (c)  2019   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
 
@@ -57,13 +57,12 @@ import java.io.PrintWriter;
  *  Copyright  &copy;  2019   Albrecht Weinert <br />
  *  @see BlinkOnPi TestOnPi
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 41 $ ($Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $)
+ *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
  */
 // so far:   V.  21  (21.05.2019) : new, minimal functionality
 //           V. -26  (31.05.2019) : three LEDs, IO lock 
 //           V.  35  (01.04.2021) : MBean for JConsole 
-public class RdGnPiGpioDBlink //  extends StandardMBean  
-                         implements PiUtil, RdGnPiGpioDBlinkMBean {
+public class RdGnPiGpioDBlink implements PiUtil, RdGnPiGpioDBlinkMBean {
 
 /** The LEDs to blink. <br />
  *  <br />
@@ -131,7 +130,7 @@ public class RdGnPiGpioDBlink //  extends StandardMBean
     try {
       // Initialise the application as RdGnPiGpioDBlinkMbean
       rdGnPiGpioDBlink = new RdGnPiGpioDBlink(args);
-    rdGnPiGpioDBlink.regAsStdMBean(true);
+      rdGnPiGpioDBlink.regAsStdMBean();
     /*xxx  
       // Register the object in the MBeanServer
       MBeanServer platformMBeanServer =

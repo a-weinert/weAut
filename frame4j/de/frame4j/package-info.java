@@ -60,14 +60,14 @@ more comfortable substitute.
 According to Java rules, the base package's names correspond
 to domains / URLs
 <table summary="format table 1" style="border:none;  margin: 4px 2px 4px 18px;">
-<tr><td>&bull;&nbsp;</td><td>de.frame4j</td><td><a href="https://frame4j.de" target="_top">frame4j.de/</a>
-</td><td>Frame4J  (open source project),</td></tr>
+<tr><td>&bull;&nbsp;</td><td><a href="https://frame4j.de" target="_top">frame4j.de/</a>
+  </td><td>de.frame4j</td><td>Frame4J  (open source project),</td></tr>
 <tr><td>&bull;</td><td><a href="https://a-weinert.de" target="_top">a-weinert.de/</a> 
- &nbsp;</td><td>(no package)</td><td>Albrecht Weinert (home).</td></tr>
-<tr><td>&bull;</td><td><a href="https://a-weinert.de" target="_top">a-weinert.de/</a> 
- &nbsp;</td><td>(no package)</td><td>weinert-automation (home).</td></tr>
+  &nbsp;</td><td>(no package) &nbsp; </td><td>Albrecht Weinert (home).</td></tr>
+<tr><td>&bull;</td><td><a href="https://weinert-automation.de" target="_top">weinert-automation.de/</a> 
+  &nbsp; </td><td>(no package) &nbsp; </td><td>weinert-automation (home).</td></tr>
 <tr><td>&bull;</td><td><a href="https://weinert-automation.de/index_en.html" target="_top">weAut.de/</a> 
- &nbsp;</td><td>de.weAut</td><td>short synonym URL.</td></tr>  
+  &nbsp;</td><td>{@link de.weAut}</td><td>short synonym URL.</td></tr>  
 </table>
 Searching here you will find information, the repository and (this) javadoc
 documentation.<br />
@@ -85,8 +85,8 @@ The framework's library classes are distributed over some packages:
 <tr><td>&bull;</td><td>{@link de.frame4j.graf}</td><td> graphical helper,</td></tr>
 <tr><td>&bull;</td><td>{@link de.frame4j.demos}</td><td> demonstrator programmes,</td></tr>
 <tr><td>&bull;</td><td>{@link de.frame4j}</td><td> base package and Frame4's tools,</td></tr>
-<tr><td>&bull;</td><td>{@link de.weAut}</td><td>process I/O support.</td></tr>
-
+<tr><td>&bull;</td><td>{@link de.weAut}</td><td>process I/O support,</td></tr>
+<tr><td>&bull;</td><td>{@link de.weAut.demos}</td><td> I/O demonstrators.</td></tr>
  </table>
 
 
@@ -125,7 +125,7 @@ applications that are part of
 <li>{@link de.frame4j.PKextr PKextr} &nbsp;&nbsp; get keys (public and private) from keystore</li>
 <li>{@link de.frame4j.Exec Exec} &nbsp; &nbsp; &nbsp;&nbsp; start a Frame4J application (first parameter)<br />
     {@link de.frame4j.Exec Exec} &nbsp; &nbsp; &nbsp;&nbsp; no prameter starts {@link de.frame4j.AskAlert AskAlert}</li>
-<li>{@link  de.weAut.demos.TestOnPi TestOnPi} any binary IO operations on a Pi</li>
+<li>{@link de.weAut.TestOnPi TestOnPi} test IO operations/devices on a Pi</li>
 </ul></li>
 
 
@@ -169,6 +169,6 @@ or as <a href="./doc-files/epl.txt">text</a> within the source
 distribution.<br />
 
  @author   Albrecht Weinert
- @version  Revision $Revision: 41 $ ($Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $) 
+ @version  Revision $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $) 
 */
 package de.frame4j;

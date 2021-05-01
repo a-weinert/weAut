@@ -14,8 +14,6 @@
 package de.frame4j.util;
 
 import java.io.InputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.net.URLClassLoader;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -48,8 +46,8 @@ import de.frame4j.time.TimeHelper;
 @MinDoc(
    copyright = "Copyright  1999 - 2006, 2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
+   version   = "V.$Revision: 42 $",
+   lastModified   = "$Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "use the basic services",  
    purpose = "provide helper methods for applications"
@@ -109,7 +107,7 @@ import de.frame4j.time.TimeHelper;
   
 //---------------------------------------------------------------------------
 
-/** Output a non empty String. <br />
+/*  * Output a non empty String. <br />
  *  <br />
  *  The output of {@code s} by out.println() will be made only,<br /> 
  *  if out is either a {@link java.io.PrintWriter} or a
@@ -133,7 +131,7 @@ import de.frame4j.time.TimeHelper;
  *  @param out  PrintStream or PrintWriter. If null or  of other types 
  *              nothing happens at all.
  *  @param  s   Sequence to be output. If empty (or null) nothing happens.
- */
+ * /
    static public void toOutln(final Object out, final CharSequence s){
       if (s == null ||  s.length() == 0) return;
       if (out instanceof PrintStream) {
@@ -143,8 +141,8 @@ import de.frame4j.time.TimeHelper;
       if (out instanceof PrintWriter) {
          ((PrintWriter)out).println(s.toString());
       }
-   } // toOutln(Object, ..)
-
+   } // toOutln(Object, ..)   xxxxxxxxxxxxxxxxx   */
+   
 
 //-----------------------------------------------------------------------
 

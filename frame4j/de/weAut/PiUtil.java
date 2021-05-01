@@ -16,14 +16,18 @@ package de.weAut;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Flushable;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.lang.management.ManagementFactory;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.util.concurrent.TimeUnit;
+import javax.management.JMException;
 import javax.management.MBeanServer;
+import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
 import de.frame4j.text.TextHelper;
@@ -33,13 +37,13 @@ import de.frame4j.util.ComVar;
  *  <br />
  *  The methods here are all implemented
  *  (featuring a kind of multiple inheritance). <br />
- *  An application wanting to use {@link ThePi},  {@link ClientPigpiod}
+ *  An application wanting to use {@link ThePi}, {@link ClientPigpiod}
  *  etc. must implement this interface {@link PiUtil}. 
  *  <br />
  *  Copyright <a href=package-summary.html#co>&copy;</a> 2019, 2021
  *           &nbsp; Albrecht Weinert<br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 41 $ ($Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $)
+ *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
  */
 // so far:   V. o19  (17.05.2019) : new
 //           V.  21  (19.05.2019) : ALT numbers, typo
@@ -75,36 +79,66 @@ public interface PiUtil extends PiVals {
   } // systemExit(int)
 
   
-/** Register application as standard MBean.
- *   
+/** Register this as standard MBean. <br />
+ * 
+ *  @return the registered object name
+ *  @throws JMException if the registering fails 
  */
-  public default boolean regAsStdMBean(final boolean doPrint){
+  public default String regAsStdMBean() throws JMException {
     MBeanServer platformMBeanServer =
                             ManagementFactory.getPlatformMBeanServer();
     ObjectName objectName = null;
-    String fullName = this.getClass().getName();
+    Class<?> clasz = this.getClass();
+    String fullName = clasz.getName();
+    String fullMBname = fullName + "MBean";
+    Class<?>[] intfacs = clasz.getInterfaces();
+    Class<?> mBintf = null;
+    for (Class<?> i : intfacs) {
+      if (fullMBname.equals(i.getName())) { mBintf = i; break; }
+    } // for
+    if (mBintf == null) throw  // not implementing m.y.SelfMBean
+      new NotCompliantMBeanException("MBean interface not implemented");
     int fnL = fullName.length();
     int lastDot = fullName.lastIndexOf ('.');
-    if (lastDot == -1 || (lastDot + 2) >= fnL){ // no package no registration
-      if (doPrint) Impl.getOut().println("\n  " + ComVar.PROG_SHORT 
-                              + " MBean not reg. no package.class");
-      return false;
-    } // no package or no class => no registration
+    if (lastDot == -1 || (lastDot + 2) >= fnL) throw  // not package.class
+      new NotCompliantMBeanException("no package.class");
     String oName = fullName.substring (0, lastDot) + ":type="
                                 + fullName.substring (lastDot + 1);
+    objectName = new ObjectName(oName);
+    platformMBeanServer.registerMBean(this, objectName);
+    return oName;
+  } // regAsStdMBean()
+
+/** Report an exception. <br />
+ * 
+ *  @param out the output for the report
+ *  @param exc the exception to report on
+ *  @param trace true: print also a stack trace
+ *               (and only if out is a PrintWriter or a PrrintStream)
+ */
+  public default void repExc(final Appendable out, final Throwable exc,
+                                     final boolean trace){
+    if (out == null || exc == null) return;
+    Throwable ex = exc.getCause();
+    if (ex == null) ex = exc;
     try {
-      objectName = new ObjectName(oName);
-      platformMBeanServer.registerMBean(this, objectName);
-      if (doPrint) Impl.getOut().println("\n  "
-             + ComVar.PROG_SHORT + " MBean: " + oName);
-      return true;
-    } catch (Exception ex) {
-      if (doPrint) Impl.getOut().println("\n  "
-                              + ComVar.PROG_SHORT + " MBean fail " + ex);
-      return false;
-    }
-  } // regAsStdMBean(boolean)
-  
+      out.append("\n  ").append(PROG_SHORT).append(' ')
+         .append(ex.getClass().getName());
+      out.append("\n  ").append(PROG_SHORT).append(' ')
+         .append(ex.getMessage()).append('\n');
+      if (out instanceof Flushable) ((Flushable)out).flush();
+    } catch (IOException e) { // should not happen for usual output objects
+      return; // just ignore
+    } // should not happen for StringBuilder, PrintWriter, PrintStream etc.
+    if (trace) {
+      if (out instanceof PrintWriter) {
+        exc.printStackTrace((PrintWriter) out);
+      } else if (out instanceof PrintStream) {
+        exc.printStackTrace((PrintStream) out);
+      } 
+    } // trace
+  } // repExc(Appendable, Throwable) 
+
   
 // ------------ common Frame4J resources ----------------------------------
 

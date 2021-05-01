@@ -22,13 +22,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.FileInputStream;
+// import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.Flushable;
+import java.io.IOException;
+//  import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
+import java.lang.management.ManagementFactory;
 import java.time.Instant;
 import java.util.TimerTask;
 import java.util.logging.Handler;
@@ -36,6 +39,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.management.AttributeNotFoundException;
+import javax.management.JMException;
+import javax.management.MBeanServer;
+import javax.management.NotCompliantMBeanException;
+import javax.management.ObjectName;
 // import javax.management.DynamicMBean;
 // import javax.management.MBeanException;
 // import javax.management.MBeanInfo;
@@ -110,7 +117,7 @@ import de.frame4j.time.TimeHelper;
  *  Copyright 1997 - 2006, 2009  &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 41 $ ($Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $
+ *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $
  *  @see de.frame4j.io.AppIO
  *  @see Prop
  *  @see #go(String[], String, CharSequence)
@@ -143,8 +150,8 @@ import de.frame4j.time.TimeHelper;
 @MinDoc(
    copyright = "Copyright 1997 - 2016, 2021 A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 41 $",
-   lastModified   = "$Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $",
+   version   = "V.$Revision: 42 $",
+   lastModified   = "$Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "start as Java application",  
    purpose = "Base class for powerful, robust and comfortable applications"
@@ -434,10 +441,12 @@ import de.frame4j.time.TimeHelper;
  *  Usually set by one of the start methods 
  *  {@link #go(String[], String, CharSequence) go(...)}
  *  called within <code>void main(String[] args)</code>.<br />
+ *  Here in args the parameters used in (partial) parsing will be set null,
+ *  while argsOrig will be an untouched copy. <br />
  *  <br />
  *  default: {@link ComVar}.{@link ComVar#NO_STRINGS  NO_STRINGS}<br />
  */
-   protected String[] args = NO_STRINGS;
+   protected String[] args = NO_STRINGS, argsOrig = NO_STRINGS;
 
 /** The start parameters. <br />
  *  <br />
@@ -454,20 +463,51 @@ import de.frame4j.time.TimeHelper;
  *  {@link ComVar#NO_STRINGS}.<br />
  *  <br />
  *  This method returns the originally supplied start parameters (see
- *  {@link #args}) as one String containing the start parameters 
+ *  {@link #argsOrig}) as one String containing the start parameters 
  *  space separated (as from the shell's command line).<br />
  *  <br />
  *  @see TextHelper#prepParams(String[])
  *  @return the application's start parameters
  */
    @Override public final String getArgs(){
-     if (args == NO_STRINGS) return EMPTY_STRING;
-     if (args == null || args.length == 0) {
-        args = NO_STRINGS;
+     if (argsOrig == NO_STRINGS) return EMPTY_STRING;
+     if (argsOrig == null || argsOrig.length == 0) {
+        argsOrig = NO_STRINGS;
         return EMPTY_STRING;
      } 
-     return TextHelper.prepParams(args);
+     return TextHelper.prepParams(argsOrig);
    } // getArgs()
+
+/** Register this application as standard MBean. <br />
+ * 
+ *  @return the registered object name
+ *  @throws JMException if the registering fails 
+ */
+  public String regAsStdMBean() throws JMException {
+    MBeanServer platformMBeanServer =
+                            ManagementFactory.getPlatformMBeanServer();
+    ObjectName objectName = null;
+    Class<?> clasz = this.getClass();
+    String fullName = clasz.getName();
+    String fullMBname = fullName + "MBean";
+    Class<?>[] intfacs = clasz.getInterfaces();
+    Class<?> mBintf = null;
+    for (Class<?> i : intfacs) {
+      if (fullMBname.equals(i.getName())) { mBintf = i; break; }
+    } // for
+    if (mBintf == null) throw  // not implementing m.y.SelfMBean
+      new NotCompliantMBeanException("MBean interface not implemented");
+    int fnL = fullName.length();
+    int lastDot = fullName.lastIndexOf ('.');
+    if (lastDot == -1 || (lastDot + 2) >= fnL) throw  // not package.class
+      new NotCompliantMBeanException("no package.class");
+    String oName = fullName.substring (0, lastDot) + ":type="
+                                + fullName.substring (lastDot + 1);
+    objectName = new ObjectName(oName);
+    platformMBeanServer.registerMBean(this, objectName);
+    return oName;
+  } // regAsStdMBean()
+
 
 //---------------------------------------------------------------
 
@@ -1485,7 +1525,7 @@ import de.frame4j.time.TimeHelper;
    } // toString() 
 
    
-//---------------------------------------------------------------------------   
+//----------------- properties ---------------------------------------------   
 
 /** Decide, if the basic .properties file may be omitted. <br />
  *  <br />
@@ -1532,9 +1572,15 @@ import de.frame4j.time.TimeHelper;
  */
    protected boolean allowNoPropertiesFile() { return allowNoBaseProps; }
    private transient boolean allowNoBaseProps;
+   
+/** Decide, if and which extra .properties has to be loaded. <br />
+ *  <br />
+ *  If this method returns a non empty String it is taken as the name of an
+ *  extra .properties file to be loaded before class related ones.
+ *  @return null
+ */   
+   protected String extraPropertiesFile(){ return null; }
 
-
-//---------------------------------------------------------------------------
 
 /** The Prop(erties) object. <br />
  *  <br />
@@ -1568,7 +1614,7 @@ import de.frame4j.time.TimeHelper;
    public boolean parsePartial(){ return parsPart; } // parsePartial() 
    private boolean parsPart;
 
-/** Provide a XML input stream. <br />
+/*  * Provide a XML input stream. <br />
  *  <br />
  *  The {@code fileName} provided as parameter will be suffixed with .xml if
  *  not yet ending so.<br />
@@ -1583,7 +1629,7 @@ import de.frame4j.time.TimeHelper;
  *  @param fileName the name (will be suffixed with .xml)
  *  @return a stream or null
  *  @see Prop#getAsStream(String, String)
- */
+ *  /
    public final InputStream getXMLinput(final CharSequence fileName) {
       String fileNam = TextHelper.makeFName(fileName, ".xml");
       if (fileNam == null) return null;
@@ -1594,7 +1640,7 @@ import de.frame4j.time.TimeHelper;
          return new FileInputStream(fileNam);
       } catch (FileNotFoundException fnf) {}
       return null;     
-   } // getXMLinput(CharSequence)
+   } // getXMLinput(CharSequence)   xxxx  removed 01.05.2021  */
 
 /** The main thread. <br />
  *  <br />
@@ -2072,8 +2118,13 @@ import de.frame4j.time.TimeHelper;
       if (args == null) {
          appBase.errorExit(this, NO_PARS_ERROR, "no parameter array");
          return NO_PARS_ERROR;
-      }
+      } // exit args == null
       this.args = args;
+      if (args.length != 0) {
+        argsOrig = new String[this.args.length];
+        int i = -1;
+        for (String arg : this.args) { argsOrig[++i] = arg; }
+      } // args not empty; save orig; since 30.04.2021
       prop = new Prop(this, commBeg);
       mainThread = Thread.currentThread();
       stdSt:  if (stdStart) {
@@ -2125,62 +2176,37 @@ import de.frame4j.time.TimeHelper;
       mainThread = null;
       return retCode;
    } // go(String[], String, CharSequence, boolean)
-   
-/** No start parameters. <br />
- *  <br />
- *  A method  {@link #go(String[]) go(String[],..)}
- *  was called without command (line) parameters.<br />
- *  <br /> 
- *  Return-Code, Exit-Code (Error-Level); value = {@value}
- */
-   public static final int NO_PARS_ERROR = 99;
 
-/** Exception or error while evaluating start parameters and setting properties. <br />
- *  <br />
- *  A constructor of {@link App}'s inheritor or a method 
- *  {@link #go(String[]) go(String[],..)}
- *  ended in an exception. In this case the calling main() should catch
- *  the exception and return this value as its process exit code by calling 
- *  {@link AppBase}.{@link AppBase#exit(Exception, int)}.<br />
- *  <br />
- *  Illegal command line arguments (or during development mistakes in the 
- *  &lt;MyApp&gt;.properties lead to this return value.<br />
- *  <br /> 
- *  Return-Code, Exit-Code (Error-Level); value = {@value}
+/** Report an exception. <br />
+ * 
+ *  @param out the output for the report
+ *  @param exc the exception to report on
+ *  @param trace true: print also a stack trace
+ *               (and only if out is a PrintWriter or a PrrintStream)
  */
-   public static final int INIT_ERROR = 94;
-   
-/** Not handled exception in the main thread. <br />
- *  <br />
- *  The application's main thread (implemented by inheritor's {@link #doIt()})
- *  threw an exception.<br />
- *  <br /> 
- *  Return-Code, Exit-Code (Error-Level); value = {@value}
- */
-   public static final int MAIN_THREAD_EXC = 90;
+  public void repExc(final Appendable out, final Throwable exc,
+                                     final boolean trace){
+    if (out == null || exc == null) return;
+    Throwable ex = exc.getCause();
+    if (ex == null) ex = exc;
+    try {
+      out.append("\n  ").append(PROG_SHORT).append(' ')
+         .append(ex.getClass().getName());
+      out.append("\n  ").append(PROG_SHORT).append(' ')
+         .append(ex.getMessage()).append('\n');
+      if (out instanceof Flushable) ((Flushable)out).flush();
+    } catch (IOException e) { // should not happen for usual output objects
+      return; // just ignore
+    } // should not happen for StringBuilder, PrintWriter, PrintStream etc.
+    if (trace) {
+      if (out instanceof PrintWriter) {
+        exc.printStackTrace((PrintWriter) out);
+      } else if (out instanceof PrintStream) {
+        exc.printStackTrace((PrintStream) out);
+      } 
+    } // trace
+  } // repExc(Appendable, Throwable) 
 
-/** Exception or error while initialising log and out. <br />
- *  <br />
- *  The initial providing of the {@link PrintWriter}s {@link #log} and
- *  {@link #out} by {@link #connect(OutMode, Prop)} failed. This may happen
- *  if command line parameters order an unusable log file.<br />
- *  <br /> 
- *  Return-Code, Exit-Code (Error-Level); value = {@value}
- */
-   public static final int LOG_OUT_ERROR = 91;
-   
-/** Requested job is done. <br />
- *  <br />
- *  The requested job was done successfully by this {@link App}lication (and
- *  be it only the display of the on-line help if so requested by 
- *  start arguments).<br />
- *  <br />
- *  If the return code is to be used or interpreted as answer or user's 
- *  reaction this return value means Yes, OK, Ja, Si ...<br />
- *  <br />
- *  Return-Code, Exit-Code (Error-Level); value = {@value}
- */
-  public static final int JOB_DONE_OK = 0;
   
 //-------------------------------------------------------------  
   

@@ -1,5 +1,5 @@
 /**
-<b>weAut &mdash; weinert-automation</b> base package.<br />
+<b>weAut &mdash; weinert-automation</b> control/IO base package.<br />
 <br />
 This package {@link de.weAut} is uniquely named according to weAut.de the
 second and short domain of 
@@ -9,8 +9,9 @@ second and short domain of
 <h3><a name="be">Description</a></h3>
 
 This  package {@link de.weAut} is the base Java process control with small 
-programmable systems, capable of hosting a standard Java JDK/JRE, like the
-Raspberry Pi3, e.g..<br />
+programmable systems, capable of hosting a standard Java JDK/JRE plus Frame4J.
+As of April 2021 (and since 2018) small control systems thus supported are
+Raspberry Pis with Java 8. <br />
 See also the <a href="https://a-weinert.github.io/raspiGPIOjava.html"
 title="on GitHub" target="_blank">post</a> and <a target="_blank"
 href="https://github.com/a-weinert/weAut/"
@@ -18,9 +19,8 @@ title="on GitHub">sub-projects</a>.<br />
 <br />
 As of Revision 17, May 2019, we keep {@link de.weAut} in the same SVN
 source repository as the framework Frame4J, packages {@link de.frame4j} and
-below and deploy it in one frame4j.jar. This might be changed in the
-future. And we make extensive use of Java 8's intact "installed extension"
-mechanism.<br />
+below and deploy it in one frame4j.jar. And we make extensive use of Java 8's
+intact "installed extension" mechanism.<br />
 <br />
 <br />
 <h3>Conditions of use / license, <a name="co" id="co">Copyright</a></h3>
@@ -39,5 +39,5 @@ distribution.<br />
 Copyright <a href="#co">&copy;</a>  2019 2021 &nbsp; Albrecht Weinert <br />
 <br />
  @author   Albrecht Weinert
- @version  Revision $Revision: 41 $ ($Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $) 
+ @version  Revision $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $) 
 */package de.weAut;

@@ -1,5 +1,7 @@
-@echo update_parts.bat   V.01  17.05.2019
-@echo Copyright (c) 2019 Albrecht Weinert   a-weinert.de 
+@echo update_parts.bat   V.02  26.04.2021
+@REM       V.01  17.05.2019 : new (frame4j_part)
+@REM       V.02  26.04.2021 : grame4j (full)
+@echo Copyright (c)  2019 2021 Albrecht Weinert   a-weinert.de 
 @echo Update the repository parts from the original SVN repostitories
 @REM This (Windows) script needs Java, Frame4J and Git installed
 @echo.
@@ -14,7 +16,7 @@
 
 java Update %upd.opts% %rasProject_01.fLocWD%\ .\rasProject_01part\
 @echo.
-java Update %upd.opts% %frame4j.fLocWD%\ .\frame4j_part\
+java Update %upd.opts% %frame4j.fLocWD%\ .\frame4j\
 @echo.
 java Update %upd.opts% %frame4j.jar.Loc%\frame4j.jar .\binaries\
 @echo.
@@ -23,6 +25,6 @@ git status
 @echo.
 @echo Content? Don't forget to:
 @echo git add -u
-@echo git commit -m "updates from full SVN repositories"
+@echo git commit -m "updates from the SVN repositories"
 @echo git push
 @echo.

@@ -2,7 +2,7 @@
 @set whereIwasCalledFrom=%CD%
 
 @echo Translate  Frame4J
-@echo translateIt.bat $Revision: 41 $,  $Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $
+@echo translateIt.bat $Revision: 42 $,  $Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $
 @Echo Copyright (c)  2010, 2013, 2015, 2018 Albrecht Weinert
 @echo.
 
@@ -138,8 +138,8 @@ md build\de\weAut\demos
 %jdkUse%\javac.exe  %transOptions%  de\weAut\demos\*.java
 @if errorlevel 1 echo ignore  de.weAut.demos error - but check, please
 
-%jdkUse%\javac.exe  %transOptions%  BlinkOnPi.java 
-@if errorlevel 1 echo ignore starter error - but repeat BlinkOnPi
+%jdkUse%\javac.exe  %transOptions%  BlinkOnPi.java TestOnPi.java 
+@if errorlevel 1 echo ignore starter error - but repeat BlinkOnPi TestOnPi
 
 
 

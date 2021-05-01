@@ -89,7 +89,8 @@ import de.frame4j.util.ComVar;
 {@link de.frame4j.Update de.frame4j.Update}, <br />
 {@link XMLio}, 
 {@link de.frame4j.XMLio de.frame4j.XMLio}, 
-{@link de.frame4j.net.ClientLil de.frame4j.net.ClientLil}.<br >
+{@link de.frame4j.net.ClientLil de.frame4j.net.ClientLil},<br >
+{@code TestOnPi}, {@link de.weAut.TestOnPi}. <br />
  * <br />
  *  de.frame4j.Exec accepts the fully qualified class name as well as the
  *  pure name as first parameter.<br />
@@ -107,8 +108,8 @@ import de.frame4j.util.ComVar;
 @MinDoc(
    copyright = "Copyright 2019  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 41 $",
-   lastModified   = "$Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $",
+   version   = "V.$Revision: 42 $",
+   lastModified   = "$Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "start as Java application (-? for help)",  
    purpose = "starts another java programme / frame4j tool given as 1st param"
@@ -257,6 +258,12 @@ import de.frame4j.util.ComVar;
       case " de.weAut.demos.RdGnPiGpioDBlink":
           de.weAut.demos.RdGnPiGpioDBlink.main(argForw);
          return;
+         
+      case "TestOnPi":
+      case " de.weAut.TestOnPi":
+          de.weAut.TestOnPi.main(argForw);
+         return;
+    
          
       default:  // show  Exec unknown frame4j tool on console and graphically
          final String[] errorArg = {"-kk", "-wm ", // no buttons 50s

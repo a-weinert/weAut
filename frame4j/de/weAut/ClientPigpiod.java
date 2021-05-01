@@ -26,30 +26,31 @@ import de.frame4j.util.ComVar;
 
 /** <b>Handling of pigpio library's socket interface</b>.<br />
  *  <br />
- *   An object of this class represents one Raspberry Pi's GPIO by 
- *   being a socket connection to the Pi's pigpiod server. Who has such
- *   object may do almost all possible IO with Java &mdash; no matter if the
- *   JVM + frame4j is on this Pi or another machine including Windows or
- *   Linux PCs and servers.
+ *  An object of this class represents one Raspberry Pi's GPIO by 
+ *  being a socket connection to the Pi's pigpiod server. Who has such
+ *  object may do almost all possible IO with Java &mdash; no matter if the
+ *  JVM + frame4j is on this Pi or another machine including Windows or
+ *  Linux PCs and servers.
  *   
- *   For one IO device (the Pi) only one object ClientPigpiod should be
- *   created and used. The IO methods and most others are threadsafe but 
- *   initialising and shutting down / cleaning up the control IO application
- *   should be done in one thread. <br />
- *   The C IO functions of the 
- *   <a href="http://abyz.me.uk/rpi/pigpio/sif.html" taget="_blank"
- *   title="pigdiod socket interface">piogpio daemon</a> on the Raspberry Pi 
- *   are threadsafe, there.
+ *  For one IO device (the Pi) only one object ClientPigpiod should be
+ *  created and used. The IO methods and most others are threadsafe but 
+ *  initialising and shutting down / cleaning up the control IO application
+ *  should be done in one thread. <br />
+ *  The C IO functions of the 
+ *  <a href="http://abyz.me.uk/rpi/pigpio/sif.html" taget="_blank"
+ *  title="pigdiod socket interface">piogpio daemon</a> on the Raspberry Pi 
+ *  are threadsafe, there.
  *  <br />
  *  <br />
  *  <a href=package-summary.html#co>&copy;</a> 
  *  Copyright 2019, 2021  &nbsp; Albrecht Weinert<br />
  *  @see Pi1 Pi2 Pi3 ThePi PiVals 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 41 $ ($Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $)
+ *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 21  (19.05.2019) :  ALT numbers, typo
+//           V. 42  (29.04.2021) :  overhaul (Frame4J)
 public class ClientPigpiod {
 
 /** The socket. <br />
@@ -892,23 +893,21 @@ public class ClientPigpiod {
  *  @return &lt; 0: pigpiod error
  */
   public int setOutputSet(final int lesOuts, final boolean level){
-    if (lesOuts == 0) return rIgn(PI_CMD_BC1, level ? 1 :0); // nothing to do
+    if (lesOuts == 0) return rIgn(level ? PI_CMD_BS1 : PI_CMD_BC1, 0); // none
     if (level) return stdCmd(PI_CMD_BS1, lesOuts, 0); // set them ON
     return stdCmd(PI_CMD_BC1, lesOuts, 0); // set the, OFF
-  } // setOutputs(2* int)
-
+  } // setOutputs(int, boolean)
    
 /** Read the pin state. <br />
  *     
  *  @param gpio a legal BCM IO number 0..56
  *  @return 0 or 1: OK; &lt; 0: error
  */
-   public int gpioInp(int gpio){
+   public int getInp(int gpio){
      if (gpio == ThePi.PINig) return rIgn(PI_CMD_READ, 0); // return 0 = Low
      if (gpio < 0 || gpio > 56) return rErr(PI_BAD_GPIO, PI_CMD_READ, gpio, 0);
-      return stdCmd(PI_CMD_READ, gpio, 0);
-   }  // pinRead(int)
-
+     return stdCmd(PI_CMD_READ, gpio, 0);
+   }  // getInp(int)
 
 /** Set the PWM duty cycle. <br />
  *     
@@ -949,7 +948,7 @@ public class ClientPigpiod {
        return rErr(PI_BAD_PULSEWIDTH, PI_CMD_SERVO, gpio, val);  
      }
      return stdCmd(PI_CMD_SERVO, gpio, val);
-   }  // setServoPos2 * int) 
+   }  // setServoPos(2 * int) 
 
 /** Get the servo pulse width.
  *     
@@ -1049,7 +1048,7 @@ public class ClientPigpiod {
  *  These five commands returning uint32_t are: <br />
  *  BR1 * 10, BR2 * 11, TICK * 16, HWVER * 17, PIGPV * 26.<br />
  *  In Joan N.N.'s <a href="http://abyz.me.uk/rpi/pigpio/sif.html"
- *  >documentation</a> they are marked with *; and they can't fail.  <br />
+ *  >documentation</a> they are marked with *; and they can't fail. <br />
  *  @param cmd command number (0..117)
  *  @return true: the commands return value is 32 bit unsigned
  */
@@ -1057,7 +1056,6 @@ public class ClientPigpiod {
    if (cmd < 10 || cmd > 26) return false;
    return uint32ret[cmd];
  } // uint32ret(int)
- 
  
 /** Command result type. <br />
  *  <br />
@@ -1090,7 +1088,9 @@ public class ClientPigpiod {
  *  of which in bytes must be put in p3.<br />
  *  Those more special command get a true in this table. They can't be 
  *  handled by {@link ClientPigpiod#stdCmd(int, int, int)}. Trying to do so
- *  gets a {@link PiGpioDdefs#PI_CMD_BAD} error.
+ *  gets a {@link PiGpioDdefs#PI_CMD_BAD} error.<br />
+ *  Hint: As of April 2021 here is no implementation of non standard commands
+ *  as no need arose so far. This might change in future.
  */
   private static final boolean[] hasExtension = {
 //   0      1      2      3      4      5      6      7      8      9                        
@@ -1112,7 +1112,7 @@ public class ClientPigpiod {
 /** Kind of parameter p1 by command number. <br />
  *  <br />
  *  The kind of the byte or int parameter p1 depends on the command 
- *  respectively command number 0..117. <br />
+ *  respectively the command number 0..117. <br />
  *  An entry 0 means p1 must be 0. <br />
  *  {@link GPIO} means it has to be a GPIO/BCM I/O number in the range
  *  0..31 or 0..53; and so on. <br />

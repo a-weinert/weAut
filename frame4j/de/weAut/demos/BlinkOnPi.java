@@ -19,6 +19,7 @@ import de.frame4j.util.AppBase;
 import de.frame4j.util.MinDoc;
 import de.weAut.ClientPigpiod;
 import java.io.IOException;
+import javax.management.JMException;
 
 /** <b>BlinkOnPi &ndash; a Java pigpiod test and demo program</b>.<br />
  *  <br />
@@ -31,7 +32,7 @@ import java.io.IOException;
  *  Comment excerpt of the original/ported C source file: <br /><pre>
   A fifth program for Raspberry's GPIO pins
 
-  Rev. $Revision: 41 $  $Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $
+  Rev. $Revision: 42 $  $Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $
 
   Copyright  (c)  2019   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
@@ -57,9 +58,9 @@ import java.io.IOException;
  *  {@link de.weAut.Pi1} interface's inner class.<br />
  *  <br />
  *  Copyright  &copy;  2021  Albrecht Weinert <br />
- *  @see BlinkOnPi TestOnPi
+ *  @see BlinkOnPiMBean TestOnPi
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 41 $ ($Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $)
+ *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
  */
 // so far:   V.  21  (21.05.2019) : new, minimal functionality
 //           V.  26  (31.05.2019) : three LEDs, IO lock 
@@ -67,13 +68,16 @@ import java.io.IOException;
 @MinDoc(
   copyright = "Copyright 2021  A. Weinert",
   author    = "Albrecht Weinert",
-  version   = "V.$Revision: 41 $",
-  lastModified   = "$Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $",
+  version   = "V.$Revision: 42 $",
+  lastModified   = "$Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $",
   usage   = "start as Java application (-? for help)",  
   purpose = "a Frame4J program to blink LEDs on a Pi via pigpioD"
 ) public class BlinkOnPi extends App implements PiUtil, BlinkOnPiMBean {
 
   @Override public final boolean parsePartial(){ return true; }
+  @Override protected final String extraPropertiesFile(){
+    return "de/weAut/PiUtil.properties";
+  } // extraPropertiesFile()
 
 /** The LEDs to blink. <br />
  *  <br />
@@ -152,7 +156,13 @@ import java.io.IOException;
 //    "de/weAut/PiUtil.properties", null); // loadExtra TEST out
     out.println(formMessage("startOn") );
       // + "\n  ### loadExtra = " + loadExtra); // loadExtra TEST out
-    regAsStdMBean(true);
+    String oName = null;
+    try {
+      oName = regAsStdMBean();
+      out.println("\n  " + PROG_SHORT + " MBean: " + oName);
+    } catch (JMException ex) {
+      
+    } // registration as MBean failed
     if (getUseLock()) {
       final int oL = openLock(null, false);
       if (oL != 0) return errorExit(oL, formMessage("errLock")

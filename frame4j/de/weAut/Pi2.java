@@ -16,15 +16,16 @@ package de.weAut;
 /** <b>Definitions for the usage of the Raspberry Pi2 and its I/O</b>.<br />
  *  <br />
  *  The {@link Pi2}  &ndash; seldomly used &ndash; was the first extension of
- *  {@link Pi1} adding an extra 8 pin IO connector (device P5) to 
+ *  {@link Pi1} adding an extra 8 pin IO connector (labelled P5) to 
  *  {@link Pi1}'s 26 pin connector. Here, for {@link Pi2} only, we assign
  *  pin numbers 31 to 38 to P5's pins 1 to 8. On a {@link Pi3}, 0, 4, of
- *  course pins 31..38 belong to the 40 pin IO connector (P1). <br />  
+ *  course pins 31..38 belong to the 40 pin IO connector (P1). <br /> 
+ *  <br /> 
  *  <a href=package-summary.html#co>&copy;</a> 
  *  Copyright 2021 &nbsp; Albrecht Weinert<br />
- *  @see Pi2 Pi3 ClientPigpiod
+ *  @see Pi1 Pi3 ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 40 $ ($Date: 2021-04-19 21:47:30 +0200 (Mo, 19 Apr 2021) $)
+ *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
  */
 // so far:   V. 35  (01.04.2021) :  new
 //           V. 36  (06.04.2021) :  name ambiguity in anonymous inner class

@@ -15,12 +15,12 @@ package de.frame4j.util;
 
 import java.io.Console;
 import java.io.File;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import de.frame4j.io.Input;
 import de.frame4j.text.TextHelper;
-
 
 /** <b>Common (constant) values</b>. <br />
  *  <br />
@@ -58,8 +58,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 1997 - 2009, 2021  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 39 $",
-   lastModified   = "$Date: 2021-04-17 21:00:41 +0200 (Sa, 17 Apr 2021) $",
+   version   = "V.$Revision: 42 $",
+   lastModified   = "$Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
 // usage   = "static import",  
    purpose = "Common final values, platform info, constants and so on."
@@ -136,7 +136,6 @@ import de.frame4j.text.TextHelper;
  */
   double D_NaN = Double.NaN;
 
-
 /** An empty String. <br />
  *  <br />
  *  An empty String is used very often. String objects being immutable, it 
@@ -157,7 +156,6 @@ import de.frame4j.text.TextHelper;
  *  A String with forty blanks.
  */
    String BLANK_STRING = "                                        ";
-
 
 // Just to remind you: We're in an interface. 
 // All variables are public final static 
@@ -248,7 +246,54 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  Value: {@value} &nbsp; (...L means long)<br />
  */
-   long ONE_LEAP_YEAR  = 366L * ONE_DAY; 
+   long ONE_LEAP_YEAR  = 366L * ONE_DAY;
+ 
+
+/** No start parameters. <br />
+ *  <br />
+ *  Something requiring a non null not empty {@link String String[]}
+ *  (usually as command line parameters) was called without it.
+ *  <br /> 
+ *  Return-Code, Exit-Code (Error-Level); value = {@value}
+ */
+public static final int NO_PARS_ERROR = 99;
+
+/** Error while evaluating start parameters and setting properties. <br />
+ *  <br />
+ *  An application constructor or start method ended in an exception.<br />
+ *  This might have been done e.g. by calling 
+ *  {@link AppBase}.{@link AppBase#exit(Exception, int)}.<br />
+ *  <br /> 
+ *  Return-Code, Exit-Code (Error-Level); value = {@value}
+ */
+public static final int INIT_ERROR = 94;
+
+/** Not handled exception in the main thread. <br />
+ *  <br />
+ *  Value = {@value}
+ */
+public static final int MAIN_THREAD_EXC = 90;
+
+/** Exception or error while initialising log and out. <br />
+ *  <br />
+ *  The initial providing of the standard {@link PrintWriter}s log and/or
+ *  out failed. This may happen if command line parameters order an 
+ *  unusable log file, e.g.<br />
+ *  <br /> 
+ *  Return-Code, Exit-Code (Error-Level); value = {@value}
+ */
+public static final int LOG_OUT_ERROR = 91;
+
+/** Requested job is done. <br />
+ *  <br />
+ *  The requested job was done successfully.<br />
+ *  <br />
+ *  If the return code is to be used or interpreted as answer or user's 
+ *  reaction this return value means Yes, OK, Ja, Si ...<br />
+ *  <br />
+ *  Return-Code, Exit-Code (Error-Level); value = {@value}
+ */
+public static final int JOB_DONE_OK = 0;
    
 //---- End simple constants -------------------------------------  
 
