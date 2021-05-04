@@ -6,7 +6,7 @@
 @set frame4j.o1.dir=.settings;CVS;.svn;
 @set sourceTypes=java;html;properties;xml;gif;png;txt;mf;c;cpp;h;def;bat;list;cmd;php
 
-@echo CopBea.bat $Revision: 9 $,  $Date: 2018-11-24 17:06:27 +0100 (Sa, 24 Nov 2018) $
+@echo CopBea.bat $Revision: 43 $,  $Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $
 @Echo.
 @echo Copy and beautify project from repository / local working copy to a
 @echo working area for building.
@@ -81,6 +81,7 @@ jar cfM %frame4j.loc.dnl%\sources\frame4j_trunk.zip .
 @dir %frame4j.loc.dnl%\sources
 @echo.
 :noDNL_1
+
 call ant copDocFiles
 @if ERRORLEVEL 1 goto :error
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?> 
 <project name="Helper jobs for building Frame4J" default="help" basedir=".">
-<!-- (c) A. Weinert, V.$Revision: 41 $, $Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $ -->	
+<!-- (c) A. Weinert, V.$Revision: 43 $, $Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $ -->	
 
  <target name="help">
 <!-- There is no Ant way, to get rid of the obnoxious [echo] in  front of
@@ -9,7 +9,7 @@
  	<echo level="error"  >
  Some little helper jobs for building and deploying of
  Frame4J, the Java framework, (de.frame4j..)
- (c) A. Weinert, V.$Revision: 41 $, $Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $ 
+ (c) A. Weinert, V.$Revision: 43 $, $Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $ 
 
  jobs: help, copDocFiles 
  		
@@ -45,8 +45,6 @@
                                   flatten="yes" preservelastmodified="yes">
       <fileset dir="de\frame4j\util" 
          includesfile="de\frame4j\util\doc-files\doc-files.list" />
-      <fileset dir="de\frame4j\util" 
-         includesfile="de\frame4j\util\doc-files\doc-files.list" />
     </copy>
   	
     <copy todir="de\frame4j\doc-files"
@@ -63,8 +61,19 @@
 
    <copy todir="de\frame4j\graf\doc-files"
                      flatten="yes" preservelastmodified="yes" >
-     <fileset dir="." 
+     <fileset dir="de\frame4j\graf" 
        includesfile="de\frame4j\graf\doc-files\doc-files.list" />
+   </copy>
+ 	
+   <copy todir="de\weAut\doc-files"
+                    flatten="yes" preservelastmodified="yes" >
+     <fileset dir="de\weAut\" 
+      includesfile="de\weAut\doc-files\doc-files.list" />
+   </copy>
+   <copy todir="de\weAut\demos\doc-files"
+                    flatten="yes" preservelastmodified="yes" >
+    <fileset dir="de\weAut\demos\" 
+      includesfile="de\weAut\demos\doc-files\doc-files.list" />
    </copy>
  </target>
 

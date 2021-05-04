@@ -117,7 +117,7 @@ import de.frame4j.time.TimeHelper;
  *  Copyright 1997 - 2006, 2009  &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $
+ *  @version  $Revision: 43 $ ($Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $
  *  @see de.frame4j.io.AppIO
  *  @see Prop
  *  @see #go(String[], String, CharSequence)
@@ -150,8 +150,8 @@ import de.frame4j.time.TimeHelper;
 @MinDoc(
    copyright = "Copyright 1997 - 2016, 2021 A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 42 $",
-   lastModified   = "$Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $",
+   version   = "V.$Revision: 43 $",
+   lastModified   = "$Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "start as Java application",  
    purpose = "Base class for powerful, robust and comfortable applications"
@@ -2795,6 +2795,7 @@ import de.frame4j.time.TimeHelper;
                }
                return ILLEGAL_TYPE; 
             }
+            if ("askGraf".equals(name)) return 0; // ignore handled in Prop
             break; // a
          case 'b' :
             if ("bgColor".equals(name)) {
@@ -2820,6 +2821,12 @@ import de.frame4j.time.TimeHelper;
                return ILLEGAL_TYPE; 
             }
             break; // c
+         case 'h' :
+           if ("helpText".equals(name)) {  // ignore helptext internals
+             return 0; 
+           } // ignore helptext internal handling
+           break; // h
+
          case 'n' :
             if ("name".equals(name)) {
                if (isStringVal || isNull) {
@@ -2837,6 +2844,11 @@ import de.frame4j.time.TimeHelper;
                return 0;
             }  
             break; // o
+         case 'p' :
+           if (name.startsWith("propFile")) {  // ignore helptext internals
+             return 0; // ignore  propFileName propFileVers propFileDate 
+           } // ignore helptext internals
+           break; // p
          case 't' :
             if ("title".equals(name)) {
                if (isStringVal || isNull) {

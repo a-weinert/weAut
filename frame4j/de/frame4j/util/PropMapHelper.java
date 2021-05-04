@@ -36,7 +36,6 @@ import de.frame4j.time.SynClock;
 import de.frame4j.time.TimeHelper;
 import de.frame4j.text.TextHelper;
 
-
 /** <b>Helpers for maps and properties</b>. <br />
  *  <br />
  *  This class has static (helper) methods for {@link Map}s and properties
@@ -51,12 +50,15 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright  2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 38 $",
-   lastModified   = "$Date: 2021-04-16 19:38:01 +0200 (Fr, 16 Apr 2021) $",
+   version   = "V.$Revision: 43 $",
+   lastModified   = "$Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "import",  
    purpose = "common map and properties utilities"
 ) public  abstract class PropMapHelper {
+  
+  final static boolean RESTEST = Prop.RESTEST;
+                             // || true; // enable development logs on S.out
 
 /** <b>Designation of an indexed property</b>. <br />
  *  <br />
@@ -94,7 +96,6 @@ import de.frame4j.text.TextHelper;
  *  <br /> 
  */
       public final String key;
-         
    
 /** The index without the key. <br />
  *  <br />
@@ -177,7 +178,6 @@ import de.frame4j.text.TextHelper;
          return (31 * 17 + index) * 17 + key.hashCode();  
       } //  hashCode()
 
-
 /** State as String. <br />
  *  <br />
  *  Returns the &quot;canonical&quot; form of an indexed property's key, that
@@ -201,7 +201,7 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  The {@link #key} of an {@code Entry} object is always final.<br />
  *  <br />
- *  The {@link #getValue() value} any String including null and empty is
+ *  For the {@link #getValue() value} any String including null and empty is
  *  allowed. The {@link #setValue(String) value} may be changed any time,
  *  if {@link #immutable} is false. {@code immutable} itself is set finally
  *  an construction.<br />
@@ -229,22 +229,14 @@ import de.frame4j.text.TextHelper;
    public static final class Entry implements Map.Entry<CharSequence, String>,
                                 Comparable<Object>, Serializable , Cloneable {
     
- //           V.o29+ (15.05.2012 14:56) : -blank final due to compiler bug  
-      // protected elements in final class (nonsense) just for javadoc
-/** The value of this entry. <br />
- *  <br />
- */      
+/** The value of this entry. <br /> */      
       protected String value;
       
-/** The hash code of this entry. <br />
- *  <br />      
- */
+/** The hash code of this entry. <br /> */
      protected int entHash;
 
-/** The key of this entry. <br />
- *  <br />
- */      
-    protected  final  String key;
+/** The key of this entry. <br /> */      
+    protected final String key;
 
 /** The hash value of this entry. <br />
  *  <br />
@@ -256,32 +248,28 @@ import de.frame4j.text.TextHelper;
 /** The value of this entry is immutable. <br />
  *  <br />
  *  Objects of this class either allow any change of value any time or forbid
- *  it. As the allowing or forbidding is itself a final property the latter 
- *  case makes the whole object immutable.<br />
- *  <br />
+ *  it forever.
  */      
     protected  final  boolean immutable;
-
 
 /** The key of this Entry. <br />
  *  <br />
  *  @return a non empty (non white space surrounded) String
  *  @see java.util.Map.Entry#getKey()
  */
-      @Override public final String getKey() { return key; }
+      @Override public final String getKey(){ return key; }
 
 /** The value of this Entry. <br />
  *  <br />
  *  @return a String value, may be empty, or null
  *  @see #getKey()
  */
-      @Override public final String getValue() { return value; }
-
+      @Override public final String getValue(){ return value; }
 
 /** Constructor, package access, without (!) any checks. <br />
  *  <br />
  */
-      Entry(final String kS, String value, final boolean immutable) {
+      Entry(final String kS, String value, final boolean immutable){
          this.immutable = immutable;
          this.key = kS.intern();
          entHash = kS.hashCode(); 
@@ -293,16 +281,12 @@ import de.frame4j.text.TextHelper;
 
 /** Making an entry. <br />
  *  <br />
- *  key will be stripped from surrounding white space and must (then) not be 
- *  empty.<br />
+ *  {@code key} will be stripped from surrounding white space and must
+ *  (still) not be empty.<br />
  *  <br />
- *  If the key is OK an {@link Entry} object is made containing the value.
- *  If {@code immutable} is true the made {@link Entry} is (finally) 
- *  immutable.<br />
- *  <br />
- *  Hint: Making two immutable {@link Entry}'s with the same key and 
- *  value is waste.<br />
- *  <br />
+ *  If {@code key} is OK an {@link Entry} object is made containing the
+ *  {@code value}. If {@code immutable} is true the made {@link Entry}
+ *  is (finally) immutable.<br />
  *  @throws   IllegalArgumentException if the (trimmed) key is empty
  */
       public static Entry make(final CharSequence key, 
@@ -314,7 +298,6 @@ import de.frame4j.text.TextHelper;
          final String v = value == null ? null : value.toString();
          return new Entry(kS, v, immutable);
       } // make(...)
-
       
 /** Hash code. <br />
  *  <br />
@@ -325,7 +308,7 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  @see #equals(Object)
  */
-      @Override public int hashCode() { return entHash; }
+      @Override public int hashCode(){ return entHash; }
 
 /** Compare to other entry. <br />
  *  <br />
@@ -333,7 +316,7 @@ import de.frame4j.text.TextHelper;
  *  {@link java.util.Map.Entry Map.Entry} and key and value are equal to 
  *  those of this object.<br />
  */      
-      @Override public final boolean equals(Object o) {
+      @Override public final boolean equals(Object o){
          if (o == this)  return true;
          if (!(o instanceof java.util.Map.Entry)) return false;
          final Map.Entry<?,?> lE = (java.util.Map.Entry<?,?>)o;
@@ -342,7 +325,7 @@ import de.frame4j.text.TextHelper;
          if (this.value == null) return oVa == null;
          if (!(oVa instanceof String)) return false;
          return this.value.equals(oVa);
-      } // equals
+      } // equals(Object)
       
 
 /** A copy of this entry. <br />
@@ -351,12 +334,11 @@ import de.frame4j.text.TextHelper;
  *  If {@link #immutable} is true, this is returned as copies of (totally 
  *  and deeply) immutable objects are sheer waste.<br />
  */      
-      @Override public Object clone() {
+      @Override public Object clone(){
          if (immutable) return this;
          try {
             return super.clone();
-         } catch (CloneNotSupportedException e) {
-            // should / can not happen
+         } catch (CloneNotSupportedException e) { // should / can not happen
             return this;
          }
       } // clone()
@@ -367,7 +349,7 @@ import de.frame4j.text.TextHelper;
  *  Is equivalent to 
  *  {@link #appendTo(StringBuilder) appendTo(null)} <br />.<br />
  */
-      @Override public String toString() {
+      @Override public String toString(){
          return appendTo(null).toString();
       } // toString()
 
@@ -383,7 +365,7 @@ import de.frame4j.text.TextHelper;
  *  @param stB the StringBuilder to append to; will be made if null
  *  @return stB
  */
-      public StringBuilder appendTo(StringBuilder stB) {
+      public StringBuilder appendTo(StringBuilder stB){
          if (stB == null) stB = new StringBuilder(70);
          int ziLen = stB.length() + 18;
          stB.append(' ').append(key).append(' ');
@@ -395,7 +377,6 @@ import de.frame4j.text.TextHelper;
          return stB;
       } // toStringBuilder(StringBuilder)
 
-
 /** Set / change the value. <br />
  *  <br />
  *  Any character sequences, including empty and null are allowed as 
@@ -404,7 +385,7 @@ import de.frame4j.text.TextHelper;
  *  Is this object constructed as {@link #immutable} this method called 
  *  with a {@code value} not the same (object) as original value throws a
  *  {@link UnsupportedOperationException}.<br />
- *  <br />
+ *
  *  @see java.util.Map.Entry#setValue(java.lang.Object)
  *  @return old value 
  *  @throws UnsupportedOperationException if immutable and value not the same 
@@ -436,7 +417,7 @@ import de.frame4j.text.TextHelper;
  *  hash value {@link #entHash}.<br />
  *  <br />
  */
-      void setVal(final String value) {
+      void setVal(final String value){
          if (this.value == value) return;
          entHash = key.hashCode();
          if (value == null) {
@@ -455,10 +436,10 @@ import de.frame4j.text.TextHelper;
  *  @throws ClassCastException if the other object is no
  *          {@link java.util.Map.Entry} with a String key
  */
-      @Override public int compareTo(Object o) {
+      @Override public int compareTo(Object o){
          if (o == this) return 0;
          return key.compareTo((String)((Map.Entry<?,?>)o).getKey());
-      } // compareTo(Object
+      } // compareTo(Object)
 
    } // class Entry  =======================================================
    
@@ -489,34 +470,7 @@ import de.frame4j.text.TextHelper;
       479001599
    };
 
-/** package access: do not change value */
-   static final Class<?>[] INTPAR  = {Integer.TYPE};
-
-/** package access: do not change value */
-   static final Class<?>[] INTINTPAR     = {Integer.TYPE, Integer.TYPE};
-
-/** package access: do not change value */
-   static final Class<?>[] INTSTRINGPAR  = {Integer.TYPE, String.class};
-
-/** package access: do not change value */
-   static final Class<?>[] INTCHARSEQPAR = {Integer.TYPE, CharSequence.class};
-
-/** package access: do not change value */
-   static final Class<?>[] CHARSEQPAR    = {CharSequence.class};
-
-/** package access: do not change value */
-   static final Class<?>[] BOOLEANPAR    = {Boolean.TYPE};
-
-/** package access: do not change value */
-   static final Class<?>[] INTBOOLEANPAR = {Integer.TYPE, Boolean.TYPE};
-
-/** package access: do not change value */
-   static final Class<?>[] COLORPAR = {Color.class};
-
-/** package access: do not change value */
-   static final Class<?>[] INTCOLORPAR   = {Integer.TYPE, Color.class};
-
-/** Modifier public static final.<br />
+/** Modifier public static final. <br />
  *  <br />
  *  Value: {@value}<br />
  *  @see Modifier
@@ -524,12 +478,11 @@ import de.frame4j.text.TextHelper;
    static public final int PUSTFI =
       Modifier.STATIC | Modifier.FINAL | Modifier.PUBLIC;
 
-/** package access: do not change value */
-   static final Class<?>[] STRINGPAR  = {String.class};
+/* * package access: do not change value */
+  // static final Class<?>[] STRINGPAR  = {String.class};
 
 /** No objects. */
    private  PropMapHelper(){}  // no JavaDoc >= package
-   
 
 /** Last successful file encoding for reading or default. <br />
  *  <br />
@@ -748,7 +701,7 @@ import de.frame4j.text.TextHelper;
       return outBuffer.toString();
    } // unEscape(CharSequence)
 
-/** Storing a list of properties to an output stream. <br />
+/** Put a list of properties to an output stream. <br />
  *  <br />
  *  This method stores all key value pairs contained in the passed 
  *  {@link Map} {@code map} using the syntactical rules documented with
@@ -786,7 +739,7 @@ import de.frame4j.text.TextHelper;
  *  multi line, each line except the first one must start by # or 
  *  &quot;smuggle in&quot; a key value pair, strictly obeying the syntax.
  *  This is NOT checked in this method.<br />
- *  <br />  
+ *
  *  @param map           the properties
  *  @param output        the stream to write the properties to
  *  @param startComment  a describing comment to put at the begin
@@ -964,17 +917,17 @@ import de.frame4j.text.TextHelper;
       return primint[untInd];  // key not found.
    } // gtPrim(int)
 
-/** Is it language or region. <br />
+/* * Is it language or region. <br />
  *  <br />
  *  Background: setting an object's property language or region 
  *  often &mdash; as in {@link Prop} &mdash; has 
- *  normally some (badly wanted) side effects. This helper method jaust 
+ *  normally some (badly wanted) side effects. This helper method just 
  *  implements the condition on the key used in a lot of places.<br />
  *  <br /> 
  *  @param keyName the parameter name
  *  @return true, only if parName equals 
  *                     &quot;language&quot; or &quot;region&quot;
- */
+ *  /
    public static final boolean lanOrReg(final String keyName){
       if (keyName == null) return false;
       final int pnL = keyName.length();
@@ -984,7 +937,30 @@ import de.frame4j.text.TextHelper;
          return keyName.equals("region");
       }
       return false;
-   } // lanOrReg(final String 
+   } // lanOrReg(final String    xxxxxxxxxxxxxxx   out 04.05.2021  */
+   
+/** Get a method by signature for a class. <br />
+ *  <br />
+ *  <br />
+ *  This method is the equivalent of 
+ *  {@code cl.getMethod(name, parTypes)} except returning null instead of
+ *  raising exceptions when no method object could be delivered.   
+ * @param cl        the class having the method searched for (hopefully)
+ * @param name      the name of the method
+ * @param parTypes  the parameter types
+ * @return          a fitting method or null
+ */
+   public static Method getMethod(final Class<?> cl, final String name,
+                           Class<?>... parTypes){
+     if (cl == null || name == null || name.length() == 0) return null;
+     try {
+       return cl.getMethod(name, parTypes);
+     } catch (NoSuchMethodException e) {
+       return null;
+     } catch (SecurityException e) {
+       return null;
+     }
+   } // getMethod(Class<?>, String, Class<?>...)
 
 /** Setting an object's field (beans property). <br />
  *  <br />
@@ -1005,7 +981,7 @@ import de.frame4j.text.TextHelper;
  *  If the platform or runtime forbids introspection into {@code obj} a
  *  SecurityException will happen.<br />
  *  <br />
- *  The setting of {@code obj}'s property named  {@code key} by the
+ *  The setting of {@code obj}'s property named {@code key} by the
  *  {@code value} is effected either by accessing a public object variable
  *  or by using a public method named <code>setKey()</code>.<br />
  *  <br />
@@ -1034,7 +1010,7 @@ import de.frame4j.text.TextHelper;
  *       as a binary (&quot;truth&quot;) value by 
  *       {@link TextHelper#asBoolObj(CharSequence)}.</li>
  *  <li> setKey(Color) and afterwards  setKey(int, Color).<br />
- *       Is one of these methods fond, it is now tried to interpret 
+ *       Is one of these methods found, it is now tried to interpret 
  *       {@code value} as colour by 
  *       {@link ColorHelper#getColor(CharSequence)}). Is that impossible an
  *       {@link IllegalArgumentException} is thrown, otherwise of cause the 
@@ -1042,13 +1018,13 @@ import de.frame4j.text.TextHelper;
  * 
  *  Implementation hint: The rationale behind the last &quot;colour&quot; 
  *  point is a) the assumption of searching one method or if possible indexed
- *  two methods by  introspection is cheaper than the multi language colour 
+ *  two methods by introspection is cheaper than the multi language colour 
  *  interpretation trials. And b) the assumption, that if a class provides a 
  *  setter for {@link Color} the property has to be either a colour or is 
  *  wrong. Hence the IllegalArgumentException before the search for 
  *  public variables.<br />
  *  <br />   
- *  For the corresponding method setKey() the first letter after 
+ *  For the corresponding method setKey() the first letter after
  *  &quot;set&quot; is always made upper case according to beans and set/get 
  *  method conventions. As a consequence two properties named (keyed) otto and
  *  Otto would both take the same setters setOtto(..). But they would not 
@@ -1063,18 +1039,19 @@ import de.frame4j.text.TextHelper;
  *  If all described toils found no fitting setter method the direct access to
  *  a variable named {@code key} is tried. Preconditions:<ul>
  *  <li> The object variable is declared in the class of the object 
- *       {@code obj} and not inherited. (Please note: the above public setters
- *       may very well be inherited.)</li>
- *  <li> The variable's type is boolean, int or String (explicitly excluding
- *       {@link CharSequence} gladly accepted for setters).</li>
+ *       {@code obj} and not inherited.<br />
+ *       Note: The public setters mentioned above may very well be 
+ *       inherited.</li>
+ *  <li> The variable's type boolean, int or String (explicitly excluding
+ *       {@link CharSequence} is gladly accepted for setters).</li>
  *  <li> The variable is public and neither static nor final.</li>
  *  </ul><br />
  *  The (found) variable remains unchanged, if {@code value} is null or not 
  *  interpretable according to the variable's (int or boolean) type. 
  *  No exception is raised due to non fitting types or values.<br /> 
  *  Please note that the String or CharSequence setters would have been 
- *  called with null value and that all setters might react to hated 
- *  values by throwing exceptions.<br />
+ *  called with null value and that all setters might react to values
+ *  unwanted by throwing exceptions.<br />
  *  <br />
  *  Hint: If {@code key} contains white spaces or otherwise does not comply
  *  to Java's rules for variable names, with all described efforts nothing 
@@ -1102,14 +1079,17 @@ import de.frame4j.text.TextHelper;
       if (obj == null || key == null ) return false;
       final int keyLen =  key.length();
       if (keyLen == 0) return false;  
-      
- //   System.out.println(" ///  TEST Prop " + key + " = " + value + " ;//setF");
+      if (RESTEST) {
+        System.out.println(" ///  TEST PMpH " + key + " = " + value 
+                       + " on " + obj);
+      }
 
       if (obj instanceof AttrSettable) { // MBean implementation cheaper than introsp.
          final int done = ((AttrSettable)obj).setAttribute(key, value);
- // System.out.println(" ///  TEST Prop " + key + " atrSet: "
-   //                                        + AttrSettable.retVtext(done));
-
+         if (RESTEST) if (done != AttrSettable.NO_KNOWN_ATTRIBUTE) { 
+           System.out.println(" ///  TEST PMpH " + key
+                             + " atrSet: " + AttrSettable.retVtext(done));
+         }  // test output
          if (done == AttrSettable.OK) return true;
          if (done != AttrSettable.NO_KNOWN_ATTRIBUTE) return false;
       } // MBean indirect implementation setAttribute(String, String)
@@ -1117,14 +1097,14 @@ import de.frame4j.text.TextHelper;
       StringBuilder bastel = new StringBuilder(keyLen + 3);
       bastel.append("set").append(key);
       bastel.setCharAt(3, Character.toUpperCase(key.charAt(0)));
-      String  setMn = bastel.toString(); bastel = null;
+      final String  setMn = bastel.toString(); bastel = null;
       final Class<? extends Object> cl = obj.getClass();
-      Method  setMe = null;
-      Object[] par1  = { value }; // new Object[1]; // exactly one parameter
+    //  Object[] par1  = { value }; // new Object[1]; // exactly one parameter
 
-      try { // setEigenschaft(String)
-         setMe = cl.getMethod(setMn, PropMapHelper.STRINGPAR);
-         setMe.invoke(obj, par1);
+      Method  setMe = getMethod(cl, setMn, String.class); // setLeProp(String)
+      if (setMe == null) setMe = getMethod(cl, setMn, CharSequence.class); 
+      if (setMe != null) try { // setPropName(String | CharSequence)
+         setMe.invoke(obj, value);
          return true;
       } catch (Exception e) {
          if (e instanceof SecurityException)
@@ -1137,40 +1117,27 @@ import de.frame4j.text.TextHelper;
          }   // invoked Method caused Exception
       } // try catch  setEigenschaft(String)
       
-      try { // setEigenschaft(CharSequence)
-         setMe = cl.getMethod(setMn, CHARSEQPAR);
-         setMe.invoke(obj, par1);
-         return true;
-      } catch (Exception e) {
-         if (e instanceof SecurityException)
-            throw (SecurityException)e; // 14.11.00
-         if (e instanceof InvocationTargetException) {  // 20.07.2004
-            Throwable thr = e.getCause();
-            if (thr != null) // 20.07.2004
-               throw new IllegalArgumentException(thr.getMessage());
-            new IllegalArgumentException(e.getMessage());
-         }   // invoked Method caused Exception
-      } // setEigenschaft(CharSequence)
-      
       Indexed indexed = Indexed.make(key);
       String setMnK = null;
-      Integer index = null;
-      Object[] par2 = null;
-      if (indexed != null) {
+      int index = 0;
+ //     Object[] par2 = null;
+      if (indexed != null) { // it's indexed
          setMnK = setMn.substring(0, indexed.key.length() + 3); // 3:set
-         index = Integer.valueOf(indexed.index);
-      }
-      indexed = null;
+         index = indexed.index;
+         indexed = null;
+      } // it's indexed
+      
       if (setMnK != null) { // may be indexed, try int,String / CharSequence
-         par2  = new Object[]{index, value }; // parameters
-
-         try { // setEigenschaft(int, String)
-            setMe = cl.getMethod(setMnK, INTSTRINGPAR);
-            setMe.invoke(obj, par2);
+        setMe = getMethod(cl, setMnK, int.class, String.class);
+        if (setMe == null) {
+          setMe = getMethod(cl, setMnK, int.class, CharSequence.class);  
+        }
+        if (setMe != null) try { // setLeProp([int,] int | InCharSequence)
+            setMe.invoke(obj, index, value);
             return true;
          } catch (Exception e) {
             if (e instanceof SecurityException)
-               throw (SecurityException)e; // 14.11.00
+               throw (SecurityException)e; // 14.11.2000
             if (e instanceof InvocationTargetException) {  // 20.07.2004
                Throwable thr = e.getCause();
                if (thr != null) // 20.07.2004
@@ -1178,33 +1145,39 @@ import de.frame4j.text.TextHelper;
                new IllegalArgumentException(e.getMessage());
             }   // invoked Method caused Exception
           } // setEigenschaft(int, String)
-
-         try { // setEigenschaft(int, CharSequence)
-            setMe = cl.getMethod(setMnK, INTCHARSEQPAR);
-            setMe.invoke(obj, par2);
-            return true;
-         } catch (Exception e) {
-            if (e instanceof SecurityException)
-               throw (SecurityException)e; // 14.11.00
-            if (e instanceof InvocationTargetException) {  // 20.07.2004
-               Throwable thr = e.getCause();
-               if (thr != null) // 20.07.2004
-                  throw new IllegalArgumentException(thr.getMessage());
-               new IllegalArgumentException(e.getMessage());
-            }   // invoked Method caused Exception
-          } // setEigenschaft(int,CharSequence)
-      } // may be indexed, try int,CharSequence     
-
+      } // may be indexed
       
       Integer intInt = TextHelper.asIntObj(value);
-      if (intInt != null) {
-        if (Prop.RESTEST) {
-         System.out.println(" ///  TEST Prop " + key + " i " + value + " ;");
+      if (intInt != null) {  // leProp is int (or Integer)
+        if (RESTEST) {
+         System.out.println(" ///  TEST PMpH " + key + " = " + value + ";//i");
         }
-         try { // setEigenschaft(int)
-            setMe = cl.getMethod(setMn, INTPAR);
-            par1[0]= intInt;
-            setMe.invoke(obj, par1); 
+        setMe = getMethod(cl, setMnK, int.class, int.class); // setIt(int,int)
+        if (setMe == null) {
+          setMe = getMethod(cl, setMnK, int.class, Integer.class); 
+        }  // setIt(int,Integer)
+        if (setMe != null) try { // setLeProp(int, int | Integer)
+          if (RESTEST) System.out.println(" ///  TEST PMpH found " + setMe);
+          setMe.invoke(obj, index, intInt);
+          return true;
+       } catch (Exception e) {
+          if (e instanceof SecurityException)
+             throw (SecurityException)e; // 14.11.00
+          if (e instanceof InvocationTargetException) {  // 20.07.2004
+             Throwable thr = e.getCause();
+             if (thr != null) // 20.07.2004
+                throw new IllegalArgumentException(thr.getMessage());
+             new IllegalArgumentException(e.getMessage());
+          }   // invoked Method caused Exception
+        } // setLeProp(int, int|Integer)
+
+        setMe = getMethod(cl, setMn, int.class); //setLeProp(int)
+        if (setMe == null) { 
+          setMe = getMethod(cl, setMn, Integer.class); // setLeProp(Integer)
+        }
+        if (setMe != null) try { // setLeProp(int | Integer)
+          if (RESTEST) System.out.println(" ///  TEST PMpH found " + setMe);
+            setMe.invoke(obj, intInt);   ///   par1); TEST 04.05.2021
             return true;
          } catch (Exception e) {
             if (e instanceof SecurityException)
@@ -1216,33 +1189,52 @@ import de.frame4j.text.TextHelper;
                new IllegalArgumentException(e.getMessage());
             }   // invoked Method caused Exception
          }
-         
-         if (setMnK != null) { // may be indexed, try int,int
-            try { // setEigenschaft(int, CharSequence)
-               setMe = cl.getMethod(setMnK, INTINTPAR);
-               par2[1] = intInt;
-               setMe.invoke(obj, par2);
-               return true;
-            } catch (Exception e) {
-               if (e instanceof SecurityException)
-                  throw (SecurityException)e; // 14.11.00
-               if (e instanceof InvocationTargetException) {  // 20.07.2004
-                  Throwable thr = e.getCause();
-                  if (thr != null) // 20.07.2004
-                     throw new IllegalArgumentException(thr.getMessage());
-                  new IllegalArgumentException(e.getMessage());
-               }   // invoked Method caused Exception
-             } // setEigenschaft(int,CharSequence)
-         } // may be indexed, try int,int    
-         
-      } // is not to be interpreted
+         if (RESTEST) {
+           System.out.println(" ///  TEST PMpH  no method " 
+                                  + setMn + "(I) in " + cl);
+         }
+      } // may be int or Integer is not to be interpreted
  
       Boolean boolBool = TextHelper.asBoolObj(value); // interpret as bool
       if (boolBool != null) { // is bool
-         try { // setEigenschaft(boolean)
-            setMe = cl.getMethod(setMn, BOOLEANPAR);
-            par1[0] = boolBool;
-            setMe.invoke(obj, par1);
+        setMe = getMethod(cl, setMnK, int.class, boolean.class); 
+        if (setMe == null) {
+          setMe = getMethod(cl, setMnK, int.class, Boolean.class); 
+        }  // setIt(int,Boolean)
+        if (setMe != null) try { // setLeProp(int, boolean | Boolean)
+          setMe.invoke(obj, index, boolBool);
+          return true;
+        } catch (Exception e) {
+          if (e instanceof SecurityException)
+            throw (SecurityException)e; // 14.11.00
+          if (e instanceof InvocationTargetException) {  // 20.07.2004
+            Throwable thr = e.getCause();
+            if (thr != null) // 20.07.2004
+              throw new IllegalArgumentException(thr.getMessage());
+            new IllegalArgumentException(e.getMessage());
+          }   // invoked Method caused Exception
+        } // setLeProp(int, boolean | Boolean)
+        
+        setMe = getMethod(cl, setMn, boolean.class); 
+        if (setMe == null) {
+          setMe = getMethod(cl, setMn, Boolean.class); 
+        }  // setIt(int,Boolean)
+        if (setMe != null) try { // setLeProp(boolean | Boolean)
+          setMe.invoke(obj, boolBool);
+          return true;
+        } catch (Exception e) {
+          if (e instanceof SecurityException)
+            throw (SecurityException)e; // 14.11.00
+          if (e instanceof InvocationTargetException) {  // 20.07.2004
+            Throwable thr = e.getCause();
+            if (thr != null) // 20.07.2004
+              throw new IllegalArgumentException(thr.getMessage());
+            new IllegalArgumentException(e.getMessage());
+          }   // invoked Method caused Exception
+        } // setLeProp(int, boolean | Boolean)
+        
+        try { // setEigenschaft(boolean)
+            setMe.invoke(obj, boolBool);
             return true;
          } catch (Exception e) {
             if (e instanceof SecurityException)
@@ -1253,53 +1245,15 @@ import de.frame4j.text.TextHelper;
                   throw new IllegalArgumentException(thr.getMessage());
                new IllegalArgumentException(e.getMessage());
             }   // invoked Method caused Exception
-         }
-
-         if (setMnK != null) { // may be indexed, try int,boolean
-            try { // setEigenschaft(int, CharSequence)
-               setMe = cl.getMethod(setMnK, INTBOOLEANPAR);
-               par2[1] = boolBool;
-               setMe.invoke(obj, par2);
-               return true;
-            } catch (Exception e) {
-               if (e instanceof SecurityException)
-                  throw (SecurityException)e; // 14.11.00
-               if (e instanceof InvocationTargetException) {  // 20.07.2004
-                  Throwable thr = e.getCause();
-                  if (thr != null) // 20.07.2004
-                     throw new IllegalArgumentException(thr.getMessage());
-                  new IllegalArgumentException(e.getMessage());
-               }   // invoked Method caused Exception
-             } // setEigenschaft(int,CharSequence)
-         } // may be indexed, try int,int    
-         
-      } // can be interpreted as  interpet.bar
-         
-      try { // setEigenschaft(Color)
-         setMe = cl.getMethod(setMn, COLORPAR);
-         Color set = ColorHelper.getColor(value);
-         if (set == null) throw new IllegalArgumentException( value
-                                          + " names / describes  no Color"); 
-         par1[0] = set;
-         try {
-            setMe.invoke(obj, par1);
-            return true;
-         } catch (InvocationTargetException e) {
-            Throwable thr = e.getCause();
-            if (thr != null) // 20.07.2004
-               throw new IllegalArgumentException(thr.getMessage());
-            new IllegalArgumentException(e.getMessage());
-         } catch (Exception e2) { } // do nothing on other exc.
-      } catch (NoSuchMethodException e1) {} // do nothing, go ahead
+         } // catch
+         // can be interpreted as boolean but has no setter
+      } // can be interpreted as Boolean
 
       if (setMnK != null) try { // setEigenschaft(int Color)
-         setMe = cl.getMethod(setMnK, INTCOLORPAR);
+         setMe = cl.getMethod(setMnK, int.class, Color.class);
          Color set = ColorHelper.getColor(value);
-         if (set == null) throw new IllegalArgumentException( value
-                                 + " names / describes  no Color"); 
-         par2[1] = set;
-         try {
-            setMe.invoke(obj, par2);
+         if (set != null) try {
+            setMe.invoke(obj, index, set);
             return true;
          } catch (InvocationTargetException e) {
             Throwable thr = e.getCause();
@@ -1313,11 +1267,16 @@ import de.frame4j.text.TextHelper;
 
       try {
          Field field = cl.getDeclaredField(key);
-         if (Prop.RESTEST) {
-         System.out.println(" ///  TEST Prop " + key + " field " + field + " ;");
+         if (RESTEST) {
+             System.out.println(" ///  TEST PMpH " 
+                               + key + " field " + field + " ;");
          }
          int modi = field.getModifiers();
-         if ((modi & PUSTFI) != Modifier.PUBLIC) return false;
+         if ((modi & PUSTFI) != Modifier.PUBLIC) {
+           if (RESTEST) System.out.println(" ///  TEST PMpH " 
+                               + key + " static or final or not public!!");
+           return false;
+         } // not public non final not static
          Class<?> type  = field.getType();
          if (type == Boolean.TYPE) {
             if (boolBool != null) {
@@ -1329,8 +1288,8 @@ import de.frame4j.text.TextHelper;
          if (type == Integer.TYPE) {
               if (intInt != null) {
                field.setInt(obj, intInt.intValue());
-               if (Prop.RESTEST) {
-                    System.out.println(" ///  TEST Prop " + key
+               if (RESTEST) {
+                    System.out.println(" ///  TEST PMpH " + key
                                         + " I " + intInt.intValue() + " ;");
                }
                return true;
@@ -1348,7 +1307,9 @@ import de.frame4j.text.TextHelper;
          if (e instanceof SecurityException)
             throw (SecurityException)e; // 14.11.00
       }
-    
+      if (RESTEST) System.out.println(" ///  TEST PMpH " + key + " = " + value
+                              + "; // failed !!!");
+   
       return false;  // all toils failed
    } // setField(Object 
  

@@ -206,7 +206,7 @@ import de.frame4j.text.TextHelper;
  *  @see #setFields(Object)
  *  @see PropMapHelper#setField(Object, String, String)
  *  @author   Albrecht Weinert
- *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
+ *  @version  $Revision: 43 $ ($Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $)
  */
  // so far    V00.00 (05.04.1999) : new
  //           V00.02 (11.07.2000) : Inter nationalising, extensions
@@ -241,8 +241,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 1999 - 2006, 2009, 2016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 42 $",
-   lastModified   = "$Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $",
+   version   = "V.$Revision: 43 $",
+   lastModified   = "$Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "3 phase: make, populate, use (preferably not further modified)",  
    purpose = 
@@ -310,7 +310,6 @@ import de.frame4j.text.TextHelper;
  *  <li>outMode=ask</li>
  *  <li>askGraf=!{@link ComVar}.{@link ComVar#NOT_WINDOWS NOT_WINDOWS}
  *           **)</li>
- *  <li>xmlMBdescr= &lt;default&gt;</li>
  *  <li>codePages=</li>
  *  <li>dest=</li>
  *  <li>logDat=
@@ -392,7 +391,7 @@ import de.frame4j.text.TextHelper;
       putNewImpl("outMode",  "ask");
       putNewImpl("askGraf",  ComVar.NOT_WINDOWS
                                    ? "false" : "true"); // since 21.04.2005
-      putNewImpl("xmlMBdescr", "<default>");
+      // putNewImpl("xmlMBdescr", "<default>"); // out since 04.05.2021
       putNewImpl("codePages", ComVar.EMPTY_STRING);  // since 21.11.2009 TEST
 
       
@@ -440,7 +439,6 @@ import de.frame4j.text.TextHelper;
  *  properties:
  *  <code><ul><li type="dot">verbosity=normal  &nbsp;</li>
  *  <li>help = false &nbsp;</li>
- *  <li>xmlMBdescr= &quot;&quot;</li>
  *  <li>language= &lt;like user.language respectively {@link ComVar#UL}&gt;</li>
  *  <li>region= &#160; &lt;like user.region respectively {@link ComVar#UR}&gt;</li>
  *  <li type="dot">ignoreCase set true for Windows (but not if Servlet)</li>
@@ -486,12 +484,10 @@ import de.frame4j.text.TextHelper;
 
       putNewImpl("help",       "false"); 
       putNewImpl("verbosity",  "normal");
-      putNewImpl("xmlMBdescr", ComVar.EMPTY_STRING);
-
+      // putNewImpl("xmlMBdescr", ComVar.EMPTY_STRING); // out since 04.05.2021
       putNewImpl("language", ComVar.UL);
       putNewImpl("region",   ComVar.UR);
       putNewImpl("ignoreCase", ComVar.NOT_WINDOWS && ser ? "false" : "true");
-      
       if (ser) setAppServBasePrp();  // Servlet
    }  // Prop(char)
 

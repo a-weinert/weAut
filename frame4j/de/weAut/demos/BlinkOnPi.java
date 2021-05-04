@@ -32,7 +32,7 @@ import javax.management.JMException;
  *  Comment excerpt of the original/ported C source file: <br /><pre>
   A fifth program for Raspberry's GPIO pins
 
-  Rev. $Revision: 42 $  $Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $
+  Rev. $Revision: 43 $  $Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $
 
   Copyright  (c)  2019   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
@@ -57,10 +57,14 @@ import javax.management.JMException;
  *  object either by a {@link de.weAut.Pi3} (for Pi0, 3 and 4) or
  *  {@link de.weAut.Pi1} interface's inner class.<br />
  *  <br />
+ *  Settings, start parameter evaluation etc. are defined by
+ *  <a href="../doc-files/PiUtil.properties">PiUtil.properties</a> and
+ *  <a href="./doc-files/BlinkOnPi.properties">BlinkOnPi.properties</a>.
+ *
  *  Copyright  &copy;  2021  Albrecht Weinert <br />
  *  @see BlinkOnPiMBean TestOnPi
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
+ *  @version  $Revision: 43 $ ($Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $)
  */
 // so far:   V.  21  (21.05.2019) : new, minimal functionality
 //           V.  26  (31.05.2019) : three LEDs, IO lock 
@@ -68,8 +72,8 @@ import javax.management.JMException;
 @MinDoc(
   copyright = "Copyright 2021  A. Weinert",
   author    = "Albrecht Weinert",
-  version   = "V.$Revision: 42 $",
-  lastModified   = "$Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $",
+  version   = "V.$Revision: 43 $",
+  lastModified   = "$Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $",
   usage   = "start as Java application (-? for help)",  
   purpose = "a Frame4J program to blink LEDs on a Pi via pigpioD"
 ) public class BlinkOnPi extends App implements PiUtil, BlinkOnPiMBean {
