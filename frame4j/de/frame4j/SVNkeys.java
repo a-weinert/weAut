@@ -165,8 +165,8 @@ import de.frame4j.text.KMP;
  *  see the something like <br /> &nbsp;
  *  &#036;Date: 2013-01-12 23:47:57 +0100 (Sa, 12 Jan 2013) &#036;<br >
  *  {@link SVNkeys} did work:<ul>
- *  <li>Revision: &quot;$Revision: 41 $&quot;</li>
- *  <li>Date: &nbsp; &nbsp; &quot;$Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $&quot;</li>
+ *  <li>Revision: &quot;$Revision: 44 $&quot;</li>
+ *  <li>Date: &nbsp; &nbsp; &quot;$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $&quot;</li>
  *  <li>Author: &quot;$Author: albrecht $&quot;</li>
  *  </ul>
  *  <br />
@@ -183,7 +183,6 @@ import de.frame4j.text.KMP;
  //           V02.05 (03.06.2003) :  first productive
  //           V02.27 (01.07.2005) :  Subversion
  //           V02.32 (08.12.2005) :  keep file date (and substitute)
- //           V.o56+ (03.02.2009) :  ported to Frame4J (and Kenai SVN)
  //           V.107+ (22.05.2009) :  allow SVN's # field length delim.
  //           V.o01+ (03.02.2010) :  moved to Assembla due to Oracle-Sun
  //           V.o72+ (12.01.2013) :  handle RejectedExecutionException
@@ -195,9 +194,8 @@ import de.frame4j.text.KMP;
 @MinDoc(
    copyright = "Copyright 2003 - 2013, 2016, 2017  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 41 $",
-   lastModified   = "$Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "refine and beautify text files got from SVN"
 ) public class SVNkeys extends App implements FileVisitor {
@@ -226,7 +224,6 @@ import de.frame4j.text.KMP;
       }
    } // main(String[])
 
-
 //-----  Properties, automatic setting by Prop's parameter evaluation  ----
    
 /** Encoding of files to be modified. <br />
@@ -254,7 +251,6 @@ import de.frame4j.text.KMP;
  *  @see #tabWidth
  */  
   public boolean tabReplace = true;
-  
    
 /** Replace tabs by that number of spaces. <br />
  *  <br />
@@ -276,7 +272,6 @@ import de.frame4j.text.KMP;
  */
    public String clBrace = "$";
    CleverSSS clBrk;
-  
  
 /** Set operator for keywords. <br />
  *  <br />
@@ -339,7 +334,6 @@ import de.frame4j.text.KMP;
  *  @see #dateKey
  */
    public boolean reformatDate = true;
-    
    
 /** Re-format the date; format String. <br />
  *  <br />
@@ -431,7 +425,6 @@ import de.frame4j.text.KMP;
  *  Storage for Properties subN (N = 0..99).
  */
    String[] sub;
-
 
 /** Text to mark excluded file. <br />
  *  <br />
@@ -712,10 +705,7 @@ TextHelper#fUr(CharSequence, StringBuilder, CleverSSS, CleverSSS, ReplaceVisitor
                   fieldEndMarkerRemoved ? " " +  fieldLengthMarker  : " ",
                                           clBr);                   
    } // visit(3*String)
- 
-   
    } // MyTask ==============================================================
-
 
    private volatile String trs = "   ";  // Number of spaces for tab subst. 
    

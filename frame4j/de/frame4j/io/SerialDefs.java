@@ -57,11 +57,11 @@ import de.frame4j.text.TextHelper;
  *  Copyright 2006, 2007, 2009, 2013 &nbsp; Albrecht Weinert<br /> 
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 39 $ ($Date: 2021-04-17 21:00:41 +0200 (Sa, 17 Apr 2021) $)
+ *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
  */
- // so far    V00.00 (21.12.2006 13:55) :  extracted out of SerIO
- //           V.022+ (05.08.2009 11:52) :  ported to Frame4J / English
+ // so far    V00.00 (21.12.2006) : extracted out of SerIO
  //           V.134+ (02.11.2015) : method made static
+ //           V.  42 (05.05.2021) : parityAsString() etc. default implemented
 
 public interface SerialDefs {
    
@@ -112,7 +112,6 @@ public interface SerialDefs {
  *  @see #DATABITS_5
  */
    static public final int DATABITS_8 = 8;
-   
 
 /** Setting: 1 stop bit. <br />
  *  <br />
@@ -222,12 +221,11 @@ public interface SerialDefs {
  #define ONE5STOPBITS 1
  #define TWOSTOPBITS  2
  */   
- 
 
 /** Setting: data flow control: none. <br />
  *  <br />
  *  Value: {@value}<br />
- *  <br />
+ *
  *  @see #FLOWCONTROL_RTSCTS
  *  @see #getFlowControlMode()
  *  @see #setSerialPortParams(int, int, int, int)
@@ -237,7 +235,7 @@ public interface SerialDefs {
 /** Setting: data flow control: hardware on input. <br />
  *  <br />
  *  Value: {@value}<br />
- *  <br />
+ *
  *  @see #FLOWCONTROL_NONE
  *  @see #getFlowControlMode()
  */
@@ -246,7 +244,7 @@ public interface SerialDefs {
 /** Setting: data flow control: hardware on output. <br />
  *  <br />
  *  Value: {@value}<br />
- *  <br />
+ *
  *  @see #FLOWCONTROL_NONE
  *  @see #getFlowControlMode()
  */
@@ -256,7 +254,6 @@ public interface SerialDefs {
  *  <br />
  *  Value: {@value} ({@link #FLOWCONTROL_RTSCTS_OUT} | 
  *                    {@link #FLOWCONTROL_RTSCTS_IN})<br />
- *  <br />
  *  @see #FLOWCONTROL_NONE
  *  @see #getFlowControlMode()
  */
@@ -266,7 +263,7 @@ public interface SerialDefs {
 /** Setting: data flow control: software on input. <br />
  *  <br />
  *  Value: {@value}<br />
- *  <br />
+ *
  *  @see #FLOWCONTROL_NONE
  *  @see #getFlowControlMode()
  */
@@ -275,7 +272,7 @@ public interface SerialDefs {
 /** Setting: data flow control: software on output. <br />
  *  <br />
  *  Value: {@value}<br />
- *  <br />
+ 
  *  @see #FLOWCONTROL_NONE
  *  @see #getFlowControlMode()
  */
@@ -292,7 +289,7 @@ public interface SerialDefs {
 /** Event type: Overrun error. <br />
  *  <br />
  *  Value: {@value}<br />
- *  <br />
+ *
  *  @see #FLOWCONTROL_NONE
  *  @see #getFlowControlMode()
  */
@@ -325,7 +322,7 @@ public interface SerialDefs {
 /** Event type: Ring Indicator. <br />
  *  <br />
  *  Value: {@value}<br />
-    */
+ */
    static public final int RI = 5;
 
 /** Event type: Data set ready. <br />
@@ -352,18 +349,16 @@ public interface SerialDefs {
  */
    static public final int OUTPUT_BUFFER_EMPTY = 2;
 
-
 /** The serial ports's receive timeout in ms. <br />
  *  <br />
  *  On receive timeout's ({@link #getRcvTimeout() rcvTimeout}) values
  *  &gt; 0 reading methods return after that time in ms (milliseconds)
  *  independent of having received any bytes.<br />
- *  <br />
+ *
  *  @return the current receive timeout in ms
  *  @see #setRcvTimeout(int)
  */
    public abstract int getRcvTimeout();
-
 
 /** Set the serial port's receive timeout.  <br />
  *  <br />
@@ -373,17 +368,15 @@ public interface SerialDefs {
  *  @see #getRcvTimeout()
  */
    public abstract void setRcvTimeout(int rcvTimeout);
-
   
 
 /** The serial port's baud rate. <br />
- *  <br />
+ *
  *  @return the port's actual baud rate
  *  @see Helper#baudRate(int)
  *  @see #setSerialPortParams(int, int, int, int)
  */
    public abstract int getBaud();
-
 
 /** The serial port's data bits, size of one information piece. <br />
  *  <br />
@@ -391,7 +384,6 @@ public interface SerialDefs {
  *  @see #setSerialPortParams(int, int, int, int)
  */
    public abstract int getDataBits();
-   
 
 /** The serial port's stop bits. <br />
  *  <br />
@@ -404,7 +396,6 @@ public interface SerialDefs {
  *  @see #STOPBITS_2
  */
    public abstract int getStopBits();
-
    
 /** The serial port's parity. <br />
  *  <br />
@@ -419,16 +410,16 @@ public interface SerialDefs {
 /** The serial port's parity as String. <br />
  *  <br />
  *  Returned will be either mark, space, odd, even or none geliefert.<br />
- *  Implementations können / werden die Methode
- *  {@link Helper}.{@link Helper#parityAsString(int) parityAsString()}
- *  nutzen.<br /> 
- *  <br />
+ *  Applications might be satisfied by this default implementation using
+ *  {@link Helper}.{@link Helper#parityAsString(int) parityAsString()}.<br /> 
+ *
  *  @return the port's actual parity setting
  *  @see #setSerialPortParams(int, int, int, int)
  *  @see #getParity()
  */
-   public abstract String parityAsString(); 
-
+   public default String parityAsString(){
+     return Helper.parityAsString(getParity()); 
+   } // parityAsString()
    
 /** Set all relevant parameters of the serial port.  <br />
  *  <br />
@@ -499,7 +490,6 @@ public interface SerialDefs {
    public abstract boolean setSerialPortParams(int baudrate,
                                  int dataBits, int stopBits, int parity);
 
-
 /** Data flow control. <br />
  *  <br />
  *  The value may be any (bitwise) combination of the following values:<ul>
@@ -521,13 +511,14 @@ public interface SerialDefs {
  *  The {@link #getFlowControlMode() flowControlMode}'s value is returned as
  *  character sequence.<br />
  *  <br />
- *  Implementations may use the the {@link Helper}'s method 
- *  {@link Helper 
- *  SerialDefs.Helper}.{@link Helper#flowControlAsText(StringBuilder, int)
- *  flowControlAsText(,)}.<br />
+ *  Applications might be satisfied by this default implementation using
+ *  {@link Helper}.{@link Helper#flowControlAsText(StringBuilder, int)
+ *  flowControlAsText(null, getFlowControlMode())}.<br />
  *  @return the actual flow control setting
  */
-   public abstract String flowControlAsString(); 
+   public default String flowControlAsString(){
+     return Helper.flowControlAsText(null, getFlowControlMode()).toString();
+   } // flowControlAsString()
 
 /** Set the data flow control mode. <br />
  *  <br />
@@ -535,7 +526,6 @@ public interface SerialDefs {
  *  @see #getFlowControlMode()
  */
    public abstract void setFlowControlMode(int flowControlMode);
-
    
 /** The modem control output's RTS (request to send) state. <br />
  *  <br />
@@ -551,7 +541,6 @@ public interface SerialDefs {
  *  @param rts the state of the RTS signal
  */
    public abstract void setRTS(boolean rts); 
-
    
 /** The modem control output's DTR (data terminal ready) state. <br />
  *  <br />
@@ -584,7 +573,6 @@ public interface SerialDefs {
  *  @param rts the state of the RTS signal
  */
    public abstract void setDtrRts(boolean dtr, boolean rts); 
-
    
 /** The modem control input's DSR (data set ready) state. <br /> */
    public abstract boolean isDSR();
@@ -662,14 +650,13 @@ public interface SerialDefs {
  *  indefinitely.<br />
  *  <br />
  *  On not ready, errors or timeout -1 will be returned.<br />
- *  <br />
+ *
  *  @return The number of bytes read or -1
  *  @param b the buffer to read into
  *  @param o the index where to put the first byte read
  *  @param l the maximum number of bytes to be read / put into b
  */
    public abstract int read(byte[] b, int o, int l);
-
    
 /** Write some bytes to the serial port. <br />
  *  <br />
@@ -686,7 +673,7 @@ public interface SerialDefs {
  *  <br />
  *  Implementations shall delegate (in case of b not null} to 
  *  {@link #write(byte[], int, int) write(b, 0, b.length)}.<br />
- *  <br />
+ *  
  *  @return -1 on failure or not ready, otherwise the number of bytes written;
  *          that will be = b.length on total success
  */
@@ -695,7 +682,7 @@ public interface SerialDefs {
 /** Write one byte to the serial port. <br />
  *  <br />
  *  If not ready nothing happens at all.<br />
- *  <br />
+ *
  *  @return true on success
  */
    public abstract boolean write(int b); 
@@ -711,11 +698,10 @@ public interface SerialDefs {
  *  <br />
  *  Hint: Concurrent (multi-thread) use of serial ports is strongly
  *        discouraged anyway.<br />
- *  <br />
+ * 
  *  @return explaining error text or null
  */
     public abstract String getExMsg();
-
     
 /** Text representation. <br />
  *  <br />
@@ -723,7 +709,6 @@ public interface SerialDefs {
  *  <br />
  *  If an error is pending according to the method's {@link #getExMsg()}
  *  criteria, its explanation will be part of the status text returned.<br />
- *  <br >
  */
     @Override public abstract String toString();
    
@@ -759,7 +744,6 @@ public interface SerialDefs {
          }
          return "--";
       } // parityAsString(int)
-
      
 /** Event type as String. <br />
  *  <br />
@@ -785,7 +769,6 @@ public interface SerialDefs {
          }
          return "none";
       } // eventAsString(int)
-
 
 /** Data flow control mode as String. <br />
  *  <br />
@@ -896,7 +879,6 @@ public interface SerialDefs {
       }   
       return sb.append(".\n");
    } // stateAsString(StringBuilder, SerialDefs)
-
 
 /** Interpret a character sequence as parity specification. <br />
  *  <br />

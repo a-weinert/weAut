@@ -2,11 +2,10 @@
 @set whereIwasCalledFrom=%CD%
 
 @echo Make translated  Frame4J  ready and deploy locally 
-@echo readyDeploy.bat $Revision: 32 $,  $Date: 2021-03-22 18:35:41 +0100 (Mo, 22 Mrz 2021) $
+@echo readyDeploy.bat 
 @Echo Copyright (c)  2013, 2018, 2021 Albrecht Weinert  a-weinert.de
+@echo $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $)
 @echo.
-
-@REM for both local and server use.
 
 @if %JAVA_HOME%X==X goto :envError
 @if %jdkUse%X==X set jdkUse=%JAVA_HOME%\bin
@@ -21,20 +20,24 @@
 @echo to be used after local Frame4J translation (see translatIt.bat) only
 @goto :callError
 
-@REM as there's no Let'encrypt for code signing getting certificates for
+@REM as there's no Let'encrypt for code signing, getting certificates for
 @REM free open source projects is financially and technically infeasible 
 
 :signJar
+copy frame4j-not-signed.jar frame4j.jar 
+@if %1X==X goto :doNotSign
+
+@if exist C:\util\.keystoreJS (
+   set keyParam=C:\util\.keystoreJS
+   @set keyAlias=de_aw_sig
+   @goto :keyStoreFound
+) 
 @if exist C:\util\etc\codesign.p12 (
    set keyParam=C:\util\etc\codesign.p12 -storetype pkcs12
    @set keyAlias=codesigning
    @goto :keyStoreFound
 )
 @set keyAlias=de_aw_sig
-@if exist C:\util\.keystoreJS (
-   set keyParam=C:\util\.keystoreJS
-   @goto :keyStoreFound
-) 
 @echo could not find the expected keystore file
 @if exist C:\programme\.keystore (
    set keyParam=C:\programme\.keystore
@@ -61,7 +64,6 @@
 @set keyParam=%keyParam% -storepass %1
 
 :doTheSign
-copy frame4j-not-signed.jar frame4j.jar 
 @Echo.
 @Echo Signing frame4j.jar
 @Echo.
@@ -76,11 +78,12 @@ copy frame4j-not-signed.jar frame4j.jar
 @set keyParam=
 @Echo Signing frame4j.jar failed with error %errorlevel%
 @goto :error
+
+:doNotSign
+@Echo No jar signing requested
 @Echo Going ahead for local Test only
 
 :jarSigned
-
-
 @set keyParam=
 @if %frame4j.loc.dnl%X==X goto :noDnlDir_0
 @if exist %frame4j.loc.dnl%\sources goto :dnlExist
@@ -104,9 +107,7 @@ xCopy /Y frame4j.jar %JAVA_HOME%\jre\lib\ext\
 @echo Avoid javadoc 8 big selfclosing bug 
 @set  theSource=%whereIwasCalledFrom%
 @set  jdocLaunch=%jdkUse%\javadoc.exe -Xdoclint:all,-html,-missing 
-
 @set  jdocLaunch=%jdocLaunch% -author -version -protected -J-mx96m -J-ms96m %externalClasses% -windowtitle " Frame4J -- the Java framework  de.frame4j... "
-
 
 if not exist %JAVA_HOME%\docs\frame4j\nul md %JAVA_HOME%\docs\frame4j
 @cd /D  %JAVA_HOME%\docs\frame4j
@@ -115,12 +116,10 @@ if exist ..\mailapidocs set useLinks=%useLinks% -link ../mailapidocs
 if exist ..\servletapi set useLinks=%useLinks% -link ../servletapi
 if exist ..\googlegwtdocs\package-list set useLinks=%useLinks% -link ../googlegwtdocs
 if exist ..\tomcatapi set useLinks=%useLinks% -link ../tomcatapi
-
 if exist ..\junit set useLinks=%useLinks% -link ../junit
 
 @echo  .%useLinks%.
 @echo.
-
 
 @copy /Y %theSource%\Frame4Jdoc.list %theSource%\Usedoc.list
 @if "D:\temp\frame4j"=="%theSource%" goto :docIt
@@ -139,7 +138,6 @@ if exist ..\junit set useLinks=%useLinks% -link ../junit
 @REM  java.exe de.frame4j.FuR %JAVA_HOME%\docs\frame4j\+.html  ../..//pac  ../../pac  -r -v
 @java.exe de.frame4j.FuR .\frame4j\+.html  @.\frame4j\de\weAut\doc-files\FuRdoc.properties -r -silent
 @REM  echo repaired javaDoc6 //-bug (..//package), html and added icon
-
  
 @if %frame4j.loc.dnl%X==X goto :noDnlDir_1
 @echo Generating Java-archive frame4jdoc.zip
@@ -148,7 +146,6 @@ if exist ..\junit set useLinks=%useLinks% -link ../junit
 @echo .
 @dir %frame4j.loc.dnl%\frame4jdoc.zip
 :noDnlDir_1
-
 
 @cd /D %whereIwasCalledFrom%
 
@@ -177,4 +174,3 @@ callError
 @if ERRORLEVEL 1 @echo exit %errorlevel%
 @cd /D %whereIwasCalledFrom%
 @echo.
-

@@ -23,7 +23,7 @@ import de.frame4j.util.ComVar;
  *  This interface contains values for all Raspberry Pis and related 
  *  applications. 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 40 $ ($Date: 2021-04-19 21:47:30 +0200 (Mo, 19 Apr 2021) $)
+ *  @version  $Revision: 46 $ ($Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $)
  */
 // so far:  V. 38  (16.04.2021) :  new
 //          V. 4x  (21.05.202x) :  ...
@@ -33,14 +33,16 @@ public interface PiVals extends ComVar {
 /** Defines maximal existing GPIO number. <br />
  *  <br />
  *  Value: {@value}
- *  @see #GPIOmin #GPIOutM #PINig
+ *  @see #GPIOmin
+ *  @see #GPIOutM #PINig
  */
     int GPIOmax = 56; // this value must be 
 
 /** Defines smallest existing GPIO number. <br />
  *  <br />
  *  Value: {@value}
- *  @see #GPIOmax #GPIOutM #PINig
+ *  @see #GPIOmax
+ *  @see #GPIOutM #PINig
  */
     int GPIOmin = 0; // this value must be 
 
@@ -57,7 +59,10 @@ public interface PiVals extends ComVar {
  *  attempt as error. <br />
  *  <br />
  *  Value: {@value}
- *  @see #GPIOmin #GPIOax #PINig #gpioMayOut(int)
+ *  @see #GPIOmin
+ *  @see #GPIOmax
+ *  @see #PINig
+ *  @see ThePi#gpioMayOut(int)
  */
     int GPIOutM = 31; // this value must be 
   

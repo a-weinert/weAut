@@ -44,7 +44,7 @@ import de.frame4j.util.MinDoc;
  *  Copyright 2001 - 2004 &nbsp; Albrecht Weinert<br />
  *  <br />  
  *  @author   Albrecht Weinert
- *  @version  $Revision: 40 $ ($Date: 2021-04-19 21:47:30 +0200 (Mo, 19 Apr 2021) $)
+ *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
  *  @see      Input
  */
  // so far:  V00.00 (13.09.2001) :  new
@@ -52,14 +52,13 @@ import de.frame4j.util.MinDoc;
  //          V02.00 (24.04.2003) :  CVS Eclipse
  //          V02.xx (19.05.2005) :  /**,CVS bug corrected,
  //          V02.22 (21.10.2006) :  LDAP, AD in LDAPauthRead ausgel.
- //          V.o56+ (03.02.2009) :  ported to Frame4J (and Kenai SVN)
  //          V.  39 (18.04.2021) : get rid of LDAPauthRead (here comment only)
 
 @MinDoc(
    copyright = "Copyright 2001 - 2004, 2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 40 $",
-   lastModified   = "$Date: 2021-04-19 21:47:30 +0200 (Mo, 19 Apr 2021) $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "import",  
    purpose = "stateful class; objects to hold authentication info"
@@ -82,7 +81,7 @@ import de.frame4j.util.MinDoc;
  *  In so far the constructor
  *  {@link #Authentication(String, char[], boolean)} is to be preferred over
  *  {@link #Authentication(String, String, boolean)}.<br />
- *  <br />
+ * 
  *  @see #name
  *  @see #clearPass()
  */ 
@@ -96,7 +95,6 @@ import de.frame4j.util.MinDoc;
  *  <br />
  *  After calling this method no further authentication with this object
  *  is possible. It shall be called (only) after the last usage.<br />
- *  <br />
  */ 
    public void clearPass() {
       char[] tmp = pass;
@@ -155,7 +153,7 @@ import de.frame4j.util.MinDoc;
       this.name = name;
       this.pass = pass;
       if (setD) setAsDefault();
-   } // constructor
+   } // Authentication(String,char[],boolean)
 
 
 /** Construct with name, password and optional registration. <br />
@@ -171,6 +169,6 @@ import de.frame4j.util.MinDoc;
  */
    public Authentication(String name, String pass, boolean setD) {
       this(name,  pass != null ? pass.toCharArray() : null, setD);
-   } // constructor
+   } // Authentication(2*String,boolean)
 
  } // class Authentication (01.03.2009)

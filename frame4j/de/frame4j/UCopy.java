@@ -98,7 +98,6 @@ import de.frame4j.text.TextHelper;
  //          V00.05 (29.03.2002) : Authentication to package .net
  //          V01.00 (24.05.2002) : de, AppBase
  //          V02.27 (17.09.2007) : moved to de.a_weinert.apps; transcode
- //          V.o56+ (01.03.2009) : ported to Frame4J (and Kenai SVN)
  //          V.137+ (11.08.2009) : -eclipDic option (Eclipse dictionary)
  //          V.140+ (21.08.2009) : trans-code improved
  //          V.143+ (06.01.2016) : FileHelper
@@ -106,9 +105,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 1997 - 2009, 2015  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 41 $",
-   lastModified   = "$Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "start as Java application (-? for help)",
    purpose = "copy file or URL to file"
 ) public class UCopy extends App {
@@ -143,7 +141,7 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  default: null = do nothing, except perhaps character coding changes<br />
  *  possible values: null, &quot;eclipseDictionary&quot;, .. ..<br />
- *  <br />
+ *
  *  @see #manipContent(String)
  *  @see #inEncoding
  *  @see #outEncoding
@@ -162,7 +160,7 @@ import de.frame4j.text.TextHelper;
 /** Name of the proxy server. <br />
  *  <br />
  *  default: cache<br />
- *  <br />
+ *
  *  @see #proxySet
  */
    public String  proxyHost;
@@ -170,7 +168,7 @@ import de.frame4j.text.TextHelper;
 /** Port of the proxy server.. <br />
  *  <br />
  *  default: 8080<br />
- *  <br />
+ *
  *  @see #proxySet
  */
    public String  proxyPort;

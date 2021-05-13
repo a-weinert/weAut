@@ -63,7 +63,6 @@ import de.frame4j.text.RK;
 import de.frame4j.xml.SAXHandler;
 import static de.frame4j.graf.GrafVal.*;
 
-
 /** <b>Graphical helper methods</b>. <br />
  *  <br />
  *  This abstract class contains some helper methods for graphical 
@@ -80,33 +79,27 @@ import static de.frame4j.graf.GrafVal.*;
  *  <li>surrounding of pictures.</li>
  *  </ul>
  *
- *  <br />
  *  <a href="./package-summary.html#co">&copy;</a>
  *  Copyright 2000 - 2003, 2005 &nbsp;  Albrecht Weinert  
  */
  // so far    V00.00 (11.06.2000) :  from AskDialog
  //           V00.03 (18.11.2001) :  KeyEvent error
- //           V00.04 (18.11.2001) :  /**, raenderImage
+ //           V00.04 (18.11.2001) :  raenderImage
  //           V00.05 (16.07.2002) :  de, CheckBoxMenuItem
- //           V00.07 (26.08.2002) :  /**, sub-menus
  //           V02.00 (24.04.2003) :  CVS Eclipse
  //           V02.03 (26.04.2003) :  JavaDoc bug detected hereby  
  //           V02.04 (20.05.2003) :  platform indep.  
  //           V02.06 (16.07.2003) :  swing and awt are supported
- //           V02.09 (12.11.2003) :  Border, JLabel, swing 
- //                                          and awt are supported 
- //           V02.26 (29.04.2005) :  /**, XML-SAX
+ //           V02.09 (12.11.2003) :  Border, JLabel, ...
+ //           V02.26 (29.04.2005) :  XML-SAX
  //           V02.27 (16.05.2005) :  String[][]-Menus out
  //           V02.30 (03.05.2007) :  MenuBarFactory (from WinApp)
- //           V.o52+ (12.02.2009) :  ported to Frame4J
  //           V.  34 (24.03.2021) : class -> interface 
 @MinDoc(
    copyright = "Copyright 2000 - 2005, 2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
-//   lastModifiedBy = "$Author: albrecht $",
-//   usage   = "static methods and embedded classes",  
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    purpose = "graphical helpers and factories"
 ) public interface GrafHelper extends ColorHelper, ColorVal  {
 
@@ -117,7 +110,6 @@ import static de.frame4j.graf.GrafVal.*;
  *  will be numbered.<br />
  */ 
    public static int getButtonNo(){ return ColorHelper.Impl.buttonNo; }
-
 
 /** Making a button (Button). <br />
  *  <br />
@@ -227,7 +219,6 @@ import static de.frame4j.graf.GrafVal.*;
  *  It's the simple variant of 
  {@link #makeJButton(String, Font, String, Color, Color, ActionListener, Border)}
  *  when generating (pseudo) labels.<br />
- *  <br />   
  */
    public static JButton makeJButton(final String text, final Font font,
                    final Color bgColor, final Color fgColor, final Border bo){
@@ -251,7 +242,7 @@ import static de.frame4j.graf.GrafVal.*;
  *  <br />
  *  If something is painted true respectively the result of 
  *  {@code g.drawImage(i,...)} will be returned.<br />
- *  <br />  
+ *
  * @param g graphical context
  * @param c (background) colour
  * @param i picture
@@ -294,9 +285,9 @@ import static de.frame4j.graf.GrafVal.*;
  *  If the same text has to be painted with the same font within a rectangle
  *  of the same size the returned p can (and should) be reused.<br />
  */
-   public static IntPairFix paintString(final Graphics g, final ConstIntPair p,
-                          final ConstIntPair d, final String text, 
-                                    final Color fgColor,  Font font){
+   public static IntPairFix paintString(final Graphics g,
+                       final ConstIntPair p, final ConstIntPair d,
+                          final String text, final Color fgColor, Font font){
       if (g == null) return null;
       if (fgColor != null) g.setColor(fgColor);
       if (font != null) 
@@ -306,7 +297,7 @@ import static de.frame4j.graf.GrafVal.*;
       if (p == null || d == null ) return null;
       return paintString(g, p.getX(), p.getY(), d.getX(), d.getY(),
                                                         text, fgColor, font);
-   }  // paintString
+   } // paintString(Graphics, 2*ConstIntPair, String, Color, Font)
 
 /** Centred painting of a text in (x,y), (width,height)). <br />
  *  <br />
@@ -338,8 +329,7 @@ import static de.frame4j.graf.GrafVal.*;
                            - fm.getDescent() - fm.getLeading() + height) / 2;
     g.drawString(text, x + xRel, y + yRel);
     return IntPairFix.ofInts(xRel, yRel); 
- }  // paintString
-   
+ }  // paintString(Graphics, 4*int, String, Color, Font)
 
 //---------------------------------------------------------------------------
 
@@ -366,7 +356,6 @@ import static de.frame4j.graf.GrafVal.*;
       // int rg = (hg.getRed() + hg.getBlue()) * 4 + hg.getGreen() * 5;
       //return rg > 1274 ? sw : ws;
    } // calcFgColor(Color)
-
 
 /** Set a component's foreground and background colours. <br />
  *  <br />
@@ -424,7 +413,7 @@ import static de.frame4j.graf.GrafVal.*;
  *  The lower cased token part of  {@code colourDef} is used as key
  *  to a {@link GrafHelper#colourCmap cache} used and filled by this method.
  *  This partly avoids double decoding and generating.<br />
- *  <br />
+ *
  *  @param colourDef the colour definition
  *  @return Color fitting colourDef or null
  *  @see GrafVal#COLOR_CHOOSE 
@@ -482,7 +471,6 @@ import static de.frame4j.graf.GrafVal.*;
  */
    public static final Filter colourChooseFilter  
                                      = Action.makeCodeFilter(Action.SCOLOR);
-   
 
 /** Default dialogue font description. <br />
  *  <br />
@@ -527,7 +515,7 @@ import static de.frame4j.graf.GrafVal.*;
       ret = new Font(fontCh, style, size);
       fontCmap.put(fontKey, ret);
       return ret;
-   } // getFont(CharSequence)
+   } // getFont(CharSequence, 2*int)
 
    
 /** Fetch a character set (font) by a character sequence. <br />
@@ -553,7 +541,7 @@ import static de.frame4j.graf.GrafVal.*;
       if (ret == null) return null;  // should not happen
       fontCmap.put(fontCh, ret);
       return ret;
-   } //  getFont(String
+   } // getFont(CharSequence)
 
    
 //----------  MenuBar  ------------------------------------
@@ -586,7 +574,7 @@ import static de.frame4j.graf.GrafVal.*;
       } catch (NoClassDefFoundError ndf) {
          return false;
       }
-   } // xmlEncode(MenuComponent, OutputStream)
+   } // xmlEncode(MenuContainer, OutputStream)
 
 //---------------------------------------------------------------------------
 
@@ -614,7 +602,7 @@ import static de.frame4j.graf.GrafVal.*;
         for (int mn = 0; mn < anzMenus; ++mn)
            initMenu(((JMenuBar)mb).getMenu(mn), aL, iL);
      }
-   } // initMenuBar
+   } // initMenuBar(MenuContainer, ActionListener, ItemListener)
 
 
 /** Setting the listeners of a Menu. <br />
@@ -649,7 +637,7 @@ import static de.frame4j.graf.GrafVal.*;
                mi.addActionListener(aL);
          }
       } // itemLoop
-   } // initMenu
+   } // initMenu(Menu, ActionListener, ItemListener)
 
 
 /** Setting the listeners of a (J)Menu. <br />
@@ -682,7 +670,7 @@ import static de.frame4j.graf.GrafVal.*;
                mi.addActionListener(aL);
          }
       }
-   } // initMenu
+   } // initMenu(JMenu, ActionListener, ItemListener)
 
 //---------------------------------------------------------------------------
 
@@ -789,7 +777,7 @@ import static de.frame4j.graf.GrafVal.*;
  *  Due to the recursive search the method may be a bit expensive. After
  *  generating menuComp the result for every interesting action command should
  *  be determined once and stored.<br />
- *  <br />
+ *
  *  @param menuComp the containing menu component<br /> &nbsp;
  *      &nbsp; &nbsp; (usually a MenuBar or a Menu)
  *  @param actionCommand the search criterion action command
@@ -798,7 +786,7 @@ import static de.frame4j.graf.GrafVal.*;
  *  @return fitting [Checkbox-]MenuItem or null
  */
    public static MenuItem byAction(Object menuComp,
-                        String actionCommand, boolean check) {
+                                   String actionCommand, boolean check){
       if (menuComp == null || actionCommand == null 
                                     || actionCommand.isEmpty()) return null;
       itemCheck: if (menuComp instanceof MenuItem) {
@@ -833,23 +821,22 @@ import static de.frame4j.graf.GrafVal.*;
    } // MenuItem byAction(Object, String, boolean)
 
 
-
 /** Determine the CheckboxMenuItem to an action command. <br />
  *  <br />
  *  The call is equivalent to:<code><pre>
  *  (CheckBoxMenuItem)byAction(menuComp, actionCommand, true)</pre>
  *  </code>
  *  Only for better readability.<br />
- *  <br />
+ *
  *  @param menuComp the containing menu component<br /> &nbsp;
  *      &nbsp; &nbsp; (usually a MenuBar or a Menu)
  *  @param actionCommand the search criterion action command
  *  @return fitting CheckboxMenuItem or null
  */
    public static CheckboxMenuItem byAction(MenuComponent menuComp,
-                        String actionCommand) {
+                                                     String actionCommand){
       return (CheckboxMenuItem)byAction(menuComp, actionCommand, true);
-   } // byAction(MenuComponent)
+   } // byAction(MenuComponent, String)
 
 /** Determine the JMenuItem to an action command. <br />
  *  <br />
@@ -873,7 +860,7 @@ import static de.frame4j.graf.GrafVal.*;
  *  @return fitting J[Checkbox-]MenuItem or null
  */
    public static JMenuItem byAction(MenuElement menuComp,
-                        String actionCommand, boolean check) {
+                                      String actionCommand, boolean check){
       if (menuComp == null || actionCommand == null 
                                  || actionCommand.isEmpty()) return null;
       itemCheck: while (menuComp instanceof JMenuItem) {
@@ -918,13 +905,12 @@ import static de.frame4j.graf.GrafVal.*;
  *  @return fitting JCheckboxMenuItem or null
  */
    public static JCheckBoxMenuItem byAction(MenuElement menuComp,
-                        String actionCommand) {
+                                         String actionCommand){
       return (JCheckBoxMenuItem)byAction(menuComp, actionCommand, true);
-   } //  byAction(MenuElement, String)
+   } // byAction(MenuElement, String)
 
 
 //------------------------------------------------------------------------
-
  
 /** Surround a picture. <br />
  *  <br />
@@ -936,7 +922,7 @@ import static de.frame4j.graf.GrafVal.*;
  *  <br />
  *  If (just) one margin is outside the range 0 to 400, all (!) margins are 
  *  set to 0.<br />
- *  <br />
+ *
  *  @param img the picture to be surrounded
  *  @param bgColor background respectively margin colour (default {@link GrafVal#ws}).
  *  @param upM upper margin in pixel (0..400).
@@ -946,7 +932,7 @@ import static de.frame4j.graf.GrafVal.*;
  */ 
    public static BufferedImage surrondImage(final Image img, 
                            final Color bgColor,
-                           int upM, final int loM, int leM, final int riM) {
+                           int upM, final int loM, int leM, final int riM){
       if (img == null) return null;
       int w = img.getWidth(null);
       int h = img.getHeight(null);
@@ -967,8 +953,7 @@ import static de.frame4j.graf.GrafVal.*;
       gr.drawImage(img, leM, upM,  null);
       gr.dispose();
       return ret;
-   } // surrondImage(Image
-
+   } // surrondImage(Image, Color, 4*int)
 
 /** Scaling a picture. <br />
  *  <br />
@@ -990,7 +975,7 @@ import static de.frame4j.graf.GrafVal.*;
  *  @return the scaled picture as buffered image
  */ 
    public static BufferedImage scaleImage(Image img, Color bgColor,
-                                    int newWidth, int newHeight) {
+                                         int newWidth, int newHeight){
       if (img == null || newWidth <= 0 || newHeight <= 0) return null;
       int w = img.getWidth(null);
       int h = img.getHeight(null);
@@ -1008,7 +993,7 @@ import static de.frame4j.graf.GrafVal.*;
       gr.drawImage(img, 0, 0, newWidth, newHeight, null);
       gr.dispose();
       return ret;
-   } // surrondImage(Image
+   } // surrondImage(Image, Color, 2*int)
   
 
 //=========================================================================   
@@ -1083,22 +1068,21 @@ import static de.frame4j.graf.GrafVal.*;
  @see ParseErrorHandler#ParseErrorHandler(CharSequence, PrintWriter, boolean)
  */
       public MBarFactory(CharSequence name,  CharSequence language,
-                              boolean swingy, PrintWriter log) {
+                                         boolean swingy, PrintWriter log){
          super(name, log, true);
          this.swingy = swingy;
          this.la  = TextHelper.checkLanguage(language, "en");
-      } // MBarFactory(CharSequence)
+      } // MBarFactory(2*CharSequence, boolean, PrintWriter)
 
 /** Swing, not AWT. <br /> */      
       protected boolean swingy;
       
 /** Re-initialise the handler. <br /> */
-      @Override public void startDocument() { 
+      @Override public void startDocument(){ 
          mCs = new MenuContainer[5];
          mcL = -1;
          laLabel = la + ".label";
          laShortcut = la + ".shortcut";
-
          if (debug) log.println("\n\n MM     MBarFactory = " + name 
                      + " \t (" + la            
                      + (swingy ? ")   -- swing\n" : ")   --  AWT\n"));
@@ -1122,17 +1106,15 @@ import static de.frame4j.graf.GrafVal.*;
  *  @return a {@link MenuBar}, {@link JMenuBar} or null.
  *  @see #swingy
  */      
-      public MenuContainer product() { return mCs[0]; }
+      public MenuContainer product(){ return mCs[0]; }
       @Override public Object getProduct() { return mCs[0]; }
 
 /** MenuContainer recursion level. <br />
- *  <br />
  *  @see #mCs
  */      
       int mcL;
       
 /** Debug outputs. <br />
- *  <br />
  *  @see #isDebug()
  */      
       protected boolean debug;
@@ -1140,19 +1122,18 @@ import static de.frame4j.graf.GrafVal.*;
 /** Debug outputs. <br />
  *  <br />
  *  If true reports on made elements will be output to {@link #log}.<br />
- *  <br />
  */      
       public final boolean isDebug() { return this.debug; }
 
 /** Debug outputs. <br />
- *  <br />
+ * 
  *  @see #isDebug()
  */
       public void setDebug(boolean debug) { this.debug = debug; }
 
 
 /** Two letter language code (de, en, fr, etc.). <br />
- *  <br />
+ *
  *  @see #laLabel
  *  @see #laShortcut
  */  
@@ -1161,14 +1142,12 @@ import static de.frame4j.graf.GrafVal.*;
 /** Language specific parameter names. <br />
  *  <br />
  *  Example: &quot;de.label&quot;, &quot;en.shortcut&quot;.<br />
- *  <br />
  *  @see #la
  */ 
       protected String laLabel, laShortcut;
 
 /** Grouping. <br /> */
       ButtonGroup  butG;
-
       
 /** Start of a XML element. <br />
  *  <br />
@@ -1180,7 +1159,6 @@ import static de.frame4j.graf.GrafVal.*;
       @Override public void startElement(String namespaceURI,
                         String localName, String qName,
                         Attributes atts) throws SAXException {
-         
          if ("separator".equals(qName)) { // menu-separator
             if (mcL < 1) {
                throw new SAXException("no menu yet to add separator");
@@ -1316,14 +1294,12 @@ import static de.frame4j.graf.GrafVal.*;
          // --------------  the rest  is (still) illegal -------------------
          throw new SAXException(
                              "MBarFactory knows nothing about <" + qName);
-      } // startElement(String
-     
+      } // startElement(3*String, Attributes)
 
 /** End of a XML element. <br />
  *  <br />
  *  For &lt;/menubar&gt; and &lt;/menubar&gt; this implementation organises
  *  a tree structure of sub menus  down to a maximum level of three.<br />
- *  <br />
  */
       @Override public void endElement(String namespaceURI,
                      String localName, String qName) throws SAXException {
@@ -1360,9 +1336,7 @@ import static de.frame4j.graf.GrafVal.*;
             ((Menu)mCs[mcL-1]).add((Menu)mCs[mcL]);
          } 
          --mcL; // Fertig 
-      } // endElement(String
-
-   } // class MBarFactory  (27.04.2005, 03.03.2009) =========================
-
+      } // endElement(3*String)
+   } // class MBarFactory  (27.04.2005, 03.03.2009) ===
 } // class GrafHelper (16.07.2003, 03.03.2009)
    

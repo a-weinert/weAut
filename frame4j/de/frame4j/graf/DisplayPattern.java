@@ -44,20 +44,18 @@ import de.frame4j.util.MinDoc;
  *  <br />
  *  Copyright 2000 - 2003, 2019 &nbsp; Albrecht Weinert<br />
  */
- // so far    V00.00 (08.01.2001 15:58) :  new
- //           V00.01 (10.01.2001 13:20) :  small i smaller, 128 characters
- //           V00.03 (09.05.2001 15:55) :  new Characters, main()
- //           V02.00 (24.04.2003 16:54) :  CVS Eclipse
- //           V.o72+ (06.02.2009 10:00) :  ported to Frame4J
- //           V.o75+ (13.02.2009 14:44) :  Euro and root at 0x20ac 0x221a
- //           V.12 07.03.2019 : doc references to removed Matrix... removed
+ // so far  V00.00 (08.01.2001) : new
+ //         V00.01 (10.01.2001) : small i smaller, 128 characters
+ //         V00.03 (09.05.2001) : new Characters, main()
+ //         V02.00 (24.04.2003) : CVS Eclipse
+ //         V.o75+ (13.02.2009) : Euro and root at 0x20ac 0x221a
+ //         V.  12 (07.03.2019) : doc references to removed Matrix ... removed
 
 @MinDoc(
    copyright = "Copyright 2000 - 2009, 2019  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "supports application with patterns for a dot matrix display"
 ) public class DisplayPattern {
@@ -436,7 +434,6 @@ private static final byte[] X___X_X_X = {X,µ,X,X,X}; // 4 Dots oh. 2vl
        X_X______    };
 
 
-
    static final byte[][] COLON = 
          new byte[][]{
        _________ ,
@@ -499,7 +496,6 @@ private static final byte[] X___X_X_X = {X,µ,X,X,X}; // 4 Dots oh. 2vl
        ____X____ ,
        _________ ,
        ____X____    };
-
 
 
    static final byte[][] AT = 
@@ -1831,7 +1827,6 @@ static final byte[][]  Ö =
     X_X_X_X_X        };
 
 
-
 /** Pattern table [00..FF]. <br />*/
    static final byte[][][] MUST_TAB = {
 
@@ -1886,7 +1881,6 @@ static final byte[][]  Ö =
    static final int MUST_TAB_LEN = MUST_TAB.length;
 
 
-
 /** Pattern table [0390..03CF] . UNICODE Greek. <br /> */
    static final byte[][][] GREEK_TAB = {
 
@@ -1908,7 +1902,6 @@ static final byte[][]  Ö =
    static final int GREEK_TAB_LEN = GREEK_TAB.length;
    static final int GREEK_TAB_BEG = 0x0390;
    static final int GREEK_TAB_END = GREEK_TAB_BEG + GREEK_TAB_LEN;
-
 
 
 /** Get the patter by character (code). <br />
@@ -1945,7 +1938,7 @@ static final byte[][]  Ö =
  *  @param c  the character (Unicode number)
  *  @return the pattern or {@link #UNDEF}
  */
-   public static byte[][] get(char c) {
+   public static byte[][] get(char c){
       if (c < MUST_TAB_LEN) 
          return MUST_TAB[c]; 
       if (c >=  GREEK_TAB_BEG && c < GREEK_TAB_END) 
@@ -1971,7 +1964,7 @@ static final byte[][]  Ö =
  *  have the same parameter range for c.<br />
  *  <br />
  */
-   public static byte[][] get(final char c, byte onValue) {
+   public static byte[][] get(final char c, byte onValue){
       if (onValue < 2) onValue = 1;
       byte[][] ret = new byte[8][5];
       byte[][] must = get(c);
@@ -1997,7 +1990,7 @@ static final byte[][]  Ö =
  *  The output is just on normal output (System.out) and may only by &gt; 
  *  written to a File.<br />
  */
-  static public void main(String[] a) {
+  static public void main(String[] a){
      int mc = 0;
      mu = 8;
      StringBuilder hdl = new StringBuilder(2); // to suppress warning 
@@ -2038,7 +2031,7 @@ static final byte[][]  Ö =
   
   // enumerator over   normal tab 8...  ;  Euro ;   Greek tab ...
   static char mu;
-  private static void nextMu() {
+  private static void nextMu(){
      // fix or switch points
      if (mu == 0) return;
      if (mu == 0x20ac) {

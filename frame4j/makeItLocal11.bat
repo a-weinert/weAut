@@ -1,5 +1,5 @@
 @echo
-@echo makeItLocal.bat  $Revision: 6 $,  $Date: 2018-11-21 19:37:39 +0100 (Mi, 21 Nov 2018) $
+@echo makeItLocal.bat  $Revision: 47 $,  $Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $
 @echo.
 
 @set whereItwasCalledFrom=%CD%
@@ -24,7 +24,7 @@ cd /D  %frame4j.loc.fac%
 @echo.
 
 @echo make docu, jars and zips ... ready for deployment
-@call readyDeploy11.bat byUserEntry
+@call readyDeploy11.bat %1
 
 xCopy /Y erg.zip %whereItwasCalledFrom%\ergAll4w64.zip*
 @echo.

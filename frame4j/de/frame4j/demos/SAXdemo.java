@@ -62,23 +62,20 @@ import de.frame4j.xml.XMLdoc;
  *  @see XMLconf
  *  @see SAXHandler
  */
- // so far:   V02.23 (11.09.2004 12:23) :  new
- //           V02.25 (26.04.2005 10:29) :  SAXHandler use anonym. (l-38%)
- //           V.o56+ (03.02.2009 11:16) :  ported to Frame4J (and Kenai SVN)
- //           V.o01+ (03.02.2010 12:08) :  moved to Assembla due to Oracle-Sun
+ // so far: V02.23 (11.09.2004) : new
+ //         V02.25 (26.04.2005) : SAXHandler use anonym. (l-38%)
+ //         V.o56+ (03.02.2009) : ported to Kenai (SVN)
+ //         V.o01+ (03.02.2010) : to Assembla due to Sun-Oracle's Kenai kill
 
 @MinDoc(
    copyright = "Copyright 2004, 2005, 2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "start as Java application (-? for help)",  
    purpose = "a demo and introductory application for SAX XML parsers"
 ) public class SAXdemo extends App {
-
-
-//-------------------------------------------------------------------------
 
 /** Conditions for help output. <br />
  *  <br />
@@ -119,7 +116,7 @@ import de.frame4j.xml.XMLdoc;
  */   
    public boolean  stopOnError; 
 
-/** The XML file (or URL); the input. */   
+/** The XML file (or URL); the input. <br /> */   
    public String xmlFile;
 
 //--------------------------------------------------------------------------
@@ -137,8 +134,7 @@ import de.frame4j.xml.XMLdoc;
  *  {@link XMLReader} by {@link #xmlConf}'s method 
  *  {@link XMLconf#makeXMLReader(SAXHandler)}.<br />
  *  An object of a very simple anonymous inner class extending 
- *  {@link SAXHandler} serves as {@link #handler}.<br />
- *  <br />
+ *  {@link SAXHandler} serves as {@link #handler}.
  */   
    protected XMLReader xmlReader;
    
@@ -150,7 +146,7 @@ import de.frame4j.xml.XMLdoc;
    protected Input inp;
    
 /** The error and content handler. <br />
- *  <br />
+ *
  *  @see #xmlReader
  */   
    protected SAXHandler handler; 

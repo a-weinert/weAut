@@ -149,7 +149,6 @@ import de.frame4j.text.CleverSSS;
  //           V.10   (19.11.2008) :  cvsNT -> SVN; SVN version saltoes
  //           V.11   (25.11.2008) :  keepFileDate
  //           V.o23+ (25.11.2008) :  keepBraces
- //           V.o68+ (04.02.2009) :  ported to Frame4J
  //           V.o69+ (11.02.2009) :  -useReplDate
  //           V.o29+ (15.05.2012) :  null pointer bug (1  w/o propfile)
  //           V.135+ (25.06.2015) :  -test now working (no file modif.)
@@ -159,16 +158,14 @@ import de.frame4j.text.CleverSSS;
 @MinDoc(
    copyright = "Copyright 2000 - 2009, 2015, 2017  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 41 $",
-   lastModified   = "$Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "find and replace multiple texts in multiple files"
 ) public class FuR extends App {
 
 /** No objects. */
    private FuR(){ }
-
 
 /** FuR requests only partial start parameter parsing by Prop. */
    @Override public boolean parsePartial(){ return true; }
@@ -190,7 +187,6 @@ import de.frame4j.text.CleverSSS;
       }
    } // main(String[])
 
-
 //-----  Properties, automatic set by Prop.parse() ----------------------
 
 /** Recursively visit sub-directories. <br />
@@ -201,7 +197,6 @@ import de.frame4j.text.CleverSSS;
  *  default: false
  */ 
    public boolean recursion;
-
 
 /** Search text (begin). <br /> 
  *  <br />
@@ -244,7 +239,6 @@ import de.frame4j.text.CleverSSS;
  *  default: true 
  */
    public boolean  useNewModif = true;
-
 
 /** Keep the file date even after replacements. <br /> 
  *  <br />
@@ -379,8 +373,7 @@ import de.frame4j.text.CleverSSS;
  */
    public String filModEnc;
    Charset filModCs; 
-   
-
+ 
 //----------------------------------------------------------------
 
    int dNr  = 0; // total number of visited files
@@ -694,5 +687,4 @@ import de.frame4j.text.CleverSSS;
        }
       return 0; 
    } // doIt()        
-
 } // FuR (03.06.2003, 19.05.2004, 15.04.2006, 18.02.2009, 25.06.2015)

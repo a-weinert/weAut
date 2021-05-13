@@ -1,5 +1,5 @@
 /**
-<b>Tests and demos for Java process control on small systems</b>.<br />
+<b>Demos and for Java process control</b> on small systems. <br />
 <br />
 <h3><a name="be">Description</a></h3>
 So far the test and demo programs in this  package {@link de.weAut.demos}
@@ -9,6 +9,6 @@ remotely.<br />
 Copyright <a href="#co">&copy;</a>  2019 2021 &nbsp; Albrecht Weinert <br />
 <br />
  @author   Albrecht Weinert
- @version  Revision $Revision: 41 $ ($Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $) 
+ @version  Revision $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $) 
 */
 package  de.weAut.demos;

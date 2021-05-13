@@ -31,20 +31,15 @@ import java.math.MathContext;
  *  Copyright 1999 - 2003, 2005 &nbsp; Albrecht Weinert 
  *  
  *  @author   Albrecht Weinert
- *  @version  $Revision: 39 $ ($Date: 2021-04-17 21:00:41 +0200 (Sa, 17 Apr 2021) $)
+ *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
  *  @see de.frame4j.math
  *  @see de.frame4j.math.Complex
  */
- // so far    V00.00 (18.05.2000 16:51) : ex weinertBib, SFun-Teilm.
- //           V02.00 (24.04.2003 16:54) :  CVS Eclipse
- //           V02.20 (18.05.2005 10:17) :  /**
- //           V.166+ (01.11.2009 19:58) : ported to Frame4J, 
- //                                       replace DecFormat by MathContex
+ // so far    V00.00 (18.05.2000) : ex weinertBib, SFun-Teilm.
+ //           V02.00 (24.04.2003) :  CVS Eclipse
+ //           V.166+ (01.11.2009) : replace DecFormat by MathContex
 
 public interface CFun {
-
-/* * No objects. <br /> */
-//  CFun(){ }
 
 /** The smallest relative spacing for doubles. <br /> */
   public final static double EPSILON_SMALL = 1.1102230246252e-16;
@@ -66,7 +61,6 @@ public interface CFun {
 
 /** 3pi/4 . <br /> */
    public static double PI_3_4 = 3*PI/4;
-
 
 
 /** Mask for the sign bit in IEEE 754 double coding. <br />
@@ -161,7 +155,6 @@ public interface CFun {
  *  @see de.frame4j.math.CFun#hashCode hashCode()
  */ 
    public static final int NOSH = 14;
-
 
 //-------    Helper methods     -----------------------------------
 
@@ -290,7 +283,6 @@ public interface CFun {
       }
       return h;
    } // hashCode(double, double)
-
 
 /** Evaluate a Chebyshev series. <br />
  *  <br />
@@ -452,6 +444,5 @@ public interface CFun {
    
 /** A mathematical context with precision 4. <br /> */
    public final static MathContext FOUR_MC = new MathContext(4);
-
 
 } // interface CFun (24.09.2001, 13.12.2009, 24.03.2021)

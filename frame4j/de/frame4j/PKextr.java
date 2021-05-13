@@ -75,16 +75,14 @@ import java.util.Base64;
  // so far    V00.00 (27.12.2004) : new
  //           V02.02 (09.02.2005) : /**, AskDialog addition
  //           V02.10 (07.11.2008) : can also extract the private key
- //           V.o56+ (03.02.2009) : ported to Frame4J (and Kenai SVN)
- //           V.011+ (03.02.2010) : left Kenai due to Oracle-Sun
+ //           V.011+ (03.02.2010) : left Kenai due to Oracle-Sun kill
  //           V.133+ (24,06.2016) : ex sun.misc.BASE64Encoder & refine
  //           V.163+ (05.08.2016) :  refactored to Frame4J'89 slimline
 @MinDoc(
    copyright = "Copyright 2004 - 2009, 2016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "extract keys from keystores or certificates"
 ) public class PKextr extends App {
@@ -117,7 +115,6 @@ import java.util.Base64;
  *  default: false
  */
    public boolean exportPrivate;
-
 
 /** Name of input file (certificate or keystore). <br />
  *  <br />

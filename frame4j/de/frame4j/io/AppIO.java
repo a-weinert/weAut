@@ -51,8 +51,8 @@ import de.frame4j.text.TextHelper;
  *       shell.</li></ul>
  * 
  *  To have this comfort (compared to the Spartan default features for Java
- *  applications) the system streams are decorated by Reader / Writers and
- *  two  {@link TeeWriter}s are utilised in the following way:<br /><br />
+ *  applications) the system streams are decorated by Reader / Writers.
+ *  Two  {@link TeeWriter}s are utilised in the following way:<br /><br />
  *  <a href="../doc-files/AppIO.png" target="_top"><img
  *  src="../doc-files/AppIO.png" style="border:0;" height="375" width="586"
  *  alt="AppIO.png (full size)" 
@@ -69,21 +69,20 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  <a href="package-summary.html#co">&copy;</a>
  *  Copyright 2000 - 2005 &nbsp; Albrecht Weinert<br />
- *  <br />
+ *
  *  @see App
  *  @see TeeWriter
  */
- // so far:   V00.00 (14.12.2001 11:04) : new moved out of App
- //           V00.02 (28.08.2002 15:50) : switchOut1 at setCodePage
- //           V02.21 (31.12.2004 15:41) : nationalising by AppLangMap
- //           V.107- (08.04.2009 18:45) : ported to Frame4J
- //           V.104  (11.04.2014 18:00) : some minor changes (String -> ChS)
+ // so far:   V00.00 (14.12.2001) : new moved out of App
+ //           V00.02 (28.08.2002) : switchOut1 at setCodePage
+ //           V02.21 (31.12.2004) : nationalising by AppLangMap
+ //           V. 104 (11.04.2014) : some minor changes (String -> ChS)
  //           V.135+ (06.01.2016) : FileHelper
 @MinDoc(
    copyright = "Copyright  2001, 2009, 2014  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 35 $",
-   lastModified   = "$Date: 2021-04-04 12:58:39 +0200 (So, 04 Apr 2021) $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "use instead of own normal I/O plumbing",  
    purpose = "the I/O base for java applications"
@@ -111,7 +110,6 @@ import de.frame4j.text.TextHelper;
  */
    public final BufferedReader in;
 
-
 /** The SwitchedReader underlying the BufferedReader in. <br />
  *  <br />
  *  It will be finally made on construction and be the backup for the (final) 
@@ -120,7 +118,6 @@ import de.frame4j.text.TextHelper;
  *  @see #setInCodePage setInCodePage(String)
  */
    protected final SwitchedReader swr;
-
 
 /** The InputStreamReader underlying the SwitchedReader swr. <br />
  *  <br />
@@ -145,7 +142,6 @@ import de.frame4j.text.TextHelper;
  *  @see #log
  */
    public final PrintWriter err;
-
 
 /** The TeeWriter for err. <br /> 
  *  <br />
@@ -197,7 +193,6 @@ import de.frame4j.text.TextHelper;
  */
    protected volatile OutputStreamWriter osw;
 
-
 /** The TeeWriter for out. <br /> 
  *  <br />
  *  This TeeWriter is finally connected to {@link #out}for getting 
@@ -220,16 +215,14 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  If needed use {@link #setLogOut2(OutputStream, String) setLogOut2()}
  *  to set the second output to whatever (usually a file).<br />
- *  <br />
+ *
  *  @see #in
  *  @see #out
  *  @see #err
  */
    public final PrintWriter log;
 
-/** The TeeWriter connected to the PrintWriter log . <br />
- *  <br />
- */
+/** The TeeWriter connected to the PrintWriter log . <br /> */
    public final TeeWriter logTW;
 
 /** The TeeWriter's log encoding for its second output stream. <br />
@@ -244,7 +237,7 @@ import de.frame4j.text.TextHelper;
 //------- log Logging ------------------------------------------------------
    
 /** The Logger handler. <br />
- *  <br >
+ *
  *  @see #getLogHandler()
  */   
    volatile LogWriterHandler logHndlr;
@@ -283,9 +276,7 @@ import de.frame4j.text.TextHelper;
       } // snyc
    } // closeLogHandler()
    
-/** Base logger for the applications. <br />
- *  <br />
- */
+/** Base logger for the applications. <br /> */
    volatile Logger appLogger;
 
 /** Base logger for the applications. <br />
@@ -324,8 +315,6 @@ import de.frame4j.text.TextHelper;
       } // sync
    } // getAppLogger()
 
-
-
 /** The name of a log file (if given / used). <br />
  *  <br />
  *  The file name the {@link #logFile} was created / opened with is
@@ -349,7 +338,6 @@ import de.frame4j.text.TextHelper;
 
 /** The log file (if given / used). <br /> */
    public File getLogFile(){ return logFile; }
-
 
 /** Setting a file for the log output. <br />
  *  <br />
@@ -399,14 +387,14 @@ import de.frame4j.text.TextHelper;
            log.println(AppLangMap.formMessageUL("logfilrp", null, outDat));
                /// (" * Log output set to " + logDat + " .");
         return true;
-     } // setLogDat(...
+     } // setLogDat(2*String, OutMode, boolean)
 
 /** The name of a out file (if given / used). <br />
  *  <br />
  *  The named file (if used) takes the outputs to {@link #out} instead of them
  *  going to System.out .<br />
  *  <br />
- *  default: &quot;System.out&quot;.<br />
+ *  default: &quot;System.out&quot;
  */ 
    protected volatile String outDat;
 
@@ -415,7 +403,7 @@ import de.frame4j.text.TextHelper;
  *  The named file (if used) takes the outputs to {@link #out} instead of them
  *  going to System.out .<br />
  *  <br />
- *  default: &quot;System.out&quot;.<br />
+ *  default: &quot;System.out&quot;
  */ 
    public final String getOutDat(){ return outDat; }
 
@@ -475,7 +463,7 @@ import de.frame4j.text.TextHelper;
            log.println(AppLangMap.formMessageUL("outfilrp", null, outDat));
                    //// " * Out output set to " + outDat + " .");
         return true;
-     } // setOutDat(...
+     } // setOutDat(2*String, OutMode, boolean)
 
 /** Set some properties by a PropMap object. <br />
  *  <br />
@@ -494,8 +482,6 @@ import de.frame4j.text.TextHelper;
   
    
 //---  Constructor   -------------------------------------------------------
-   
-//   private static volatile AppIO me; 
    
 /** Make with settings. <br />
  *  <br />
@@ -518,7 +504,7 @@ import de.frame4j.text.TextHelper;
  *         uses the (file) default encoding.
  */
   public static AppIO get(final int outBuffLen,
-                             final int logBuffLen, final Object consEncoding){
+                            final int logBuffLen, final Object consEncoding){
     return new AppIO(outBuffLen, logBuffLen, consEncoding); 
   } // get(2*int, Object)
 
@@ -590,10 +576,10 @@ import de.frame4j.text.TextHelper;
       log   = logTW.getPrintWriter(true);  // the log TeeWriter's PrintWriter
       outTW.setOut2((Writer) null);  ////   textPanelWriter);
       outTW.noExplFlush2 = true;
-   } // AppIO(....)
+   } // AppIO(2*int, Object)
 
-/** Make with default settings.
- *  
+/** Make with default settings. <br />
+ *  <br />
  *  If a (singleton) AppIO object exists it is returned. Otherwise it
  *  is made  with basic default settings.<br />
  *  For console I/O  {@link ComVar#CONSOL_ENCODING CONSOL_ENCODING} is used 
@@ -602,7 +588,6 @@ import de.frame4j.text.TextHelper;
    public static AppIO get(){ return get(0, 0, null); }
 
 //---  methods ------------------------------------------------------
-
 
 /** Set log's second writer as stream. <br />
  *  <br />
@@ -637,14 +622,13 @@ import de.frame4j.text.TextHelper;
       cp2 = null;
    } // setLogOut2(Writer)
 
-
 /** Set normal out's code page (character encoding). <br />
  *  <br />
  *  The TeeWriter's {@link #outTW} encoding for branch normal output will be
  *  changed.<br />
  *  If {@code codePage} is empty 
  *  {@link ComVar#CONSOL_ENCODING CONSOL_ENCODING} is used.<br />
- *  <br />
+ *
  *  @param  codePage encoding to set
  *  @return true on success
  */
@@ -699,7 +683,7 @@ import de.frame4j.text.TextHelper;
  *  The input's {@link #in} (normal input) encoding will be changed.<br />
  *  If {@code codePage} is empty 
  *  {@link ComVar#CONSOL_ENCODING CONSOL_ENCODING} is used.<br />
- *  <br />
+ *
  *  @param  codePage encoding to set
  *  @return true on success
  */
@@ -760,7 +744,6 @@ import de.frame4j.text.TextHelper;
 
 //---------------------------------------------------------------------------
 
-
 /** Output only a not empty String as line. <br />
  *  <br />
  *  The parameter s will be passed via {@link #out}.println(), if and only if
@@ -775,7 +758,6 @@ import de.frame4j.text.TextHelper;
    } // toOutln(CharSequence)
 
 //---------------------------------------------------------------------------
-
 
 /** Connect the TeeWriter's outputs for log and out by a PropMap. <br />
  *  <br />
@@ -797,7 +779,6 @@ import de.frame4j.text.TextHelper;
  *  @param outMode null acts like {@link OutMode#ASK}
  */
    public int connect(OutMode outMode, PropMap prop, boolean askGraf){ 
- 
       outDat = prop.getString("outDat", null);
       if (outDat == null || "System.out".equals(outDat) ) {
          outDat = null;  //  no explicit out file
@@ -849,6 +830,6 @@ import de.frame4j.text.TextHelper;
 
       if (outDat == null) outDat = "System.out";
       return 0; 
-   } // connect(OutMode,..
+   } // connect(OutMode,PropMap,boolean)
 
 } // class AppIO (24.04.2003, 31.12.2004, 22.05.2009, 06.01.2016)

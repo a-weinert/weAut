@@ -134,25 +134,21 @@ import de.frame4j.text.TextHelper;
  *  @see      de.frame4j.graf
  *  @see      AskDialog
  *  @author   Albrecht Weinert
- *  @version  $Revision: 33 $ ($Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $)
+ *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
  */
- // so far    V00.00 (09.09.2004 09:56) : new
- //           V02.12 (15.07.2005 09:48) : Text and Key delete mutually
- //           V02.21 (02.06.2008 10:33) : /**
- //           V.o68+ (05.02.2009 09:24) : ported to Frame4J
+ // so far    V00.00 (09.09.2004) : new
+ //           V02.12 (15.07.2005) : Text and Key delete mutually
  //           V.101+ (10.02.2014) : trial to avoid getting keyboard focus
  //           V.135+ (15.08.2015) : prepare for Java9 (no installed ext.)
  //           V.141+ (05.08.2016) : refactored to Frame4J'89 slimline
 @MinDoc(
    copyright = "Copyright 2004-2016, 2019  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "report or question on Window with timeout"
 ) public class AskAlert extends App {
-
 
 //-----  Properties, automatic set by Prop parameter parsing ------
 
@@ -163,7 +159,6 @@ import de.frame4j.text.TextHelper;
  */ 
    protected int waitMax = 120;
 
-
 /** Set maximal wait time in tenth (1/10) of seconds. <br />
  *  <br />
  *  Range: 50..900000 (5s .. ~1d)<br />
@@ -173,7 +168,6 @@ import de.frame4j.text.TextHelper;
    public void setWaitMax(int waitMax){
       this.waitMax =  waitMax >= 50 && waitMax <= 900000 ? waitMax : 120;
    } //  setWaitMax(int)
-
 
 /** The report / text above buttons. <br />
  *  <br />
@@ -186,7 +180,6 @@ import de.frame4j.text.TextHelper;
  *  @param upper message / report text (above the buttons)
  */
    public void setUpper(String upper){ this.upper = upper; }
-
 
 /** Font of upper text non proportional. <br />
  *  <br />
@@ -208,7 +201,6 @@ import de.frame4j.text.TextHelper;
  */
    public void setLower(final String lower){ this.lower = lower; }
 
-
 /** Left Yes-button, text. <br />
  *  <br />
  *  default: null<br />
@@ -229,9 +221,7 @@ import de.frame4j.text.TextHelper;
  *  @see de.frame4j.util.AppLangMap
  */
    public String yesKey = "yes";
-   
-  
-
+ 
 /** Setter for {@link #yes}. <br />
  *  <br />
  *  Sets {@link #yes} according to the parameter and leaves {@link #yesKey}
@@ -244,8 +234,7 @@ import de.frame4j.text.TextHelper;
       /// log.println("  /// TEST setYes(" + yes);
       this.yes = yes;
       this.yesKey = null;
-  } // setYes
-   
+  } // setYes(String)
 
 /** Setter for {@link #yesKey}. <br />
  *  <br />
@@ -259,7 +248,6 @@ import de.frame4j.text.TextHelper;
    public void setYesKey(final String yesKey){
       this.yesKey =  TextHelper.trimUq(yesKey, null);
    } // setYesKey(String)
-
    
 /** Middle Cancel-button, text. <br />
  *  <br />
@@ -280,10 +268,8 @@ import de.frame4j.text.TextHelper;
  *  Same proceeding as with {@link #yes} and {@link #yesKey}.<br />
  *  @param cancel  text (label) for cancel button
  */
-   public void setCancel(final String cancel){
-      this.cancel = cancel;
-   } // setCancel(String)
-
+   public void setCancel(final String cancel){ this.cancel = cancel; }
+   
 /** Setter for Cancel key. <br />
  *  <br />
  *  Same proceeding as with {@link #yes} and {@link #yesKey}.<br />
@@ -298,9 +284,7 @@ import de.frame4j.text.TextHelper;
  *  Same proceeding as with {@link #yes} and {@link #yesKey}.<br />
  *  @param no  text (label) for no button
  */
-   public void setNo(final String no){ 
-      this.no = no;
-   } // setNo(String)
+   public void setNo(final String no){ this.no = no; }
 
 /** Setter for No key. <br />
  *  <br />
@@ -310,7 +294,6 @@ import de.frame4j.text.TextHelper;
    public void setNoKey(final String noKey){
       this.noKey = TextHelper.trimUq(noKey, null);
    } // setNoKey(String) 
-
 
 /** Right No button, text. <br />
  *  <br />
@@ -478,8 +461,8 @@ import de.frame4j.text.TextHelper;
          waitMax = 485; // 40 sec
          no = null;
          title = "\u00A0  Framework \u00A0 Frame4J  (R.12)         \u00A0";
-         lower = "\u00A0  AskAlert  V.$Revision: 33 $" 
-             +  " ($Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $);"
+         lower = "\u00A0  AskAlert  V.$Revision: 44 $" 
+             +  " ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $);"
          		               + " package: de.frame4j... \u00A0";
       } else {
          if (isDebug()) prop.list(log);
@@ -522,8 +505,7 @@ import de.frame4j.text.TextHelper;
  *  NO = 1;              1
  *  YES = 2;             0
  */         
-      
-      final int ret = ans == 0 ? 5 
+       final int ret = ans == 0 ? 5 
                       : ans == -1 ? timeOutCode    : 2 - ans; // s.o.
       if (verbose) {
          log.println( (lower != null ? lower + "  "

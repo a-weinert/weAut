@@ -29,14 +29,13 @@ import static de.frame4j.math.CFun.*;
  *  Copyright 1999 - 2003, 2005 &nbsp; Albrecht Weinert 
  *  
  *  @author   Albrecht Weinert
- *  @version  $Revision: 32 $ ($Date: 2021-03-22 18:35:41 +0100 (Mo, 22 Mrz 2021) $)
+ *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
  *  @see de.frame4j.math
  *  @see de.frame4j.math.Complex
  *  @see de.frame4j.math.CFun
  */
  // bisher    V00.00 (18.05.2000 11:02) : ex weinertBib, CFun out
  //           V02.00 (24.04.2003 16:54) : CVS Eclipse
- //           V.175+ (22.12.2009 15:12) : ported to Frame4J, 
 
 public abstract class SFun {
 
@@ -177,7 +176,6 @@ public abstract class SFun {
              Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
       return D_NaN;
    } // atanh(double)
-
 
 /** Factorial of an integer ( n! ). <br />
  *  <br />

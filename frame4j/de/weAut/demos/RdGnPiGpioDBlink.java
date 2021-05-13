@@ -29,7 +29,7 @@ import java.io.PrintWriter;
  *  Comment excerpt of the original/ported C source file: <br /><pre>
   A fifth program for Raspberry's GPIO pins
 
-  Rev. $Revision: 42 $  $Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $
+  Rev. $Revision: 46 $  $Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $
   Copyright  (c)  2019   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
 
@@ -55,9 +55,10 @@ import java.io.PrintWriter;
  *  class.<br />
  *  <br />
  *  Copyright  &copy;  2019   Albrecht Weinert <br />
- *  @see BlinkOnPi TestOnPi
+ *  @see BlinkOnPi
+ *  @see de.weAut.TestOnPi
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
+ *  @version  $Revision: 46 $ ($Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $)
  */
 // so far:   V.  21  (21.05.2019) : new, minimal functionality
 //           V. -26  (31.05.2019) : three LEDs, IO lock 
@@ -71,9 +72,9 @@ public class RdGnPiGpioDBlink implements PiUtil, RdGnPiGpioDBlinkMBean {
  *  (cross roads) head  {@link #ledGNpin} would be south yellow and
  *  {@link #ledYEpin} west green.  
  */
-  public int ledRDpin = 11; // piTraffic south rd
-  public int ledYEpin = 22; // piTraffic west  gn
-  public int ledGNpin = 13; // piTraffic south ye
+  public int ledRDpin = 11, // piTraffic south rd
+             ledYEpin = 22, // piTraffic west  gn
+             ledGNpin = 13; // piTraffic south ye
   
   ClientPigpiod  pI;
   int argPiType = 3; // start argument 
@@ -89,18 +90,18 @@ public class RdGnPiGpioDBlink implements PiUtil, RdGnPiGpioDBlinkMBean {
   boolean rLd; // status of the red LED(s)
   boolean gLd; // status of the green LED(s)
   
-  protected final String[] args;
+  final String[] args;
   
+  /* The normal output. <br /> */
   public PrintWriter out;
   
-//----  MBean Operations / Implementation    --------------------------------
-
+/** Make the application object. <br /> */  
   protected RdGnPiGpioDBlink(String[] args) {
- //   super(RdGnPiGpioDBlinkMBean.class);
     this.args = args;
     this.out = getOut();
   } // RdGnPiGpioDBlink()
-   
+
+//----  MBean Operations / Implementation    --------------------------------
   @Override public Integer getCycCount(){ return cycCount; }
   @Override public void setCycCount(Integer cycCount){ this.cycCount = cycCount; }
   @Override public void resetCycCount(){ cycCount = 0; }
@@ -110,7 +111,7 @@ public class RdGnPiGpioDBlink implements PiUtil, RdGnPiGpioDBlinkMBean {
   @Override public void stop(){ runOn = false; }
   @Override public Integer getPiType(){ return pI.thePi.type(); }
 
-/** The application start.<br />
+/** The application start. <br />
  *  <br />
  *  Will blink with three LEDs in an endless loop (in {@link #doIt()}). 
  *  Can be stopped by signal (cntlC), kill command and the like, as well as
@@ -126,23 +127,15 @@ public class RdGnPiGpioDBlink implements PiUtil, RdGnPiGpioDBlinkMBean {
  */
   public static void main(String[] args){
     RdGnPiGpioDBlink rdGnPiGpioDBlink;
-  
     try {
       // Initialise the application as RdGnPiGpioDBlinkMbean
       rdGnPiGpioDBlink = new RdGnPiGpioDBlink(args);
       rdGnPiGpioDBlink.regAsStdMBean();
-    /*xxx  
-      // Register the object in the MBeanServer
-      MBeanServer platformMBeanServer =
-                    ManagementFactory.getPlatformMBeanServer();
-      ObjectName objectName =
-                    new ObjectName("de.weAut.demos:name=RdGnPiGpioDBlink");
-      platformMBeanServer.registerMBean(rdGnPiGpioDBlink, objectName); xxx */
-  } catch (Exception e) {
+    } catch (Exception e) { // should not happen
       e.printStackTrace();
       return;
-  }
-  rdGnPiGpioDBlink.doIt(); // run on the RdGnPiGpioDBlink object
+    } // should not happen
+    rdGnPiGpioDBlink.doIt(); // run on the RdGnPiGpioDBlink object
   } // main(String[])
   
 /** The application's work.<br />

@@ -144,25 +144,21 @@ import de.frame4j.time.TimeHelper;
  *  @see      Prop
  *  @see      FileHelper
  */
- // so far    V00.00 (15:45 28.04.1998) :  new from DateiTest
- //           V00.09 (15:38 29.03.1999) :  changes in Datei.Criteria
- //           V00.12 (13.12.2000 14:57) :  since, til, multiple Directories
- //           V01.00 (04.07.2001 10:54) :  Type lists (parse); 
- //                                        dateCompare; quoteSpace
- //           V01.10 (06.12.2001 19:41) :  any # of dirs, contentCompare
- //           V01.20 (05.05.2002 12:47) :  de
- //           V.069+ (06.02.2009 10:00) :  ported to Frame4J
- //           V.160  (25.10.2009 11:20) :  SVN date bug repair mode
- //           V.105  (27.08.2014 11:20) :  ant time bug repaired
+ // so far    V00.00 (28.04.1998) :  new from DateiTest
+ //           V00.09 (29.03.1999) :  changes in Datei.Criteria
+ //           V00.12 (13.12.2000) :  since, til, multiple Directories
+ //           V01.00 (04.07.2001) :  Type lists, dateCompare; quoteSpace
+ //           V01.10 (06.12.2001) :  any # of dirs, contentCompare
+ //           V01.20 (05.05.2002) :  de
+ //           V.160  (25.10.2009) :  SVN date bug repair mode
+ //           V.105  (27.08.2014) :  ant time bug repaired
  //           V.133+ (06.01.2016) :  FileHelper
  //           V.163+ (05.08.2016) :  refactored to Frame4J'89 slimline
-
 @MinDoc(
    copyright = "Copyright 1997 - 2003, 2014, 2016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "search files, sort and list; search doublets"
 ) public class FS extends App {
@@ -187,7 +183,6 @@ import de.frame4j.time.TimeHelper;
       }
    } // main(String[])
 
-//--------------------------------------------------------------------
    
    // Hint omitting this method would have no effect except for start-up
    // performance. App and PropMap would do the same job using 
@@ -370,7 +365,6 @@ import de.frame4j.time.TimeHelper;
   } // setAttribute(String, char, Object, Class<?>, 2*boolean)
 
 //--------------------------------------------------------------------   
-
    
 /** First directory to be listed. <br />
  *  <br />
@@ -410,7 +404,6 @@ import de.frame4j.time.TimeHelper;
  */ 
    public boolean recursion;
 
-
 /** Regard only files with doublets. <br />
  *  <br />
  *  If true, after collecting (and sorting) all files will be removed from
@@ -429,7 +422,6 @@ import de.frame4j.time.TimeHelper;
  *  default: false
  */ 
    public boolean equalsOnly;
-
 
 /** Use / list quotes for filenames with spaces. <br />
  *  <br />
@@ -475,7 +467,6 @@ import de.frame4j.time.TimeHelper;
  *  default: false
  */ 
    public boolean keepOne;
-   
 
 /** Omit file attributes from listing. <br />
  *  <br />
@@ -485,7 +476,6 @@ import de.frame4j.time.TimeHelper;
  *  default: false
  */ 
    public boolean pureName;
-
 
 /** Make filenames relative to this directory specification. <br />
  *  <br />
@@ -507,7 +497,7 @@ import de.frame4j.time.TimeHelper;
  *  No effect in case of doublets search etc.<br />
  *  <br />
  *  default: false<br />
- *  <br />
+ *
  *  @see #svnRepair
  */ 
    public boolean relateToDir;
@@ -535,7 +525,6 @@ import de.frame4j.time.TimeHelper;
  *  default: true.
  */ 
    public boolean doSort = true;
-
  
 /** Repair the SVN bug to forget file modification time on add. <br />
  *  <br />
@@ -544,7 +533,7 @@ import de.frame4j.time.TimeHelper;
  *  time.<br />
  *  <br />  
  *  default: false<br />
- *  <br />
+ *
  *  @see #equalsOnly  
  */
    public boolean svnRepair;
@@ -578,7 +567,6 @@ import de.frame4j.time.TimeHelper;
  */
    public String buildFileName = "build.xml";
  
-
 /** Directory of the output (build) file. <br />
  *  <br />
  *  default: null (means use the first directory scanned and related to)<br />
@@ -778,8 +766,8 @@ import de.frame4j.time.TimeHelper;
          xmPw.println(
             "<!-- Conditional touches to repair the SVN forget mTime bug\n"
           + "     Generated at " + TimeHelper.formatDIN(SynClock.sys.millis())
-        + "\n     by de.frame4j.FS  V.$Revision: 33 $  ("
-                  + "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $)\n"
+        + "\n     by de.frame4j.FS  V.$Revision: 44 $  ("
+                  + "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)\n"
           + "     Copyright (c) 2009  A. Weinert  (a-weinert.de, frame4j.de)\n" 
      + "-->\n  <target name=\"" + targetName + "\">");
          
@@ -847,9 +835,7 @@ import de.frame4j.time.TimeHelper;
          return 0;
       } //  simple cases w/o doublets search
 
-
    //--- to here only in case of doublets search (in Array  dA, length > 1)
-
       int eNo        = 0;
       int dGrStart   = -1;
       int doubGroups = 0;

@@ -40,15 +40,13 @@ import de.frame4j.util.MinDoc;
  *  @see AppIO
  *  @see Input
  */
- // so far    V.104+ (22.05.2009 08:46) :  new (to improve / robust AppIO)
- //           V.o75+ (13.02.2009 17:38) :  ported to Frame4J
+ // so far    V.104+ (22.05.2009) :  new (to improve / make robust AppIO)
 
 @MinDoc(
    copyright = "Copyright  2001 - 2002, 2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "use for unbloody replacement of a Reader chain's element",  
    purpose = "a no-op Reader filter / decorator that can switch its input"
 ) public final class SwitchedReader extends Reader {
@@ -68,7 +66,7 @@ import de.frame4j.util.MinDoc;
       final Reader oldIn = this.in;
       this.in = in;
       if (closeOld) oldIn.close();
-   } // switchInput(Reader)
+   } // switchInput(Reader, boolean)
 
 
 /** Make a new SwitchedReader. <br />
@@ -99,7 +97,7 @@ import de.frame4j.util.MinDoc;
       return in.skip(n);
    } // skip(long)
 
-/** Tries to tell whether the associated input reader is ready. <br /> */
+/** Try to tell if the associated input reader is ready. <br /> */
    @Override public boolean ready() throws IOException {
       return in.ready();
    } // ready()

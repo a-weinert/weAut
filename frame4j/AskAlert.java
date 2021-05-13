@@ -29,9 +29,9 @@
  *  <br />
  *  <a href=./de/frame4j/package-summary.html#co>&copy;</a> 
  *  Copyright 2009 &nbsp; Albrecht Weinert<br />
- *  <br />
+ *
  *  @author   Albrecht Weinert
- *  @version  $Revision: 32 $ ($Date: 2021-03-22 18:35:41 +0100 (Mo, 22 Mrz 2021) $)
+ *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
  *  @see de.frame4j.Del
  *  @see de.frame4j.Update
  *  @see de.frame4j.AskAlert
@@ -41,8 +41,7 @@
  *  @see de.frame4j.graf.DisplayPattern
  *  @see de.frame4j
  */
- // so far    V02.01 (20.05.2003 10:00) :  new
- //           V.o10+ (03.02.2009 15:00  :  ported to Frame4J
+ // so far    V02.01 (20.05.2003) :  new
 
 public final class AskAlert {
    
@@ -58,5 +57,4 @@ public final class AskAlert {
    public static void main(String[] args){
       de.frame4j.AskAlert.main(args);
    } // main(String[])
-
 } // Starter class

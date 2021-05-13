@@ -22,9 +22,10 @@ package de.weAut;
  *  <br />
  *  <a href=package-summary.html#co>&copy;</a> 
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
- *  @see ThePi ClientPigpiod
+ *  @see ThePi
+ *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 40 $ ($Date: 2021-04-19 21:47:30 +0200 (Mo, 19 Apr 2021) $)
+ *  @version  $Revision: 46 $ ($Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 36  (06.04.2021) :  minor typo
@@ -186,7 +187,7 @@ public interface PiGpioDdefs {
    public static final int PI_CMD_EVT   = 116; // 
 
    public static final int PI_CMD_PROCU = 117; //
-
+   public static final int PI_CMD_NONE = 118; // 117 is the last command
 
 //-------------------------------------   p1 semantics  ---------------------   
 

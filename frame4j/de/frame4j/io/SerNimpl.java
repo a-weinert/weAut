@@ -47,10 +47,10 @@ import de.frame4j.text.TextHelper;
  *  Copyright 2007 &nbsp; Albrecht Weinert<br /> 
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 32 $ ($Date: 2021-03-22 18:35:41 +0100 (Mo, 22 Mrz 2021) $)
+ *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
  */
- // So far   V00.00 (19.12.2006 14:31) :  new
- //          V.022+ (06.08.2009 15:32) : ported to Frame4J
+ // So far   V00.00 (19.12.2006) :  new
+ //          V.  42 (05.05.2021) : parityAsString() etc. default implemented
 
 public class SerNimpl extends InputStream implements SerialDefs  {
    
@@ -228,7 +228,6 @@ public class SerNimpl extends InputStream implements SerialDefs  {
       }
       return ret;
    } // setSerialTimeouts(5*int)
-   
 
    @Override public void setRcvTimeout(int rcvTimeout){
       if (rcvTimeout < 0 
@@ -241,27 +240,26 @@ public class SerNimpl extends InputStream implements SerialDefs  {
       return serParams == null ? -1 : serParams[0];
    } // getBaud()
 
-
    @Override public int getDataBits(){
       return serParams == null ? -1 : serParams[1];
    } // getDataBits() 
 
-   @Override public int getStopBits() {
+   @Override public int getStopBits(){
       if (serParams == null) return -1;
       int ret = serParams[2];
       if (ret == 0) return STOPBITS_1;
       if (ret == 1) return STOPBITS_1_5;
       return ret;
-   }
+   } // getStopBits()
 
    @Override public int getParity(){
       return serParams == null ? -1 : serParams[3];
-   }
+   } // getParity()
 
    @Override public String parityAsString(){
       if (serParams == null) return "--";
       return SerialDefs.Helper.parityAsString(serParams[3]);
-   }
+   } // parityAsString()
 
    @Override public boolean setSerialPortParams(int baudrate,
                         final int dataBits, int stopBits, final int parity){
@@ -304,7 +302,6 @@ public class SerNimpl extends InputStream implements SerialDefs  {
       return parity == -1 ||  parity == serParams[3];
    }  // setSerialPortParams(4*int)
 
-
    @Override public int getFlowControlMode(){
       return serParams == null ? 0 : serParams[4];
    }
@@ -324,7 +321,6 @@ public class SerNimpl extends InputStream implements SerialDefs  {
       }
       // TODO nur set 0 ist implementiert 
    }  // setFlowControlMode(int)
-
    
    @Override public boolean isRTS(){ return rts;  }
 
@@ -335,7 +331,7 @@ public class SerNimpl extends InputStream implements SerialDefs  {
       if (!isOpen) return;
       this.rts = rts;
       WinDoesIt.escapeComm(port, rts ? WinDoesIt.SETRTS : WinDoesIt.CLRRTS);
-   }
+   } // setRTS(boolean)
 
 /** Storage: last set DTR. <br /> */   
    boolean dtr;
@@ -346,7 +342,7 @@ public class SerNimpl extends InputStream implements SerialDefs  {
       if (!isOpen) return;
       this.dtr = dtr;
       WinDoesIt.escapeComm(port, dtr ? WinDoesIt.SETDTR : WinDoesIt.CLRDTR);
-   } // setDTR(boolean 
+   } // setDTR(boolean)
 
    @Override public void setDtrRts(final boolean dtr, final boolean rts){
       if (isOpen) {
@@ -354,7 +350,7 @@ public class SerNimpl extends InputStream implements SerialDefs  {
          this.rts = rts;
          WinDoesIt.setDtrRts(port, dtr, rts);
       }
-   } // setDtrRts(boolean 
+   } // setDtrRts(2*boolean) 
 
    
    @Override public boolean isDSR(){
@@ -365,27 +361,27 @@ public class SerNimpl extends InputStream implements SerialDefs  {
    @Override public boolean isCTS(){
       int statusCode = WinDoesIt.getSerialModemStatus(port);
       return statusCode != -1 && (statusCode & WinDoesIt.MS_CTS_ON) != 0;
-   }
+   } // isCTS()
 
    @Override public boolean isCD(){
       int statusCode = WinDoesIt.getSerialModemStatus(port);
       return statusCode != -1 && (statusCode & WinDoesIt.MS_RLSD_ON) != 0;
-   }
+   } // isCD()
 
    @Override public boolean isRI(){
       int statusCode = WinDoesIt.getSerialModemStatus(port);
       return statusCode != -1 && (statusCode & WinDoesIt.MS_RING_ON) != 0;
-   }
+   } // isRI()
 
    boolean isOpen;
    
-   @Override public boolean isReady(){ return isOpen;  }
+   @Override public boolean isReady(){ return isOpen; }
 
    @Override public void close(){
       if (isOpen) WinDoesIt.closePort(port);
       isOpen = false;
       out = null;
-   } // close
+   } // close()
 
    @Override public int read(){ return WinDoesIt.getSerial(port); }
 
@@ -395,7 +391,7 @@ public class SerNimpl extends InputStream implements SerialDefs  {
       int lB = b.length;
       if (off + len > lB) return -1;
       return WinDoesIt.readSerial(port, b, off, len);
-   } // read(byte[]
+   } // read(byte[], 2*int)
 
    @Override public int write(byte[] b, int off, int len) {
       if (b == null || len <= 0) return 0;
@@ -403,19 +399,18 @@ public class SerNimpl extends InputStream implements SerialDefs  {
       int lB = b.length;
       if (off + len > lB) return -1;
       return WinDoesIt.writeSerial(port, b, off, len);
-   } // write(byte[], int, int
+   } // write(byte[], int, int)
 
    @Override public int write(byte[] b){
       if (b == null) return 0;
       final int len = b.length;
       return write(b, 0, len);
-   } // write(byte[]
+   } // write(byte[])
 
    @Override public boolean write(int b){
       if (isOpen) return WinDoesIt.putSerial(port, (byte)b) == 1;
       return false;
-   } // write(int
-   
+   } // write(int)
 
 /** Empty the (system's) output buffer. <br />
  *  <br />
@@ -436,8 +431,7 @@ public class SerNimpl extends InputStream implements SerialDefs  {
       return false;
    } // flush() 
 
-
-/** Löschen von noch anstehenden Operationen. <br />
+/** Get rid of pending operations. <br />
  *  <br />
  *  It is quite usual to call this method with the OR of all PURGE constants
  *  after opening.<br />
@@ -508,7 +502,6 @@ public class SerNimpl extends InputStream implements SerialDefs  {
             @Override public void flush() {
                SerNimpl.this.flush();
             }
-            
          };
       }
       return out;
@@ -533,7 +526,6 @@ public class SerNimpl extends InputStream implements SerialDefs  {
    @Override public String toString(){
       return SerialDefs.Helper.stateAsString(null, this).toString();
    } // toString()
-
 
 /** Text representation.  <br />
  *  <br />

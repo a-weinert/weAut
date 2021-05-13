@@ -31,7 +31,7 @@
  *  Copyright 2010 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 40 $ ($Date: 2021-04-19 21:47:30 +0200 (Mo, 19 Apr 2021) $)
+ *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
  *  @see de.frame4j.Del
  *  @see de.frame4j.Update
  *  @see de.frame4j.MakeDigest
@@ -40,9 +40,7 @@
  *  @see de.frame4j.SVNkeys
  *  @see de.frame4j
  */
- // so far    V02.01 (20.05.2003 10:00) :  new
- //           V.o10+ (03.02.2009 15:00  :  ported to Frame4J
-
+ // so far    V02.01 (20.05.2003) :  new
 public final class MakeDigest {
 
    private MakeDigest(){} // no objects; no javaDoc

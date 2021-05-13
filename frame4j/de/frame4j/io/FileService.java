@@ -178,7 +178,6 @@ import static de.frame4j.util.ComVar.*;
  //           V02.29 (02.02.2006) : difOld <= 0L is xcopy mode
  //           V.10   (19.11.2008) : Version's jump cvsNT -> SVN
  //           V.26   (19.12.2008) : option -noReplace (difOld == -2L)
- //           V.100- (01.01.2009) : ported to Frame4J
  //           V.124+ (06.06.2009) : error introduced at 121 corrected  
  //           V.170+ (07.11.2009) : omitExtraDirs omitExtraFiles added
  //           V.134+ (02.11.2015) : method made static
@@ -187,9 +186,8 @@ import static de.frame4j.util.ComVar.*;
 @MinDoc(
    copyright = "Copyright  2000 - 2006, 2009, 2015  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 39 $",
-   lastModified   = "$Date: 2021-04-17 21:00:41 +0200 (Sa, 17 Apr 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "use when multiple file and directories have to be worked on",  
    purpose = "file and directory services"
 ) public class FileService implements Serializable {
@@ -197,7 +195,6 @@ import static de.frame4j.util.ComVar.*;
 /** Version number for serialising.  */
    static final long serialVersionUID = 260153007500201L;
 //                                      magic /Id./maMi
-
 
 /** Reversing the copy or update direction. <br />
  *  <br />
@@ -223,10 +220,9 @@ import static de.frame4j.util.ComVar.*;
  *  @see #isReverse()
  */
    public void setReverse(boolean reverse){ this.reverse = reverse; }
-   
 
 /** Use both copy or update directions at once. <br />
- *  <br />
+ *
  *  @see #isBidirect()
  */
    protected boolean biDirect;
@@ -250,7 +246,7 @@ import static de.frame4j.util.ComVar.*;
 
 
 /** Delete directories, even when not empty. <br />
- *  <br />
+ *
  *  @see #isDelTree()
  */
    protected boolean delTree;
@@ -262,14 +258,14 @@ import static de.frame4j.util.ComVar.*;
    public boolean isDelTree(){ return delTree; }
    
 /** Delete directories, even when not empty. <br />
- *  <br />
+ *
  *  @see #isDelTree()
  */
    public void setDelTree(boolean delTree){ this.delTree = delTree; }
 
 
 /** Recursively visit subdirectories. <br />
- *  <br />
+ *
  *  @see #isRecursion()
  */
    protected boolean recursion;
@@ -292,7 +288,7 @@ import static de.frame4j.util.ComVar.*;
    } // setRecursion(boolean)
 
 /** Delete empty files (length 0) or directories (0 files, subdirectories). <br />
- *  <br />
+ *
  *  @see #isDelEmpty()
  */
    protected boolean delEmpty;
@@ -328,7 +324,7 @@ import static de.frame4j.util.ComVar.*;
    public void setDelEmpty(boolean delEmpty){ this.delEmpty = delEmpty; }
 
 /** Delete empty files or directories in the source directory. <br />
- *  <br />
+ *
  *  @see #isDelEmptySource()
  */
    protected boolean delEmptySource;
@@ -339,8 +335,7 @@ import static de.frame4j.util.ComVar.*;
  *  service) may result in modifying source directories, which might be 
  *  semantically surprising.<br />
  *  <br />
- *  default: false;<br />
- *  <br />
+ *  default: false;
  */
    public boolean isDelEmptySource(){ return delEmptySource; }
 
@@ -353,7 +348,7 @@ import static de.frame4j.util.ComVar.*;
    } // setDelEmptySource(boolean)
 
 /** No creation of non existing files. <br />
- *  <br />
+ *
  *  @see #isNonew()
  */
    protected boolean nonew;
@@ -369,7 +364,7 @@ import static de.frame4j.util.ComVar.*;
  *  to the backup directory even if not yet there in the case of multistage
  *  update.<br />
  *  <br />
- *  default: false<br />
+ *  default: false <br />
  */
    public boolean isNonew(){ return nonew; }
 
@@ -386,7 +381,7 @@ import static de.frame4j.util.ComVar.*;
    } // setNonew(boolean)
 
 /** Make not yet existing (sub) directories. <br />
- *  <br />
+ *
  *  @see #isMakeDirs()
  */
    protected boolean makeDirs;
@@ -401,7 +396,7 @@ import static de.frame4j.util.ComVar.*;
  *  the matching directory in the backup will be made in the case of 
  *  multistage update.<br />
  *  <br />
- *  default: true<br />
+ *  default: true <br />
  */
    public boolean isMakeDirs(){ return makeDirs; }
 
@@ -422,7 +417,7 @@ import static de.frame4j.util.ComVar.*;
  *  will be used in lower case.<br />
  *  <br />
  *  default: false<br />
- *  <br />
+ *
  *  @see #doUpdate doUpdate()
  */
    public boolean isCreateLowerCase(){ return createLowerCase; }
@@ -458,13 +453,11 @@ import static de.frame4j.util.ComVar.*;
  *  mirror the class' name. And as name convention required the first 
  *  character being upper case, converting those file names to lower case 
  *  would be in all cases erroneous.<br />
- *  <br />
+ *
  *  @see FileHelper#isOfType(File, CharSequence)
  *  @see #setNoLCforTypes(String)
  */
-   public final String getNoLCforTypes(){
-      return noLCforTypes;
-   }
+   public final String getNoLCforTypes(){ return noLCforTypes; }
 
 /** Avoid lower casing names for specified types. <br />
  *  <br />
@@ -474,7 +467,6 @@ import static de.frame4j.util.ComVar.*;
    public void setNoLCforTypes(String noLCforTypes){
       this.noLCforTypes = TextHelper.trimUq(noLCforTypes, null);
    } // setNoLCforTypes(String)
- 
 
 //------------------------------------------------------------------------
 
@@ -485,7 +477,6 @@ import static de.frame4j.util.ComVar.*;
    protected int verbosity = AppHelper.NORMAL;
    boolean verbose;   
 
-
 /** Verbosity of reports. <br />
  *  <br />
  *  Meaning and handling see at 
@@ -495,7 +486,7 @@ import static de.frame4j.util.ComVar.*;
  *  directories.<br />
  *  <br />
  *  default: {@link AppHelper#NORMAL} (10)<br />
- *  <br />
+ *
  *  @see #setVerbosity(int)
  *  @see #setVerbosity(String)
  *  @see #getVerbosityString()
@@ -537,13 +528,12 @@ import static de.frame4j.util.ComVar.*;
       } // change
    } // setVerbosity(int) 
 
-
 /** Verbosity of reports. <br />
  *  <br />
  *  The parameter will be interpreted by 
  *  {@link AppHelper}.{@link AppHelper#getVerbosity(String)} 
  *  and the {@link #getVerbosity() verbosity} set appropriately.<br />
- *  <br />
+ *
  *  @see #getVerbosity()
  *  @see #setVerbosity(int)
  */
@@ -554,7 +544,7 @@ import static de.frame4j.util.ComVar.*;
 //-------------------------------------------------------------------------   
 
 /** Minimal age difference of files. <br />
- *  <br />
+ *
  *  @see #getDifOld()
  */
    protected long difOld;
@@ -574,7 +564,7 @@ import static de.frame4j.util.ComVar.*;
  *  behaviour. (See option -noReplace in de.frame4j.Update.)<br /> 
  *  <br />
  *  default: 0L
- *  <br />
+ *
  *  @see #doUpdate(File, File, File, PrintWriter) doUpdate()
  */
    public long getDifOld(){ return difOld;}
@@ -591,7 +581,7 @@ import static de.frame4j.util.ComVar.*;
    } // setDifOld(long)
 
 /** Summer / winter time switch precaution. <br />
- *  <br />
+ *
  *  @see #isZoneSafe()
  */
    protected boolean zoneSafe;
@@ -611,12 +601,10 @@ import static de.frame4j.util.ComVar.*;
    public boolean isZoneSafe(){ return zoneSafe; }
 
 /** Summer / winter time switch precaution. <br />
- *  <br />
+ *
  *  @see      #isZoneSafe()
  */
    public void setZoneSafe(boolean zoneSafe){ this.zoneSafe = zoneSafe; }
-
-
 
 /** File criteria. <br />
  *  <br />
@@ -638,7 +626,6 @@ import static de.frame4j.util.ComVar.*;
 
 //--------------------------------------------------------------------------
 
-
 /** Standard Constructor. <br />
  *  <br />
  *  The associated {@link #filCrit} and {@link #dirCrit} are made in 
@@ -646,7 +633,6 @@ import static de.frame4j.util.ComVar.*;
  *  <br />
  */   
    public FileService(){ this(null, null, false); }
-
 
 /** Constructor with criteria. <br />
  *  <br />
@@ -669,7 +655,6 @@ import static de.frame4j.util.ComVar.*;
       this.dirCrit.allowFile = false;
       this.recursion = recursion;
    } // FileService(2*FileCriteria, boolean) 
-
 
 /** Copy constructor. <br />
  *  <br />
@@ -871,11 +856,10 @@ import static de.frame4j.util.ComVar.*;
 
       filCrit.maxLen = prop.getLong("maxLen", filCrit.maxLen);
       filCrit.minLen = prop.getLong("minLen", filCrit.minLen);
-   } // set(Prop)
-
+   } // set(PropMap)
 
 /** State as String. <br />
- *  <br />
+ *
  *  @return the properties as multi-line text
  */
    @Override public String toString(){
@@ -933,7 +917,6 @@ import static de.frame4j.util.ComVar.*;
       return AppLangMap.formMessageUL("filuprhdl",
          "\n From  {0}\n To {1}{2    (just made)?   (was there)}", param);
    } // messHdl
-
 
 /** Working method for dating or backing up files and directories. <br />
  *  <br />
@@ -1276,7 +1259,7 @@ import static de.frame4j.util.ComVar.*;
            ret += doUpdate(quvz, zuvz, buvz, log);
        }
       return ret;
-   } // doUpdate()
+   } // doUpdate(3*File, PrintWriter)
 
 //------------------------------------------------------------------------
 
@@ -1300,10 +1283,9 @@ import static de.frame4j.util.ComVar.*;
  *  {@code deD} must denote an existing directory.<br />
  *  {@code soD} and {@code bcD} may be null, denote and existing or not 
  *  existing directory, but never an existing file.<br />
- *  <br />
+ *  
  *  @see  #doUpdate doUpdate()
  *  @since 31.05.2002
- *  <br />
  *  @param  soD source directory (acts quasi as list of files and directories 
  *              NOT to be deleted)
  *  @param  deD destination directory (it's here where the cleaning 

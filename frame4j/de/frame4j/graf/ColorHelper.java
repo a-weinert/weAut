@@ -40,19 +40,14 @@ import de.frame4j.text.TextHelper;
  */
  // so far    V00.00 (11.06.2000) :  from AskDialog
  //           V02.00 (24.04.2003) :  CVS Eclipse
- //           V02.03 (26.04.2003) :  JavaDoc bug detected hereby  
- //           (since 1.4.2beta (reported) and shamefully recurring ever since) 
  //           V02.04 (20.05.2003) :  platform indep.  
- //           V.o52+ (12.02.2009) :  ported to Frame4J
- //           V.  34 (24.03.2021) : class -> interface 
+ //           V.  34 (24.03.2021) :  class -> interface 
 
 @MinDoc(
    copyright = "Copyright 2000 - 2009, 2016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 39 $",
-   lastModified   = "$Date: 2021-04-17 21:00:41 +0200 (Sa, 17 Apr 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
-// usage   = "static methods and embedded classes",  
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    purpose = "graphical helpers"
 ) public interface ColorHelper extends ColorVal {
      
@@ -231,7 +226,6 @@ import de.frame4j.text.TextHelper;
  */
    public static final Filter colourChooseFilter  
                                      = Action.makeCodeFilter(Action.SCOLOR);
-   
 
 //------------------------------------------------------------------------
 
@@ -256,7 +250,7 @@ import de.frame4j.text.TextHelper;
  */ 
    public static BufferedImage surrondImage(final Image img, 
                            final Color bgColor,
-                           int upM, final int loM, int leM, final int riM) {
+                           int upM, final int loM, int leM, final int riM){
       if (img == null) return null;
       int w = img.getWidth(null);
       int h = img.getHeight(null);
@@ -300,7 +294,7 @@ import de.frame4j.text.TextHelper;
  *  @return the scaled picture as buffered image
  */ 
    public static BufferedImage scaleImage(Image img, Color bgColor,
-                                    int newWidth, int newHeight) {
+                                    int newWidth, int newHeight){
       if (img == null || newWidth <= 0 || newHeight <= 0) return null;
       int w = img.getWidth(null);
       int h = img.getHeight(null);

@@ -23,9 +23,11 @@ package de.weAut;
  *  <br /> 
  *  <a href=package-summary.html#co>&copy;</a> 
  *  Copyright 2021 &nbsp; Albrecht Weinert<br />
- *  @see Pi1 Pi3 ClientPigpiod
+ *  @see Pi1
+ *  @see Pi3
+ *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
+ *  @version  $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $)
  */
 // so far:   V. 35  (01.04.2021) :  new
 //           V. 36  (06.04.2021) :  name ambiguity in anonymous inner class
@@ -61,7 +63,6 @@ public interface Pi2 extends ThePi {
   public static final int PIN7 = PIN07;  // synonym
   public static final int PIN8 = PIN08;  // synonym
 
-
 /** 8 pin connector P5  GPIO assignment mapping. <br />
  *  <br />
  *  The int constants names are P5_Cn with n = 3..6. <br />
@@ -80,16 +81,16 @@ public interface Pi2 extends ThePi {
   public static final int PIN35  = 30;
   public static final int PIN36  = 31;
 
-
 /** Pin number to GPIO number lookup. <br />
  *
- *  @param pin 1..26. 31.. 38 is the legal IO connector pin number
+ *  @param pin 0, 1..26. 31.. 38 is the legal IO connector pin number
  *         where 31..38 map connector P5 pins 1..8
  *  @return 0..56 the GPIO number; {@link #PIN0V}, {@link #PIN3V},
  *     {@link #PIN5V}, {@link #PINix}: undefined, i.e. illegal pin number
+ *      or {@link #PINig} ignore for pin = 0
  */
  @Override public default int gpio4pin(final int pin){
-   if (pin < 1 || pin > 38) return PINix;
+   if (pin < 0 || pin > 38) return PINix;
    return ThePi.Impl.pi2PIN2gpio[pin];
  } // gpio4pin(int)
 

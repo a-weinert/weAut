@@ -122,25 +122,21 @@ import de.frame4j.time.TimeHelper;
  *  @see javax.mail.internet.InternetAddress
  *  @see javax.mail.internet.MimeMessage
  */
- // so far    V00.00 (11.03.2002 15:37) : new
- //           V00.01 (18.03.2002 13:26) : 1-i error correction
- //           V00.02 (30.03.2002 16:57) : RFC822 parsing is now default
- //           V00.03 (30.03.2002 16:57) : de, AppBase, Plug-In
- //           V01.31 (13.09.2002 12:35) : /**
- //           V01.32 (21.10.2002 13:45) : 822-parse also parameter text, timeF
- //           V01.33 (23.10.2002 09:02) : timeFormat, Stamp for reuse
- //           V02.00 (23.04.2003 17:00) :  CVS Eclipse
- //           V02.31 (18.09.2006 14:55) :  /**
- //           V.o56+ (03.02.2009 11:16) :  ported to Frame4J (and Kenai SVN)
- //           V.o01+ (03.02.2010 13:10) :  moved to Assembla due to Oracle-Sun
- //           V.o34+ (04.04.2010 22:20) :  Authentication and multiple recip.
+ // so far    V00.00 (11.03.2002) : new
+ //           V00.01 (18.03.2002) : 1-i error correction
+ //           V00.02 (30.03.2002) : RFC822 parsing is now default
+ //           V00.03 (30.03.2002) : de, AppBase, Plug-In
+ //           V01.32 (21.10.2002) : 822-parse also parameter text, timeF
+ //           V01.33 (23.10.2002) : timeFormat, Stamp for reuse
+ //           V02.00 (23.04.2003) :  CVS Eclipse
+ //           V.o01+ (03.02.2010) :  moved to Assembla due to Oracle-Sun
+ //           V.o34+ (04.04.2010) :  Authentication and multiple recip.
 
 @MinDoc(
    copyright = "Copyright 2002 - 2004 , 2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "a tiny E-mail sender (command line controlled)"
 ) public class SendMail extends App {
@@ -176,7 +172,6 @@ import de.frame4j.time.TimeHelper;
  *  default: see SendMail.properties.
  */
    public int contLogLength  =  133;
-
 
 /** The recipient(s) (may be a list). <br />
  *  <br />
@@ -241,7 +236,6 @@ import de.frame4j.time.TimeHelper;
  *  The (normal) text content of the mail (if any).<br />
  *  Will be set by start argument, .properties file or by a file
  *  ({@link #contFile}) read.<br />
- *  <br />
  */
    public String text;
 
@@ -314,7 +308,7 @@ import de.frame4j.time.TimeHelper;
 /** The proxy server's port. <br />
  *  <br />
  *  default: 8080<br />
- *  <br />
+ *
  *  @see #proxySet
  */
    public String  proxyPort;
@@ -327,7 +321,7 @@ import de.frame4j.time.TimeHelper;
  *  @see #main main(Strin[])
  *  @see App#go(String[])
  */
-   @Override public  int doIt(){
+   @Override public int doIt(){
       log.println();
       if (verbose) log.println(twoLineStartMsg().append('\n'));
 
@@ -492,7 +486,6 @@ import de.frame4j.time.TimeHelper;
              + e.getMessage());
          return 19;
       }
-     
       
 // -----  log message  --------------------------------------
 
@@ -582,4 +575,3 @@ import de.frame4j.time.TimeHelper;
    } // doIt()
 
 } // SendMail (18.07.2003, 15.11.2004, 01.03.2009, 11.02.2010)
-

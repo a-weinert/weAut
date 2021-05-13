@@ -117,7 +117,7 @@ import de.frame4j.time.TimeHelper;
  *  Copyright 1997 - 2006, 2009  &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 43 $ ($Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $
+ *  @version  $Revision: 45 $ ($Date: 2021-05-08 19:50:48 +0200 (Sa, 08 Mai 2021) $
  *  @see de.frame4j.io.AppIO
  *  @see Prop
  *  @see #go(String[], String, CharSequence)
@@ -150,8 +150,8 @@ import de.frame4j.time.TimeHelper;
 @MinDoc(
    copyright = "Copyright 1997 - 2016, 2021 A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 43 $",
-   lastModified   = "$Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $",
+   version   = "V.$Revision: 45 $",
+   lastModified   = "$Date: 2021-05-08 19:50:48 +0200 (Sa, 08 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "start as Java application",  
    purpose = "Base class for powerful, robust and comfortable applications"
@@ -230,12 +230,6 @@ import de.frame4j.time.TimeHelper;
  *  [27]: {@link ComVar#HOST_NAME} host's name if can be determined<br />
  *  [28]: {@link ComVar#ON_PI} true when running on a Pi<br />
  *  
- *  [27]: {@link ComVar#PROG_NAME} full program/class by command<br />
- *  [28] = [11]: {@link ComVar#PROG_SHORT} program short name like e.g. Exec<br />
- *  [29] : {@link ComVar#HOST_NAME} host's name if can be determined<br />
- *  [30] : {@link ComVar#OS} operating system's name<br />
- *  [31] : {@link ComVar#ON_PI} true when running on a Pi<br />
-
  *  [0..4]: reserved for user defined Object arrays to distinguish them by
  *         number from message components; returns null here
  *        overridden.<br />

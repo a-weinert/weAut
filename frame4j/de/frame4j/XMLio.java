@@ -106,40 +106,35 @@ import de.frame4j.xml.XMLdoc;
  *  <a href="./package-summary.html#co">&copy;</a> 
  *  Copyright 2001 - 2003, 2007 &nbsp; Albrecht Weinert 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 33 $ ($Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $)
+ *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
  *  @see App
  *  @see Input
  *  @see XMLconf
  *  @see SAXdemo
  */
- // so far   V00.00 (13.08.2001 16:15) : new
- //          V00.01 (27.08.2001 11:55) : clearHTMLdefAtts
- //          V00.20 (24.05.2002 16:17) : de, AppBase
- //          V01.30 (28.06.2002 12:02) : App/WinApp unify, Plug-In
- //          V01.31 (28.06.2002 12:02) : stripToRoot (experimental)
- //          V02.00 (23.04.2003 17:00) : CVS Eclipse
- //          V02.06 (01.08.2003 )      : DOM instead of JDOM   
- //          V02.07 (10.08.2003 18:00) : include Transforms
- //          V02.13 (14.03.2004 15:32) : structlist
- //          V02.27 (30.11.2005 17:22) : JDom deleted totally; XMLtrans to here
- //          V02.30 (22.10.2007 12:42) : return 1 on non fatal errors
- //          V02.32 (27.03.2008 14:52) : /**
- //          V.o56+ (03.02.2009 11:16) : ported to Frame4J (and Kenai SVN)
- //          V.o01+ (03.02.2010 13:12) : moved to Assembla due to Oracle-Sun
+ // so far   V00.00 (13.08.2001) : new
+ //          V00.01 (27.08.2001) : clearHTMLdefAtts
+ //          V00.20 (24.05.2002) : de, AppBase
+ //          V01.30 (28.06.2002) : App/WinApp unify, Plug-In
+ //          V01.31 (28.06.2002) : stripToRoot (experimental)
+ //          V02.00 (23.04.2003) : CVS Eclipse
+ //          V02.06 (01.08.2003) : DOM instead of JDOM   
+ //          V02.07 (10.08.2003) : include Transforms
+ //          V02.13 (14.03.2004) : structlist
+ //          V02.27 (30.11.2005) : JDom deleted totally; XMLtrans to here
+ //          V02.30 (22.10.2007) : return 1 on non fatal errors
+ //          V.o01+ (03.02.2010) : moved to Assembla due to Oracle-Sun
  //          V.009  (21.09.2016) : seen xsl bugs; revJump due to svn server bug
-
 @MinDoc(
    copyright = "Copyright 2001 - 2007, 2009, 2016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "input [check] [validate] [transform] [and output | list] XML"
 ) public class XMLio extends App {
    
    private XMLio(){} // no objects; no javaDoc 
-
      
 /** Start method of XMLio. <br />
  *  <br />
@@ -181,7 +176,6 @@ import de.frame4j.xml.XMLdoc;
  */
    public String  dest;
 
-
 /** An XSL transformation file's name or URL. <br />
  *  <br />
  *  This names a  eXtensible StyLe sheet responsible for transforming the 
@@ -206,7 +200,6 @@ import de.frame4j.xml.XMLdoc;
  */
    public boolean serialise = true;
 
-
 /** List the DOM object's structure. <br />
  *  <br />
  *  If &gt; 0 the DOM's structure will be listed on output down to the tree
@@ -217,7 +210,6 @@ import de.frame4j.xml.XMLdoc;
  *  default: 0
  */
    public int structList;
-
 
 /** Working method of XMLio. <br />
  *  <br />
@@ -325,16 +317,12 @@ import de.frame4j.xml.XMLdoc;
          xmlDoc.setDocument(dor.getNode());
          
          }
-         
       } // Style sheet - Transformation
       
-      
 // -----  Manipulation    ----------------------------------------------
-
       if (! transToText) xmlDoc.applyTransforms(); // parametrised transforms
 
 // -----  Output         ----------------------------------------------
-
       File fileOut = null;
       if (dest != null) {
          fileOut = FileHelper.getInstance(dest);

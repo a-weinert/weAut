@@ -79,17 +79,15 @@ import de.frame4j.util.Prop;
  *  @see      FileCriteria
  *  @see      FileService
  */
- // so far    V02.01 (20.05.2003 10:00) :  new, off spin of Era
- //           V.o10+ (03.02.2009 15:00  :  ported to Frame4J
+ // so far    V02.01 (20.05.2003) :  new, off spin of Era
  //           V.129+ (06.01.2016) :  FileHelper
  //           V.144+ (05.08.2016) :  refactored to Frame4J'89 slimline
  
 @MinDoc(
    copyright = "Copyright 2003 - 2009, 2016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "delete files and / or directories specified also by complex criteria"
 ) public class Del extends App implements FileVisitor{
@@ -143,7 +141,6 @@ import de.frame4j.util.Prop;
       }
    } // main(String[])
 
-
 //---------------------------------------------------------------------------
 
    FileService delTreeDS;  // simple FileService object for "speedy" clean
@@ -156,7 +153,6 @@ import de.frame4j.util.Prop;
    int   noOfDelDir;  // Number of deleted directories
    int   noOfRejects; // total number of failed deletes
    int   noOfErrors;  // Number of failed deletes due to exceptions
-   
 
    final FileVisitor ratzFaz = new FileVisitor(){
       @Override public int visit(File aktDatei){
@@ -195,7 +191,7 @@ import de.frame4j.util.Prop;
           }   
           return 0;         
        }
-   };      // ratzFaz
+   };  // ratzFaz
 
 /** The file visitor implementation.<br />
  *  <br />
@@ -248,7 +244,7 @@ import de.frame4j.util.Prop;
       } 
       ++noOfRejects;
       return 0;         
-   } // visit
+   } // visit(File)
    
 //-------------------------------------------------------------------------
 
@@ -303,6 +299,6 @@ import de.frame4j.util.Prop;
           return noOfErrors > 0 ? 2 : 1;
       } // if dirDel
       return 0;
-   } // doIt
+   } // doIt()
 
 } // class Del ( 11.06.2003, 03.02.2009 )

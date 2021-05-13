@@ -43,7 +43,7 @@ import de.frame4j.util.ComVar;
  *  Copyright <a href=package-summary.html#co>&copy;</a> 2019, 2021
  *           &nbsp; Albrecht Weinert<br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
+ *  @version  $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $)
  */
 // so far:   V. o19  (17.05.2019) : new
 //           V.  21  (19.05.2019) : ALT numbers, typo
@@ -77,7 +77,6 @@ public interface PiUtil extends PiVals {
     try { Thread.sleep(8);} catch (Exception ex) {} 
     System.exit(ret);
   } // systemExit(int)
-
   
 /** Register this as standard MBean. <br />
  * 
@@ -323,7 +322,8 @@ public interface PiUtil extends PiVals {
  *  If running on a Pi this method does the same as 
  *  {@link #openLock(String, boolean)}.<br />
  *  If not running on a Pi this method does nothing and returns 0 (OK). 
- *  @see #openLock(String, boolean) #ERR_NoLOCKFILE #ERR_NOT_LOCKED
+ *  @see #openLock(String, boolean)
+ *  @see #ERR_NoLOCKFILE #ERR_NOT_LOCKED
  */
    public default int openLockPi(final String lckPiGpioFil, boolean verbose){
        return ComVar.ON_PI ? Impl.openLock(lckPiGpioFil, verbose) : 0;
@@ -468,7 +468,34 @@ public interface PiUtil extends PiVals {
      return Impl.lastExept != null ? Impl.lastExept.getMessage() : "none"; 
    } // getLastExcMess() 
    
-   
+/** Start argument setter. <br /> */
+   public default void setArgPiType(final int argPiType){
+     Impl.argPiType = argPiType;
+   } // setArgPiType(int)
+/** Start argument getter. <br /> */   
+   public default int argPiType(){ return Impl.argPiType; }
+
+/** Start argument setter. <br /> */
+  public default void setArgPort(final int argPort){
+    Impl.argPort = argPort;
+  } // setArgPort(int)
+/** Start argument getter. <br /> */   
+  public default int argPort(){ return Impl.argPort; }
+
+/** Start argument setter. <br /> */
+  public default void setArgTimeout(final int argTimeout){
+    Impl.argTimeout = argTimeout;
+  } // setArgTimeout(int)
+/** Start argument getter. <br /> */   
+  public default int argTimeout(){ return Impl.argTimeout; }
+
+/** Start argument setter. <br /> */
+  public default void setArgHost(final String argHost){
+    Impl.argHost = argHost;
+  } // setArgHost(int)
+/** Start argument getter. <br /> */   
+  public default String argHost(){ return Impl.argHost; }
+     
 //======   inner class for initialisations and default methods   ==========
 
 /** <b>Internal implementation class</b>. <br />
@@ -485,6 +512,13 @@ public interface PiUtil extends PiVals {
 static final class Impl {
 
   private Impl(){} // no objects, no docu
+  
+  // program / JVM start arguments
+  public static int argPiType = 3; // start argument 
+  public static int argPort; // 0 -> default 8888
+  public static int argTimeout = 10000; // 10s default (not yet evaluated as arg)
+  public static String argHost = null; // null not yet set -> default
+
 
   private static PrintWriter myOut; 
    
@@ -593,7 +627,9 @@ static final class Impl {
 
 /** Initialise respectively start the watchdog. <br />
  *  <br />
- *  @see PiUtil#openWatchdog() PiUtil#closeWatchdog() PiUtil#triggerWatchdog() 
+ *  @see PiUtil#openWatchdog()
+ *  @see PiUtil#closeWatchdog()
+ *  @see PiUtil#triggerWatchdog() 
  *  @return  err 0: OK; else: error
  */
      static int openWatchdog(){
@@ -610,7 +646,9 @@ static final class Impl {
   
 /** Trigger the watchdog. <br />
  *  <br />
- *  @see PiUtil#openWatchdog() PiUtil#closeWatchdog() PiUtil#triggerWatchdog() 
+ *  @see PiUtil#openWatchdog()
+ *  @see PiUtil#closeWatchdog()
+ *  @see PiUtil#triggerWatchdog() 
  */
      static void triggerWatchdog(){ 
         if (wDog != null) try {
@@ -622,7 +660,9 @@ static final class Impl {
 
 /** Close the watchdog. <br />
  *  <br />
- *  @see PiUtil#openWatchdog() PiUtil#closeWatchdog() PiUtil#triggerWatchdog() 
+ *  @see PiUtil#openWatchdog()
+ *  @see PiUtil#closeWatchdog()
+ *  @see PiUtil#triggerWatchdog() 
  *  @return  err 0: OK; else: error
  */
      static int closeWatchdog(){
@@ -638,8 +678,11 @@ static final class Impl {
 
 /** Periodic delay. <br />
  *  <br />
- *  @see PiUtil#thrDelay(int) PiUtil#getCycCnt()
- *  @see PiUtil#getOvrCnt() #getCycCnt() #getOvrCnt()
+ *  @see PiUtil#thrDelay(int)
+ *  @see PiUtil#getCycCnt()
+ *  @see PiUtil#getOvrCnt()
+ *  @see #getCycCnt()
+ *  @see #getOvrCnt()
  *  @param millies the number of ms to delay relativ to the last call
  */  
    static void thrDelay(int millies){
@@ -665,7 +708,8 @@ static final class Impl {
  *  Implementation note on {@link PiUtil.LeTick): This is the count of
  *  {@link PiUtil.LeTick#add(long)} calls.
  *  @return the number of successful thread delays
- *  @see #thrDelay(int) #getOvrCnt()
+ *  @see #thrDelay(int)
+ *  @see #getOvrCnt()
  */
    static int getCycCnt(){
      LeTick leTick = lastThTick.get();
@@ -678,7 +722,8 @@ static final class Impl {
  *  Implementation note on {@link PiUtil.LeTick): This is the count of
  *  {@link PiUtil.LeTick#setTick(long)} calls.
  *  @return the number of successful thread delays
- *  @see #thrDelay(int) #getCycCnt()
+ *  @see #thrDelay(int)
+ *  @see #getCycCnt()
  */
    static int getOvrCnt(){
      LeTick leTick = lastThTick.get();

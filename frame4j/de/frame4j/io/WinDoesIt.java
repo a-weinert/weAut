@@ -74,15 +74,14 @@ import de.frame4j.util.AppLangMap;
  *  Copyright 2007 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 37 $ ($Date: 2021-04-10 10:00:03 +0200 (Sa, 10 Apr 2021) $)
+ *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
  */
- // so far   V00.00 (19.12.2006 14:31) :  new
- //          V.022+ (06.08.2008 16:49) : ported to Frame4J (and English)
- //          V.022+ (23.08.2013 16:15) : began porting (compatible) to 64 bit
+ // so far   V00.00 (19.12.2006) : new
+ //          V.022+ (23.08.2013) : began porting (compatible) to 64 bit
 
 public class WinDoesIt {
 
-   static {  System.loadLibrary("bsDoesItNative");  }
+   static { System.loadLibrary("bsDoesItNative"); }
 
 /** No Objects, no javaDoc. <br /> */
    private WinDoesIt(){}
@@ -117,7 +116,7 @@ public class WinDoesIt {
  *  <br />
  *  Hint: On Windows the interfaces names are usually  &quot;COM1&quot;,
  *  &quot;COM2&quot; and so on.<br />
- *  <br />
+ *
  *  @param comPort the port's name
  *  @return Handle to the port (it is a Windows file handle);
  *            {@link #INVALID_HANDLE_VALUE} on failure
@@ -128,7 +127,7 @@ public class WinDoesIt {
  *  <br />
  *  The device, the interface or even a file represented by the valid handle
  *  {@code port} will be closed for all further operations.<br />
- *  <br />
+ *
  *  @param port a handle
  *  @return true on success
  *  @see #getLastError()
@@ -154,7 +153,7 @@ public class WinDoesIt {
  *  forward the (non OK) information got here and translated by
  *  {@link #errorMessage(int)} to human readable text usually as an
  *  Exception.<br />
- *  <br />
+ *
  *  @return operating system specific error number
  *  @see #errorMessage(int)
  */
@@ -226,7 +225,6 @@ public class WinDoesIt {
  */
    public final static int ONE5STOPBITS = 1;
 
-
 /** Do the serial port's basic settings. <br />
  *  <br />
  *  This method sets (almost) all parameters relevant for the port's
@@ -266,7 +264,6 @@ public class WinDoesIt {
  *  @see #setSerialParams(long, int, int, int, int, int)
  */
    public static native int[] getSerialParams(long port);
-
 
 /*  DCB (Windows) Info:
    typedef struct _DCB {
@@ -391,7 +388,6 @@ public class WinDoesIt {
  */
    public static native int[] getSerialTimeouts(long port);
 
-
 /** Constant for purge method. <br />
  *  <br />
  *  Terminates all outstanding overlapped read operations and returns
@@ -443,7 +439,6 @@ public class WinDoesIt {
  */
   public final static int PURGE_RXOR = 0x000A;
 
-
 /** Constant for purge method. <br />
  *  <br />
  *  Clears the output buffer (if the device driver has one).<br />
@@ -454,7 +449,6 @@ public class WinDoesIt {
  *  @see #PURGE_RXABORT
  */
    public final static int PURGE_TXCLEAR = 0x0004;
-
 
 /** Constant for purge method. <br />
  *  <br />
@@ -469,7 +463,6 @@ public class WinDoesIt {
  *  @see #PURGE_TXCLEAR
  */
    public final static int PURGE_OR = 0x000F;
-
 
 /** Clear / abort all outstanding operations. <br />
  *  <br />
@@ -486,7 +479,6 @@ public class WinDoesIt {
  *  @see #PURGE_OR
  */
    public static native boolean purgeSerialPort(long port, int ops);
-
 
 /** Constant for modem state. <br />
  *  <br />
@@ -545,7 +537,6 @@ public class WinDoesIt {
  */
    public static native int getSerialModemStatus(long port);
 
-
 /** Write some bytes. <br />
  *  <br />
  *  The specified number of bytes (len of the array data) will be written to
@@ -566,7 +557,6 @@ public class WinDoesIt {
    public static native int writeSerial(long port, byte[] data,
                                                            int off, int len);
 
-
 /** Write just one byte. <br />
  *  <br />
  *  This method is to be preferred over
@@ -582,7 +572,6 @@ public class WinDoesIt {
  */
    public static native int putSerial(long port, byte data);
 
-
 /** Empty the (system's) output buffer. <br />
  *  <br />
  *  The output buffers of the device represented by the handle {@code port}
@@ -597,7 +586,6 @@ public class WinDoesIt {
  *  @return true on success
  */
    public static native boolean flushSerial(long port);
-
 
 /** Read some bytes from the handle (port). <br />
  *  <br />
@@ -620,7 +608,6 @@ public class WinDoesIt {
  */
    public static native int readSerial(long port, byte[] data,
                                                          int off, int len);
-
 
 /**Read just one byte. <br />
  *  <br />
@@ -659,7 +646,6 @@ public class WinDoesIt {
  */
    public static native boolean setDtrRts(long handle,
                                                    boolean dtr, boolean rts);
-
 
 /** USART control. <br />
  *  <br />
@@ -700,7 +686,6 @@ public class WinDoesIt {
  */
    public final static int CLRDTR =  6; //  Clears DTR
 
-
 /** Constant for escape method. <br />
  *  <br />
  *  Clears RTS (request-to-send).<br />
@@ -711,7 +696,6 @@ public class WinDoesIt {
  *  @see #CLRBREAK
  */
    public final static int CLRRTS =  4; //  Clears the RTS
-
 
 /** Constant for escape method. <br />
  *  <br />
@@ -736,7 +720,6 @@ public class WinDoesIt {
  */
    public final static int SETDTR = 5;  // Sets DTR (data-terminal-ready)
 
-
 /** Constant for escape method. <br />
  *  <br />
  *  Sets RTS (request-to-send).<br />
@@ -747,7 +730,6 @@ public class WinDoesIt {
  *  @see #CLRBREAK
  */
    public final static int SETRTS = 3; // Sets RTS (request-to-send)
-
 
 /** Constant for escape method. <br />
  *  <br />
@@ -773,9 +755,7 @@ public class WinDoesIt {
  */
    public final static int SETXON = 2;
 
-
 //-- implementation info on Windows for later use   -------------------------
-
 /*    WinBase.h:
    #define DTR_CONTROL_DISABLE 0
    #define DTR_CONTROL_ENABLE 1

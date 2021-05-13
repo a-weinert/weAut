@@ -27,7 +27,6 @@ import de.frame4j.util.MinDoc;
 import de.frame4j.util.Prop;
 import de.frame4j.text.TextHelper;
 
-
 /** <b>Delete files</b>. <br />
  *  <br />
  *  The application Era deletes files and directories.<br />
@@ -131,25 +130,21 @@ import de.frame4j.text.TextHelper;
  //           V01.00 (06.12.2001) :  Prop, graf, wildc.
  //           V01.10 (06.04.2002) :  relative to working directory
  //           V01.11 (06.04.2002) :  Prop's parse partial changed
- //           V02.02 (26.04.2003) :  JavaDoc(1.4.2beta) buggy  
  //           V02.03 (20.05.2003) :  Delete non empty directories  
  //           V02.21 (17.12.2004) :  internat. AppLangMap etc.
- //           Vo.69+ (06.02.2009  :  ported to Frame4J
  //           V.129+ (06.01.2016) :  FileHelper
  //           V.144+ (05.08.2016) :  refactored to Frame4J'89 slimline
 
 @MinDoc(
    copyright = "Copyright 1998 - 2004, 2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 41 $",
-   lastModified   = "$Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "delete files and / or directories specified also by complex criteria"
 ) public class Era extends App implements FileVisitor {
 
-
-/** Era wants only partial parameter parsing by Prop. */
+/** Era wants only partial parameter parsing by Prop. <br />*/
    @Override public final boolean parsePartial(){ return true; }
 
 //-----  Properties, automatic setting by Prop's parameter parsing   ----
@@ -169,7 +164,6 @@ import de.frame4j.text.TextHelper;
  *  default: true
  */
    public boolean askBefore = true;
-
 
 /** Specification of a (one) base directory for all deletes. <br />
  *  <br />
@@ -197,7 +191,6 @@ import de.frame4j.text.TextHelper;
  * Default: false <br />
  */
    public boolean  tDel;
-   
 
 /** The file visitor (only) for asking prior to delete. <br /> */
    FileVisitor.Ask askDelete;
@@ -210,7 +203,6 @@ import de.frame4j.text.TextHelper;
    int   noOfDelDir;  // Number of deleted directories
    int   noOfRejects; // total number of failed deletes
    int   noOfErrors;  // Number of failed deletes due to exceptions
-     
    int   noOfNoOpPar; // Number of non option parameters
 
 
@@ -273,7 +265,6 @@ import de.frame4j.text.TextHelper;
       return 0;
    } // visit
 
-
 /** Era's start method.  <br />
  *  <br />
  *  Exit codes: 0, in case of success and  &nbsp; &gt; 0 if not
@@ -286,7 +277,6 @@ import de.frame4j.text.TextHelper;
          AppBase.exit(e, 14);
       }
    } // main(String[])
-
 
 //---------------------------------------------------------------------------
 
@@ -352,10 +342,8 @@ import de.frame4j.text.TextHelper;
             return 0;
          } // visit
       } : null; // Directory visitor for deleting (if empty)
-      
 
       int anzPar = args.length;
-
       parLoop: for (int i = 0; i < anzPar; ++i) {
          String parV = args[i];
      //    out.println("TEST par[" + i + "]= " + parV);
@@ -472,9 +460,7 @@ import de.frame4j.text.TextHelper;
                  dirBes,   // empty dir
                  null,     // dir
                  dirBes);  // dir after
-
          } while (inResponse); // fileLoop
-
       } // parLoop 
       
       if (!isFinito) finito();

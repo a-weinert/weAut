@@ -21,16 +21,20 @@ import java.io.IOException;
  *  Copyright 2021 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  A derived interface of this type will contain constants and methods 
- *  describing a Pi type like {link de.weAut.Pi1 Pi1} or 
- *  {link de.weAut.Pi3 Pi3, P4 and Pi0}. Insofar this interface acts as
- *  an abstract class (allowing multiple inheritance for future
+ *  describing a Pi type like {link de.weAut.Pi1 Pi1},
+ *  {link de.weAut.Pi2 Pi2}, or 
+ *  {link de.weAut.Pi3 Pi3 for Pi3, P4 and Pi0}. Insofar this interface
+ *  acts as an abstract class (allowing multiple inheritance for future
  *  applications).<br />
  *  An object of this type (usually factored from an anonymous class) will
  *  additionally contain the data of a concrete Pi device, especially the
  *  pigpiod access data.
- *  @see Pi1 Pi2 Pi3 ClientPigpiod
+ *  @see Pi1
+ *  @see Pi2
+ *  @see Pi3
+ *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 40 $ ($Date: 2021-04-19 21:47:30 +0200 (Mo, 19 Apr 2021) $)
+ *  @version  $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $)
  */
 // so far:   V. 36  (13.04.2021) :  new
 //           V. 4x  (21.05.202x) :  ...
@@ -39,9 +43,9 @@ public interface ThePi extends PiVals {
   
 /** Allows a GPIO number output. <br />
  *  <br />
- *  This method return true for 0..31 and for {link #PINig}.<br />
+ *  This method return true for 0..31 and for {@link #PINig}.<br />
  *  Rationale: Output to gpio 32 to 56 may spoil the operating system (while
- *  input from there would be feasible). And operations on {link #PINig}
+ *  input from there would be feasible). And operations on {@link #PINig}
  *  (ignore pin/gpio) will not be performed (and here ignored without error).
  *  @param gpio a GPIO number 
  *  @return true when output is principally allowable
@@ -55,10 +59,10 @@ public interface ThePi extends PiVals {
  *  <br />
  *  A legal gpio number will be formated as
  *  {@code GPIO00 .. GPIO31} or {@code gpio32 ..gpio56}. <br />
- *  Pseudo GPIO numbers for non IO pins like {link #PIN3V} etc. will 
+ *  Pseudo GPIO numbers for non IO pins like {@link #PIN3V} etc. will 
  *  be formated as {@code gnd}, {@code 3V3}, {@code 5V0}, {@code ignore}.<br />
  *  <br />
- *  All other values (and {link #PINix}) will get {@code none}.   
+ *  All other values (and {@link #PINix}) will get {@code none}.   
  *   
  *  @param gpio a GPIO number 
  *  @return the text 
@@ -93,9 +97,10 @@ public interface ThePi extends PiVals {
 
 /** Pin number to GPIO number lookup. <br />
  *  <br />
- *  @param pin 1..40 (26 [+8]) is the legal IO connector pin number
+ *  @param pin 0, 1..40 (26 [+8]) is the legal IO connector pin number
  *  @return 0..31 (56) the GPIO number; {@link #PIN0V}, {@link #PIN3V},
  *     {@link #PIN5V}, {@link #PINix}: undefined, i.e. illegal pin number
+ *     or {@link #PINig} ignore for pin = 0
  */
  public int gpio4pin(final int pin);
 
@@ -118,16 +123,17 @@ public interface ThePi extends PiVals {
  *  @param signal a short (best 7 char) description of the pin's
  *         attached device like "red LED", "Ubat_12" etc. 
  *         It is used for the IOexception message, only
- *  @param pin 1..40 (26 [+8]) is the legal IO connector pin number
+ *  @param pin 0, 1..40 (26 [+8]) is the legal IO connector pin number
  *  @return 0..31 (56) the GPIO number; {@link #PIN0V}, {@link #PIN3V},
  *     {@link #PIN5V}, {@link #PINix}: undefined, i.e. illegal pin number
+ *       or {@link #PINig} ignore for pin = 0
  *  @throws IOException if the pin does not allow the IO operation intended
  *          with a comprehensive message     
  */
   public default int gpio4pinChck(CharSequence signal, final int pin)
                                                     throws IOException {
     final int gpio = gpio4pin(pin);
-    if (gpio >= GPIOmin && gpio <= GPIOutM) return gpio;
+    if (gpio >= GPIOmin && gpio <= GPIOutM || gpio == PINig) return gpio;
     throw new IOException("pin " + pin + " for " + signal + " = "  
                                          + ThePi.gpio2String(gpio));
   } // gpio4pinChk(int)
@@ -174,10 +180,12 @@ public interface ThePi extends PiVals {
  *  Depending on type this method either makes a {@link Pi3} (default),
  *  a {@link Pi2} or a {@link Pi1} object according to the other parameters.
  *  As the Pi4 and Pi0 have the same GPIO assignment as a Pi3 they all are 
- *  represented by a {@link Pi3} object. 
+ *  represented by a {@link Pi3} object. <br />
+ *  
  *  @return a ThePi object of given type with the given {@link #host() host},
  *     {@link #port() port} and  {@link #timeout() timeout} 
- *  @see Pi3#make(String, int, int, int)  Pi1#make(String, int, int)    
+ *  @see Pi3#make(String, int, int, int)
+ *  @see  Pi1#make(String, int, int)    
  */
   static public ThePi make(final String host, final int port, 
                                          final int timeout, final int type){
@@ -238,7 +246,7 @@ public interface ThePi extends PiVals {
      
     static final int[] pi3PIN2gpio = {
 //    0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,
-     99,93,95, 2,95, 3,90, 4,14,90,15,17,18,27,90,22,23,93,24,10,
+     57,93,95, 2,95, 3,90, 4,14,90,15,17,18,27,90,22,23,93,24,10,
      90, 9,25,11, 8,90, 7, 0, 1, 5,90, 6,12,13,90,19,16,26,20,90,
      21,99,99,99};
 //    0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,
@@ -256,7 +264,7 @@ public interface ThePi extends PiVals {
         
     static final int[] pi1PIN2gpio = {
 //     0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,
-      99,93,95, 0,95, 1,90, 4,14,90,15,17,18,21,90,22,23,93,24,10,
+      57,93,95, 0,95, 1,90, 4,14,90,15,17,18,21,90,22,23,93,24,10,
       90, 9,25,11, 8,90, 7,99 };
 
 //----------------------------------  type 2 lookup  ----------------
@@ -272,7 +280,7 @@ public interface ThePi extends PiVals {
      
     static final int[] pi2PIN2gpio = {
 //    0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,
-     99,93,95, 2,95, 3,90, 4,14,90,15,17,18,21,90,22,23,93,24,10,
+     57,93,95, 2,95, 3,90, 4,14,90,15,17,18,21,90,22,23,93,24,10,
      90, 9,25,11, 8,90, 7,99,99,99,99,95,93,28,29,30,31,90,90,99,
      99,99,99,99};
 //   0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,

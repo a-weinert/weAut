@@ -18,9 +18,11 @@ package de.weAut;
  *  <a href=package-summary.html#co>&copy;</a> 
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  <br />
- *  @see Pi2 Pi3 ClientPigpiod
+ *  @see Pi2
+ *  @see Pi3
+ *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 40 $ ($Date: 2021-04-19 21:47:30 +0200 (Mo, 19 Apr 2021) $)
+ *  @version  $Revision: 46 $ ($Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 36  (06.04.2021) :  polymorphism
@@ -59,12 +61,13 @@ public interface Pi1 extends ThePi {
 
 /** Pin number to GPIO number lookup. <br />
  *
- *  @param pin 1..26 is the legal IO connector pin number
+ *  @param pin 0, 1..26 is the legal IO connector pin number
  *  @return 0..56 the GPIO number; {@link #PIN0V}, {@link #PIN3V},
  *     {@link #PIN5V}, {@link #PINix}: undefined, i.e. illegal pin number
+ *     or {@link #PINig} ignore for pin = 0
  */
 @Override public default int gpio4pin(final int pin){
-  if (pin < 1 || pin > 26) return PINix;
+  if (pin < 0 || pin > 26) return PINix;
   return ThePi.Impl.pi1PIN2gpio[pin];
 } // gpio4pin(int)
 

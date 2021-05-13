@@ -45,7 +45,6 @@ import de.frame4j.util.MinDoc;
 import de.frame4j.util.App;
 import de.frame4j.text.TextHelper;
 
-
 /** <b>A dialog window for common use</b>. <br />
  *  <br />
  *  For intermediate displays and interposed questions graphical applications
@@ -112,14 +111,13 @@ import de.frame4j.text.TextHelper;
  //           V02.05 (22.07.2003) :  AWT and swing  
  //           V02.06 (23.07.2003) :  WakeThread, modal behaviour corrected
  //           V02.25 (30.12.2004) :  swing only; text entry
- //           V.o52+ (12.02.2009) :  ported to Frame4J
  //           V.179+ (10.01.2010) :  getLab2Text error corrected
 
 @MinDoc(
    copyright = "Copyright 1998 - 2009, 2014  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 39 $",
-   lastModified   = "$Date: 2021-04-17 21:00:41 +0200 (Sa, 17 Apr 2021) $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "construct and get answer (or static getAnswer)",  
    purpose = "dialog or info window with timeout"
@@ -152,10 +150,8 @@ import de.frame4j.text.TextHelper;
    public static int getAnswer(String title, CharSequence upper, 
                            boolean upperMonospaced,
                            CharSequence yes, CharSequence cancel,
-                           CharSequence no,
-                           int waitMax,
-                           CharSequence lower,
-                           Color bg         ){
+                           CharSequence no,  int waitMax,
+                           CharSequence lower, Color bg){
       AskDialog aD = new AskDialog(null, title,  // parent , title
                               false,  //  modal
                               upper,  //  the report
@@ -199,10 +195,8 @@ import de.frame4j.text.TextHelper;
    public static char[] getAnswerText(String title, CharSequence upper, 
                            boolean upperMonospaced,
                            CharSequence yes, CharSequence cancel,
-                           int waitMax,
-                           CharSequence lower,
-                           Color bg,
-                           boolean passWordHide ){
+                           int waitMax,   CharSequence lower,
+                           Color bg, boolean passWordHide){
       String loTe =  TextHelper.trimUq(lower, null);
       if (loTe == null) return null;
       String yeTe = TextHelper.trimUq(yes, null);
@@ -321,7 +315,7 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  default: 310 pixel
  */   
-   public int getMinWidth() { return minWidth; }  
+   public int getMinWidth(){ return minWidth; }  
    
 /** Minimal height. <br />
  *  <br />
@@ -437,13 +431,13 @@ import de.frame4j.text.TextHelper;
  *  <tr><td align=center> +2 </td>
  *  <td align=center> YES </td>
  *        <td> Yes / left button</td></tr></table>
- *  <br />
+ *
  *  @see #getAnswer()
  *  @see #getAnswer(String, String)
  *  @see #getAnswer(String, CharSequence, boolean, CharSequence, CharSequence, CharSequence, int, CharSequence, Color)  getAnswer()
  */
    protected  volatile int answer = NOT_YET;
-   
+  
 
 /** The answer line. <br />
  *  <br />
@@ -704,7 +698,7 @@ import de.frame4j.text.TextHelper;
       }
       theDialog.setLocation(x, y);
       
-      /// --- added to avoid (later) a NullpointerExc   (30.09.2004)
+      // --- added to avoid (later) a NullpointerExc   (30.09.2004)
       if (theDialog instanceof Dialog) {
          ((Dialog)theDialog).setResizable(true);
          theDialog.pack();
@@ -713,11 +707,8 @@ import de.frame4j.text.TextHelper;
          ((Frame)theDialog).setResizable(true); 
          theDialog.pack();
          ((Frame)theDialog).setResizable(false);
-      }
-      ///  --- added to avoid (later) a NullpointerExc, if in critical thread
-      
+      } // avoid a NullpointerExc, later if in critical thread
    } // AskDialog()
-
 
 /** Parent-less Constructor. <br />
  *  <br />
@@ -741,7 +732,6 @@ import de.frame4j.text.TextHelper;
                  CharSequence lower){
       this(null, title, false, upper, yes, cancel, no, lower);
    } // AskDialog
-
 
 /** Set the font for the upper text as non proportional. <br />
  *  <br />
@@ -798,7 +788,7 @@ import de.frame4j.text.TextHelper;
  */
       public void askAnswered(int answer);
 
-   } // interface Listener   ================================================   
+   } // Listener   ================================================   
 
 /** The maximal one Listener. <br /> */
    protected Listener listener;
@@ -847,7 +837,6 @@ import de.frame4j.text.TextHelper;
 
 /** Answer was given: internal flag. <br /> */
    volatile boolean given;
- 
 
 /** Wait for answer. <br />
  *  <br />
@@ -872,7 +861,6 @@ import de.frame4j.text.TextHelper;
    public int getAnswer() {
        return getAnswer(null, null);
    } // getAnswer()
-
 
 /** Wait for answer after setting new display texts. <br />
  *  <br />

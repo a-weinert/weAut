@@ -32,32 +32,35 @@ import de.frame4j.util.ComVar;
  *  JVM + frame4j is on this Pi or another machine including Windows or
  *  Linux PCs and servers.
  *   
- *  For one IO device (the Pi) only one object ClientPigpiod should be
+ *  For one Pi and its IO only one {@link ClientPigpiod} object should be
  *  created and used. The IO methods and most others are threadsafe but 
  *  initialising and shutting down / cleaning up the control IO application
- *  should be done in one thread. <br />
+ *  is usually better done in one thread. <br />
  *  The C IO functions of the 
  *  <a href="http://abyz.me.uk/rpi/pigpio/sif.html" taget="_blank"
  *  title="pigdiod socket interface">piogpio daemon</a> on the Raspberry Pi 
- *  are threadsafe, there.
+ *  are also threadsafe, there. <br />
  *  <br />
  *  <br />
  *  <a href=package-summary.html#co>&copy;</a> 
  *  Copyright 2019, 2021  &nbsp; Albrecht Weinert<br />
- *  @see Pi1 Pi2 Pi3 ThePi PiVals 
+ *  @see Pi1
+ *  @see Pi2
+ *  @see Pi3
+ *  @see ThePi
+ *  @see PiVals 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
+ *  @version  $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $)
  */
-// so far:   V. 19  (17.05.2019) :  new
-//           V. 21  (19.05.2019) :  ALT numbers, typo
-//           V. 42  (29.04.2021) :  overhaul (Frame4J)
+// so far:   V.  19 (17.05.2019) : new
+//           V.  42 (29.04.2021) : overhaul (Frame4J)
+//           V.  46 (09.05.2021) : threadsafe cmd and response buffers
 public class ClientPigpiod {
 
 /** The socket. <br />
  *  <br />
  *  The actual made connection's socket will be recorded here. Without 
  *  connection or after disconnect the value is null.<br />
- *  <br />
  */
    Socket sock;
 
@@ -113,6 +116,7 @@ public class ClientPigpiod {
  *  would be re-connect after {@link #disconnect()}. So far, no use case for
  *  this was reported. If this does not change {@link #connect()} and
  *  even {@link #disconnect()} might be removed / made private in future.
+ *  
  *  @throws IOException if the connecting
  *          to {@link ThePi#host() host}.{@link ThePi#port() port} fails
  */
@@ -152,23 +156,50 @@ public class ClientPigpiod {
  *  Finally (and on success, only) the new ClientPigpiod object will
  *  get a PrintWriter for reports according to 
  *  {@link #setOut(Object) setOut(app)}. <br />
- *  <br />
+ *
  *  @return a ClientPipiod with the given
  *        {@link thePi Pi} = {@link ThePi#host() host} 
  *        connected via {@link ThePi#port() port} within 
  *        {@link ThePi#timeout() timeout} 
  *  @throws IOException when connecting to the pigpiod server fails
- *  @see Pi3#make(String, int, int, int)  Pi1#make(String, int, int)    
+ *  @see Pi3#make(String, int, int, int)
+ *  @see Pi1#make(String, int, int)    
  */
   static public ClientPigpiod make(final String host, final int port, 
     final int timeout, final int type, final Object app) throws IOException {
     if (type == 1) return new ClientPigpiod(Pi1.make(host, port, timeout), app);
     if (type == 2) return new ClientPigpiod(Pi2.make(host, port, timeout), app);
     return new ClientPigpiod(Pi3.make(host, port, timeout, type), app);
-  } // make(String, 3*int)
+  } // make(String, 3*int, Object)
+  
+/** Make and connect to a new Pi. <br />
+ *  <br />
+ *  This method does the same as
+ {@link #make(String,int,int,int,Object) make(host, port, timeout, type, app)}.
+ *  The values host, port, timeout and type are got from app's 
+ *  {@link PiUtil} genes as default values or by start parameter evaluation.
+ *
+ *  @param app the application as {@link PiUtil} object
+ *  @return a ClientPipiod with the given
+ *        {@link thePi Pi} = {@link ThePi#host() host} 
+ *        connected via {@link ThePi#port() port} within 
+ *        {@link ThePi#timeout() timeout} 
+ *  @throws IOException when connecting to the pigpiod server fails
+ *  @see Pi3#make(String, int, int, int)
+ *  @see Pi1#make(String, int, int)    
+ */
+  static public ClientPigpiod make(final PiUtil app) throws IOException {
+    final int type = app.argPiType();
+    final String host = app.argHost();
+    final int port = app.argPort();
+    final int timeout = app.argTimeout();
+    if (type == 1) return new ClientPigpiod(Pi1.make(host, port, timeout), app);
+    if (type == 2) return new ClientPigpiod(Pi2.make(host, port, timeout), app);
+    return new ClientPigpiod(Pi3.make(host, port, timeout, type), app);
+  } // make(String, 3*int, Object)
 
 /** Construct and connect to a given Pi. <br />
- *  <br />
+ *
  *  @param thePi if null a default {@link Pi3} is made and used
  *  @param app the application using the ClientPigpiod object to be made
  *  @throws IOException when connecting to the pigpiod server fails
@@ -186,8 +217,8 @@ public class ClientPigpiod {
  *  closed.<br />
  *  <br />
  *  Hint: Another thread blocked on this connection's I/O will get a
- *  SocketException.<br />
- *  <br />
+ *  SocketException. <br />
+ *
  *  @throws IOException on closing problems
  */
    public synchronized void disconnect() throws IOException {
@@ -206,16 +237,27 @@ public class ClientPigpiod {
    } // toString()
    
 //---------------------------- pigpiod GPIO on the Pi ---------------------     
-   
-   byte[] response = new byte[16];
-   
-   byte[] command = new byte[] { 
-//    | command   0    |   p1     gpio   |    assume little endian               
-       0,  0,  0,  0,     17,  0,  0, 0,    // 17 PIN11 rd LED
-//    |    p2   mode   | p3 (extLen)     |
-       1,  0,  0,  0,     0,  0,  0,  0  }; // 1 output
 
-   public final class CmdState {
+/** <b>Status of a command executed</b>. <br />
+ *  <br >   
+ *  One object of this class will be held per thread to hold the values of
+ *  the current / last pigpiod IO command executed for the purpose of
+ *  analysis or {@linkplain ClientPigpiod#logCommand(int) logging}. As this is
+ *  done on a per thread base there is no need to guard an
+ *  [IO method + log method] pair be synchronized.
+ */
+   public final static class CmdState {
+     
+/** Response buffer. <br /> */
+  byte[] response = new byte[16];
+
+/** Command buffer. <br /> */  
+  byte[] command = new byte[] { 
+// | command   0    |   p1     gpio   |    assume little endian               
+    0,  0,  0,  0,     17,  0,  0, 0,    // 17 PIN11 rd LED
+// |    p2   mode   | p3 (extLen)     |
+    1,  0,  0,  0,     0,  0,  0,  0  }; // 1 output
+
 /** Record form last pigpiod command. <br />
  *  <br />
  *  If the last execution of {@link #stdCmd(int, int, int)} raised an
@@ -244,9 +286,15 @@ public class ClientPigpiod {
      int cmdExecStage; // 0: none; 2..15: request; 16..31: + response
    } // CmdState
    
-/** A container holding one CmdState object per thread. */  
-   static final ThreadLocal<CmdState> lastCmdState = new ThreadLocal<>();
-
+/** A container holding one CmdState object per thread. <br /> */  
+   static final ThreadLocal<CmdState> lastCmdState = 
+                                            new ThreadLocal<CmdState>(){
+     @Override protected CmdState initialValue(){
+       final CmdState initVal = new CmdState();
+       initVal.lastCmd = PI_CMD_NONE; // if logged w/o command recorded
+       return initVal;
+     } // initialValue()
+   }; // embedded ThreadLocal child
    
 /** Debug info on last command execution. <br />
  *  <br />
@@ -255,15 +303,15 @@ public class ClientPigpiod {
  *  Compared to {@link #logCommand(int)} debugCommand also logs the socket 
  *  request and response buffers which is only very seldom of any
  *  interest. <br />
+ *  
  *  @param  ret the return value of the command method; <br /> &nbsp; &nbsp;
- *  &nbsp; &nbsp; e.g. by placing the call as parameter
+ *     &nbsp; &nbsp; e.g. by placing the call as parameter
  *           <code>logCommand(commandMethod(...))</code>
  *  @return ret (the return value of the command method)
  *  @see #logCommand(int) #logIfBad(int)
  */
    public int debugCommand(final int ret){
      CmdState cmdSt = lastCmdState.get();
-     if (cmdSt == null) return ret; // no logged command for this thread 
      final int lastCmd = cmdSt.lastCmd, lastP1 = cmdSt.lastP1,
                lastP2 = cmdSt.lastP2, cmdExecStage = cmdSt.cmdExecStage;
      if (ret ==  PI_CMD_BAD) { // bad command nothing done
@@ -272,18 +320,18 @@ public class ClientPigpiod {
         return ret;
      } // bad command nothing done  
      if (ret >= 0 || uint32ret[lastCmd]) { // positive or unsigned
-        out.println(" LOG stdCmd(" + lastCmd + ", " + lastP1
+        out.println("  DEB ioCmd(" + lastCmd + ", " + lastP1
                  + ", " + lastP2 +") -> " + (ret & 0xFFFFFFFFL) 
                                                 + " " + cmdNam[lastCmd]);
      } else {
-        out.println(" ERR stdCmd(" + lastCmd + ", " + lastP1
+        out.println("  ERR ioCmd(" + lastCmd + ", " + lastP1
                  + ", " + lastP2 +") -> " + ret + " " + cmdNam[lastCmd]);
      }
      if (cmdExecStage >= 1) { // request used //  logRequest &&
-        out.println("   request : " + Arrays.toString(command));
+        out.println("   request : " + Arrays.toString(cmdSt.command));
      } // request used
      if (cmdExecStage >= 16) { // request used //  logResponse &&
-        out.println("   respons : " + Arrays.toString(response));
+        out.println("   respons : " + Arrays.toString(cmdSt.response));
      } // request used
      if (cmdSt.lastException != null) 
         out.println("      " + cmdSt.lastException.getMessage());
@@ -307,7 +355,6 @@ public class ClientPigpiod {
   protected final int rErr(final int error, 
                           final int cmd, final int p1, final int p2){
     CmdState cmdSt = lastCmdState.get();
-    if (cmdSt == null) cmdSt = new CmdState(); 
     cmdSt.lastCmd = cmd; cmdSt.lastP1 = p1; cmdSt.lastP2 = p2; 
     return error;
   } //rErr(4*int)
@@ -318,7 +365,6 @@ public class ClientPigpiod {
  */   
   protected final int rErr(final int error, final int cmd){
     CmdState cmdSt = lastCmdState.get();
-    if (cmdSt == null) cmdSt = new CmdState(); 
     cmdSt.lastCmd = cmd; cmdSt.lastP1 = cmdSt.lastP2 = 0; return error;
   } //rErr(2*int)
 
@@ -329,7 +375,6 @@ public class ClientPigpiod {
  */
   protected final int rIgn(final int cmd, final int p2){
     CmdState cmdSt = lastCmdState.get();
-    if (cmdSt == null) cmdSt = new CmdState(); 
     cmdSt.lastCmd = cmd; cmdSt.lastP1 = ThePi.PINig; 
     cmdSt.lastP2 = p2; return 0;
   } //rErr(2*int)
@@ -350,7 +395,6 @@ public class ClientPigpiod {
  */
   public int logCommand(final int ret){
     CmdState cmdSt = lastCmdState.get();
-    if (cmdSt == null) return ret; // no logged command for this thread 
     final int lastCmd = cmdSt.lastCmd, lastP1 = cmdSt.lastP1,
                             lastP2 = cmdSt.lastP2;
     StringBuilder lCmd = (StringBuilder)TextHelper.formDec(
@@ -364,10 +408,10 @@ public class ClientPigpiod {
        return ret;
      } // bad command nothing done  
      if (ret >= 0 || uint32ret[lastCmd]) { // positive or unsigned
-       out.println(" LOG stdCmd(" + lCmd + ") -> " + (ret & 0xFFFFFFFFL) 
+       out.println("  LOG ioCmd(" + lCmd + ") -> " + (ret & 0xFFFFFFFFL) 
                                                + " " + cmdNam[lastCmd]);
      } else {
-        out.println(" ERR stdCmd(" + lCmd + ") -> " + ret 
+        out.println("  ERR ioCmd(" + lCmd + ") -> " + ret 
                                                + " " + cmdNam[lastCmd]);
      }
      if (cmdSt.lastException != null) 
@@ -391,11 +435,10 @@ public class ClientPigpiod {
    public int logIfBad(final int ret){
      if (ret >= 0) return ret;
      CmdState cmdSt = lastCmdState.get();
-     if (cmdSt == null) return ret; // no logged command for this thread 
      final int lastCmd = cmdSt.lastCmd;
      if (uint32ret[lastCmd]) return ret; // no negative error, just unsigned
      return logCommand(ret);
-   } // logBadCommand(int);
+   } // logIfBad(int);
  
 
 /** Implementation of two parameter (standard) commands. <br />
@@ -427,7 +470,6 @@ public class ClientPigpiod {
  */
    public int stdCmd(final int cmd, final int p1, final int p2){
      CmdState cmdSt = lastCmdState.get();
-     if (cmdSt == null) cmdSt = new CmdState();
      cmdSt.lastP1 = p1; cmdSt.lastP2 = p2; cmdSt.lastCmd = cmd; // enable log
      cmdSt.cmdExecStage = 0; cmdSt.lastException = null;
      
@@ -463,31 +505,32 @@ public class ClientPigpiod {
       } // command is a pad command
       int ret = 0;
       // prepare and execute command - sync with this ClientPigpiod needed
-      synchronized (this) {
-      Arrays.fill(command, (byte) 0); // init all 0
-      command[0] = (byte)cmd;
-      command[4] = (byte)p1;
+
+      Arrays.fill(cmdSt.command, (byte) 0); // init all 0
+      cmdSt.command[0] = (byte)cmd;
+      cmdSt.command[4] = (byte)p1;
       if ((p1 & 0xFFFFFF00) != 0) {
-         command[5] = (byte)(p1 >> 8);
-         command[6] = (byte)(p1 >> 16);
-         command[7] = (byte)(p1 >> 24);
+        cmdSt.command[5] = (byte)(p1 >> 8);
+        cmdSt.command[6] = (byte)(p1 >> 16);
+        cmdSt.command[7] = (byte)(p1 >> 24);
       }
-      command[8] = (byte)p2;
+      cmdSt.command[8] = (byte)p2;
       if ((p2 & 0xFFFFFF00) != 0) {
-         command[ 9] = (byte)(p2 >> 8);
-         command[10] = (byte)(p2 >> 16);
-         command[11] = (byte)(p2 >> 24);
+        cmdSt.command[ 9] = (byte)(p2 >> 8);
+        cmdSt.command[10] = (byte)(p2 >> 16);
+        cmdSt.command[11] = (byte)(p2 >> 24);
       }
       cmdSt.cmdExecStage = 1;
-      try { // the whole method is sync
-         sockOut.write(command, 0, 16);
+      synchronized (this) {
+      try { // the whole method is quasi sync as cmdSt is threadlocal
+         sockOut.write(cmdSt.command, 0, 16);
          try {
             int bRead = sockIn.available();
-            bRead = sockIn.read(response, 0, 16);
+            bRead = sockIn.read(cmdSt.response, 0, 16);
             cmdSt.cmdExecStage = 16;
             ret = bRead != 16 ?  PI_SOCK_READ_LEN
-                       : response[12] | response[13] << 8
-                 | response[14] << 16 | response[15] << 24;
+                       : cmdSt.response[12] | cmdSt.response[13] << 8
+                 | cmdSt.response[14] << 16 | cmdSt.response[15] << 24;
          } catch (IOException e) {
            cmdSt.lastException = e;
             ret =  PI_SOCK_READ_FAILED;
@@ -495,7 +538,7 @@ public class ClientPigpiod {
       } catch (IOException e) {
          cmdSt.lastException = e;
          ret = PI_SOCK_WRIT_FAILED;
-      }
+      } // try
       } // synchronized 
       return ret;
    } // stdCmd(3*int)
@@ -996,7 +1039,8 @@ public class ClientPigpiod {
  *  Returned result is then 0x00000001..0x80000000: a 32 bit number with
  *  exactly one bit set corresponding to place in a 32 bit bank mask. <br />
  *  Outside the range 0..31 this method returns 0 (no bit set.
- *  @see  ThePi#gpio2pin(int) ThePi#gpio4pin(int)
+ *  @see ThePi#gpio2pin(int)
+ *  @see ThePi#gpio4pin(int)
  */
   public static int gpio2bit(final int gpio){ 
     if (gpio < 0 || gpio > 32) return 0;
@@ -1154,6 +1198,7 @@ public class ClientPigpiod {
 "SERR", "SERW", "SERDA", "GDC", "GPW", "HC", "HP", "CF1", "CF2", "BI2CC", // 80
 "BI2CO", "BI2CZ", "I2CZ", "WVCHA", "SLRI", "CGI", "CSI", "FG", "FN", "NOIB",
 "WVTXM", "WVTAT", "PADS", "PADG", "FO", "FC", "FR", "FW", "FS", "FL",  // 100
-"SHELL", "BSPIC", "BSPIO", "BSPIX", "BSCX", "EVM", "EVT", "PROCU"};  //110
+"SHELL", "BSPIC", "BSPIO", "BSPIX", "BSCX", "EVM", "EVT", "PROCU", // 110..117
+"none", "none"};  // 118 .. no command (as of 05.2021)
 
 } // ClientPigpiod (21.05.2019, 17.04.2021)

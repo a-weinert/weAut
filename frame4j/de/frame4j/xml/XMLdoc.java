@@ -46,7 +46,7 @@ import de.frame4j.util.App;
 import de.frame4j.util.MinDoc;
 import de.frame4j.util.PropMap;
 
-/** <b>A XML document (DOM)</b>. <br />
+/** <b>An XML document (DOM)</b>. <br />
  *  <br />
  *  Objects of this class contain or encapsulate a  
  *  {@link org.w3c.dom.Document (DOM-) Document} as well as properties and
@@ -73,20 +73,17 @@ import de.frame4j.util.PropMap;
  *  Copyright 2001 - 2005, 2009  &nbsp; Albrecht Weinert<br />  
  *  <br />
  */
- // so far:  V00.00 (27.08.2001 11:04) :  new
- //          V02.00 (24.04.2003 16:54) :  CVS Eclipse
- //          V02.05 (23.07.2003 16:56) :  DOM and (still) JDOM
- //          V02.16 (25.03.2003 17:24) :  /**
- //          V02.24 (30.11.2005 17:22) :  JDom thrown away; and XMLtrans
- //          V02.28 (03.06.2008 08:34) :  /**
- //          V.o61+ (03.02.2009 11:50) :  ported to Frame4J (and Kenai SVN)
- //          V.o01+ (03.02.2010 12:11) :  moved to Assembla due to Oracle-Sun
+ // so far:  V00.00 (27.08.2001) :  new
+ //          V02.00 (24.04.2003) :  CVS Eclipse
+ //          V02.05 (23.07.2003) :  DOM and (still) JDOM
+ //          V02.24 (30.11.2005) :  JDom thrown away; and XMLtrans
+ //          V.o01+ (03.02.2010) :  moved to Assembla due to Oracle-Sun
 
 @MinDoc(
    copyright = "Copyright   2001 - 2005, 2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
+   version   = "V.$Revision: 46 $",
+   lastModified   = "$Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "use in XML / HTML applications",  
    purpose = "represents a XML document"
@@ -105,7 +102,7 @@ import de.frame4j.util.PropMap;
    public XMLdoc(PrintWriter log){
       this.log = log != null ? log : new PrintWriter(System.out);
       xmlConf = new XMLconf();
-   } // XMLdoc(PrintWriter
+   } // XMLdoc(PrintWriter)
 
 /** Make for an application (App inheritor). <br />
  *  <br />
@@ -114,7 +111,7 @@ import de.frame4j.util.PropMap;
  *  <br />
  *  The log output and other properties will be taken from the application,
  *  the {@link App} inheritor, supplied.<br />
- *  <br />
+ *
  *  @param app the application get output streams and properties from
  *  @see #set(PropMap)
  *  @throws NullPointerException if app is null
@@ -123,7 +120,6 @@ import de.frame4j.util.PropMap;
       this(app.log);
       xmlConf.set(app.getProp());
    } // XMLdoc(App)
-   
 
 /** Parser properties &mdash; plus some others. <br />
  *  <br />
@@ -137,20 +133,16 @@ import de.frame4j.util.PropMap;
  */   
    public final XMLconf xmlConf;
 
-
-
 /** Set the properties by a PropMap object. <br />
- *  <br />
+ * 
  *  @param prop source of the properties to be used
  *  @throws IllegalArgumentException parameter value problems
  *  @see XMLconf#set(PropMap)
- *  <br />
  */
    public void set(PropMap prop) throws IllegalArgumentException {
       if (prop == null) return;
       xmlConf.set(prop);
    } // set(PropMap)
-   
 
 //-------------------    Document,  Serialising, clone ----------------
    
@@ -174,7 +166,6 @@ import de.frame4j.util.PropMap;
       return MLHelper.isDocNode(this.document);
    } // isDocNode()
    
-   
 /** Set the document.<br />
  *  <br />
  *  @param document  the new document (DOM tree or null).<br />
@@ -193,7 +184,6 @@ import de.frame4j.util.PropMap;
            "document not  Document[Fragment], Element or null");
    } // setDocument(Node)   
 
-
 /** The document's name (just for report and documentation). <br />
  *  <br />
  *  It is either not empty or it is null.<br />
@@ -203,7 +193,7 @@ import de.frame4j.util.PropMap;
 /** The document's name (just for report and documentation). <br />
  *  <br />
  *  If {@code publicId} is not empty it is taken as new 
- *  {link #getPublicId publicId}. Otherwise that is set null.<br />
+ *  {@link #getPublicId publicId}. Otherwise that is set null.<br />
  */  
    public void setPublicId(String publicId){
       this.publicId = publicId == null 
@@ -240,7 +230,7 @@ import de.frame4j.util.PropMap;
 
 //------------------  Serialising ------------------------------------
 
-/** Write the XMLdoc. <br />*/
+/** Write the XMLdoc. <br /> */
    private void writeObject(ObjectOutputStream oos) throws IOException {
       oos.defaultWriteObject();  
       final boolean docIsNull = document == null;
@@ -250,7 +240,7 @@ import de.frame4j.util.PropMap;
       }
    } // writeObject(ObjectOutputStream
 
-/** Read the XMLdoc. */
+/** Read the XMLdoc. <br /> */
    private void readObject(ObjectInputStream ois) 
                      throws IOException, ClassNotFoundException {
       ois.defaultReadObject();       
@@ -276,11 +266,10 @@ import de.frame4j.util.PropMap;
 /** ErrorHandler for parsing. <br > */
    public void setErrorHanlder(ParseErrorHandler errorHandler) {
       this.errorHandler = errorHandler; 
-   } // setErrorHanlder(DocumentBuilderErrorHandler
+   } // setErrorHanlder(ParseErrorHandler)
 
 /**  rrorHandler for parsing.. <br > */
    public ParseErrorHandler getErrorHandler(){  return this.errorHandler; }
-
    
 /** ErrorHandler for parsing. <br >
  *  <br />
@@ -295,8 +284,7 @@ import de.frame4j.util.PropMap;
       if (errorHandler != null) return errorHandler;
       errorHandler = new ParseErrorHandler(publicId, log, reThrow);
       return errorHandler;
-   } // getErrorHandler()
-
+   } // getErrorHandler(boolean)
 
 /** Parse from an input stream. <br />
  *  <br />
@@ -316,7 +304,6 @@ import de.frame4j.util.PropMap;
      InputSource ips = new InputSource(is);
      parse(ips); 
    } // parse(InputStream)  
-
 
 /** Parse from a file or URL. <br />
  *  <br />
@@ -347,9 +334,7 @@ import de.frame4j.util.PropMap;
      StringReader str = new StringReader(inAsS);
      InputSource ips = new InputSource(str);
      parse(ips); 
-   } // parse(String fileOrURL, String  
-  
-
+   } // parse(2*String)  
 
 /** Parse from an input source. <br />
  *  <br />
@@ -389,7 +374,7 @@ import de.frame4j.util.PropMap;
       }
       dbeh.reportErrors();
       if (saxe != null) throw saxe;
-   } // parse(InputStream )
+   } // parse(InputSource)
 
 //-------  Simple reading and writing -----------------------------------   
 
@@ -417,8 +402,7 @@ import de.frame4j.util.PropMap;
               "DOM document could not be read" );
          }
       } // sync
-   } // readFrom
- 
+   } // readFrom(InputStream)
 
 /** Write (in facsimile) to an output stream. <br />
  *  <br />
@@ -428,7 +412,7 @@ import de.frame4j.util.PropMap;
  *  <br />
  *  The only property influencing this simple proceeding is
  *  {@link XMLconf#encoding encoding}.<br />
- *  <br />
+ *
  *  @param os the output stream to write the DOM as XML to
  *  @return false if nothing (no XML) could be written (e.g. due to wrong
  *          parameter values 
@@ -439,7 +423,7 @@ import de.frame4j.util.PropMap;
    public boolean writeTo(OutputStream os) throws IOException { 
       if (os == null || document == null) return false;
          return doc2xml(document, os, xmlConf.encoding);
-   } // writeTo
+   } // writeTo(OutputStream)
 
 //-------- Transformations -------------------------------------
 
@@ -448,7 +432,7 @@ import de.frame4j.util.PropMap;
  *  <br />
  *  THe transformations defined by all transformation properties will be 
  *  applied to the embedded DOM document.<br />
- *  <br />
+ *
  *  @return true if the transformations were applied successfully 
  *  @see XMLconf#clearDefAtts
  *  @see XMLconf#textNormalize
@@ -467,7 +451,7 @@ import de.frame4j.util.PropMap;
          document.normalize();
       }
       return true; 
-   } // applyTransforms
+   } // applyTransforms()
    
 //----------- Output -------------------------------------------------   
 
@@ -490,9 +474,7 @@ import de.frame4j.util.PropMap;
                               throws IOException, TransformerException { 
       if (os == null || document == null) return false;
       if (!MLHelper.isDocNode(document)) return false;
-      
-  ////    applyTransforms();
-
+  //   applyTransforms();
       if (xmlOutputer == null) getXMLOutputer();  
       if (xmlOutputer == null) return false;
       synchronized (xmlOutputer) {
@@ -501,16 +483,14 @@ import de.frame4j.util.PropMap;
                               xmlConf.indentSize > 0 ? "yes" : "no");
          xmlOutputer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,
                               xmlConf.omitDeclaration ? "yes" : "no");
- //// xmlOutputer.setOutputProperty(OutputKeys.METHOD , "html"); //// TEST
-
+  // xmlOutputer.setOutputProperty(OutputKeys.METHOD , "html"); //// TEST
          DOMSource ds = new DOMSource(document); 
          StreamResult oos =  new StreamResult(os);
          xmlOutputer.transform(ds, oos);
          os.close();   
       }
       return true;   
-   } // writeTo
-
+   } // writeTo(OutputStream)
   
    
 //----------------   static (XmlHelper) methods --------------------   
@@ -537,7 +517,7 @@ import de.frame4j.util.PropMap;
  *          null will only returne if the whole XML installation (JDK/JRE)
  *          is insufficient
  */
-   public static Transformer getXMLOutputer() {
+   public static Transformer getXMLOutputer(){
       if (xmlOutputer == null) synchronized (XMLdoc.class){
          if (xmlOutputer != null) return xmlOutputer;
          TransformerFactory tf = 
@@ -608,11 +588,8 @@ import de.frame4j.util.PropMap;
       }
       return res;   
    } // doc2xml
-   
-   
- 
-//-------
 
+   
 /** Make a DOM parser. <br />
  *  <br />
  *  A DOM parser will be supplied; all its properties, except validating and
@@ -620,7 +597,7 @@ import de.frame4j.util.PropMap;
  *  {@code valid} and {@code namespace} are false this will be the most simple
  *  or most direct (1 to 1) translation from XML input to DOM tree (compare
  *  {@link #doc2xml doc2xml()} and {@link #getXMLOutputer()}).<br />
- *  <br /> 
+ *
  *  @param valid true: validating
  *  @param nameSpace true: namespace aware
  *  @param log Writer for error reports (if any); may be null
@@ -643,8 +620,7 @@ import de.frame4j.util.PropMap;
                + pex.getMessage());
       }
      return null; // failure 
-   } // makeBuilder
-
+   } // makeBuilder(2*boolean, PrintWriter) 
    
 /** Make a simple XML -&gt; DOM input. <br />
  *  <br />
@@ -652,11 +628,11 @@ import de.frame4j.util.PropMap;
  *  without validation, namespace awareness and the like 
  *  schnick-schnack.<br />
  *  <br >
- *  That parse is not threadsafe.<br >
+ *  That parser is not threadsafe.<br >
  *  Usage in one thread is OK. Better is the synchronisation of the 
  *  proceeding with the object. Other Frame4J methods using this singleton
  *  parser do this also.<br />
- *  <br />
+ *
  *  @return the simple 1-to-1 parser. null is returned on failure; that
  *          normally means an insufficient XML implementation in the 
  *          JDK/JRE
@@ -683,8 +659,7 @@ import de.frame4j.util.PropMap;
  */
    public static SAXException getLastXml2docError(){
          return lastXml2docError;
-   }
-
+   } // getLastXml2docError
 
 /** Input (facsimile) from XML to DOM tree.<br />
  *  <br />
@@ -692,8 +667,8 @@ import de.frame4j.util.PropMap;
  *  namespace awareness and the like and the DOM object made in the process
  *  is returned. This method is the complement to
  *  {@link #doc2xml doc2xml()}.<br />
- *  <br />
- *  @param is  the input
+ *
+ *  @param  is  the input
  *  @return the document  or null on failure
  *  @throws IOException on input problems with is
  */
@@ -709,6 +684,6 @@ import de.frame4j.util.PropMap;
             return null;
          }
       }
-   } // xml2doc(InputStream
+   } // xml2doc(InputStream)
    
 } // class XmlDoc (30.07.2003, 06.02.2009)

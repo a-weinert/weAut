@@ -153,21 +153,18 @@ import de.frame4j.text.TextHelper;
  *  @see App
  *  @see de.frame4j.io.Input
  */
- // so far    V00.00 (10:16 25.11.1998) :  new
- //           V00.01 (13:48 08.05.2000) :  ex weinertBib -> sub package 
- //           V01.00 (06.12.2001 16:58) :  Symmetric, bufferd, Threads  
- //           V01.01 (23.08.2002 16:23) :  close1 missing at setOut1  
- //           V02.00 (24.04.2003 16:54) :  CVS Eclipse
- //           V02.21 (16.05.2005 17:59) :  isOpen
- //           V.o75  (12.02.2009 19:21) :  ported to Frame4J
- //           V.o20+ (20.02.2010 17:10) :  fled from Kenai to new SVN
-
+ // so far    V00.00 (25.11.1998) :  new
+ //           V00.01 (08.05.2000) :  ex weinertBib -> sub package 
+ //           V01.00 (06.12.2001) :  Symmetric, bufferd, Threads  
+ //           V01.01 (23.08.2002) :  close1 missing at setOut1  
+ //           V02.00 (24.04.2003) :  CVS Eclipse
+ //           V02.21 (16.05.2005) :  isOpen
+ //           V.o20+ (20.02.2010) :  fled from Kenai to new (own) SVN
 @MinDoc(
    copyright = "Copyright  2001 - 2002, 2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "use where one Writer is handled but two are needed",  
    purpose = "a Writer that outputs the content to two branches"
 ) public class TeeWriter extends Writer {
@@ -198,7 +195,7 @@ import de.frame4j.text.TextHelper;
    public TeeWriter(Writer writer1){
       this(20480, 50);
       setOut1(writer1);
-   } // TeeWriter(Writer
+   } // TeeWriter(Writer)
 
 
 /** Make a TeeWriter with two outputs. <br />
@@ -211,7 +208,7 @@ import de.frame4j.text.TextHelper;
    public TeeWriter(final Writer writer1, final Writer writer2){
       this(writer1);
       if (writer1 != writer2) setOut2(writer2);
-   }  // TeeWriter(Writer
+   }  // TeeWriter(2*Writer)
 
 /** Make a TeeWriter with two outputs. <br />
  *  <br />
@@ -294,7 +291,6 @@ import de.frame4j.text.TextHelper;
  *  @return true if already closed
  */
    public boolean isClosed(){ return closed; }
-
    
 /** Not yet closed / still usable. <br />
  *  <br />
@@ -306,7 +302,6 @@ import de.frame4j.text.TextHelper;
  *  @return true if still open (and hopefully usable) 
  */
    public boolean isOpen(){ return !closed; }
-
 
 /** Close the TeeWriter. <br />
  *  <br />
@@ -355,7 +350,6 @@ import de.frame4j.text.TextHelper;
 /** The buffer was at least once full. <br /> */
    boolean filled;
 
-
 /** This TeeWriter's buffer length. <br />
  *  <br />
  *  The TeeWriter buffers its incoming output. The buffers has a size between
@@ -369,7 +363,6 @@ import de.frame4j.text.TextHelper;
  */
    public final int getBuffLen(){ return buffLen - 1; }
 
-
 /** The buffer's current length / the number of available characters. <br />
  *  <br />
  *  @see #write      write()
@@ -377,7 +370,6 @@ import de.frame4j.text.TextHelper;
  *  @see #getContent getContent()
  */
    public final int getContentLen(){ return filled ? buffLen - 1 : buffIn; }
-   
 
 /** The buffer's current content as String. <br />
  *  <br />
@@ -457,9 +449,7 @@ import de.frame4j.text.TextHelper;
       bastel.append(buff, 0, over);
       return bastel.toString();
     } // sync.
-   } // getContent
-
-
+   } // getContent(int,boolean,int)
 
 /** The threshold for automatic flushing. <br />
  *  <br />
@@ -539,7 +529,7 @@ import de.frame4j.text.TextHelper;
       synchronized(lock) { 
          blocked1 = true; // lock
       }
-   } // block1
+   } // block1()
 
 /** Unblocking the first Writer. <br />
  *  <br />
@@ -554,7 +544,7 @@ import de.frame4j.text.TextHelper;
          blocked1 = false; // unlock
          forceFlush1();
       }
-   } // unBlock1
+   } // unBlock1()
 
 
 /** First Writer is closed / not connected. <br /> */
@@ -591,7 +581,7 @@ import de.frame4j.text.TextHelper;
          buffIn1  = -1111; // empty
          blocked1 = true;
       } // sync out1
-   } // close1
+   } // close1()
 
    
 //---    flushing thread   --------------
@@ -635,7 +625,7 @@ import de.frame4j.text.TextHelper;
       if (maxBlockTime < 4) maxBlockTime = 4;
       else if (maxBlockTime > 9800) maxBlockTime = 9800;
       this.maxBlockTime = maxBlockTime;
-   }
+   } // setMaxBlockTime(int)
 
 /** Number of characters lost by (blocked) first Writer. <br />
  *  <br /> 
@@ -656,13 +646,13 @@ import de.frame4j.text.TextHelper;
    } // getLostChars1(boolean)
 
 /** Number of characters lost by (blocked) first Writer. <br />
- *  <br /> 
- * @see #getLostChars1(boolean) 
+ *
+ *  @see #getLostChars1(boolean) 
  */   
    protected int lostChars1; // guarded by lock
 
 
-/** Flushing the first Writer.<br /> */
+/** Flushing the first Writer. <br /> */
    public void flush1(){ 
       if (blocked1 || flush1Thread == null 
                                       || (noExplFlush1 && !closed)) return;
@@ -758,7 +748,6 @@ import de.frame4j.text.TextHelper;
       } // sync. TeeWriter
       return this;
    } // setOut1(Writer)
- 
 
 /** Switching the first Writer. <br />
  *  <br />
@@ -784,7 +773,6 @@ import de.frame4j.text.TextHelper;
       } // sync. TeeWriter
       return this;
    } // switchOut1(Writer)
-
   
 /** Setting / connecting the first Writer as OutputStream. <br />
  *  <br />
@@ -882,7 +870,6 @@ import de.frame4j.text.TextHelper;
  */
    public volatile boolean noExplFlush2;
 
-
 /** Flushing the second Writer. <br /> */
    public void flush2(){
       if (out2 == null || noExplFlush2) return;
@@ -911,7 +898,6 @@ import de.frame4j.text.TextHelper;
       } // sync lock
    } // flush2
 
-
 /** Closing the second Writer. <br /> */
    public void close2(){
       if (out2 == null) return;
@@ -928,7 +914,6 @@ import de.frame4j.text.TextHelper;
          buffOut2 = -2222; // out of the way
      } // sync
    } // close2()
-
 
 /** Setting the second Writer. <br />
  *  <br />
@@ -955,7 +940,7 @@ import de.frame4j.text.TextHelper;
          buffOut2 = buffIn;
       } // sync
       return this;
-   } // setOut2
+   } // setOut2(Writer)
    
 /** Setting the second Writer as OutputStream. <br />
  *  <br />
@@ -1109,7 +1094,6 @@ import de.frame4j.text.TextHelper;
       } // sync
   } // write(char[],int,int)
 
-
 /** Output a character (char provided as int) to the TeeWriter. <br />
  *  <br />
  *  This method outputs the lower 16 Bit of {@code ic} as character (char) to
@@ -1118,7 +1102,6 @@ import de.frame4j.text.TextHelper;
  *  Exceptions are caught.<br />
  */
    @Override public void write(int ic){ write((char) ic); }
-
 
 /** Output a character (char) to the TeeWriter. <br />
  *  <br />

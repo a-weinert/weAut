@@ -44,9 +44,10 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  <br />
  *  <a href="package-summary.html#co">&copy;</a>
- *  Copyright  1997 - 2009, 2021 &nbsp;  Albrecht Weinert<br />
- *  <br />  
- *  @see      de.frame4j.util.App
+ *  Copyright 1997 - 2009, 2021 &nbsp;  Albrecht Weinert<br />
+ *
+ *  @see de.frame4j.util.App
+ *  @see de.weAut.PiVals
  */
  // so far    V02.31 (01.03.2006) : UD
  //           V.032  (02.01.2009) : ported from de.a_weinert (German)
@@ -54,14 +55,13 @@ import de.frame4j.text.TextHelper;
  //           V.135+ (22.12.2015) : better CONSOLE_ENCODINg determination
  //           V.167+ (05.08.2016) : refactored to Frame4J'89 slimline
  //           V.031  (11.03.2021) : onPI and notWindows added
+ //           V.043  (09.05.2021) : WEB_START_VERS removed
 
 @MinDoc(
    copyright = "Copyright 1997 - 2009, 2021  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 42 $",
-   lastModified   = "$Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
-// usage   = "static import",  
+   version   = "V.$Revision: 46 $",
+   lastModified   = "$Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $",
    purpose = "Common final values, platform info, constants and so on."
 ) public interface ComVar {
 
@@ -70,7 +70,6 @@ import de.frame4j.text.TextHelper;
  *  Value: {@value}
  */
    String AUTHOR = "Albrecht Weinert";
-   
 
 /** Copyright for the framework. <br />
  *  <br />
@@ -92,7 +91,6 @@ import de.frame4j.text.TextHelper;
  */
    byte[] NO_BYTES = new byte[0];
 
-
 /** An empty array of (0) Objects. <br />
  *  <br />
  *  An empty array, being immutable, should always be used singleton. 
@@ -100,14 +98,12 @@ import de.frame4j.text.TextHelper;
  */
    Object[] NO_OBJECTS = new Object[0];
 
-
 /**  An empty array of (0) Classes. <br />
  *  <br />
  *  An empty array, being immutable, should always be used singleton. 
  *  This is for Class.<br />
  */
    Class<?>[] NO_CLASSES = new Class[0];
-
 
 /** An empty array of (0) doubles. <br />
  *  <br />
@@ -202,7 +198,6 @@ import de.frame4j.text.TextHelper;
  *  @see #ONE_DAY
  */
    int D  = 24 * H; 
-   
 
 /** Milliseconds per second. <br />
  *  <br />
@@ -247,7 +242,6 @@ import de.frame4j.text.TextHelper;
  *  Value: {@value} &nbsp; (...L means long)<br />
  */
    long ONE_LEAP_YEAR  = 366L * ONE_DAY;
- 
 
 /** No start parameters. <br />
  *  <br />
@@ -296,16 +290,14 @@ public static final int LOG_OUT_ERROR = 91;
 public static final int JOB_DONE_OK = 0;
    
 //---- End simple constants -------------------------------------  
-
    
 /** The one (and only) Runtime-Object of the JVM. <br /> */
    Runtime RUNTIME = Runtime.getRuntime(); 
 
 // Just to remind you: We're in an interface.
 // All variables are public final static 
-// And implementation hint: Due to calculations in the embedded class Impl
-// from here on order of declaration is relevant
-   
+// And again the implementation hint: Due to calculations in the embedded
+// class Impl from here on order of declaration is relevant
    
 /** Operating system's name. <br />
  *  <br />
@@ -357,7 +349,6 @@ public static final int JOB_DONE_OK = 0;
  */ 
    String HOST_IP = Impl.hostIP;
    
-   
 /** The host IP is V4. <br />
  *  <br />
  *  The value is {@link HOST_IP} could be determined and is of Type IPv4.
@@ -376,7 +367,6 @@ public static final int JOB_DONE_OK = 0;
  *  (if any) omitted, like e.g. Exec.
  */
     String PROG_SHORT = Impl.shortProgramName;
-  
 
 /** Encoding for (file) input and output. <br />
  *  <br />
@@ -391,7 +381,6 @@ public static final int JOB_DONE_OK = 0;
  */
    String FILE_ENCODING = Impl.getFileEncoding();
 
-
 /** Encoding for (file) resources in Java archives. <br />
  *  <br />
  *  To be portable, plain text files (mainly Frame4J's .properties) in 
@@ -402,10 +391,9 @@ public static final int JOB_DONE_OK = 0;
  *  methods as default.<br />
  *  <br />
  *  Value: &quot;UTF-8&quot; <br />
- *  Since: V.133+ 21.08.2009 <br />
+ *  Since: V.133+ 21.08.2009
  */
    String JAR_ENCODING = "UTF-8";
-
 
 /** Encoding for console input and output. <br />
  *  <br />
@@ -429,7 +417,6 @@ public static final int JOB_DONE_OK = 0;
  *  would go undetected here.<br /> 
  */
    String CONSOL_ENCODING = Impl.getConsolEncoding();
-   
 
 /** The real console, if any. <br />
  *  <br />
@@ -449,14 +436,12 @@ public static final int JOB_DONE_OK = 0;
  */  
    boolean hasCons = cons != null;
 
-
 /** The property &quot;file.separator&quot;. <br />
  *  <br />
  *  This is either '\' for DOS, Windows or '/'
  *  for all other operating systems (Unix, Linux).<br />
  */
    char FS = File.separatorChar;
-   
 
 /** The property &quot;file.separator&quot;. <br />
  *  <br />
@@ -464,7 +449,6 @@ public static final int JOB_DONE_OK = 0;
  *  for all other operating systems (Unix, Linux).<br />
  */
    String FSS = String.valueOf(FS);
-
 
 /** The system property &quot;path.separator&quot;. <br />
  *  <br />
@@ -474,7 +458,6 @@ public static final int JOB_DONE_OK = 0;
  *  default: ; (hence Windows) , if no access to system properties 
  */
    char PS = Impl.getPS();
-
 
 /** The system property &quot;user.region&quot;. <br />
  *  <br />
@@ -490,7 +473,6 @@ public static final int JOB_DONE_OK = 0;
  */
    String UR = Impl.getUR();
 
-
 /** The system property &quot;user.language&quot;. <br />
  *  <br />
  *  This would be the language of the underlying Java installation, e.g. de
@@ -502,12 +484,6 @@ public static final int JOB_DONE_OK = 0;
  */
    String UL = Impl.getUL();
 
-   // Just to remind you: We're in an interface.
-// All variables are public final static 
-// And implementation hint: Due to calculations in the embedded class Impl
-// here the order of declaration is relevant
-
-
 /** The system property &quot;user.dir&quot;. <br />
  *  <br />
  *  The &quot;user directory&quot; usually is the actual directory when 
@@ -516,7 +492,6 @@ public static final int JOB_DONE_OK = 0;
  *  default: null, if not to be evaluated.<br />
  */
    String UD = Impl.getUD();
-
 
 /** The system property &quot;java.home&quot;. <br />
  *  <br />
@@ -529,7 +504,6 @@ public static final int JOB_DONE_OK = 0;
  *  default: null, if not to be evaluated
  */
    String JH = Impl.getJH();
-
 
 /** The &quot;jre\lib&quot; directory. <br />
  *  <br />
@@ -549,7 +523,6 @@ public static final int JOB_DONE_OK = 0;
  */
    String JRL = JH == null ? null : JH + FS + "lib" + FS;
 
-
 /** The properties user.language and .region were readable. <br />
  *  <br />
  *  The value true signalises that both {@link #UL} and {@link #UR} were 
@@ -568,20 +541,6 @@ public static final int JOB_DONE_OK = 0;
  */   
     ClassLoader FRW_CLLD = Impl.getClassLoader();
     
-/** The Web Start version. <br />
- *  <br />
- *  If this class (and the application involved) was loaded by Web Start
- *  this is the version String. Otherwise it is the 
- *  {@link #EMPTY_STRING EMPTY_STRING}.   
- */
-    String WEB_START_VERS = Impl.getWebStartVers();
-    
-/** Started by Web Start. <br /> */
-    static public boolean isWebStart(){ 
-       return EMPTY_STRING != WEB_START_VERS;
-    } // isWebStart()
-    
-
 //===================   inner class just for initialisations    ===========
 
 /** <b>Internal implementation class (for ComVar)</b>. <br />
@@ -593,7 +552,7 @@ public static final int JOB_DONE_OK = 0;
  *  accomplish.<br />
  *  <br />
  *  In this sense this class is not for the user of the frame work, nor does
- *  she or he need it's documentation. <br />
+ *  she or he need its documentation. <br />
  *  <br />
  *  Background: This (javaDoc) documentation is only visible because all 
  *  elements in an interface have to be public. This &quot;enforced 
@@ -613,23 +572,9 @@ public static final int JOB_DONE_OK = 0;
    private static volatile boolean UL_UR_da = true;
    private static volatile boolean notWindows;
    private static volatile boolean onPi;
-   
 
    private static volatile String hostIP = "127.0.0.1";
    private static volatile boolean hostIPv4;
-
-
-/** Web Start Version or EMPTY_STRING. <br /> */
-   static String getWebStartVers(){
-     try {
-          String ret =  System.getProperty("javawebstart.version");
-          /// System.out.println(" /// TEST javawebstart.version = " + ret);
-          if (ret != null) return ret; 
-     } catch (Exception e) {
-          /// System.out.println(" /// TEST get javawebstart.version : " + e);
-     }
-     return EMPTY_STRING;
-   } // getWebStartVers()
 
 /** user.language or en. <br /> */
    static String getUL(){
@@ -743,7 +688,6 @@ public static final int JOB_DONE_OK = 0;
      shortProgramName = doI < ret.length() ? ret.substring(doI): ret;
      return ret;
    } // getProgramName()
-   
 
 /** file.encoding or ISO-8859-1 on Windows. */
    static String getFileEncoding(){
@@ -760,7 +704,6 @@ public static final int JOB_DONE_OK = 0;
      } catch (Exception ex) { tmp = "ISO-8859-1"; }
      return tmp;
    } // getFileEncoding()
-
 
 /** Default encoding for console (stream) input and output. <br />
  *  <br />
@@ -804,5 +747,5 @@ public static final int JOB_DONE_OK = 0;
      return null;
    } // getClassLoader()
 
- } // static class Impl (12.06.2003) ====================================
+ } // static class Impl (12.06.2003, 10.03.2021) ======================
 } // ComVar (08.11.2003, 21.01.2005, 21.08.2009, 05.08.2016, 10.03.2021)

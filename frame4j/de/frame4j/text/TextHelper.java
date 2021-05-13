@@ -87,8 +87,8 @@ import de.frame4j.util.MinDoc;
 @MinDoc(
    copyright = "Copyright 2000 - 2013, 2021  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 40 $",
-   lastModified   = "$Date: 2021-04-19 21:47:30 +0200 (Mo, 19 Apr 2021) $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "import",  
    purpose = "common text utilities: check, parse and formating of texts"
@@ -2880,8 +2880,6 @@ import de.frame4j.util.MinDoc;
       //  return getCommaSemicolonWSpattern().split(input, -1);
    } // splitCsWS(CharSequence)
 
-
-
 /** Make an argument line from a parameter array. <br />
  *  <br />
  *  This method generates one (command) line from an array of arguments or
@@ -2891,8 +2889,9 @@ import de.frame4j.util.MinDoc;
  *  (?),  asterisk(*) or sharp (#), will be set in quotes (&quot;) if not yet
  *  so.<br />
  *  <br />
- *  If there are no parameters the empty String is returned.<br />
- *  <br />
+ *  If there are no parameters the 
+ *  {@linkplain ComVar#EMPTY_STRING empty String} is returned.<br />
+ *
  *  @param args    the parameter
  *  @return        the corresponding (command) line
  */
@@ -2901,19 +2900,22 @@ import de.frame4j.util.MinDoc;
       final int argAnz = args.length;
       if (argAnz == 0) return ComVar.EMPTY_STRING;
       boolean notFirst = false;
-      StringBuilder dest = new StringBuilder(argAnz * 8);
+      StringBuilder dest = null;
       for (int i = 0; i < argAnz; ++i) {
          String akt = args[i];
          if (akt == null) continue;
          if (notFirst) {
             dest.append(' ');
-         } else notFirst = true;
+         } else {
+           notFirst = true;
+           dest = new StringBuilder(argAnz * 8);
+         }
          boolean quote = schouldQuote(akt);
          if (quote) dest.append('\"');
          dest.append(akt);
          if (quote) dest.append('\"');
       }
-      return dest.toString();
+      return notFirst ? dest.toString() : ComVar.EMPTY_STRING;
    } // prepArgs(String argLine, String)
 
 

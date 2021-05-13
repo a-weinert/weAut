@@ -206,7 +206,7 @@ import de.frame4j.text.TextHelper;
  *  @see #setFields(Object)
  *  @see PropMapHelper#setField(Object, String, String)
  *  @author   Albrecht Weinert
- *  @version  $Revision: 43 $ ($Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $)
+ *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
  */
  // so far    V00.00 (05.04.1999) : new
  //           V00.02 (11.07.2000) : Inter nationalising, extensions
@@ -237,13 +237,12 @@ import de.frame4j.text.TextHelper;
  //           V.118+ (23.02.2015) : Servlet support removed 
  //           V.153+ (09.05.2016) : Web Start compatibility 
  //           V.176  (16.08.2016) : Applet support killed (Hi Java 9)
-
+ //           V.  44 (05.05.2021) : wordstopp- removed
 @MinDoc(
-   copyright = "Copyright 1999 - 2006, 2009, 2016  A. Weinert",
+   copyright = "Copyright 1999 - 2009, 2016, 2021  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 43 $",
-   lastModified   = "$Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "3 phase: make, populate, use (preferably not further modified)",  
    purpose = 
       "extended capabilities of PropMap for applications, App, ..."
@@ -253,11 +252,9 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  Changed 21.11.2009, V.159+, due to added nationalisation history.<br />
  */
-   static final long serialVersionUID = 260153008400202L;
+   static final long serialVersionUID = 260153008402021L;
 //                                      magic /Id./maMi
-   
-   final static boolean RESTEST = false; // enable development logs on S.out
-
+   static final boolean RESTEST = false; // enable development logs on S.out
 
 /** A base URL. <br />
  *  <br />
@@ -1533,11 +1530,11 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  <b>Property file parameter<br /></b>
  *  <br />
- *  For a property file parameter (beginning with an ape @) the properties 
- *  of a file named  parameter (without the leading @) or parameter.properties
- *  will be loaded and if possible their nationalised versions by 
- *  {@link #nationalise nationalise()}). If no file exists an exception is 
- *  raised.<br />
+ *  For a property file parameter @filXY (e.g) the properties of a file named
+ *  filXY (in the example, without the leading @) or filxy.properties
+ *  will be loaded and if possible its nationalised versions by 
+ *  {@link #nationalise nationalise()}). If no such file exists an exception
+ *  is raised.<br />
  *  Attention: If the properties language or region were changed, nationalised
  *  versions of the base .properties (named according to application class
  *  in most cases) file will be loaded as last step in that proceeding.<br />
@@ -1545,15 +1542,10 @@ import de.frame4j.text.TextHelper;
  *  <b>Standard parameters<br /></b>
  *  <br />
  *  For the first found standard parameter a property named {@code word-0} or 
- *  {@code wordstopp-0} is searched for; for the second word-1 and so on.
- *  If this property do not exist an exception is raised. Otherwise its
- *  value is taken as the name of the property to be set by the standard 
+ *  is searched for; for the second {@code word-1} and so on. If this 
+ *  property does not exist an exception is raised. Otherwise its value is
+ *  taken as the name of the property to be set by the standard 
  *  parameter.<br />
- *  <br />
- *  If the property fond is not {@code word-0} but {@code wordstop-0} etc.
- *  the first effect is the same, except that no further parameters will
- *  be evaluated by this method and all parameters already worked on will
- *  be set null in the array {@code args}.<br />
  *  <br />
  *  Word numbers in the range 0 to 9 may be given as two digit letters with a
  *  leading zero, as {@code word-00} to {@code word-09}.<br />
@@ -1592,32 +1584,33 @@ import de.frame4j.text.TextHelper;
 
 /** Evaluate or parse a sequence of parameters. <br />
  *  <br />
- *  This method is like  
- *  {@link #parse(String[],CharSequence) parse(String[], CharSequence)} with 
- *  the following differences if the parameter {@code partial} is true:<ol>
- *  <li>Parameter beginning with @ (ape) are not interpreted as order to
+ *  This method is like exactly like 
+ *  {@link #parse(String[],CharSequence) parse(String[], CharSequence)} if 
+ *  the parameter {@code partial} is false.<br />
+ *  When {@code partial} is true there are the following differences:<ol>
+ *  <li>Parameter beginning with @ are not interpreted as order to
  *      load another .properties file but as standard parameter, except when a
  *      property load@prop is true (by 
  *       &quot;load@prop&nbsp;=&nbsp;on&quot; in the base .properties file
  *       e.g.).</li>
- *  <li>standard parameters don't throw exceptions if the related property
+ *  <li>Standard parameters don't throw exceptions if the related property
  *      word-0, word-1 ... etc. does not exist.</li>
- *  <li>properties like wordstopp-0 etc. (hence) have no effect for standard
- *      parameters.</li>
  *  <li>For option parameters a property {@code option-name} and also a 
  *      property {@code option+name} is looked for (all in lower case). If 
  *      both don't exist an exception is thrown.</li>
  *  <li>An option defined by a &quot;+ property&quot; (see point 3) is 
- *      considered as only relevant for the following parameters / arguments.
- *      It will hence not be set null in {@code args} and may be (sequence
- *      dependent) re-evaluated by the application code.<br />
+ *      considered as only relevant for the following parameters / arguments
+ *      in their sequence. <br />
+ *      It will not be set null in {@code args} and may be (sequence
+ *      dependent re-) evaluated by the application code.<br />
  *      Therefore it is allowed to define an option with no effect for this
- *      method by the form &quot;<code>option+dummy=</code>&quot;, without
- *      raising an exception by this. It is also possible to define
- *      an option without effect for this method by beginning with = or 
- *      containing a comma (,). Examples:
- *      &quot;<code>option+minh=&nbsp;&nbsp;inh</code>&quot; or
- *      &quot;<code>option+minh&nbsp;&nbsp;inh,&nbsp;inh2</code>&quot;.</li>
+ *      method by the form &quot;<code>option+dummy=</code>&quot; or 
+ *      &quot;<code>option+dummy= ##</code>&quot; without raising an 
+ *      exception. If the option value stars with # (as in the second example)
+ *      the count of word parameters will be set to 30 if less.<br />
+ *      The effect is that unsatisfied word-0, word-1 etc. options won't
+ *      get one of the word parameters to follow, hence, keeping them for 
+ *      later evaluation by application code.</li>
  *  <li>An option (-xyz) defined by a &quot;minus property&quot;, like
  *      {@code option-xyz=effect}, is considered as effective for the 
  *      application as whole and independent of parameter sequence. The 
@@ -1646,17 +1639,16 @@ import de.frame4j.text.TextHelper;
    public void parse(final String[] args, final CharSequence commSt, 
                       final boolean partial) throws IllegalArgumentException {
      if (args == null) return;
-     int argsL     = args.length;
+     int argsL  = args.length;
      if (argsL == 0)   return;
      String aktArg = null;
      int commPos   = commSt != null && commSt.length() > 0 ? -1 : -9;
      String keyUse = null; // flag to use next parameter as value for keyUse
      int wordNo    = 0; 
      boolean loadProp = !partial || getBoolean("load@prop");
-
-      // System.out.println("TEST partial = " + partial 
-      //        + ", propload = " +loadProp);   /// XXXX
-
+     if (RESTEST) System.out.println(" /// TEST Prop.parse: partial = " 
+                                     + partial + ", propload = " + loadProp);
+     boolean plusOption = false;
      parLoop: for (int i = 0; i < argsL && commPos < 0; ++i) {
         aktArg = args[i];
         if (aktArg == null) continue parLoop;
@@ -1681,9 +1673,12 @@ import de.frame4j.text.TextHelper;
            }   // comment found            
         }   // search comment              
         if (keyUse != null) { // this parameter is the value for ...
+          if (RESTEST) System.out.println(" /// TEST prop \"" + keyUse
+              + "\" = " + aktArg + " ("
+                 + (partial && !plusOption ? "removed)" : "kept)"));
            put(keyUse, aktArg);
            keyUse = null; // done
-           if (partial)  args[i] = null;
+           if (partial && !plusOption)  args[i] = null;
            continue parLoop;
         } // this parameter is the value for ...
         if (loadProp && aktArg.charAt(0) == '@') { // file denotation
@@ -1704,33 +1699,37 @@ import de.frame4j.text.TextHelper;
           final char char1 = aktArg.charAt(1);
           if (char1 == '-') { // double -
              aktArg = aktArg.substring(1); // first minus removed
-             if (RESTEST) System.out.println("TEST option - removed = "
+             if (RESTEST) System.out.println(" /// TEST option - removed = "
                                                                   + aktArg);
           } else if  (char1 >= '0' && char1 <= '9') { // neg number
-             
-          } else { // option
+             // will fall though to pure word parameter if no = inside
+          } else { // neg number else -option
            aktArg = TextHelper.simpLowerC(aktArg.substring(1));
-           boolean plusOption = false;
-           int     len        = 0;
-           String  optSet     = value("option-" + aktArg);
-           if (RESTEST) System.out.println(" /// TEST parse \"" + aktArg 
-                                                     + "\" by \""  + optSet);
-           
+           plusOption = false;
+           int     len    = 0;
+           String  optSet = value("option-" + aktArg);
            if (optSet == null) {
                if (partial) {
                    optSet = value("option+" + aktArg);
                    plusOption = optSet != null;
                }
-           } 
-           if (optSet != null) {
-              len = (optSet = optSet.trim()).length();
            }
-           if (len == 0) {
+           if (optSet != null) {
+             len = (optSet = optSet.trim()).length();
+           }
+           if (RESTEST) System.out.println(" /// TEST parse "
+                                  + (plusOption ? '+' : '-') + "\"" + aktArg 
+                                     + "\" by \""  + optSet + "\"");
+           if (len == 0) { // no action for option defined
               if (!plusOption && !allowNoPropFile) // && !all.. since 06.04.21
                  throw new IllegalArgumentException(valueLang("unknopt") 
                                                                   + aktArg);
+              // to here only with option+ and parse partial 
               continue parLoop; 
-           }
+           } // no action for option defined
+           if (plusOption && optSet.charAt(0) == '#') { // option+yxz= #.....
+             if (wordNo < 30) wordNo = 30;
+           } // option+yxz= #.....
            int startIndex =  0;
            int endIndex   = -1;
            int glPos      = -1;
@@ -1752,7 +1751,7 @@ import de.frame4j.text.TextHelper;
                     throw new IllegalArgumentException(
                        "\n * multiple settings with next parameter" + aktArg);
                  }
-                 keyUse = optLine;   // error corrected 20.03.00
+                 keyUse = optLine;   // error corrected 20.03.20000
                  continue optLineLoop;
               }
               setProperty(optLine);
@@ -1761,7 +1760,6 @@ import de.frame4j.text.TextHelper;
                args[i] = null;  // used, -opt  && partial ==> remove
            continue parLoop; 
          } // option
-
         } // Start mit -
         
         int glPos = aktArg.indexOf('=');
@@ -1776,32 +1774,32 @@ import de.frame4j.text.TextHelper;
            if (partial) args[i] = null;  // used && partial ==> remove
            continue parLoop;             // ^ and the next please
         } // direct set
-        // to here only with a pure word parameter
+        
+        // to here only with a pure word parameter 
         String wordSet = getProperty("word-", wordNo);
         if (wordSet == null || wordSet.length() == 0) { // no wordset
-           if (partial) continue parLoop;
-           wordSet = getProperty("wordstopp-", wordNo);
-           if (wordSet != null && wordSet.length() != 0) { // stop !
-              put(wordSet, aktArg);
-              for( ; i >= 0; --i) args[i] = null; // inclusive here remove
-              break parLoop;
-           } // stop !
+           if (partial) continue parLoop; // allows keep pure word param
            throw new IllegalArgumentException(
                 TextHelper.messageFormat(null, valueLang("morespar"), 
                     new int[]{wordNo} ).toString());
-            ///       "\n * Mehr als " + wordNo + " (Standard-) Parameter");
         } // no wordset
         put(wordSet, aktArg);
-        // System.out.println("TEST prop set / changed " + wordSet + ", "
-           //                                     + aktArg);
+        if (RESTEST) System.out.println(" /// TEST prop set / changed "
+                      + wordSet + "[" + wordNo + "] = "
+                      + aktArg + " (" + (partial ? "removed)" : "kept)"));
         wordNo++;
         if (partial) args[i] = null;  // used && partial ==> remove
      }// for parLoop 
+     if (RESTEST) {
+       String restArgs = TextHelper.prepParams(args);
+       System.out.println(" /// TEST Prop.parse: partial = " + partial
+                 + ", wordNo = " + wordNo
+                     + "\n /// TEST args left: " + restArgs); 
+     }  // RESTEST
      if (keyUse != null) { // missing set parameter after option xyz=
         throw new IllegalArgumentException(
              TextHelper.messageFormat(null, valueLang("missval"), 
                                                         aktArg).toString());
-           //  "setting for " + aktArg + " is missing.");
      } // missing set parameter after option xyz=
    } // parse(String[], CharSequence, boolean)
 

@@ -21,67 +21,64 @@ import de.weAut.ClientPigpiod;
 import java.io.IOException;
 import javax.management.JMException;
 
-/** <b>BlinkOnPi &ndash; a Java pigpiod test and demo program</b>.<br />
+/** <b>BlinkOnPi &ndash; a pigpiod test and demo program</b>.<br />
  *  <br />
- *  This program is based on a port of pigpiod test and demo program
- *  rdGnPiGpioDBlink from C to Java. It uses Joan N.N's pigpio library's 
+ *  This program uses Joan N.N's pigpio library's 
  *  <a href="http://abyz.me.uk/rpi/pigpio/sif.html">socket interface</a> 
  *  directly. Hence, it is 100% pure Java &mdash; that means no JNI
  *  (Java native interface) is used.<br />
  *  <br />
- *  Comment excerpt of the original/ported C source file: <br /><pre>
-  A fifth program for Raspberry's GPIO pins
-
-  Rev. $Revision: 43 $  $Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $
-
-  Copyright  (c)  2019   Albrecht Weinert <br />
-  weinert-automation.de      a-weinert.de
-
-  It uses two/three pins as output assuming two LEDs connected to as H=on
+ *  Its main function is to blink three LEDs:<br /><pre>
   Pi 1  / Pi 3       Pin
   GPIO17/ 17 : red    11
-  GPIO21/ 27 : green  13
-  GPIO25     : yellow 22  (since Revision 45)
-  This program forces application singleton and may be used as service.  
-
-  Its functions are the same as rdGnBlinkBlink (even sharing the lockFile)
-  except for using the pigpioD library. Our makefiles define
-  MCU and PLATFORM as make variables and macros. So we could make the
-  GPIO pin and address assignment automatically in the C programmes.
-  (End of original C comment excerpt)
-</pre><br />  
+  GPIO25     : yellow 22 
+  GPIO21/ 27 : green  13</pre>
+ *  Additionally, a Lo input on Pin {@code 7} will set Pin {@code 12} Hi.
+ *  Those Pins are a Lo active button and a buzzer in the trafficPi shield
+ *  (featuring also 12 LEDs as traffic lights on a cross road to play
+ *  with).<br />
+ *  The button to buzzer function can be disabled by start parameter
+ *  {@code -noButBuz} and the four (trafficPi) traffic light can be chosen
+ *  as LEDs by options {@code -north -east -south} or {@code -west}.<br />
+ *  This program's  help output by<br/> 
+ *  &nbsp; &nbsp; {@code java de.weAut.demos.BlinkOnPi -help [-en | -de]}<br />
+ *  will show all options and parameters. {@code -en} or {@code -de} will
+ *  switch the program's (help) output to English respectively German if
+ *  the operating system tells otherwise.<br />
+ *  <br />
  *  In Java, for good reasons, we do not have the "make and macro and all can
  *  be automatically changed" mechanism. In a Java program, by playing with
  *  inheritance and polymorphism, we can postpone the Pi type decision in a 
  *  better way to runtime, e.g. by making a {@link de.weAut.ThePi ThePi}
- *  object either by a {@link de.weAut.Pi3} (for Pi0, 3 and 4) or
- *  {@link de.weAut.Pi1} interface's inner class.<br />
+ *  object either by a {@link de.weAut.Pi3} (for Pi0, 3 and 4),
+ *  {@link de.weAut.Pi1} or {@link de.weAut.Pi2} interface's inner class.<br />
  *  <br />
  *  Settings, start parameter evaluation etc. are defined by
- *  <a href="../doc-files/PiUtil.properties">PiUtil.properties</a> and
  *  <a href="./doc-files/BlinkOnPi.properties">BlinkOnPi.properties</a>.
  *
  *  Copyright  &copy;  2021  Albrecht Weinert <br />
- *  @see BlinkOnPiMBean TestOnPi
+ *  @see BlinkOnPiMBean
+ *  @see de.weAut.TestOnPi
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 43 $ ($Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $)
+ *  @version  $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $)
+ *  @see BlinkOnPiMBean
+ *  @see PiUtil
+ *  @see <a href="./doc-files/BlinkOnPi.properties">BlinkOnPi.properties</a>
  */
 // so far:   V.  21  (21.05.2019) : new, minimal functionality
 //           V.  26  (31.05.2019) : three LEDs, IO lock 
 //           V.  35  (01.04.2021) : MBean for JConsole
+//           V.  45  (08.05.2021) : piTraffic buzzer and button
 @MinDoc(
   copyright = "Copyright 2021  A. Weinert",
   author    = "Albrecht Weinert",
-  version   = "V.$Revision: 43 $",
-  lastModified   = "$Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $",
+  version   = "V.$Revision: 47 $",
+  lastModified   = "$Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $",
   usage   = "start as Java application (-? for help)",  
   purpose = "a Frame4J program to blink LEDs on a Pi via pigpioD"
 ) public class BlinkOnPi extends App implements PiUtil, BlinkOnPiMBean {
 
-  @Override public final boolean parsePartial(){ return true; }
-  @Override protected final String extraPropertiesFile(){
-    return "de/weAut/PiUtil.properties";
-  } // extraPropertiesFile()
+ // @Override public final boolean parsePartial(){ return true; } // not yet
 
 /** The LEDs to blink. <br />
  *  <br />
@@ -94,19 +91,27 @@ import javax.management.JMException;
              ledYEpin = 22, // piTraffic west  gn
              ledGNpin = 13; // piTraffic south ye
 
+/** The buzzer and button. <br />
+ *  <br />
+ *  The default pin for a buzzer is 12 and for a low active button (needs
+ *  pull up) is 7. This is the trafficPi assignment.
+ */
+  public int buzzPin = 12, // piTraffic buzzer to 5V by npn transistor
+             buttPin =  7; // piTraffic button switch to ground
+
   ClientPigpiod  pI; // Pi and its connection
   
-  public int argPiType = 3; // start argument 
-  public int argPort; // 0 -> default 8888
-  public int argTimeout = 10000; // 10s default (not yet evaluated as arg)
-  public String argHost = null; // null not yet set -> default
-  
+    
 //--- internal state  exposed as MBean -------------------------------------  
   
   int cycCount; // incremented on every red & green blink cycle (600ms)
   boolean yLd; // status of the yellow LED(s)
   boolean rLd; // status of the red LED(s)
   boolean gLd; // status of the green LED(s)
+  
+  boolean leBut0; // status of the button (the one input here)
+  boolean leBut0prev; // previous status of the button (for flank action)
+  int leBuz0; // status of buzzer (the extra output here)
     
 //----  MBean Operations / Implementation    -------------------------------
   
@@ -117,6 +122,17 @@ import javax.management.JMException;
  @Override public Boolean getLEDye(){ return yLd; }
  @Override public Boolean getLEDgn(){ return gLd; }
  @Override public Boolean getLEDrd(){ return rLd; }
+ @Override public Boolean getLeBut(){ return leBut0; }
+ @Override public Boolean getLeBuz(){ return leBuz0 > 21; }
+ @Override public void setLeBuz(final Boolean on){
+   final int booLeBuz = on ? 255 : 0;
+   if (leBuz0 == booLeBuz) return;
+   pI.logIfBad(pI.setOutput(buzz0, (leBuz0 = booLeBuz) == 255));
+ }
+ @Override public void setLeBuzPWM(final Integer pwm){
+   pI.logIfBad(pI.setPWMcycle(buzz0, leBuz0 = pwm));
+ } // setLeBuzPWM(Integer)
+ @Override public Integer getLeBuzPWM(){ return leBuz0; } 
  @Override public Integer getPiType(){ return pI.thePi.type(); }
  
 //-------------------------------------------------------------------------- 
@@ -136,18 +152,27 @@ import javax.management.JMException;
  *  @param args start parameters.
  */
   public static void main(String[] args){
-    try {
-      new BlinkOnPi().go(args);
-   } catch (Exception e) {
-      AppBase.exit(e, INIT_ERROR);
-   }
+    try { new BlinkOnPi().go(args);
+    } catch (Exception e) { AppBase.exit(e, INIT_ERROR); }
   } // main(String[])
     
 //--- the GPIOs --------------  
-  
   int rdLED = PINig;
   int gnLED = PINig;
   int yeLED = PINig;
+  
+  int buzz0 = PINig;
+  int butt0 = PINig;
+  
+/** Helper method delay and button/buzzer IO. <br /> */
+  void butuzDel(final int drl){
+    leBut0 = pI.getInp(butt0) == 1; // input button
+    if (leBut0 != leBut0prev) { // button input changed
+      pI.logIfBad(pI.setOutput(buzz0, leBut0prev)); // buzzer 
+      leBut0prev = leBut0;
+    } // button is Lo active action on change only
+    thrDelay(drl); // and now the delay
+  } // butuzDel(int) 
                           
 /** The application's work. <br />
  *  <br />
@@ -156,17 +181,11 @@ import javax.management.JMException;
  *  @return 0: application ended OK; no errors, no results 
  */
   @Override public int doIt(){
-//  boolean loadExtra = prop.load1(this.getClass(),
-//    "de/weAut/PiUtil.properties", null); // loadExtra TEST out
     out.println(formMessage("startOn") );
-      // + "\n  ### loadExtra = " + loadExtra); // loadExtra TEST out
-    String oName = null;
     try {
-      oName = regAsStdMBean();
+      String oName = regAsStdMBean();
       out.println("\n  " + PROG_SHORT + " MBean: " + oName);
-    } catch (JMException ex) {
-      
-    } // registration as MBean failed
+    } catch (JMException ex) { } // registration as MBean failed
     if (getUseLock()) {
       final int oL = openLock(null, false);
       if (oL != 0) return errorExit(oL, formMessage("errLock")
@@ -175,42 +194,44 @@ import javax.management.JMException;
     } else {
       out.println(formMessage("noLockFil")); // no lock file/process
     }
-    try {
-      //  out.println("  BlinkOnPi TEST piType=" + argPiType);
-      pI = ClientPigpiod.make(argHost, argPort, argTimeout,
-                                                           argPiType, this); 
+    try { // make and connect
+      pI = ClientPigpiod.make(this);                    
       out.println("  BlinkOnPi connect " + pI);
     } catch (IOException ex) {
       return errorExit(ERR_PIGPIOD_CON, ex, 
                                           PiUtil.errorText(ERR_PIGPIOD_CON));
     }  // make and connect
-    try { // assign GPIOs to LED pins
+    try { // assign GPIOs to IO pin numbers
+     // GPIO =   piType    .                       f(pin);
        rdLED = pI.thePi.gpio4pinChck("red LED", ledRDpin);
        gnLED = pI.thePi.gpio4pinChck("grn LED", ledGNpin);
        yeLED = pI.thePi.gpio4pinChck("yel LED", ledYEpin);
+       buzz0 = pI.thePi.gpio4pinChck("buzzerH",  buzzPin);
+       butt0 = pI.thePi.gpio4pinChck("buttonL",  buttPin);
     } catch (IOException  ex) {
       return errorExit(ERR_ASSIGN_PIN, ex, PiUtil.errorText(ERR_ASSIGN_PIN));
     } // assign GPIOs to LED pins
-
+    // pI.logCommand(0); // Test log w/o command before (must show "none")
     out.println("  BlinkOnPi set mode output rd ye gn/up  14 mA");
     pI.logCommand(pI.setMode(rdLED, GPIO_OUT));
-    pI.logCommand(pI.setMode(gnLED, GPIO_OUT));
-    pI.logCommand(pI.setMode(yeLED, GPIO_OUT));
-    pI.logCommand(pI.setPullR(gnLED, PI_PUD_UP));
+    pI.logCommand(pI.initAsHiDrive(gnLED, 3));
+    pI.logCommand(pI.initAsOutput(yeLED));
+    pI.logCommand(pI.setMode(buzz0, GPIO_OUT));
     pI.logCommand(pI.setPadS(0, 14));
+    pI.logCommand(pI.initAsLoInput(butt0));
     out.println("  BlinkOnPi start endless loop (try JConsole)\n");
 
     for(;isRunFlag(); ++cycCount) {           //   red yellow green time/state 
       pI.logIfBad(pI.setOutput(rdLED, rLd=HI)); // on
-      thrDelay(200); if (!isRunFlag()) break;  //                  200 ms red
+      butuzDel(200); if (!isRunFlag()) break;  //                  200 ms red
       yLd = !yLd;                             //       toggle
       pI.logIfBad(pI.setOutput(yeLED, yLd)); //        on off
-      pI.logIfBad(pI.setOutput(gnLED, gLd=HI)); //            on
-      thrDelay(100); if (!isRunFlag()) break;   //                 100 ms both
+      pI.logIfBad(pI.setOutput(gnLED, gLd=HI)); //             on
+      butuzDel(100); if (!isRunFlag()) break;   //                 100 ms both
       pI.logIfBad(pI.setOutput(rdLED, rLd=LO)); // off
-      thrDelay(100); if (!isRunFlag()) break;   //                 100ms green
+      butuzDel(100); if (!isRunFlag()) break;   //                 100ms green
       pI.logIfBad(pI.setOutput(gnLED, gLd=LO)); //             off
-      thrDelay(200);                            //                 200 ms dark
+      butuzDel(200); if (!isRunFlag()) break;  //                  200 ms dark
     } // for endless (leave on stop signals)
     
     // shutdown tasks

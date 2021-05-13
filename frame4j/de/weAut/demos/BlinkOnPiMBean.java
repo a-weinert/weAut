@@ -28,10 +28,14 @@ import de.frame4j.util.AppMBean;
  *  <br />
  *  Copyright  &copy;  2021  Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $)
+ *  @version  $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $)
+ *  @see BlinkOnPi
+ *  @see de.weAut.TestOnPi
+ *  @see <a href="./doc-files/BlinkOnPi.properties">BlinkOnPi.properties</a>
  */
 // so far:   V.  33  (27.03.2021) : new, minimal functionality
 //           V.  34  (04.04.2021) : getPiType added 
+//           V.  43  (08.05.2021) : leBut
 
 public interface BlinkOnPiMBean extends AppMBean {
   
@@ -56,6 +60,48 @@ public interface BlinkOnPiMBean extends AppMBean {
  *  @return true when ON
  */
  public Boolean getLEDgn();
+ 
+
+/** The state of the button. <br />
+ *  <br />
+ *  The button is low active. Hence, false means pressed.
+ *  @return true when open, released
+ */
+ public Boolean getLeBut();
+ 
+/** The state of the buzzer. <br />
+ *  <br />
+ *  The buzzer is an extra output. Default is pin 12. On the trafficPi
+ *  shield pin 12 is a buzzer switched on by Hi (via a npn transistor). <br />
+ *  This method returns the binary on/off state of the pin in question.
+ *  When actuated via {@linkplain #setLeBuzPWM(Integer) PWM}  0..21 is 
+ *  considered as OFF (low, false) and 22..255 as ON (hi, true).
+ *  @return true when active (Hi)
+ *  @see #setLeBuz(Boolean)
+ *  @see #setLeBuzPWM(Integer)
+ *  @see #getLeBuzPWM()
+ */
+  public Boolean getLeBuz();
+
+/** The PWM state of the buzzer. <br />
+ *  <br />
+ *  The buzzer is an extra output. Default is pin 12.
+ *  @return 0..255 which is 0..100% PWM
+ *  @see #getLeBuz()
+ */
+  public Integer getLeBuzPWM();
+  
+/** The state of the buzzer. <br /> */   
+  public void setLeBuz(Boolean on);
+
+/** Set buzzer output by PMM. <br /> 
+ * 
+ *  @param pwm  0..255 is 0..100% PWM
+ *  @see #getLeBuzPWM()
+ *  @see #getLeBuz()
+ */   
+  public void setLeBuzPWM(Integer pwm);
+
      
 /** See the number of cycles. <br />
  *  <br />

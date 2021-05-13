@@ -86,37 +86,32 @@ import static de.frame4j.util.ComVar.*;
  *  Copyright 1998 - 2003, 2004, 2008 &nbsp; Albrecht Weinert<br /> 
  *  <br />
  */
- // so far    V00.00 (15:16 28.04.2000) :  ex weinertBib
- //           V00.01 (12:46 11.06.2000) :  Serializable
- //           V00.04 (04.01.2002 17:55) :  buffered, 1.4, multiple trials
- //           V00.10 (04.01.2002 17:55) :  de, extensions, paint ...
- //           V00.11 (08.08.2002 20:30) :  load as stream
- //           V02.09 (30.10.2003 14:14) :  get from Component
- //           V02.22 (08.09.2005 09:39) :  toString()
- //           V02.25 (07.03.2008 09:32) :  ex prae - Java 2
- //           V02.26 (19.03.2008 08:33) :  Paintable
- //           V.o52+ (12.02.2009 19:21) :  ported to Frame4J
- //           V.o95+ (13.03.2009 14:35) :  imgPixels volatile ! (not tr typo)
- //           V.121+ (04.01.2010 14:13) :  some spelling
- //           V.139+ (06.01.2016) : FileHelper
-//           V.  17 14.03.2019 : getAsResourceStream
+ // so far    V00.00 (28.04.2000) :  ex weinertBib
+ //           V00.01 (11.06.2000) :  Serializable
+ //           V00.04 (04.01.2002) :  buffered, 1.4, multiple trials
+ //           V00.10 (04.01.2002) :  de, extensions, paint ...
+ //           V00.11 (08.08.2002) :  load as stream
+ //           V02.09 (30.10.2003) :  get from Component
+ //           V02.22 (08.09.2005) :  toString()
+ //           V02.25 (07.03.2008) :  ex prae - Java 2
+ //           V02.26 (19.03.2008) :  Paintable
+ //           V.o95+ (13.03.2009) :  imgPixels volatile ! (not tr typo)
+ //           V.121+ (04.01.2010) :  some spelling
+ //           V.139+ (06.01.2016) :  FileHelper
+ //           V.  17 (14.03.2019) :  getAsResourceStream
 @MinDoc(
    copyright = "Copyright 1998 - 2004, 2008, 2009, 20016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 38 $",
-   lastModified   = "$Date: 2021-04-16 19:38:01 +0200 (Fr, 16 Apr 2021) $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "use instead of Image and for images",  
    purpose = "additional operations and information on images"
 ) public class ImageInfo implements Serializable,  Paintable, Cloneable {
 
-
 /** Version number for serialising. <br /> */
    static final long serialVersionUID = 260153007300201L;
 //                                      magic /Id./maMi
-
-
-//---------   static ---------------------------------
 
 /** Determine the dimension of a .gif, .jpg or .png picture. <br />
  *  <br />
@@ -152,7 +147,7 @@ import static de.frame4j.util.ComVar.*;
  *  @return      the size;  (-1,-1), if not to be determined
  */
    @SuppressWarnings("resource")  // input is from buffer here
-   public static Dimension imageSize(final File fi) {
+   public static Dimension imageSize(final File fi){
       final Dimension ret = new Dimension(-1, -1); // like NONE_DIM
       if ( fi == null || !fi.exists() || fi.isDirectory() || !fi.isFile() )
          return ret;
@@ -168,15 +163,12 @@ import static de.frame4j.util.ComVar.*;
          }
          return ret;
       } 
-
       // GIF or other 
          ImageInfo ii = ImageInfo.getInstance(fi.getPath());
          return ii == null ? ret : ii.getSize();
    }  // Dimension imageSize(File)
 
-
 //--------------------------------------------
-
 
 /** The Image. <br />
  *  <br />
@@ -200,16 +192,14 @@ import static de.frame4j.util.ComVar.*;
  */
    public final Image getImg(){ return  img; }
 
-
 /** The picture's dimension. <br />
  *  <br />
  *  In case of no image (or not yet loaded) the dimension is
  *  (-1, -1).<br />
- *  <br />
  */
    protected volatile int w = -1, h = -1;
 
-/** The picture's file name (if given). */
+/** The picture's file name (if given). <br /> */
    String fName;
 
 /** The picture's file name (if given). <br />
@@ -227,11 +217,8 @@ import static de.frame4j.util.ComVar.*;
  *  @see #getImgPixels
  */
    protected volatile int[] imgPixels;
-
    
-/** State as text. <br /> 
- *  <br /> 
- */   
+/** State as text. <br /> */   
    @Override public String toString(){
       StringBuilder dest = new StringBuilder(98);
       dest.append(" de.frame4j.graf.ImageInfo ");
@@ -279,7 +266,7 @@ import static de.frame4j.util.ComVar.*;
          }
       }
       return ret;
-   }
+   } // clone()
 
 //--- Generate / construct ------------------------------------------------
    
@@ -299,7 +286,7 @@ import static de.frame4j.util.ComVar.*;
  *  supplied.<br />
  *  @param imgFile the file
  */
-   static public ImageInfo getInstance(File imgFile){
+   static public ImageInfo getInstance(final File imgFile){
       if (imgFile == null) return null;
       String name = imgFile.getPath(); 
       ImageInfo ret = null; 
@@ -310,7 +297,7 @@ import static de.frame4j.util.ComVar.*;
    } // getInstance(File)
 
 
-/** Make an ImageInfo object by a  file name. <br />
+/** Make an ImageInfo object by a file name. <br />
  *  <br />
  *  This method makes an ImageInfo object if fName designates an existing and
  *  readable file containing an image of JVM / platform supported format.<br />
@@ -321,7 +308,7 @@ import static de.frame4j.util.ComVar.*;
    static public ImageInfo getInstance(String fName){
       ImageInfo ret =  getInstance(fName, null, (Prop)null);
       return ret == null || ret.getWidth() < 0 ? null : ret;
-   } // getInstance(String
+   } // getInstance(String)
 
 /** Make an (buffered) Image by a file name. <br />
  *  <br />
@@ -335,7 +322,7 @@ import static de.frame4j.util.ComVar.*;
       ImageInfo ret =  getInstance(fName, null, (Prop)null);
       return ret == null || ret.getWidth() < 0 ? null 
            : (BufferedImage)ret.img;
-   } //  getImg(String 
+   } // getImg(String) 
 
 
 /** Make an ImageInfo object by a named file or class resource. <br />
@@ -381,8 +368,7 @@ import static de.frame4j.util.ComVar.*;
          } catch (Exception ex){} // ignore return null
       }
       return ret;
-   } // getInstance(String,String,Prop)
-
+   } // getInstance(2*String,Class)
 
 /** Make an ImageInfo object by a named file or resource. <br />
  *  <br />
@@ -396,12 +382,11 @@ import static de.frame4j.util.ComVar.*;
  *  in trials to load the picture as resource.<br />
  *  <br />
  *  If all fails null is returned.<br />
- *  <br />
+ *
  *  @param fName the name of the (image) file
  */
    static public ImageInfo getInstance(String fName,
                            final String ext, final Prop prop){
-
       String lastMadeFName = fName = TextHelper.makeFName(fName, null);
       if (fName == null) return null;
       String fNameO = fName;
@@ -427,8 +412,6 @@ import static de.frame4j.util.ComVar.*;
       return ret;
    } // getInstance(String,String,Prop)
 
-
-
 /** Make an ImageInfo object by a stream. <br />
  *  <br />
  *  This method tries to read a picture from the stream supplied.<br />
@@ -436,7 +419,7 @@ import static de.frame4j.util.ComVar.*;
  *  BufferedImage is returned. The stream supplied will not be closed by this
  *  method.<br />
  *  All failings return null.<br />
- *  <br />
+ *
  *  @param ein   the stream
  *  @param fName name for the returned object
  *  @see Prop#getAsStream(String, String) Prop.getAsStream()
@@ -453,7 +436,7 @@ import static de.frame4j.util.ComVar.*;
          ret.fName = fName;
          return ret;
       } catch (Exception ex) { return null;}
-   } // getInstance(InputStream)
+   } // getInstance(InputStream, String)
 
 
 /** Make an ImageInfo object by a graphical component. <br />
@@ -472,9 +455,9 @@ import static de.frame4j.util.ComVar.*;
  *  <br />
  *  The wrapped picture ({@link #getImg()}) is a 
  *  {@link java.awt.image.BufferedImage BufferedImage} of kind
- *  {@link java.awt.image.BufferedImage}.TYPE_INT_ARGB
+ *  {@link java.awt.image.BufferedImage}{@code .TYPE_INT_ARGB} 
  *  (4 Byte alpha RGB).<br />
- *  <br />
+ *
  *  @param comp the graphical component to catch; it has to be in a 
  *              renderable state.
  */
@@ -491,7 +474,6 @@ import static de.frame4j.util.ComVar.*;
       comp.paint(grI2);
       return ret;
    } //  getInstance(Component )
-
 
 /** Make an ImageInfo object, empty or from memory content. <br />
  *  <br />
@@ -527,7 +509,7 @@ import static de.frame4j.util.ComVar.*;
       if (imgPixels != null)  
          ((BufferedImage)ret.img).setRGB(0, 0, w, h,  imgPixels, 0, w);
       return ret;
-   } //  getInstance(int[], int, int)
+   } //  getInstance(int[],2*int)
 
 
 /** The image's width. <br /> */
@@ -543,9 +525,7 @@ import static de.frame4j.util.ComVar.*;
  *  <br />
  *  Otherwise use {@link #getWidth()} and {@link ImageInfo#getHeight()}.<br />
  */
-   public Dimension getSize(){
-      return new Dimension(w, h);
-   } // getSize() 
+   public Dimension getSize(){ return new Dimension(w, h); } // getSize() 
 
 
 /** The image as pixel array. <br />
@@ -554,7 +534,7 @@ import static de.frame4j.util.ComVar.*;
  *  first call). The made array is returned as reference (no copy made).<br />
  *  The returned arrays size is width * height (may be 0).<br />
  *  If no (readable / grabbable) picture is wrapped, null is returned.<br />
- *  <br />
+ *
  *  @return the pixel array (reference; no copy!, )
  */
    public final int[] getImgPixels(){
@@ -669,7 +649,6 @@ import static de.frame4j.util.ComVar.*;
  *  @see #surrondImage surrondImage()
  */
     public volatile  int loM;
-
  
 /** Surround the picture with margins. <br />
  *  <br />
@@ -693,7 +672,7 @@ import static de.frame4j.util.ComVar.*;
  *  Multiple calls to this method consider the enlarged picture as rimless 
  *  starting point. The margin set by the last call are stored in 
  *  {@link #upM}, {@link #loM}, {@link #leM} and  {@link #riM}.<br />
- *  <br />
+ *
  *  @param bgColor background respectively margin colour 
  *                  (default {@link GrafVal#ws}).
  *  @param upM upper margin in pixel (0..400).
@@ -721,7 +700,7 @@ import static de.frame4j.util.ComVar.*;
       }
       return (BufferedImage)(img =  GrafHelper.surrondImage(img,
                                            bgColor, upM, loM, leM, riM));
-   } // surrondImage(Color
+   } // surrondImage(Color, 4*int)
 
 
 /** Scaling an image. <br />
@@ -738,7 +717,7 @@ import static de.frame4j.util.ComVar.*;
  *  <br />
  *  If actual and destined sizes are equal and if the wrapped picture is 
  *  already of type  {@link BufferedImage} it is returned as is.<br /> 
- *  <br />
+ *
  *  @param bgColor background colour (if not null)
  *  @param newHeight target height
  *  @param newWidth  target width
@@ -756,11 +735,10 @@ import static de.frame4j.util.ComVar.*;
       w = newWidth;
       h = newHeight;
       return (BufferedImage) img;
-    } // surrondImage(Image
+    } // scaleImage(Color, 2*int
 
 
 //---   Store  / fetch  ----------------------------------------
-
 
 /** Writing the image to an output stream. <br />
  *  <br />
@@ -778,14 +756,13 @@ import static de.frame4j.util.ComVar.*;
  *  @throws IOException at problems with output
  */
    public boolean writeImage(final CharSequence formatName,
-                              final OutputStream output)
-                                                        throws IOException {
+                             final OutputStream output) throws IOException {
       if (output == null || !(img instanceof RenderedImage)) return false;
       final String tmpForm = TextHelper.trimUq(formatName, "png"); 
       return ImageIO.write((RenderedImage)img, tmpForm, output);
-   } // writeImage(String
+   } // writeImage(CharSequence, OutputStream) 
 
-/** The formats supported for writing. */
+/** The formats supported for writing. <br /> */
     static volatile String[] wfn;
 
 /** The formats supported for writing. <br />
@@ -799,7 +776,7 @@ import static de.frame4j.util.ComVar.*;
  *  @return a list (array) of image formats supported
  *  @see #writeImage writeImage()
  */
-    public static String[] getWriterFormatNames() {
+    public static String[] getWriterFormatNames(){
        if (wfn != null) {
           if (wfn.length == 0) return NO_STRINGS;
           return wfn.clone(); // defensive copy (since 04.03.2009)
@@ -828,7 +805,7 @@ import static de.frame4j.util.ComVar.*;
  *  The format to be used will be determined by the extension of the 
  *  {@link File} supplied. That will be overwritten with the picture 
  *  content. The file will be closed after successful writing.<br />
- *  <br />
+ *
  *  @param imgFile the file to write the image to
  *  @return true on success
  *  @throws IOException in case of file writing problems
@@ -854,12 +831,11 @@ import static de.frame4j.util.ComVar.*;
       return ret;
    } // writeImage(File) 
 
-
 /** Writing the image into a file named fileName. <br />
  *  <br />
  *  The call is equivalent to<br /> &nbsp;
  *   writeImage({@link FileHelper FileHelper}.getInstance(fileName))
- *  <br />
+ *
  *  @param fileName the file to write the image to
  *  @return true if successful
  *  @throws IOException in case of file output problems
@@ -877,7 +853,7 @@ import static de.frame4j.util.ComVar.*;
    private void writeObject(ObjectOutputStream oos) throws IOException {
       getImgPixels();   // make the pixels if not yet done
       oos.defaultWriteObject();       
-   } // writeObject(ObjectOutputStream
+   } // writeObject(ObjectOutputStream)
 
 /** Reading the image. <br /> */
    private void readObject(ObjectInputStream ois) 
@@ -915,7 +891,7 @@ import static de.frame4j.util.ComVar.*;
   *  For the picture wrapped by the enclosing {@link ImageInfo} object a 
   *  {@link JComponent} will be made, displaying just that picture.<br />
   */ 
-      public ImgDisplayer() {
+      public ImgDisplayer(){
          this.im = ImageInfo.this.getImg();
          setDoubleBuffered(true);
       } // Constructor
@@ -928,7 +904,7 @@ import static de.frame4j.util.ComVar.*;
           gr.drawImage(im, 0, 0, GrafVal.ws, null);
       } // paintComponent(Graphics)
 
-   } // class ImgDisplayer      ========================================= 
+   } // ImgDisplayer   ===== 
    
 
 /** The paint method. <br />
@@ -944,7 +920,6 @@ import static de.frame4j.util.ComVar.*;
  *  @param x y The left upper corner of where to paint
  *  @param width height The size of an surrounding rectangle to paint within
  */
-   
    @Override public void paint(final Graphics g, int x, int y, 
                                                 int width, int height){
       if (g == null || img == null) return;
@@ -953,6 +928,6 @@ import static de.frame4j.util.ComVar.*;
          return;
       }
       g.drawImage(img, x, y, width, height,  null);
-   } // paint(Graphics, ..
+   } // paint(Graphics, 4*int)
 
 } // class ImageInfo (30.10.2003, 04.03.2008, 19.03.2008, 04.03.2009)

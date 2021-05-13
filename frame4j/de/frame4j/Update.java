@@ -70,8 +70,7 @@ import de.frame4j.time.TimeHelper;
  */
  // so far    V00.00 (05.11.1998) : new made out of FS
  //           V00.02 (23.11.1998) : Backup directory
- //           V00.03 (04.12.1998) : verbose
- //           V00.04 (06.12.1998) : difOld
+ //           V00.03 (04.12.1998) : verbose, difOld
  //           V00.05 (15.12.1998) : Type lists and -nonew
  //           V00.06 (10.01.1999) : delEmpty
  //           V01.03 (01.04.1999) : zoneSave
@@ -82,14 +81,12 @@ import de.frame4j.time.TimeHelper;
  //           V02.24 (26.05.2005) : twoLineEndMeld
  //           V02.27 (16.11.2005) : noLCforTypes
  //           V02.28 (02.02.2006) : -xcopy; delete before copy in DaSe.
- //           V.o63+ (04.02.2009) : ported to Frame4J
  //           V.129+ (06.01.2016) : FileHelper
 @MinDoc(
    copyright = "Copyright  1998 - 2005, 2016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 39 $",
-   lastModified   = "$Date: 2021-04-17 21:00:41 +0200 (Sa, 17 Apr 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 44 $",
+   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
    usage   = "start as Java application (-? for help)",
    purpose = "updates files and / or directories also by complex criteria"
 ) public class Update extends App {
@@ -145,12 +142,11 @@ import de.frame4j.time.TimeHelper;
  */
    public String  back;
 
-
 /** Start method of Update . <br />
  *  <br />
  *  If the application did its job successfully it will end with exit code 0.
  *  An exit code &gt; 0 means an abort due to a problem.<br />
- *  <br >
+ *
  *  @param  args   command line parameter
  *  @see #doIt
  */
@@ -291,8 +287,4 @@ import de.frame4j.time.TimeHelper;
 
       return 0;
    } //  doIt()
-
 } // Update (20.02.2004, 26.05.2005, 04.02.2009)
-
-
-
