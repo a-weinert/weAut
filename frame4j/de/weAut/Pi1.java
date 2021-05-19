@@ -22,7 +22,7 @@ package de.weAut;
  *  @see Pi3
  *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 46 $ ($Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $)
+ *  @version  $Revision: 49 $ ($Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 36  (06.04.2021) :  polymorphism
@@ -66,10 +66,10 @@ public interface Pi1 extends ThePi {
  *     {@link #PIN5V}, {@link #PINix}: undefined, i.e. illegal pin number
  *     or {@link #PINig} ignore for pin = 0
  */
-@Override public default int gpio4pin(final int pin){
-  if (pin < 0 || pin > 26) return PINix;
-  return ThePi.Impl.pi1PIN2gpio[pin];
-} // gpio4pin(int)
+  @Override public default int gpio4pin(final int pin){
+    if (pin < 0 || pin > 26) return PINix;
+    return ThePi.Impl.pi1PIN2gpio[pin];
+  } // gpio4pin(int)
 
 /** Pin number to GPIO number lookup. <br />
  *
@@ -78,10 +78,10 @@ public interface Pi1 extends ThePi {
  *  @return 1..26 as the respective pin or 0 if the GPIO is not on the
  *         pin connector.
  */
-@Override public default int gpio2pin(final int gpio){
-  if (gpio < 0 || gpio > 25) return 0; 
-  return ThePi.Impl.pi1GPIO2pin[gpio];
-} // gpio4pin(int)
+  @Override public default int gpio2pin(final int gpio){
+    if (gpio < 0 || gpio > 25) return 0; // no bug 25 is OK with Pi1
+    return ThePi.Impl.pi1GPIO2pin[gpio];
+  } // gpio2pin(int)
 
 /** The Pi's type. <br />
  *  <br />
@@ -103,7 +103,7 @@ public interface Pi1 extends ThePi {
  *  @return a PI1 object with the given {@link #host() host},
  *     {@link #port() port} and  {@link #timeout() timeout} 
  */
- static public Pi1 make(final String host, final int port, final int timeout){
+  static public Pi1 make(final String host, final int port, final int timeout){
     return new Pi1(){
       String hostPi;
       int portPi;
@@ -117,6 +117,6 @@ public interface Pi1 extends ThePi {
       @Override public String host(){ return this.hostPi; }
       @Override public int timeout(){ return this.timoutPi; }
     }; // ano inner
- } // make(String, 3*int)
+  } // make(String, 3*int)
  
 } // Pi1 (01.04.2021)

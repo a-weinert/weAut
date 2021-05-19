@@ -27,10 +27,11 @@ package de.weAut;
  *  @see Pi3
  *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $)
+ *  @version  $Revision: 49 $ ($Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $)
  */
 // so far:   V. 35  (01.04.2021) :  new
 //           V. 36  (06.04.2021) :  name ambiguity in anonymous inner class
+//           V. 49  (17.05.2021) :  bug- gpio2pin()
 public interface Pi2 extends ThePi { 
 
 /** 26 pin connector GPIO assignment mapping. <br />
@@ -89,10 +90,10 @@ public interface Pi2 extends ThePi {
  *     {@link #PIN5V}, {@link #PINix}: undefined, i.e. illegal pin number
  *      or {@link #PINig} ignore for pin = 0
  */
- @Override public default int gpio4pin(final int pin){
-   if (pin < 0 || pin > 38) return PINix;
-   return ThePi.Impl.pi2PIN2gpio[pin];
- } // gpio4pin(int)
+  @Override public default int gpio4pin(final int pin){
+    if (pin < 0 || pin > 38) return PINix;
+    return ThePi.Impl.pi2PIN2gpio[pin];
+  } // gpio4pin(int)
 
 /** Pin number to GPIO number lookup. <br />
  *
@@ -101,10 +102,10 @@ public interface Pi2 extends ThePi {
  *  @return 1..26 or 31..38 as the respective pin or 0 if the GPIO
  *         is on no connector.
  */
- @Override public default int gpio2pin(final int gpio){
-   if (gpio < 0 || gpio > 25) return 0; 
-   return ThePi.Impl.pi2GPIO2pin[gpio];
- } // gpio4pin(int)
+  @Override public default int gpio2pin(final int gpio){
+    if (gpio < 0 || gpio > 31) return 0; //  bug- 17.05.2021
+    return ThePi.Impl.pi2GPIO2pin[gpio];
+  } // gpio4pin(int)
   
 /** The Pi's type. <br />
  *  <br />
@@ -112,21 +113,21 @@ public interface Pi2 extends ThePi {
  *  plus an 8 pin connector (device P8).
  *  @return 2
  */
- @Override public default int type(){ return 2; }
+  @Override public default int type(){ return 2; }
     
 /** Make a Pi2 object with default settings. <br />
  *   
  *  @return a Pi2 object with default {@link ThePi#defaultHost host},
  *     {@link ThePi#port() port} and  {@link ThePi#timeout() timeout} 
  */
- static public Pi2 make(){ return make(null, 0, 0); }
+  static public Pi2 make(){ return make(null, 0, 0); }
 
 /** Make a Pi2 object. <br />
  *   
  *  @return a PI2 object with the given {@link #host() host},
  *     {@link #port() port} and  {@link #timeout() timeout} 
  */
- static public Pi2 make(final String host, final int port, final int timeout){
+  static public Pi2 make(final String host, final int port, final int timeout){
     return new Pi2(){
       String hostPi;
       int portPi;
@@ -140,6 +141,5 @@ public interface Pi2 extends ThePi {
       @Override public String host(){ return this.hostPi; }
       @Override public int timeout(){ return this.timoutPi; }
     }; // ano inner
- } // make(String, 3*int)
- 
+  } // make(String, 3*int)
 } // Pi2 (06.04.2021)

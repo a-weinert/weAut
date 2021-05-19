@@ -23,7 +23,7 @@ import de.frame4j.util.ComVar;
  *  This interface contains values for all Raspberry Pis and related 
  *  applications. 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 46 $ ($Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $)
+ *  @version  $Revision: 49 $ ($Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $)
  */
 // so far:  V. 38  (16.04.2021) :  new
 //          V. 4x  (21.05.202x) :  ...
@@ -225,7 +225,7 @@ public interface PiVals extends ComVar {
 /** GPIO alternative mode 5. <br /> */
   public static final int PIO_ALT5 = 2;
 
-  public static final int PI_PUD_OFF   =  0; // free float
+  public static final int PI_PUD_OFF   =  0; // free float Off none
   public static final int PI_PUD_DOWN  =  1; // pull down
   public static final int PI_PUD_UP    =  2; // pull up
 

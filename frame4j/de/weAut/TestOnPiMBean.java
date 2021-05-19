@@ -19,7 +19,7 @@ import de.frame4j.util.AppMBean;
  *  <br />
  *  Copyright  &copy;  2021  Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  43 (4.05.2021)
+ *  @version  $Revision: 49 $ ($Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $)
  *  @see TestOnPi
  *  @see PiUtil
  *  @see de.weAut.demos.BlinkOnPi
@@ -56,7 +56,12 @@ public interface TestOnPiMBean extends AppMBean {
  *  As the duration of one cycle is 600ms it would take more than 40 years to
  *  overflow to negative.<br />
  *  Note: Java has no unsigned number type. int is int32_t there is 
- *  no uint32_t. 
+ *  no uint32_t.
+ *  Note 2: Here for greater values, the required (ill) return type Integer
+ *  would abandon the cache guarantee for small values. Requesting this value
+ *  regularly would lead to heavy object creation and garbage collection
+ *  detrimental to real time applications. Hence, this method might be
+ *  deprecated or removed in future.
  *  @return the loop / cycle or delay count
  *  @see #resetCycCount()
  */
@@ -77,20 +82,52 @@ public interface TestOnPiMBean extends AppMBean {
 /** Get the Pi type. <br /> */
   public Integer getPiType();
   
-/** Get GPIO for (single / non LED) operations. <br />  */
-  public Integer getGpio();
-  
-/** Get pin for (single / non LED) operations. <br />  
+/** Set the output for (non LED) actions. <br /> 
  *  <br />
- *  This is {@link #getGpio()} as pin number (0 means ignore / invalid). 
+ *  This method sets the output port either as pin number or as GPIO with a
+ *  prefix G.<br />
+ *  An optional postfix U, D or N will set the pull resistor as up, down
+ *  or none. Without postfix the pull resistor setting will be kept untouched. 
+ *  @param outPort output pin (12N, e.g.) or gpio (with leading G; G18, e.g.)
+ *  @see #getOutPort()
+ *  @see #getInPort()
+ *  @see #setInPort(String)
  */
-  public Integer getPin();
+  public void setOutPort(String outPort);
+  
+/** Get the output for (non LED) actions. <br /> 
+ *  <br />
+ *  If all informations are available the text will show pin number, pull
+ *  resistor setting and GPIO; example: {@code "07UG04"}. <br />
+ *  The numbers will always be given as two digit decimal. The format will be
+ *  understood (parsed) by {@link #setOutPort(String)}; for the example
+ *  {@code setOutPort("7U")} would be sufficient.
+ *  @see #setOutPort(String)
+ *  @see #getInPort()
+ *  @see #setInPort(String)
+ *  */
+  public String getOutPort();
 
-/** Set GPIO for (single / non LED) operations. <br /> */
-  public void setGpio(Integer gpio);
-
-/** Set pin for (single / non LED) operations. <br /> */
-  public void setPin(Integer pin);
+/** Set the port for input actions. <br />
+ *  <br />
+ *  This method sets the input port either as pin number or as GPIO with a
+ *  prefix G. A postfix U, D or N will set the pull resistor as up, down or
+ *  none. Without postfix the pull resistor setting will be kept untouched. 
+ *
+ *  @param inPort input pin (7, e.g.) or gpio (with leading G; G4U, e.g.)
+ *  @see #getInPort()
+ *  @see #setOutPort(String)
+ *  @see #getOutPort()
+ */
+  public void setInPort(String inPort);
+  
+/** Get the port for input actions. <br /> 
+ *  <br />
+ *  @see #setInPort(String)
+ *  @see #setOutPort(String)
+ *  @see #getOutPort()
+ */
+  public String getInPort();
 
 /** Set delay / ms between two operations. <br />
  *  @param delay 2 .. 29999 ms; default 10 ms
@@ -142,47 +179,35 @@ public interface TestOnPiMBean extends AppMBean {
  */
   public Integer getValLo();
 
-
-/** The state of the button. <br />
- *  <br />
- *  The button is low active. Hence, false means pressed.
- *  @return true when open, released
- */
- public Boolean getLeBut();
- 
-/** The state of the buzzer. <br />
- *  <br />
- *  The buzzer is an extra output. Default is no pin. On the trafficPi
- *  shield pin 12 is a buzzer switched on by Hi (via a npn transistor). <br />
- *  This method returns the binary on/off state of the pin in question.
- *  When actuated via {@linkplain #setLeBuzPWM(Integer) PWM}  0..21 is 
- *  considered as OFF (low, false) and 22..255 as ON (hi, true).
- *  @return true when active (Hi)
- *  @see #setLeBuz(Boolean)
- *  @see #setLeBuzPWM(Integer)
- *  @see #getLeBuzPWM()
- */
-  public Boolean getLeBuz();
-
-/** The PWM state of the buzzer. <br />
- *  <br />
- *  The buzzer is an extra output. Default is pin 12.
- *  @return 0..255 which is 0..100% PWM
- *  @see #getLeBuz()
- */
-  public Integer getLeBuzPWM();
+//-------------- actions -----------------------------------
   
-/** The state of the buzzer. <br /> */   
-  public void setLeBuz(Boolean on);
-
-/** Set buzzer output by PMM. <br /> 
- * 
- *  @param pwm  0..255 is 0..100% PWM
- *  @see #getLeBuzPWM()
- *  @see #getLeBuz()
- */   
-  public void setLeBuzPWM(Integer pwm);
-
+/** Blink the LEDs. <br /> */
+  public void blink();
+  
+/** Servo wink respectively PWM up/down. <br /> */
+  public void wink(); 
+  
+/** Set the output. <br /> 
+ *  <br />
+ *  This method will interpret the {@code String out} as does
+{@link ClientPigpiod#setOutput(int, String) ClientPigpiod.setOutput(gpio, out)}
+ *  usually by implementing it so.
+ *  @see ClientPigpiod#setOutput(int, String)
+ *  @param out the output value
+ */
+  public void setOutput(String out);  
+  
+/** Input and set the output with the inverted result. <br /> */
+  public Boolean input();
+ 
+/** The state of the output. <br />
+ *  <br />
+ *  This method returns the last state, i.e. setting by
+ *  {@link #setOutput(String) setOutput(out)},
+ *  of the output. This method returns the binary on/off state as well as the
+ *  numerical PMW or servo state as text.
+ */
+  public String getOutput();
 
 } // TestOnPiMBean (29.04.2021, 13.05.2021)
 

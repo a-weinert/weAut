@@ -21,6 +21,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.PrimitiveIterator;
+import java.util.function.IntConsumer;
 import de.frame4j.text.TextHelper;
 import de.frame4j.util.ComVar;
 
@@ -50,11 +53,12 @@ import de.frame4j.util.ComVar;
  *  @see ThePi
  *  @see PiVals 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $)
+ *  @version  $Revision: 49 $ ($Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $)
  */
 // so far:   V.  19 (17.05.2019) : new
 //           V.  42 (29.04.2021) : overhaul (Frame4J)
 //           V.  46 (09.05.2021) : threadsafe cmd and response buffers
+//           V.  48 (15.05.2021) : BC1 BS1 bug
 public class ClientPigpiod {
 
 /** The socket. <br />
@@ -491,12 +495,15 @@ public class ClientPigpiod {
           if (cmd == PI_CMD_WRITE && p2 > 1) return  PI_BAD_LEVEL;
           // we do not care on PWM value errors here --  should have come
           // here from one of the "comfort" methods which did check. 
-            areOut |= gpio2bit[p1];; // pigpiod's auto set to output mode
+            areOut |= gpio2bit[p1]; // pigpiod's auto set to output mode
         } // write is for GPIO 0..31
       } else if (par1Sem == BITS) { // p1  a specific gpio else a bitmask
         if (cmd == PI_CMD_BC1 || cmd == PI_CMD_BS1) { // set | clear bits
-          if (p2 == 0) return 0; // nothing to do; return OK 
-          areOut |= p2; // pigpiod's auto set to output mode
+          if (p1 == 0) return 0; // nothing to do; return OK 
+         // areOut |= p1; // pigpiod's auto set to output mode !!! WRONG
+          if ((p1 & ~areOut) != 0) {
+            return PI_NOT_PERMITTED; // not set to output yet !!  
+          }
         }  // set or clear bits in bank 0
       } else if (par1Sem == PAD) { // (bank) bitmask (set or clear) else pad
         if (p1 < 0 || p1 > 2) return PI_BAD_PAD;
@@ -543,6 +550,55 @@ public class ClientPigpiod {
       return ret;
    } // stdCmd(3*int)
 
+//-------------------------  mask / bulk operations (support)  -------------
+   
+/** Iterate over GPIOs (0..31) given by mask. <br />
+ *  <br />
+ *  Besides being usable by {@link
+ *  PrimitiveIterator.OfInt#forEachRemaining(java.util.function.Consumer)
+ *  forEachRemaining} <br />
+ *  &nbsp; {@code IntConsumer action = gpio -> doWhatOn(gpio);} <br />
+ *  &nbsp; {@code gpiosByMsk(mask).forEachRemaining(action);} <br />
+ *  one may create such Iterator and use its methods {@code hasNext()} and
+ *  {@code nextInt()} directly in a while loop, e.g. <br />
+ *  Note: {@code for (type i : typeIiterator)}won't work for 
+ *  {@link PrimitiveIterator}s (at least in Java 8).
+ *   
+ *  @param mask a bank 0 bit mask of GPIOs in the range 0..31
+ *  @return an Iterator for the primitive type int, its nextInt() method
+ *          returning the GPIOs in Mask in ascending order
+ */
+  public PrimitiveIterator.OfInt gpiosByMsk(final int mask){
+     return new PrimitiveIterator.OfInt(){
+       int msk = mask, gpio = -1;
+       @Override public boolean hasNext(){ return msk != 0; }
+       @Override public int nextInt() throws NoSuchElementException {
+         for (; ++gpio < 32;) {
+           final int bit = gpio2bit[gpio];
+           if ((mask & bit) != 0) {  msk &= ~ bit;  return gpio; } // found
+         } // for
+         throw new NoSuchElementException( "gpiosByMsk(0x"
+         + TextHelper.eightDigitHex(null, mask)  + ") no next element");
+       } // nextInt()
+     }; // PrimitiveIterator.OfInt
+  } // gpiosByMsk(int)
+  
+/** Perform a separate action on every GPIO (0..31) given by mask. <br />
+ *  <br />
+ *  This method does a forEachRemaining(action) as described in 
+ *  {@link #gpiosByMsk(int)} plus some checks and synchronising: <br />
+ *  When mask is 0 nothing is done. When action is null nothing is done.<br />
+ *  Otherwise, in one synchronized (this ClientPigdiod object) block all
+ *  actions are done.
+ *    
+ *  @param mask a bank 0 bit mask of GPIOs in the range 0..31
+ *  @param action what to do with each GPIO in mask
+ */
+  public void gpioActionsByMsk(final int mask, final IntConsumer action){
+    if (mask == 0 || action == null) return;
+    PrimitiveIterator.OfInt iter = gpiosByMsk(mask);
+    synchronized(this) {  iter.forEachRemaining(action); }
+  } // gpioActionsByMsk(int, IntConsumer)
 
 //-------------------------    Pin / gpio initialisation  ------------------
 
@@ -760,26 +816,23 @@ public class ClientPigpiod {
  */
   public int releaseOutputs(){
     final int wereOut = areOut;
-    int gpio = 0;
-    for (; gpio < 28; ++gpio) {
-      if ((wereOut & gpio2bit[gpio]) != 0) {
-        stdCmd(PI_CMD_MODES, gpio, PI_INPUT); // make it PI_INPUT
-      }
-    } // for
-    //  areOut = 0; should have been done in stdCmd
+    gpioActionsByMsk(wereOut, gpio -> stdCmd(PI_CMD_MODES, gpio, PI_INPUT));
+    //  areOut = 0; should have been done in stdCmd xx */
     return wereOut;
   } // releaseOutputs(int)
 
 /** Release all GPIO pins set as output with report. <br />
  *  <br />
  *  Same as {@link #releaseOutputs()} plus a "releaseToIn" report line for
- *  every output released if a usable non null out is supplied.
+ *  every output released.
  *
- *  @param out a destination to report to; 
- *          for example a PrintWriter, PrintStream or StringBuilder
+ *  @param log a destination to report to; 
+ *         for example a PrintWriter, PrintStream or StringBuilder <br />
+ *         if null the standard PrintWriter is used
  *  @return the bank mask of the released (previous) outputs
  */
-  public int releaseOutputsReport(final Appendable out){
+  public synchronized int releaseOutputsReport(final Appendable log){
+    final Appendable out = log != null ? log : this.out; 
     final int wereOut = areOut;
     if (wereOut == 0) return 0; // nothing to do and to report
     if (out == null) return releaseOutputs();
@@ -790,23 +843,105 @@ public class ClientPigpiod {
       PiUtil.eightDigitHex(out, wereOut).append('\n');
       if (flushi != null) flushi.flush();
     } catch (IOException ex) {} // ignore 
-    int gpio = 0;
-    for (; gpio < 28; ++gpio) {
-      if ((wereOut & gpio2bit[gpio]) != 0) {
-        stdCmd(PI_CMD_MODES, gpio, PI_INPUT); // make it PI_INPUT
-        try {
-          out.append("  ").append(ComVar.PROG_SHORT)
-           .append(" releaseToIn  GPIO");
-          PiUtil.twoDigitDec(out, gpio).append(" pin");
-          PiUtil.twoDigitDec(out, thePi.gpio2pin(gpio)).append('\n');
-          if (flushi != null) flushi.flush();
-        } catch (IOException ex) {} // ignore 
-       }
-    } // for
-  //     areOut = 0; // done in stdCmd()
+    gpioActionsByMsk(wereOut, gpio -> {
+      stdCmd(PI_CMD_MODES, gpio, PI_INPUT); // make it PI_INPUT
+      try {
+        out.append("  ").append(ComVar.PROG_SHORT)
+         .append(" releaseToIn  GPIO");
+        PiUtil.twoDigitDec(out, gpio).append(" pin");
+        PiUtil.twoDigitDec(out, thePi.gpio2pin(gpio)).append('\n');
+        if (flushi != null) flushi.flush();
+      } catch (IOException ex) {} // ignore 
+    });
+  //     areOut = 0; // done in stdCmd()   
     return wereOut;
-  } // releaseOutputsReport(int const)
+  } // releaseOutputsReport(Appendable)
+  
+  public String pinDescr(int pin, int pud){
+    if (pin <= 0 || pin > 40) return  "noneIgn"; 
+    int gpio = thePi.gpio4pin(pin);
+    if (gpio >= PiVals.PINig) {
+      if (gpio == PiVals.PIN0V) return "gnd_0V";
+      if (gpio == PiVals.PIN3V) return "sup3V3";
+      if (gpio == PiVals.PIN5V) return "sup_5V";
+      return  "noneIgn";
+    }
+    StringBuilder dest = new StringBuilder(10);
+    PiUtil.twoDigitDec(dest, pin);
+    if (pud >= PI_PUD_OFF && pud <= PI_PUD_UP) dest.append(pudC[pud]);
+    dest.append('G');  
+    PiUtil.twoDigitDec(dest, gpio);
+    return dest.toString();    
+  } // pinDescr(2*int)
+  
+  static final char[] pudC = {'N', 'D', 'U', '~', 'K'};
 
+/** Set all GPIO pins named by mask as outputs with report. <br />
+ *  <br />
+ *  Same as {@link #setAsOutputs(int)} plus a "make output" report line for
+ *  every output set so.
+ *  
+ *  @param grp a short (best 7 char) description of the pin / signal
+ *            or device group like "redLEDs", "relaysH" etc. 
+ *  @param mask GPIOs to be set as outputs as bit mask
+ *  @return the bank mask of all outputs  now set
+ */
+  public synchronized int setAsOutputsReport(final String grp, final int mask){
+    final int wereOut = areOut;
+    if (mask == 0) return wereOut; // nothing to do and to report
+    final Flushable flushi = out instanceof Flushable ? (Flushable) out : null;
+    final int newSet = mask & ~wereOut;
+    try {
+      out.append("\n  ").append(ComVar.PROG_SHORT)
+             .append(" outputs " + grp  + ": 0x");
+      PiUtil.eightDigitHex(out, mask); 
+      if (newSet != mask) {
+        out.append(" new: "); 
+        PiUtil.eightDigitHex(out, newSet);
+      }
+      out.append(" -> ");
+      PiUtil.eightDigitHex(out, wereOut | mask).append('\n');
+      if (flushi != null) flushi.flush();
+    } catch (IOException ex) {} // ignore 
+    if (newSet == 0) return wereOut;
+    IntConsumer setOutRep = gpio -> {
+      stdCmd(PI_CMD_MODES, gpio, PI_OUTPUT);
+      try {
+        out.append("  ").append(ComVar.PROG_SHORT)
+         .append(" make output  GPIO");
+        PiUtil.twoDigitDec(out, gpio).append(" pin");
+        PiUtil.twoDigitDec(out, thePi.gpio2pin(gpio)).append('\n');
+        if (flushi != null) flushi.flush();
+      } catch (IOException ex) {} // ignore 
+    };
+    gpiosByMsk(newSet).forEachRemaining(setOutRep);
+    return areOut;
+  } // setAsOutputsReport(String, int)    
+
+/** Set all GPIO pins named by mask as outputs. <br />
+ *  <br />
+ *  This method sets all GPIOs (0..31) named by its bit in the 
+ *  {@code mask} as outputs. <br />
+ *  Rationale: While output commands referring one single GPIO &ndash; be
+ *  it binary, PWM or servo &ndash; do (automatically set this GPIO as output
+ *  the bank / mask commands ({@link PiGpioDdefs#PI_CMD_BS1},
+ *  {@link PiGpioDdefs#PI_CMD_BC1}  respectively 
+ *  {@link #setOutSet(int, boolean)}) don't. Hence, outputs
+ *  to be used so, will have to be explicitly set as such. This method
+ *  offers the comfort (and error avoidance) to use the very same mask
+ *  parameters as the bulk output commands.
+ *  
+ *  @param mask GPIOs to be set as outputs as bit mask
+ *  @return the bank mask of all outputs  now set
+ */
+  public synchronized int setAsOutputs(final int mask){
+    if (mask == 0) return areOut; // nothing to do and to report
+    final int newSet = mask & ~areOut;
+    if (newSet == 0) return areOut;  // omit fore test
+    IntConsumer setOut = gpio -> stdCmd(PI_CMD_MODES, gpio, PI_OUTPUT);
+    gpiosByMsk(newSet).forEachRemaining(setOut);
+    return areOut;
+  } // setAsOutputs(int)
   
 /** Initialise a GPIO pin as input. <br />
  *  <br />
@@ -904,6 +1039,91 @@ public class ClientPigpiod {
   } // initAsHiDrive(2 *int)
      
 //-------------------------  read and write --------------------------------
+ 
+/** Read the pin state. <br />
+ *     
+ *  @param gpio a legal BCM IO number 0..56
+ *  @return 0 or 1: OK; &lt; 0: error
+ */
+   public int getInp(int gpio){
+     if (gpio == ThePi.PINig) return rIgn(PI_CMD_READ, 0); // return 0 = Low
+     if (gpio < 0 || gpio > 56) return rErr(PI_BAD_GPIO, PI_CMD_READ, gpio, 0);
+     return stdCmd(PI_CMD_READ, gpio, 0);
+   }  // getInp(int)
+ 
+
+/** Output to one GPIO pin. <br />
+ *  <br />
+ *  This is the universal output method, choosing one of the more specialised
+ *  ones by its String parameter.<br />
+ *  Programmatically, one would call specialised ones directly, saving the
+ *  toils of parsing and choosing. But for interactive purposes (MBean, JMX,
+ *  JConsole) or command line arguments this method is the Swiss
+ *  army knife.<br />
+ *  <b>Interpretation of the text {@code out}</b>:<br />
+ *  Binary output false, Off:<br />
+ *  {@code null}, empty, {@code 0, F, f} as well as all interpreted as
+ *  {@code false} by
+ *  {@link de.frame4j.text.TextHelper#asBoolObj(CharSequence)
+                                      TextHelper.asBoolObj(out)} <br />
+ *  Binary output true, On:<br />
+ *  {@code 255, T, t}  as well as all interpreted as {@code true}
+ *  by {@link de.frame4j.text.TextHelper#asBoolObj(CharSequence)
+                                      TextHelper.asBoolObj(out)} <br />
+ *  Pulse width modulation PWM {@code 0..255} (i.e.0..100%):<br />
+ *  when {@code out} is a decimal value in that range.<br />
+ *  Note: 0=0% and 255=100% will be done as binary output.<br />
+ *  Servo setting {@code 500} (left) .. {@code 2500} (right):
+ *  when {@code out} is a decimal value in that range.<br />
+ *  Note: right = clockwise (from above); 1500 = middle, neutral.<br />
+ *  <br />
+ *  All other values/texts will return an error and do no output.<br />
+ *  <br />
+ *  If gpio is {@link ThePi#PINig} nothing is done and 0 is returned.
+ *  That implements the meaning of {@link ThePi#PINig PINig} as unused.
+ *  
+ *  @param gpio 0..31 gpio a GPIO to output to 
+ *  @param out the output level or PWM 7 servo setting
+ *  @return &lt; 0: pigpiod error
+ */
+  public int setOutput(final int gpio, final String out){
+    int len = out == null ? 0 : out.length();
+    int val = 0; // binary value vor ignore and error
+    boolean isBin = len == 0;
+    boolean isNum = false;
+    char c0 = out.charAt(0);
+    if (len == 1) { // simple case 
+      if (c0 == '0' || c0 == 'F' || c0 == 'f') { 
+        isBin = true;
+      } else if (c0 == 'T' || c0 == 't') {
+        isBin = true; val = 1;
+      } else if (c0 > '0' && c0 <= '9') {
+        isNum = true; val = c0 - '0';
+      }
+    }
+    while (!(isNum || isBin)) { // parse out len > 1 if and only if gpio is OK
+      if (gpio == ThePi.PINig) return rIgn(PI_CMD_WRITE, val); // ignore
+      if (gpio < 0 || gpio > 31) {
+        return rErr(PI_BAD_USER_GPIO, PI_CMD_WRITE, gpio, val); // bad gpio 
+      }
+      final Boolean binVal = TextHelper.asBoolObj(out);
+      if (binVal != null) { 
+        isBin = true; 
+        if (binVal == Boolean.TRUE) val = 1;
+        break; 
+      } // end of parse boolean success
+      isNum = true; // now it must be a legal or illegal number
+      try { val =  Integer.decode(out).intValue();
+      } catch (Exception e) { val = -1; } // illegal value (as PWM)
+      break; // while as breakable if
+    } // while parse out.len > 1
+    
+    if (isNum && val == 255) { isBin = true; val = 1; }
+    if (isBin) return setOutput(gpio, val != 0); // On,Off
+    if (val > 430) return setServoPos(gpio, val); // servo 500..2500, else err
+    return setPWMcycle(gpio, val); // PWM 0..255 else error
+  } // setOutput(2* unsigned const)
+
 
 /** Set one GPIO output pin. <br />
  *  <br />
@@ -916,16 +1136,14 @@ public class ClientPigpiod {
  *  @return &lt; 0: pigpiod error
  */
   public int setOutput(final int gpio, final boolean level){
-    if (gpio == ThePi.PINig) {
-      return rErr(0, PI_CMD_MODES, gpio, level ? 1 : 0); 
-    } // no action ignore
+    if (gpio == ThePi.PINig) return rIgn(PI_CMD_WRITE, level ? 1 : 0); // no action ignore
     if (gpio < 0 || gpio > 31) {
-      return rErr(PI_CMD_WRITE, PI_CMD_MODES, gpio, level ? 1 : 0); 
+      return rErr(PI_BAD_USER_GPIO, PI_CMD_WRITE, gpio, level ? 1 : 0); 
     }
     return stdCmd(PI_CMD_WRITE, gpio, level ? 1 : 0); // set the, OFF
   } // setOutput(2* unsigned const)
 
-/** Set a list/mask of GPIO output pins. <br />
+/** Set a list/mask/set of GPIO output pins. <br />
  *  <br />
  *  This functions sets the (output) pins set in the bank mask ON or OFF.
  *  The method only works for bank 0 (GPIO 0..27) which pigpiod (falsely
@@ -935,22 +1153,12 @@ public class ClientPigpiod {
  *  @param level OFF or ON (0 or 1)
  *  @return &lt; 0: pigpiod error
  */
-  public int setOutputSet(final int lesOuts, final boolean level){
+  public int setOutSet(final int lesOuts, final boolean level){
     if (lesOuts == 0) return rIgn(level ? PI_CMD_BS1 : PI_CMD_BC1, 0); // none
     if (level) return stdCmd(PI_CMD_BS1, lesOuts, 0); // set them ON
     return stdCmd(PI_CMD_BC1, lesOuts, 0); // set the, OFF
   } // setOutputs(int, boolean)
    
-/** Read the pin state. <br />
- *     
- *  @param gpio a legal BCM IO number 0..56
- *  @return 0 or 1: OK; &lt; 0: error
- */
-   public int getInp(int gpio){
-     if (gpio == ThePi.PINig) return rIgn(PI_CMD_READ, 0); // return 0 = Low
-     if (gpio < 0 || gpio > 56) return rErr(PI_BAD_GPIO, PI_CMD_READ, gpio, 0);
-     return stdCmd(PI_CMD_READ, gpio, 0);
-   }  // getInp(int)
 
 /** Set the PWM duty cycle. <br />
  *     
@@ -1056,7 +1264,7 @@ public class ClientPigpiod {
  *  corresponding to place in a 32 bit bank mask. <br />
  *  Outside [0..31] index out of bound.
  */
- private static final int[] gpio2bit = new int[] {
+  static final int[] gpio2bit = new int[] { // not private as used by ThePi
          0x00000001, 0x00000002, 0x00000004, 0x00000008, //  0.. 3
          0x00000010, 0x00000020, 0x00000040, 0x00000080, //  4.. 7
          0x00000100, 0x00000200, 0x00000400, 0x00000800, //  8..11

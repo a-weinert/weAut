@@ -42,11 +42,11 @@ import de.frame4j.util.MinDoc;
  *  </ul>
  *  The mentioned white-space ignoring comparisons analyse both sequences as
  *  if all white space had been moved out. They often are a more simple (and 
- *  faster) substitute for things like regular expressions(that clearly may be 
- *  more adequate in certain circumstances). They have been heavily used over
- *  the years in Frame4J (respectively predecessor) based tools to recognise 
- *  pattern in white space ignoring languages (HTML, XML, Java) with adequate 
- *  precision in all known uses:<br />
+ *  faster) substitute for things like regular expressions (that, clearly,
+ *  may be more adequate in certain circumstances). They have been heavily
+ *  used over decades in Frame4J (respectively predecessor) based tools to
+ *  recognise pattern in white space ignoring languages (HTML, XML, Java).
+ *  Here it was adequate in all our and partners use cases:<br />
  *  &nbsp; &lt;table cols=&quot;3&quot; summary=&quot;Lit&quot;&gt; 
  *  &nbsp; and<br />
  *  &nbsp; &lt;table &nbsp; cols= &quot;3&quot; summary = 
@@ -55,41 +55,36 @@ import de.frame4j.util.MinDoc;
  *  &nbsp; &lt;ta b lecols=&quot;3&quot;su mmary=&quot;L it&quot;&gt;
  *  &nbsp;.<br />
  *  The white-space ignoring methods can &mdash; as this example shows &mdash;
- *  safely be used (avoiding the much higher expenses of regular expressions
- *  e.g.). If one can assume some minimal correctness of the text under work
+ *  safely be used. If one can assume some minimal correctness of the text under work
  *  the quite significant performance gain is worth the sacrifice of regular
- *  expressions' checking power (which would cause some denial of work that 
- *  could very well have been done on the other hand).<br />
+ *  expressions' checking power.<br />
  *  <br />
  *  <br /> 
  *  <a href="package-summary.html#co">&copy;</a>
- *  Copyright  2000 - 2004, 2009 &nbsp; Albrecht Weinert  
+ *  Copyright  2000 - 2009, 2021 &nbsp; Albrecht Weinert  
  *  @see de.frame4j.util.PropMap
  */
- // so far  V00.00 (19.06.2000) :  from AppHelper and MakeIndex
+ // so far  V00.00 (19.06.2000) :  excerpt from AppHelper and MakeIndex
  //         V00.03 (04.09.2000) :  additional methods (StringBuilder)
- //         V00.22 (30.10.2002) :  StringBuilder-IndexOf: sI to 0
  //         V02.00 (24.04.2003) :  CVS to Eclipse migration
  //         V02.03 (26.04.2003) :  JavaDoc(1.4.2beta) has a bug   
- //         V02.05 (26.04.2003) :  unComment, GemVarCh 
- //         V02.06 (30.05.2003) :  Visitor fUr() debugged
- //         V02.08 (01.06.2003) :  away Java 1.3 compatibility; CharSeq 
- //         V02.20 (15.05.2004) :  unambig. Boolean-Interpret., trimUq
+ //         V02.08 (01.06.2003) :  dismiss Java 1.3 compatibility; CharSeq 
+ //         V02.20 (15.05.2004) :  unambiguous Boolean-Interpret., trimUq
  //         V02.25 (19.09.2004) :  tokenise regEx; more hexForm
  //         V02.32 (10.07.2005) :  wildEqual optimised & ignCase
  //         V02.33 (02.10.2005) :  split without RexEx, indexOf
  //         V02.38 (01.11.2006) :  lastIndexOfWS()
- //         V.179+ (06.01.2010) :  Rabin Karp outsourced
- //         V.o94+ (04.09.2013) :  compare(CCb) debugged
+ //         V.179+ (06.01.2010) :  Rabin Karp outsourced to RK.java
+ //         V.o94+ (04.09.2013) :  compare() bug-
  //         V.  33 (25.03.2021) :  type flexibility enh. + other improvements
  //         V.  38 (16.04.2021) :  dig(int), dec formatting enhanced
+ //         V.  48 (15.05.2021) :  eightDigitHex() (new in March 21) bug-
 
 @MinDoc(
    copyright = "Copyright 2000 - 2013, 2021  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 44 $",
-   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 49 $",
+   lastModified   = "$Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $",
    usage   = "import",  
    purpose = "common text utilities: check, parse and formating of texts"
 ) public abstract class TextHelper {
@@ -161,8 +156,7 @@ import de.frame4j.util.MinDoc;
  *  @return replacement (for all three)
  */  
    public String visit(String opBr, String cont, String clBr);
-
-} // ReplaceVisitor ====================================================
+} // ReplaceVisitor ======
 
    
 /** Concatenate three Strings. <br />
@@ -305,7 +299,6 @@ import de.frame4j.util.MinDoc;
       return fName;
    } // makeFName(CharSequence, String)
 
-
 /** Construct a file name for URLs or .jar entries. <br />
  *  <br />
  *  This method returns a non empty filename according to the parameter
@@ -326,8 +319,6 @@ import de.frame4j.util.MinDoc;
       fName = fName.replace('\\', '/');
       return fName;
    } // makeFNameUJ(CharSequence)
-
-
 
 /** Working up names of files or of file name lists. <br />
  *  <br />
@@ -392,8 +383,7 @@ import de.frame4j.util.MinDoc;
       }
       return true;
    } // endsWith(2*CharSequence, boolean)
-   
-
+ 
 /** Determine if a character sequence begins with another one. <br />
  *  <br />
  *  This method returns true if the character sequence {@code st1} begins with
@@ -422,7 +412,6 @@ import de.frame4j.util.MinDoc;
       }
       return true;
    } // startsWith(2*CharSequence, boolean)
-
    
 /** Interpret a character sequence as boolean. <br />
  *  <br />
@@ -440,16 +429,14 @@ import de.frame4j.util.MinDoc;
       final char c2 = simpLowerC(value.charAt(1));
       if (c2 == 'n') { // an or or on
          return len == 2 && (c1 == 'o' || c1 == 'a'); 
-      }   // an or or on  
+      }   // an or on  
       // an on  | ja yes wahr true
-
       boolean secA = c2 == 'a';
-      if (secA) { // ja or wahr
+      if (secA) { // ja or wa[hr
         if (len == 2 && c1 == 'j') return true;
         if (len != 4 || c1 != 'w') return false;
       }  // ja or wahr    
-      // an on  ja wa|hr true yes 
-
+      // an on  ja wa[hr] true yes 
       if (len < 3) return false;
       char c3 = simpLowerC(value.charAt(2));
       if (len == 4) {
@@ -461,8 +448,6 @@ import de.frame4j.util.MinDoc;
       // to here only with len 3
       return c1 == 'y' && c2 == 'e' && c3 == 's';
    } // asBoolean(CharSequence)
-
-
 
 /** Interpret an Object as Boolean. <br />
  *  <br />
@@ -482,24 +467,22 @@ import de.frame4j.util.MinDoc;
       if (value instanceof Boolean) return (Boolean)value;
       if (value instanceof CharSequence) 
              return asBoolObj((CharSequence) value);
-      
       return null;
    } // asBoolObj(Object)
-
 
 /** Interpret a character sequence as Boolean. <br />
  *  <br />
  *  This method returns {@link Boolean}.TRUE, if the sequence {@code value} is 
  *     "true", "wahr", "ja", "yes", "an" or "on"
  *  disregarding case.<br />
- *  It returns {@link Boolean}.FALSE, if  the sequence {@code value} is 
+ *  It returns {@link Boolean}.FALSE, if the sequence {@code value} is 
  *     "fals?", "fals??", (including thus  "false" and  "falsch"), "ne??", 
  *     "nein", "no", "aus" or "off" (? means any character) ,
  *  also disregarding case.<br />
  *  <br />
  *  Otherwise null is returned.<br />
  */
-   public static Boolean asBoolObj(final CharSequence value) {
+   public static Boolean asBoolObj(final CharSequence value){
       if (value == null) return null;
       final int len = value.length();
       if (len < 2 || len > 6) return null;
@@ -528,7 +511,6 @@ import de.frame4j.util.MinDoc;
       } else return null;
    } // asBoolObj(CharSequence) 
 
-
 /** Interpret a character sequence as Boolean. <br />
  *  <br />
  *  This method returns true, if the sequence {@code value} is 
@@ -546,7 +528,7 @@ import de.frame4j.util.MinDoc;
  *  default value supplied.<br />
  */
    public static boolean asBoolean(final CharSequence value, 
-                                                         final boolean def) {
+                                                         final boolean def){
       if (value == null) return def;
       final int len = value.length();
       if (len < 2 || len > 6) return def;
@@ -569,7 +551,6 @@ import de.frame4j.util.MinDoc;
 
       // to here only if not beginning with  f or n
       // remain:  on an aus off wahr ja yes true
-      
       if (c2 == 'n') { //only an an or or on
          if (def) return true; // no further mull over if default is true
          if (len == 2 && (c1 == 'o' || c1 == 'a')) return true; 
@@ -580,7 +561,6 @@ import de.frame4j.util.MinDoc;
       }  // ja or wahr   // an or or on  
 
       // remain  aus off yes true wahr
-
       if (len < 3) return def;
       char c3 = simpLowerC(value.charAt(2));
       if (len == 4) { // ggf. true or wahr
@@ -591,7 +571,6 @@ import de.frame4j.util.MinDoc;
       } // ggf. true or wahr  
 
       // remain  aus off yes 
-      
       if (len != 3) return def;
       if (c1 == 'y') { // yes
          if (def) return true;
@@ -637,7 +616,6 @@ import de.frame4j.util.MinDoc;
    } // asIntObj(CharSequence) 
 
 
-
 /** Interpret a character sequence as int with default value. <br />
  *  <br />
  *  {@code value} will be stripped from surrounding white space and perhaps
@@ -654,7 +632,6 @@ import de.frame4j.util.MinDoc;
       Integer iO = asIntObj(value);
       return iO == null ? def : iO.intValue();
    } // asInt(CharSequence, int)
-
    
 /** Primitive lower case. <br />
  *  <br />
@@ -751,7 +728,6 @@ import de.frame4j.util.MinDoc;
       return val < 0x100 ? val : Character.toLowerCase(val);
    } //  lowerC(char)
 
-
 /** A optimised upper case. <br />
  *  <br />
  *  This method is the counterpart to {@link #lowerC(char)}. It uses an 
@@ -783,7 +759,6 @@ import de.frame4j.util.MinDoc;
       if (val == 0xB5) return (char)924; // upper of µ lower Greek asymmetry
       return val < 255 ? val : Character.toUpperCase(val);
    } //  lowerC(char)
-
 
 /** Primitive character equals ignoring case. <br />
  *  <br />
@@ -828,8 +803,6 @@ import de.frame4j.util.MinDoc;
       if (c1 == 0xD7) return false; // but not div and mult
       return true; // different or too primitive to know about cases > 255
    } // simpCharEqu(2*char)
-
-
 
 /** Character equals optionally ignoring case. <br />
  *  <br />
@@ -885,8 +858,6 @@ import de.frame4j.util.MinDoc;
       return c1 == c2;
    } // simpCharEqu(2*char, boolean)
    
-   
-   
   /** A String compare optionally (optimised) ignoring case.
    * 
    *  This is a lexical String compare. s1 is considered greater if the first
@@ -926,7 +897,6 @@ import de.frame4j.util.MinDoc;
       return n1 - n2;
   } // compare(2*CharSequence, boolean)
 
-
 /** Trim and &quot;un-quote&quot; a character sequence. <br />
  *  <br />
  *  Is the character sequence <code>val</code> null or empty the substitute
@@ -951,17 +921,13 @@ import de.frame4j.util.MinDoc;
  *  @see #getPropertyText(CharSequence, String)
  *  @see #getPropertyText(CharSequence, CharSequence, String)
  */
-   public static String trimUq(final CharSequence val, final String def) {
+   public static String trimUq(final CharSequence val, final String def){
       if (val == null) return def; 
       int endInd = val.length();
       if (endInd == 0) return def;
       char c1 = val.charAt(0);
       --endInd;
       char c2 = endInd == 0 ? c1 : val.charAt(endInd);
-  //    if (c1 > ' ' && c2 > ' ') {  // simple case: no surrounding WS 
-    //     return val instanceof String ? (String) val : val.toString();
-      // } // simple case: no surrounding WS (fast path out)
-      
       int anfInd = 0;
       while (c1 <= ' ' && anfInd < endInd) {
          ++anfInd;
@@ -981,7 +947,7 @@ import de.frame4j.util.MinDoc;
          ++anfInd;
          if (anfInd == endInd) return ComVar.EMPTY_STRING;
          --endInd;
-         if (anfInd == endInd) Character.toString( val.charAt(endInd)); // 1L
+         if (anfInd == endInd) Character.toString(val.charAt(endInd)); // 1L
       } // "..."
       
       ++endInd;
@@ -992,8 +958,6 @@ import de.frame4j.util.MinDoc;
    } // trimUq(CharSequence, String)
 
 //------------------------------------------------------------------------
-
-   
 
 /** Compare two character sequences, optionally ignoring case. <br />
  *  <br />
@@ -1006,7 +970,7 @@ import de.frame4j.util.MinDoc;
  *  @see #compare(CharSequence, CharSequence, boolean)
  */
    public static boolean areEqual(final CharSequence s1, 
-                            final CharSequence s2, final boolean ignCase) {
+                            final CharSequence s2, final boolean ignCase){
       if (s1 == s2) return true;
       if (s1 == null || s2 == null) return false;
       final int len = s1.length();
@@ -1018,7 +982,6 @@ import de.frame4j.util.MinDoc;
       }
       return true;
    } // areEqual(2* CharSequence, boolean)
-   
 
 /** Compare a name and a pattern with wildcards. <br />
  *  <br />
@@ -1068,8 +1031,7 @@ import de.frame4j.util.MinDoc;
  *  @return         true is matching according to rules described
  */
    public static boolean wildEqual(final CharSequence wildName, 
-                                 final CharSequence name,
-                                 final  boolean ignoreCase) {
+                          final CharSequence name, final  boolean ignoreCase){
       if (wildName == null) return true;
       final int wildlen = wildName.length();
       if (wildlen  == 0) return true;
@@ -1107,7 +1069,6 @@ import de.frame4j.util.MinDoc;
       } // for 
       return !(i < wildlen || n < namelen);
    } // wildEqual(2*CharSequence, boolean)   
-
 
 //--------------------------------------------------------------------
 
@@ -1158,7 +1119,7 @@ import de.frame4j.util.MinDoc;
  */ 
    public static int fUr(final CharSequence source, final StringBuilder dest,
                 final CharSequence oldStart, final CharSequence oldEnd,
-                final CharSequence newText, final boolean ignoreCase ) {
+                    final CharSequence newText, final boolean ignoreCase){
       if (source == null || dest == null) return 0;
       int atl = oldStart == null ? 0 : oldStart.length();
       if (atl == 0) return 0;          // missing denotations
@@ -1199,8 +1160,7 @@ import de.frame4j.util.MinDoc;
       return vork;
    } // fUr(...)
 
-
-/** Find and Replace character sequence's parts (multiply, visitor). <br />
+/** Find and Replace character sequence's parts (multiple as visitor). <br />
  *  <br />
  *  The character sequence {@code source} will be appended to the 
  *  StringBuilder {@code dest}. Hereby any sequence in {@code source}
@@ -1303,10 +1263,8 @@ import de.frame4j.util.MinDoc;
       } // such:  while 
       return vork;
    } // fUr(CharSequence, ... visitor)
-   
 
-
-/** Find and Replace character sequence's parts (multiply, visitor). <br />
+/** Find and Replace character sequence's parts (multiple as visitor). <br />
  *  <br />
  *  The character sequence {@code source} will be appended to the 
  *  StringBuilder {@code dest}. Hereby any sequence in {@code source}
@@ -1432,10 +1390,8 @@ import de.frame4j.util.MinDoc;
       if (lastEnd < ql) dest.append(quell.subSequence(lastEnd, ql));
       return vork;
     } // fUr( , 2*CleverSSS, visitor)
-   
 
-
-/** Find and Replace character sequence's parts (multiply, String). <br />
+/** Find and Replace character sequence's parts (multiple, String). <br />
  *  <br />
  *  The character sequence {@code source} will be appended to the 
  *  StringBuilder {@code dest}. Hereby any sequence in {@code source}
@@ -1477,7 +1433,7 @@ import de.frame4j.util.MinDoc;
  */ 
    public static int fUr(final CharSequence quell, final StringBuilder dest,
                           final CleverSSS oldStart, final CleverSSS  oldEnd,
-                                                      final String newText) {
+                                                       final String newText){
       if (quell == null || dest == null 
                         || oldStart == null || oldStart.len == 0) return 0;
       final int ql  = quell.length();                   // L source
@@ -1534,11 +1490,9 @@ import de.frame4j.util.MinDoc;
             iEe = (int) (weEnd >>> 32);
          }
       } //  replLoop
-      
       if (lastEnd < ql) dest.append(quell.subSequence(lastEnd, ql));
       return vork;
     } // fUr(CharSequence, StringBuilder, 2*CleverSSS , String)
-   
 
 
 /** An &quot;indexOf&quot; ignoring case. <br />
@@ -1644,9 +1598,7 @@ import de.frame4j.util.MinDoc;
          return sI;
       } // slideHsh
       return -1;
-            
    } // indexOf(CharSeq
-
 
 /** An optimistic &quot;indexOf&quot; optionally ignoring case. <br />
  *  <br />
@@ -1704,7 +1656,6 @@ import de.frame4j.util.MinDoc;
       final int mxSi = lk - ls;
       int j = 1;
       final char subCo = sub.charAt(0);
-
       sequLoop: for (; sI <= mxSi ; sI += j, j = 1) {
          char cK = sequ.charAt(sI);   // compare the first
          if (!simpCharEqu(cK, subCo, ignoreCase)) continue sequLoop;
@@ -1717,7 +1668,6 @@ import de.frame4j.util.MinDoc;
       } // sequLoop 
       return -1;
    } // indexOfOpt(2*CharSeqence, int, boolean)
-
 
 //------------------------------------------------------------------
 
@@ -1740,9 +1690,9 @@ import de.frame4j.util.MinDoc;
  *  @param sub the (sub) sequence searched for.
  *  @return next found (index) or -1
  */ 
-   public static int lastIndexOf(CharSequence sequ, CharSequence  sub){
+   public static int lastIndexOf(CharSequence sequ, CharSequence sub){
       return lastIndexOf(sequ, sub, -1, true);
-   }
+   } // lastIndexOf(2*CharSequence)
 
 /** A lastIndexOf ignoring case. <br />
  *  <br />
@@ -1760,7 +1710,7 @@ import de.frame4j.util.MinDoc;
  *  @return next found (index) or -1
  */ 
    public static int lastIndexOf(CharSequence  sequ,
-                                 CharSequence  sub, int sI){
+                                            CharSequence  sub, int sI){
       return lastIndexOf(sequ, sub, sI, true);
    } // lastIndexOf(CharSeq
    
@@ -1805,8 +1755,7 @@ import de.frame4j.util.MinDoc;
          return sI;
       } // sequLoop 
       return -1;
-   } // lastIndexOf(CharSeq...boolean)
-
+   } // lastIndexOf(2*CharSequence,int,boolean)
 
 /** A white space searching lastIndexOf. <br />
  *  <br />
@@ -1823,7 +1772,7 @@ import de.frame4j.util.MinDoc;
  *  @param sequ the sequence, which white space is searched in.
  *  @return next occurrence &lt;= sI -1
  */ 
-   public static int lastIndexOfWS(CharSequence sequ, int sI) {
+   public static int lastIndexOfWS(CharSequence sequ, int sI){
       if (sequ == null) return -1;
       final int lk = sequ.length();
       if (lk == 0) return -1;
@@ -1833,9 +1782,7 @@ import de.frame4j.util.MinDoc;
          if (cK <= ' ') return sI;
       } // sequLoop 
       return -1;
-   } // lastIndexOfWS(CharSeq
-   
-
+   } // lastIndexOfWS(CharSequence,int)
 
 /** Index of first mismatch optionally ignoring case. <br />
  *  <br />
@@ -1917,7 +1864,6 @@ import de.frame4j.util.MinDoc;
       } // outer for
       return ret;
    } // equalsTil(CharSeq[], boolean)
-
 
 
 //--------------------------------------------------------------------------
@@ -2028,7 +1974,7 @@ import de.frame4j.util.MinDoc;
         dest.append(zif[(value & 0x0F0) >> 4]).append(zif[value & 0x0F]);
       } catch (IOException ex) { lastFormatingExc = ex; } // save & ignore       
       return dest;
-   } //  zweiStellHex(Appendable,  int)
+   } // twoDigitHex(Appendable,  int)
 
 
 /** Format as four digit hexadecimal number. <br />
@@ -2053,7 +1999,6 @@ import de.frame4j.util.MinDoc;
       } catch (IOException ex) { lastFormatingExc = ex; } // save & ignore 
       return dest;
    } // fourDigitHex(Appendable,  int)
-
 
 /** Format as six digit hexadecimal number. <br />
  *  <br />
@@ -2081,7 +2026,6 @@ import de.frame4j.util.MinDoc;
       } catch (IOException ex) { lastFormatingExc = ex; } // save & ignore 
       return dest;
    } // sixDigitHex(Appendable,  int)
-   
 
 /** Format as eight digit hexadecimal number. <br />
   *  <br />
@@ -2102,7 +2046,7 @@ import de.frame4j.util.MinDoc;
        if (dest == null) dest = new StringBuilder(14);
        try {
          dest.append(zif(value >> 28));
-         dest.append(zif(value >> 14));
+         dest.append(zif(value >> 24));
          dest.append(zif(value >> 20));
          dest.append(zif(value >> 16));
          dest.append(zif(value >> 12));
@@ -2111,7 +2055,6 @@ import de.frame4j.util.MinDoc;
        } catch (IOException ex) { lastFormatingExc = ex; } // save & ignore 
        return dest;
     } // eightDigitHex(Appendable,  int)
- 
 
 /** Byte array as separated sequence of two digit hex numbers. <br />
  *  <br />
@@ -2171,7 +2114,6 @@ import de.frame4j.util.MinDoc;
       return dest;  
    } // append(Appendable, byte[], 2*int)
 
-
 /** Format as two digit decimal number with leading zero. <br />
  *  <br />
  *  Appended to {@code dest} (generated StringBuilder if supplied as null) 
@@ -2194,7 +2136,6 @@ import de.frame4j.util.MinDoc;
        } catch (IOException ex) { lastFormatingExc = ex; } // save & ignore       
        return dest;
     } //  twoDigitDec(Appendable,  int)
-    
 
 /** Format decimal number right justified . <br />
  *  <br />
@@ -2225,16 +2166,14 @@ import de.frame4j.util.MinDoc;
        return dest;
     } // formDec(Appendable, 2*int)
 
-
-
 /** Format as two digit number with leading zero. <br />
  *  <br />
- *  A positive number will be formatted as two digit decimal number (tens and
- *  ones) with leading zero.<br />
+ *  A positive number will be formatted as two digit decimal number (tens
+ *  and ones) with leading zero.<br />
  *  A negative {@code value} and 0 return &quot;00&quot;.<br />
  *  For a {@code value} &gt; 100 the modulo 100 will be taken.<br />
  *  <br />
- *  Application example is time and date formatting:  16.06.09 00:02:05<br /> 
+ *  Application example is time and date formatting: 16.06.09 00:02:05<br /> 
  *  <br />
  *  @param  value  the number
  *  @return        something between &quot;00&quot; and &quot;99&quot;
@@ -2244,10 +2183,7 @@ import de.frame4j.util.MinDoc;
       if (value > 99) value %=100;
       char[] res = {tens[value], ones[value]};
       return String.valueOf(res);
-   //   return new StringBuilder(2).append((char)('0' + value/10))
-     //    .append((char)('0' + value%10)).toString();
    } // twoDigit(int)
-
 
 /** Format as three digit number with leading zeros. <br />
  *  <br />
@@ -2272,19 +2208,7 @@ import de.frame4j.util.MinDoc;
       }
       char[] res = {ones[hu], tens[value], ones[value]};
       return String.valueOf(res);
-      
-  /*xx    StringBuilder dest = new StringBuilder(3);
-      if (value < 100) {
-        return dest.append('0').append((char)('0' + value/10))
-        .append((char)('0' + value%10)).toString();
-      }
-      dest.append((char)('0' + value/100));
-      value %= 100;
-      if (value == 0) return dest.append("00").toString();
-      return dest.append((char)('0' + value/10))
-                              .append((char)('0' + value%10)).toString(); xx*/
    } // threeDigit(int)
-   
 
 /** Check (quite rawly) the syntax and uniform a MAC address. <br />
  *  <br />
@@ -2329,7 +2253,7 @@ import de.frame4j.util.MinDoc;
  *  @see #trimUq(CharSequence, String)
  */
    public static String checkLanguage(CharSequence language, 
-                                                      CharSequence defValue) {
+                                                      CharSequence defValue){
       String retLang = null;
       tryParams: while (language != null || defValue != null) {
          if (language != null) {
@@ -2358,7 +2282,6 @@ import de.frame4j.util.MinDoc;
       if (ComVar.UL_UR_da) return ComVar.UL;
       return "en";
    } // checkLanguage(2*CharSequence)
-
    
 /** Check and correct region code. <br />
  *  <br />
@@ -2380,7 +2303,7 @@ import de.frame4j.util.MinDoc;
  *  @see #trimUq(CharSequence, String)
  */
    public static String checkRegion(CharSequence region, 
-                                                      CharSequence defValue) {
+                                                      CharSequence defValue){
       String retRegio = null;
       tryParams: while (region != null || defValue != null) {
          if (region != null) {
@@ -2409,7 +2332,6 @@ import de.frame4j.util.MinDoc;
       if (ComVar.UL_UR_da) return ComVar.UR;
       return "GB";
    } // checkRegion(2*CharSequence)
-
 
 //------------------------------------------------------------------------
 
@@ -2442,7 +2364,7 @@ import de.frame4j.util.MinDoc;
  *  @return s freed from comments (never null, may be empty 
  */
    public static String unComment(String s, final char stC, final char endC, 
-                   final boolean nested, final CharSequence  repl) {
+                      final boolean nested, final CharSequence  repl){
       if (s == null) return ComVar.EMPTY_STRING;
       int limit = s.length(); 
       if (limit == 0) return ComVar.EMPTY_STRING;
@@ -2474,12 +2396,11 @@ import de.frame4j.util.MinDoc;
 
 //-------------------------------------------------------------------------
 
-
 /** Search a character sequence in a list / array. <br />
  *  <br />
  *  @return the index of text in list or -1 if not inside
  */   
-    public static int indexOf(final String text, final String[] list) {
+    public static int indexOf(final String text, final String[] list){
        if (list == null) return -1;
        final int len =  list.length;
        if (len == 0) return -1;
@@ -2491,7 +2412,6 @@ import de.frame4j.util.MinDoc;
        }
        return -1;
     } // indexOf(String, String[])
-
 
 /** Working up of parameter arrays. <br />
  *  <br />
@@ -2524,7 +2444,7 @@ import de.frame4j.util.MinDoc;
  *                 null
  */
    static public String[] prepParams(String[] args, 
-                                final String commSt, final boolean unQuote) {
+                                final String commSt, final boolean unQuote){
       if (args == null) return ComVar.NO_STRINGS;
       final int argL = args.length;
       if (argL == 0) return ComVar.NO_STRINGS;
@@ -2561,7 +2481,6 @@ import de.frame4j.util.MinDoc;
       return ret;
    }  // prepParams(String[], String, boolean)
 
-
 /** Make a parameter array from a character sequence (command line). <br />
  *  <br />
  *  This method returns a decomposition of the sequence {@code argLine} 
@@ -2588,7 +2507,7 @@ import de.frame4j.util.MinDoc;
  *  @see #splitCsWS(CharSequence)
  */
    static public String[] prepParams(final CharSequence argLine,
-                                 final String commSt, final boolean unQuote) {
+                                 final String commSt, final boolean unQuote){
       final String argSt = trimUq(argLine, null);
       if (argSt == null)  return ComVar.NO_STRINGS;
       final int len  = argSt.length();
@@ -2669,7 +2588,7 @@ import de.frame4j.util.MinDoc;
  *  @see #prepParams(CharSequence, String, boolean)
  */
    static public String[] prepParams(final CharSequence argLine,
-                                                           final int endArg) {
+                                                           final int endArg){
       if (argLine == null)  return ComVar.NO_STRINGS;
       int len  = argLine.length();
       if (len == 0) return ComVar.NO_STRINGS;
@@ -2719,8 +2638,6 @@ import de.frame4j.util.MinDoc;
       } // for
       return ret;
    } // prepParams(CharSequence, int)
-   
-
 
 /** Split a String to single words. <br />
  *  <br />
@@ -2741,7 +2658,7 @@ import de.frame4j.util.MinDoc;
  *                 empty but never  null
  *  @see #prepParams(CharSequence, String, boolean)               
  */
-   static public String[] splitWords(final String origContent) {
+   static public String[] splitWords(final String origContent){
       if (origContent == null)  return ComVar.NO_STRINGS;
       final int len  = origContent.length();
       int argZahl = (len + 1) / 2;
@@ -2782,8 +2699,6 @@ import de.frame4j.util.MinDoc;
       } // for
       return ret;
    } // splitWords(String)
-
-
 
 
 /** Separating at comma, semicolon or white space. <br />
@@ -2831,7 +2746,7 @@ import de.frame4j.util.MinDoc;
  *  @see ComVar#NO_STRINGS
  *  @see #splitWords(String)
  */   
-   public static String[] splitCsWS(CharSequence input) {
+   public static String[] splitCsWS(CharSequence input){
       final String argSt = trimUq(input, null);
       if (argSt == null)  return ComVar.NO_STRINGS;
       final int len  = argSt.length();
@@ -2895,7 +2810,7 @@ import de.frame4j.util.MinDoc;
  *  @param args    the parameter
  *  @return        the corresponding (command) line
  */
-   public static  String prepParams(String[] args) {
+   public static  String prepParams(String[] args){
       if (args == null) return ComVar.EMPTY_STRING;
       final int argAnz = args.length;
       if (argAnz == 0) return ComVar.EMPTY_STRING;
@@ -2910,14 +2825,13 @@ import de.frame4j.util.MinDoc;
            notFirst = true;
            dest = new StringBuilder(argAnz * 8);
          }
-         boolean quote = schouldQuote(akt);
+         boolean quote = shouldQuote(akt);
          if (quote) dest.append('\"');
          dest.append(akt);
          if (quote) dest.append('\"');
       }
       return notFirst ? dest.toString() : ComVar.EMPTY_STRING;
    } // prepArgs(String argLine, String)
-
 
 /** Make a recommendation about quoting argument. <br />
  *  <br />
@@ -2928,7 +2842,7 @@ import de.frame4j.util.MinDoc;
  *  Any occurrence of ?, *, ;, ,(comma), # or space returns true.<br />
  *  <br />
  */
-   public static boolean schouldQuote(CharSequence akt) {
+   public static boolean shouldQuote(CharSequence akt){
       int aktL = akt == null ? 0 : akt.length();
       if (aktL == 0) return true;
       if (aktL > 1 && akt.charAt(0) == '\"'
@@ -2939,7 +2853,7 @@ import de.frame4j.util.MinDoc;
               || a == '?' || a == '*') return true;
       }
       return false;
-   } 
+   } // shouldQuote(CharSequence)
 
 /** Check / complete an e-Mail address. <br />
  *  <br />
@@ -2957,8 +2871,8 @@ import de.frame4j.util.MinDoc;
  *  <br />
  */
    public static String checkMail(final CharSequence adr, 
-                           final CharSequence defaultServer, 
-                           final boolean forceServer) {
+                                final CharSequence defaultServer, 
+                                          final boolean forceServer){
       String givenAdr = trimUq(adr, null);
       if (givenAdr == null) return null;
       String givenDefault = trimUq(defaultServer, null);
@@ -2980,7 +2894,6 @@ import de.frame4j.util.MinDoc;
          } // force 
       }
       // put further grammar checks there (later)  
-
       return attachDefault ? givenAdr + '@' + givenDefault : givenAdr;
    } // checkMail
 
@@ -3051,7 +2964,6 @@ import de.frame4j.util.MinDoc;
       if (out == null) return;
       format(out, name, sA, 0);
    } // write(PrintWriter, CharSequence, CharSequence[])
-
    
 /** Formatting a runtime or period (long ms) as text. <br />
  *  <br />
@@ -3087,7 +2999,6 @@ import de.frame4j.util.MinDoc;
       return dest.append("min").toString();
    } // durationAsString()
 
-
 /** Pattern for separation at comma, semicolon or white space. <br />
  *  <br />
  *  safe singleton<br />
@@ -3097,7 +3008,6 @@ import de.frame4j.util.MinDoc;
       public final static Pattern commaSemicolonWSpattern =
                                      Pattern.compile("\\s*[,;\\|\\s]\\s*");
    } // CommaSemicolonWSpattern 
-
 
 /** Pattern for separation at comma, semicolon or white space. <br />
  *  <br />
@@ -3139,7 +3049,7 @@ import de.frame4j.util.MinDoc;
  *  @see String#split(java.lang.String)
  *  @see #splitCsWS(CharSequence)
  */   
-   public static Pattern getCommaSemicolonWSpattern() {
+   public static Pattern getCommaSemicolonWSpattern(){
       return CommaSemicolonWSpattern.commaSemicolonWSpattern;
    } // getCommaSemicolonWSpattern()
    
@@ -3423,7 +3333,5 @@ import de.frame4j.util.MinDoc;
  *  @return the component or null if the component[index] is not available
  */
       public abstract Object getMessageComponent(int index);
-      
-   } // interface MessageComponents ========================================
-
-} // class TextHelper (22.11.2003, 29.04.2008)
+   } // MessssageComponents ============
+} // class TextHelper (22.11.2003, 29.04.2008, 18.05.2021)

@@ -26,10 +26,11 @@ package de.weAut;
  *  @see Pi2
  *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 46 $ ($Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $)
+ *  @version  $Revision: 49 $ ($Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 36  (06.04.2021) :  polymorphism; type 3 4 0
+//           V. 49  (17.05.2021) :  bug- gpio2pin()
 
 public interface Pi3 extends ThePi {
   
@@ -44,10 +45,8 @@ public interface Pi3 extends ThePi {
  *     address "192.168.178.67". null or empty will be
  *     {@link de.weAut.ThePi#defaultHost defaultHost}
  */
-  static public Pi3 make(final String host){
-    return make(host, 0, 0, 3);
-  } // make(String)
-
+  static public Pi3 make(final String host){ return make(host, 0, 0, 3); }
+  
 /** Make a Pi3 object for Pi3, Pi or Pi0 (zero). <br />
  *   
  *  @return a Pi3 object with the given {@link #host() host},
@@ -59,9 +58,9 @@ public interface Pi3 extends ThePi {
  *           other values default to 10s 
  *  @see #make(String)            
  */
- static public Pi3 make(final String host, final int port,
+  static public Pi3 make(final String host, final int port,
                                       final int timeout, final int type){
-   return new Pi3(){
+    return new Pi3(){
       String hostPi;
       int portPi;
       int timoutPi;  
@@ -76,8 +75,8 @@ public interface Pi3 extends ThePi {
       @Override public String host(){ return this.hostPi; }
       @Override public int timeout(){ return this.timoutPi; }
       @Override public int type(){ return this.typePi; }
-  }; // ano inner
- } // make(String, 3*int)
+   }; // ano inner
+  } // make(String, 3*int)
 
 //----------------------------------------------------------------------  
 
@@ -137,10 +136,10 @@ public interface Pi3 extends ThePi {
  *     {@link #PIN5V}, {@link #PINix}: undefined, i.e. illegal pin number
  *       or {@link #PINig} ignore for pin = 0
  */
- @Override public default int gpio4pin(final int pin){
-   if (pin < 0 || pin > 40) return PINix;
-   return ThePi.Impl.pi3PIN2gpio[pin];
- } // gpio4pin(int)
+  @Override public default int gpio4pin(final int pin){
+    if (pin < 0 || pin > 40) return PINix;
+    return ThePi.Impl.pi3PIN2gpio[pin];
+  } // gpio4pin(int)
 
 /** Pin number to GPIO number lookup. <br />
  *
@@ -149,9 +148,9 @@ public interface Pi3 extends ThePi {
  *  @return 1..40 as the respective pin or 0 if the GPIO is not
  *           on the IO connector (P1).
  */
- @Override public default int gpio2pin(final int gpio){
-   if (gpio < 0 || gpio > 25) return 0; 
-   return ThePi.Impl.pi3GPIO2pin[gpio];
- } // gpio4pin(int)
+  @Override public default int gpio2pin(final int gpio){
+    if (gpio < 0 || gpio > 31) return 0;  // bug- 17.05.2021
+    return ThePi.Impl.pi3GPIO2pin[gpio];
+  } // gpio2pin(int)
   
 } // Pi3 (01.04.2021)

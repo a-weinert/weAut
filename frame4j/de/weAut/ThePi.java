@@ -34,7 +34,7 @@ import java.io.IOException;
  *  @see Pi3
  *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $)
+ *  @version  $Revision: 48 $ ($Date: 2021-05-15 20:20:23 +0200 (Sa, 15 Mai 2021) $)
  */
 // so far:   V. 36  (13.04.2021) :  new
 //           V. 4x  (21.05.202x) :  ...
@@ -103,6 +103,24 @@ public interface ThePi extends PiVals {
  *     or {@link #PINig} ignore for pin = 0
  */
  public int gpio4pin(final int pin);
+ 
+/** Pin number array to GPIO mask lookup. <br />
+ *  <br />
+ *  @param pins an array of legal pin numbers 1..40 (26 [+8]) or 0 for ignore
+ *  @return a bit mask for the GPIO numbers 0..31 set by the array pins.
+ *     0 means no non 0 entry in pins or erroneous entry or entries in pins
+ *  @see #gpios4pinsChck(CharSequence, int[])   
+ */
+ public default int gpios4pins(final int[] pins) {
+   int ret = 0; // the mask to return 
+   for (int pin : pins) {
+      final int gpio = gpio4pin(pin);
+      if (gpio == PINig) continue; // ignore do nothing
+      if (gpio < GPIOmin || gpio > GPIOutM) return 0; // return 0 on error
+      ret |= ClientPigpiod.gpio2bit[gpio]; 
+   }  // for
+   return ret;
+ } // gpios4pins(int[])
 
 /** Pin number to GPIO number lookup. <br />
  *
@@ -116,7 +134,7 @@ public interface ThePi extends PiVals {
 /** Pin number to GPIO number lookup with check. <br />
  *  <br />
  *  This method does (by delegating) the same pin to GPIO look up
- *  as {@link #gpio2pin(int)}. Additionally it raises an
+ *  as {@link #gpio4pin(int)}. Additionally it raises an
  *  {@link IOException} with a comprehensive message, when the pin is no
  *  real IO pin for a GPIO in the range 0..31.
  *  
@@ -137,6 +155,34 @@ public interface ThePi extends PiVals {
     throw new IOException("pin " + pin + " for " + signal + " = "  
                                          + ThePi.gpio2String(gpio));
   } // gpio4pinChk(int)
+
+/** Pins array to GPIO mask lookup with check. <br />
+ *  <br />
+ *  This method does the same pin to GPIO look up as
+ *  {@link #gpios4pins(int[])}. Additionally it raises an
+ *  {@link IOException} with a comprehensive message, when the pin is no
+ *  real IO pin for a GPIO in the range 0..31 (instead of just returning 0).
+ *  
+ *  @param signal a short (best 7 char) description of the pin / signal
+ *         or device group like "redLEDs", "relaysH" etc. 
+ *         It is used for the IOexception message, only
+ *  @throws IOException on the first pinin the array not allowing
+ *         the IO operation intended with a comprehensive message
+ *  @see #gpios4pins(int[])   
+ */
+  public default int gpios4pinsChck(CharSequence signal, final int[] pins)
+                                                         throws IOException {
+    int ret = 0; // the mask to return 
+    for (int pin : pins) {
+       final int gpio = gpio4pin(pin);
+       if (gpio == PINig) continue; // ignore do nothing
+       if (gpio < GPIOmin || gpio > GPIOutM) throw new IOException("pin "
+               + pin + " for " + signal + " = "  + ThePi.gpio2String(gpio));
+       ret |= ClientPigpiod.gpio2bit[gpio]; 
+    }  // for
+    return ret;
+  } // gpios4pinsChck(CharSequence,int[])
+
 
  
 //--------------------- Object properties --------------------------  
