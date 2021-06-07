@@ -18,10 +18,11 @@ import de.weAut.ClientPigpiod.CmdState;
 import de.frame4j.text.TextHelper;
 import de.frame4j.util.App;
 import de.frame4j.util.AppBase;
-import de.frame4j.util.ComVar;
 import de.frame4j.util.MinDoc;
+import static de.weAut.PiGpioDdefs.PI_CMD_MODES;
+import static de.weAut.PiGpioDdefs.PI_INPUT;
+import static de.frame4j.util.AppLangMap.valueUL;
 import java.io.IOException;
-import java.util.Arrays;
 import javax.management.JMException;
 
 /** <b>TestOnPi &ndash; Demonstrate and test IO devices on a Pi</b>.<br />
@@ -41,7 +42,7 @@ like e.g. <pre><code>
 </code></pre>
  *  Additionally to command line arguments, the settings and functions might
  *  be made or called via JMX/JConsole. <br >
- *  <pre><code>  
+ * 
    Copyright  &copy;  2021  Albrecht Weinert <pre><code>
    weinert-automation.de        a-weinert.de
 
@@ -55,8 +56,10 @@ like e.g. <pre><code>
  *  @see TestOnPiMBean
  *  @see PiUtil
  *  @see <a href="./doc-files/TestOnPi.properties">TestOnPi.properties</a>
- *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 49 $ ($Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $)
+ *  @see <a href="./doc-files/Raspi4testPins.png"
+ *   title="GPIOs and pins">Raspi4testPins</a>
+ *
+ *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
  */
 // so far:   V.  21  (21.05.2019) : new, minimal functionality
 //           V.  26  (31.05.2019) : three LEDs, IO lock 
@@ -64,16 +67,13 @@ like e.g. <pre><code>
 //           V.  47  (12.05.2021) : end of rudimentary prototype state 
 @MinDoc(
   copyright = "Copyright 2021  A. Weinert",
-  author    = "Albrecht Weinert",
-  version   = "V.$Revision: 49 $",
-  lastModified   = "$Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $",
+  version   = "V.$Revision: 51 $",
+  lastModified   = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
   usage   = "start as Java application (-? for help)",  
   purpose = "a Frame4J program to test IO devices on a Pi via pigpioD"
 ) public class TestOnPi extends App implements PiUtil, TestOnPiMBean {
 
   @Override public final boolean parsePartial(){ return true; }
-  
-  public final boolean prgTst = true; // true test debug for development
  
 //-- values set by parameters or (partly) by JMX/JConsole -----------   
 
@@ -90,19 +90,19 @@ like e.g. <pre><code>
 // no checks here .properties and/or arguments must be valid
 /** Indexed property ledRDpin[], setter. <br /> */ 
   public void setLedRDpin(int index, int pin){
-    if (prgTst) out.println("  // TEST ledRDpin[" + index + "] = " + pin);
+    if (isTest()) out.println("  // TEST ledRDpin[" + index + "] = " + pin);
     ledRDpins[index] = pin;
   } // setLedRDpin(2*int)
 /** Indexed property ledYEpin[], setter. <br /> */ 
   public void setLedYEpin(int index, int pin){
-    if (prgTst) out.println("  // TEST ledYEpin[" + index + "] = " + pin);
+    if (isTest()) out.println("  // TEST ledYEpin[" + index + "] = " + pin);
     ledYEpins[index] = pin;
   } // setLedYEpin(2*int)
 /** Indexed property ledGNpin[], setter. <br /> */
   public void setLedGNpin(int index, int pin){
-    if (prgTst) out.println("  // TEST ledGNpin[" + index + "] = " + pin);
+    if (isTest()) out.println("  // TEST ledGNpin[" + index + "] = " + pin);
     ledGNpins[index] = pin;
-  } // setLedGNpin(2*int) 
+  } // setLedGNpin(2*int)
 
 /** The input or button. <br />
  *  <br />
@@ -114,7 +114,13 @@ like e.g. <pre><code>
  *  default: {@link PiVals#PINig  PINig} resp. 0 : ignore no operation
  *           and {@link PI_PUD_KP} : keep pull up/down/none as is 
  */
-  public int buttPin = 0, buttGpio = PINig, buttPUD = PI_PUD_KP; 
+  public ThePi.Port portIn;
+  String inPort; // the settings
+  String inPortName  = "singleIn";
+  String outPortName = "singlOut";
+  String outPort; // the settings
+  
+ // int buttPin = 0, buttGpio = PINig, buttPUD = PI_PUD_KP; 
     
 /** The GPIO respectively pin to use for (single / non LED) operations. <br />
  *  <br />
@@ -126,167 +132,120 @@ like e.g. <pre><code>
  *  default: {@link PiVals#PINig  PINig} resp. 0 : ignore no operation
  *           and {@link PI_PUD_KP} : keep pull up/down/none as is           
  */
-   public int outGpio = PINig, outPin = 0, outPUD = PI_PUD_KP; 
+  public ThePi.Port portOut;
+ //  public int outGpio = PINig, outPin = 0, outPUD = PI_PUD_KP; 
   
 //--- state / control  -  exposed as MBean ---------------------------------  
   
   int cycCount; // incremented on every red & green blink cycle (600ms)
+  int cycLim = 0; // cycle count limit
+  
   boolean yLd; // status of the yellow LED(s)
   boolean rLd; // status of the red LED(s)
   boolean gLd; // status of the green LED(s)
   
+
   int stepDelay = 10; // delay between operations; default 10ms
-  int stepVal = 10; // step between two PMW or servo values; default 10
-  int val = 100; // PMW or servo current value; default 100
+  int stepVal  = 10; // step between two PMW or servo values; default 10
+  int val    = 100; // PMW or servo current value; default 100
   int valUp = 255; // PMW or servo value upper limit; default 255
-  int valLo = 0; // PMW or servo value lower limit; default 0
+  int valLo = 0;  // PMW or servo value lower limit; default 0
   
-  boolean leBut0; // status of the button (the one input here)
-  boolean leBut0prev; // previous status of the button (for flank action)
+  boolean runOnTask;
+  
+//---- standard Bean / argument  implementation   --------------------------
+  
+  public final void setStepVal(final int stepVal){ 
+    this.stepVal = stepVal < 1 ? 1 : (stepVal > 2000 ? 2000 : stepVal);
+    if (isTest()) out.println("  // TEST stepVal = " + this.stepVal);
+   } // setStepVal(int)
+  
+  public final void setCycLim(final int cycLim){ 
+    this.cycLim = cycLim;
+    this.cycCount = 0;
+    if (isTest()) out.println("  // TEST cycLim = " + this.cycLim);
+  } // setCycLim(int)
+  
+  public final void setValUp(final int valUp){
+    this.valUp = valUp <= 0 ? 0 : valUp >= 2500 ? 2500 : valUp;
+    if (isTest()) out.println("  // TEST valUp = " + this.valUp);
+  } // setValUp(int)
+
+  public void setValLo(final int valLo){
+    this.valLo = valLo <= 0 ? 0 : valLo >= 2500 ? 2500 : valLo;
+    if (isTest()) out.println("  // TEST valLo = " + this.valLo);
+  } // setValLO(int) 
+  
+  public final void setStepDelay(final int delay){
+    this.stepDelay = delay >= 2 && delay <= 600000 ? delay : 80;
+    if (isTest()) out.println("  // TEST stepDelay = " + this.stepDelay);
+  } // setStepDelay(int)
+  
+  public void setVal(final int val){
+    this.val = val <= 0 ? 0 : val >= 2500 ? 2500 : val;
+    if (isTest()) out.println("  // TEST val = " + this.val);
+  } // setVal(val)
     
-//----  MBean Operations / Implementation    -------------------------------
+//----  MBean operations / implementation    -------------------------------
 
   @Override public final Integer getCycCount(){ return cycCount; }
   @Override public void setCycCount(Integer cycCount){
-                           TestOnPi.this.cycCount = cycCount; }
-  @Override public Integer resetCycCount(){ 
-   final int ret = cycCount;  cycCount= 0; 
-   return ret;
-  } // resetCycCount()
+                           TestOnPi.this.cycCount = cycCount;
+  } // setCycCount(Integer)
+  @Override public final Integer getCycOvr(){ return getOvrCnt(); }
+  @Override public final Integer getCycLim(){ return cycLim; }
+  @Override public void setCycLim(final Integer cycLim){
+    setCycLim(cycLim.intValue());
+  } // setCycLim(Integer)
+  
   @Override public Boolean getLEDye(){ return yLd; }
   @Override public Boolean getLEDgn(){ return gLd; }
   @Override public Boolean getLEDrd(){ return rLd; }
   @Override public Integer getPiType(){ return pI.thePi.type(); }
-
   @Override public final void setStepDelay(final Integer delay){
-    int i = delay;
-    this.stepDelay = i >= 2 && i < 30000 ? i : 10;
-  } // setDelay(Integer)
-
+    setStepDelay(delay.intValue());
+  } // setStepDelay(Integer)
   @Override public final Integer getStepDelay(){ return this.stepDelay; }
-
   @Override public final void setStepVal(final Integer stepVal){ 
-   this.stepVal = stepVal;
+   setStepVal(stepVal.intValue());
   } // setStepVal(Integer)
-
   @Override public final Integer getStepVal(){ return stepVal; }
-  
   @Override public void setVal(final Integer val){
-    final int i = val.intValue();
-    this.val = i <= 0 ? 0 : i >= 2500 ? 2500 : i;
+    setVal(val.intValue());
   } // setVal(Integer)
-
   @Override public Integer getVal(){ return val; }
-
-  @Override public void setValUp(Integer valUp){
-    final int i = valUp.intValue();
-    this.valUp = i <= 0 ? 0 : i >= 2500 ? 2500 : i;
+  @Override public void setValUp(final Integer valUp){
+    setValUp(valUp.intValue());
   } // setValUp(Integer)
-
   @Override public Integer getValUp(){ return valUp; }
-
-  @Override public void setValLo(Integer valLo){
-    final int i = valLo.intValue();
-    this.valLo = i <= 0 ? 0 : i >= 2500 ? 2500 : i;
+  @Override public void setValLo(final Integer valLo){
+    setValLo(valLo.intValue());
   } // setValLO(Integer)
-
   @Override public Integer getValLo(){ return valLo; }
+  @Override public void stopTask(){
+    if (runOnTask) { runOnTask = false; } else { stop(); }
+  } // stopTask()
   
 //-------------- non LED input and output ------------------ 
  
-/** Set GPIO number for (non LED) output operations. <br /> */
-  public void setOutGpio(final int gpio){
-    this.outGpio = (gpio < 0 || gpio > 31) ? PINig : gpio;
-    if (this.outGpio >= PINig) { 
-      this.outPin = 0;  this.outPUD = PI_PUD_KP;
-      return; // no pin no setting
-    } 
-    if (pI != null) this.outPin = pI.thePi.gpio2pin(this.outGpio);
-  } // setOutGpio(int)   
-
-/** Set pin for (non LED) output operations. <br /> */
-  public void setOutPin(int pin){
-    if (pI != null) {
-      this.outGpio =  pI.thePi.gpio4pin(pin);
-      if (this.outGpio < 31) { this.outPin = pin; return; } //ready
-      pin = 0; // assure error
-    } // have the Pi already
-    if (pin < 1 || pin > 40) { // error
-      this.outPin = 0; this.outGpio = PINig; this.outPUD = PI_PUD_KP;
-      return; // no pin no setting
-    } // error
-    this.outPin = pin; // no Pi yet, set pin, only
-  } // setOutPin(int)
-  
-/** Set GPIO number for input or output operations. <br /> */
-  public void setGpio(final boolean out, final int gpio){
-    if (out) { setOutGpio(gpio);
-    } else setInGpio(gpio);
-  } // setGpio(boolean, int)
-
-/** Set pin for input or output operations. <br /> */
-  public void setPin(final boolean out, final int pin){
-    if (out) { setOutPin(pin);
-    } else setInPin(pin);
-  } // setPin(boolean out, int)
-
 /** Set the output for (non LED) actions. <br /> 
 *  <br />
 *  This method sets the output port either as pin number or as GPIO with a
 *  prefix G. A postfix U, D or N will set the pull resistor as up, down or
 *  none.<br />
-*  Without postfix the pull resistor setting will be kept untouched. 
+*  Without postfix the pull resistor setting will be kept untouched.
+*   
 *  @param outPort output pin (12N, e.g.) or gpio (with leading G; G18, e.g.)
 */
-  @Override public void setOutPort(String outPort){ setPort(true, outPort); }
-    
-   
-/** Set the input or output for (non LED) actions. <br /> 
-*  <br />
-*  This method sets the output port either as pin number or as GPIO with a
-*  prefix G. A postfix U, D or N will set the pull resistor as up, down or
-*  none.<br />
-*  Without postfix the pull resistor setting will be kept untouched. 
-*  @param port output pin (12N, e.g.) or gpio (with leading G; G18, e.g.)
-*/
-  public void setPort(final boolean out, String port){ 
-    port = TextHelper.trimUq(port, EMPTY_STRING);
-    int len = port.length();
-    if (len == 0) { setGpio(out, PINig); return; } // no output
-    char c0 = port.charAt(0);
-    int num = 0;
-    int nx = 1;
-    boolean isGPIO = c0  == 'G' || c0 == 'g';
-    if (isGPIO || c0  == 'P' || c0 == 'G') { // c0 said pin or gpio
-      if (len == 1) { setGpio(out, PINig); return; } // none specified
-      c0 = port.charAt(1); nx = 2;
-    } // c0 (before) said pin or gpio
-    if (c0 < '0' || (num = c0 - '0') > 9) { // c0 must be cif  but is not 
-      setGpio(out, PINig); return; // none specified (format error)
-    } // c0 must be cif  but is not
-    while (nx < len) { // 2nd cif and / or PUD (U D N) follow
-      c0 = port.charAt(nx); ++nx;
-      if (c0 <= ' ') break; // end of value (start comment)
-      if (c0 >= '0' &&  c0 <= '9') { // 2nd cif
-        num = num * 10 + c0 - '0';
-        if (num >= 99) break; // error ends c0 character loop
-        continue;
-      } // 2nd cif
-      // to here no cif; must be U D N K (u d n k)
-      if (c0 >= 'a') c0 -= 32; // poor man's toUpperCase for primitive USascii
-      if (c0 == 'G' || c0 == 'P') break; // ignore redundant gpio or pin
-      int pud = PI_PUD_KP;  // keep PUD (restore default)
-      if (c0 == 'D') pud = PI_PUD_DOWN;
-      else if (c0 == 'U') pud = PI_PUD_UP;
-      else if (c0 == 'N') pud = PI_PUD_OFF;  // shall we accept O also ?
-      else if (c0 != 'K') num = 100; // now in error anyway
-      if (pud == PI_PUD_KP) break;
-      if (out) outPUD = pud; else buttPUD = pud;
-      break; // postfix ends char loop
-    } // while c0 character loop
-    if (isGPIO) { setGpio(out, num); // set by GPIO number (prefix G)
-    } else setPin(out, num);  // set by pin number
-  } // setPort(boolean, String)
+  @Override public void setOutPort(String outPort){ 
+    outPort = TextHelper.trimUq(outPort, null);
+    if (outPort == null) return;
+    this.outPort = outPort;
+    if (portOut != null) {
+      portOut.setPort(outPort);
+      pI.setPullR(portOut, PI_PUD_DT); // set the ports PUD setting
+    }
+  } // setOutPort(String)
 
 /** Set the input for input actions. <br />
  *  <br />
@@ -296,69 +255,197 @@ like e.g. <pre><code>
  *
  *  @param inPort input pin (7, e.g.) or gpio (with leading G; G4U, e.g.)
  */
-  @Override public void setInPort(String inPort){ setPort(false, inPort); }
+  @Override public void setInPort(String inPort){
+    inPort = TextHelper.trimUq(inPort, null);
+    if (inPort == null) return;
+    this.inPort = inPort;
+    if (portIn != null) {
+      portIn.setPort(inPort);
+      pI.setPullR(portIn, PI_PUD_DT); // set the ports PUD setting
+    }
+  } // setInPort(String)
 
   @Override public String getOutPort(){
-    if (pI == null) return   "unknown"; 
-    return pI.pinDescr(outPin, outPUD);
+    if (pI == null || portOut == null) return   "unknown"; 
+    //     return pI.pinDescr(outPin, outPUD);
+    return portOut.toString();
   } // getOutPort()
   @Override public String getInPort(){
-    if (pI == null) return   "unknown"; 
-    return pI.pinDescr(buttPin, buttPUD);
-  } // getInPort()
+    if (pI == null || portIn == null) return   "unknown"; 
+    //  return pI.pinDescr(buttPin, buttPUD);
+    return portIn.toString();
+  } // getInPort() 
   
-/** Set GPIO for input operations. <br /> */
-  public void setInGpio(final int gpio){
-    this.buttGpio = (gpio < 0 || gpio > 56) ? PINig : gpio;
-    if (this.buttGpio >= PINig) { 
-      this.buttPin = 0; this.buttPUD = PI_PUD_KP; // ignore
-      return;
-    } 
-    if (pI != null) this.buttPin = pI.thePi.gpio2pin(this.buttGpio);
-  } // setIntGpio(int)
-
-/** Set pin for input operations. <br /> */
-  public void setInPin(int pin){
-    if (pI != null) {
-      this.buttGpio =  pI.thePi.gpio4pin(pin);
-      if (this.buttGpio < 56) { this.buttPin = pin; return; }
-      pin = 0; // assure error
-    } // have the Pi already
-    if (pin < 1 || pin > 40) { // error
-      this.buttPin = 0; this.buttGpio = PINig; this.buttPUD = PI_PUD_KP;
-      return; // no pin no setting
-    } // error
-    this.buttPin = pin; // no Pi yet, set pin, only
-  } // setOutPin(int)
-
 //-------------- actions -----------------------------------
+  
+  boolean invInToOut; // inverted input to output on every (delay step)  
 
+/** Helper for starting cyclic task action. <br /> */   
+  boolean reportTskStrt(final String taskName) {
+   if (!runOnTask || !isRunFlag()) return false;
+   if (cycLim <= 0 || cycLim >= 2000111222) {
+     out.println("  " + taskName + "  (" + valueLang("endless") 
+                                 + " -> JConsole)");
+   } else {
+     out.println("  " + taskName + "  (" + cycLim + " "
+                                 + valueLang("times") + ")");
+   }
+   cycCount = 0; // allow full cycLim
+   return true;
+  } // reportTskStrt(String)
+  
+  void reportWnkPar(){
+    out.println("  " + val + " \u00B1" + stepVal + "/"
+      + TextHelper.formatDuration(null, stepDelay)
+                            + " [" + valLo + ".." + valUp + "]");
+  } // reportWnkPar()
+  
+/** Delay with run on check. <br >
+ *  @param millies the number of ms to delay relativ to the last call
+ *  @return true when to run on  
+ */
+  boolean chkDelay(final int millies){
+    if (invInToOut)inToInvOut();
+    if (runOnTask && isRunFlag()){
+      thrDelay(millies);
+    } 
+    return runOnTask && isRunFlag();
+  } // chkDelay(int)
+ 
 /** Blink the LEDs. <br /> */
-  @Override public void blink(){;} // todo
+  @Override public void blink(){
+    final int ledOut = rdLEDs | yeLEDs | gnLEDs;
+    if (ledOut == 0) {
+      out.println("  TestOnPi  blink: " + valueUL("fem0", "no") + " LEDs");
+      return;
+    }
+    runOnTask = true; // start a local task
+    invInToOut = portIn.isIO(); // input & eventually output in every step
+    //  out.println("  TestOnPi set mode output rd ye gn/up  14 mA");
+    pI.logCommand(pI.setPadS(0, 14));
+    pI.setAsOutputs(verbose, "red LED", rdLEDs);
+    pI.setAsOutputs(verbose, "yel LED", yeLEDs);
+    pI.setAsOutputs(verbose, "grn LED", gnLEDs);
+    if (reportTskStrt("blink LEDs")) for(;;) { // red yellow green time/state 
+      pI.logIfBad(pI.setOutSet(rdLEDs, rLd=HI));// on
+      if (!chkDelay(200)) break;               //                  200 ms red
+      yLd = !yLd;                             //       toggle
+      pI.logIfBad(pI.setOutSet(yeLEDs, yLd)); //       on off
+      pI.logIfBad(pI.setOutSet(gnLEDs, gLd=HI)); //            on
+      if (!chkDelay(100)) break;                //                 100 ms both
+      pI.logIfBad(pI.setOutSet(rdLEDs, rLd=LO));// off
+      if (!chkDelay(100)) break;                //                 100ms green
+      pI.logIfBad(pI.setOutSet(gnLEDs, gLd=LO)); //           off
+      if (!chkDelay(200)) break;                //                 200 ms dark
+      if (++cycCount == cycLim) break;
+    } // for endless (leave on stop signals)
+    out.println("  " + valueLang("releaseLEDs", "release LED outputs") + " "
+                             + TextHelper.eightDigitHex(null, ledOut));
+    
+    pI.gpioActionsByMsk(ledOut, gpio -> pI.stdCmd(PI_CMD_MODES, gpio, PI_INPUT));
+  } // blink()
 
-/** Servo wink respectively PWM up/down. <br /> */
-  @Override public void wink(){;} // todo 
+/** Servo wink respectively PWM up/down. <br /> 
+ *  <br />
+ *  If {@link #portOut} allows no out nothing is done except a message.<br />
+ *  The start value {@link #val} determines the mode: <br />
+ *  0..255 : pulse width modulation PWM 0%..100% <br />
+ *  500..1500..2500: servo positions left..centre..right <br />
+ *  else: no action.
+ */
+  @Override public void wink(){
+    if (! portOut.isIO()) {
+      out.println("  TestOnPi  wink: " + valueUL("mal0", "no") + " port");
+      return;
+    }  // no GPIO
+    final int outGpio = portOut.gpio;
+    final boolean isPWM = val >= 0 && val <= 255;
+    if( !isPWM && (val < 500 || val > 2500)) {
+       out.println("  TestOnPi  wink: error, val= " + val);
+       return;
+    } // val error
+    if (valLo > val) valLo = val; // [val..valUp]
+    if (valUp < val) valUp = val; // [valLo..val]
+    boolean up = true;
+    if (isPWM) { // PWM
+      if (valUp > 255) valUp = 255;
+      if (valLo < 0) valLo = 0;
+      if (valUp <= valLo) { // [.]
+        if (valLo < 128) valUp = valLo + 60;
+        if (valUp >= 128) valLo = valUp -60;  
+      } // [.]
+      up = val < 128;
+    } else { //  (PWM else ) servo
+      if (valUp > 2500) valUp = 2500;
+      if (valLo < 500) valLo = 500;
+      if (valUp <= valLo) { // [.]
+        if (valLo < 1500) valUp = valLo + 600;
+        if (valUp >= 1500) valLo = valUp -600;  
+      } // [.]
+      up = val < 1500;
+    } // servo
+    //int dif = valUp - valLo;
+    //if (stepVal > dif) stepVal = dif;  // ?? necessary ???
+    runOnTask = true; // start a local task
+    if (reportTskStrt(isPWM ? "wink PMM" : "wink servo")) {
+      reportWnkPar();
+      for(;;) {
+    
+      if (isPWM) {  pI.setPWMcycle(outGpio, val);
+      } else pI.setServoPos(outGpio, val);
+      if (!chkDelay(stepDelay)) break;  
+      if (++cycCount == cycLim) break;
+      if (up) { // 
+        if (val >= valUp) { 
+          up = false; val = valUp - stepVal;
+        } else if ((val += stepVal) > valUp) { 
+          up = false; val = valUp; 
+        } 
+      } else { // down
+        if (val <= valLo) {
+          up = true; 
+          val = valLo + stepVal;
+        } else if ((val -= stepVal) < valLo) { 
+          val = valLo; 
+          up = true;
+        } 
+      } // if (up else) down
+    }} // if do   for
+    out.println("  " + valueLang("releaseOut", "release output") + " "
+                                               + ThePi.gpio2String(outGpio));
+    pI.logIfBad(pI.setMode(outGpio, PI_INPUT));
+  } // wink()
 
   @Override public void setOutput(final String out){
-    if (pI == null) return; // to early
-    int ret = pI.setOutput(outGpio, out);
+    if (pI == null || portOut == null) return; // to early
+    int ret = pI.setOutput(portOut.gpio, out);
     if (ret < 0) { // error
       this.val = ret;
     } else { // retrieve val from command parameter
       final CmdState cmdSt = ClientPigpiod.lastCmdState.get();
       final int lastCmd = cmdSt.lastCmd;
       this.val = cmdSt.lastP2;
-      if (lastCmd == PiGpioDdefs.PI_CMD_WRITE && this.val == 1) this.val = 255;  
+      if (lastCmd == PiGpioDdefs.PI_CMD_WRITE && this.val == 1) this.val = 255;
     }  // retrieve val from command parameter
   } // setOutput(String) 
 
-/** Input and set the output with the inverted result. <br /> */
-  @Override public Boolean input(){ 
-    if (buttGpio >= PINig || pI == null) return Boolean.FALSE; // no input
-    int in = pI.getInp(buttGpio);
-    if (outGpio < 32) pI.setOutput(outGpio, in == 0); // output inverted
-    return in == 1 ? Boolean.TRUE : Boolean.FALSE; 
-  } // todo
+// Input and set the output with the inverted result.
+  @Override public Boolean inToInvOut(){ 
+    if (portIn == null || pI == null) return Boolean.FALSE; // no input
+    final int buttGpio = portIn.gpio;
+    if (buttGpio >= PINig) return Boolean.FALSE; // no input
+    final boolean out = pI.getInp(buttGpio) == 0;
+    if (portOut != null && portOut.isIO())
+                          pI.setOutput(portOut.gpio, out); // output inverted
+    return out ? Boolean.FALSE : Boolean.TRUE; 
+  } // inToInvOut()
+
+// just input 
+  @Override public Boolean input(){
+    if (portIn == null || pI == null) return Boolean.FALSE; // no input
+    if (!portIn.isIO()) return Boolean.FALSE; // no input
+    return pI.getInp(portIn.gpio) == 1 ? Boolean.TRUE : Boolean.FALSE; 
+  } // input()
 
 /** The state of the output. <br />
 *  <br />
@@ -369,14 +456,9 @@ like e.g. <pre><code>
     if (val < 0)    return " error";
     if (val ==   0) return "Off Lo";
     if (val == 255) return "On  Hi";
-    if (val < 0 || val > 2500 || ( val > 255
-     && val < 500)) return "undef'd";
-    StringBuilder dest = new StringBuilder(8); 
-    if (val <= 255) {
-      return dest.append("PWM").append(TextHelper.threeDigit(val)).toString();
-    }
-    dest.append("Sr");
-    dest.append(val > 1000 ? (val < 2000 ? '1' : '2') : 'v');
+    if (val > 2500 || (val > 255 && val < 500)) return "undef'd";
+    StringBuilder dest = new StringBuilder(8);
+    dest.append(val > 1000 ? (val < 2000 ? '1' : '2') : '0');
     return dest.append(TextHelper.threeDigit(val)).toString();
   } // getOutput()
 
@@ -400,33 +482,27 @@ like e.g. <pre><code>
  */
   public static void main(String[] args){
     try { new TestOnPi().go(args);
-   } catch (Exception e) {  AppBase.exit(e, INIT_ERROR); }
+   } catch (Exception e) { AppBase.exit(e, INIT_ERROR); }
   } // main(String[])
   
-//--- the GPIOs --------------  
-  
-  int rdLEDs; // GPIO masks for LEDs  (0 = no entry)
-  int gnLEDs, yeLEDs;
+/** GPIO mask for LEDs  (0 = no entry). <br /> */
+  int rdLEDs, yeLEDs, gnLEDs; // GPIO masks for red yellow and green LEDs  
                           
 /** The application's work. <br />
  *  <br />
- *  When  the startup succeeds this will run in an endless loop until 
- *  killed by signal or stopped by MBean/JConsole command.
- *  @return 0: application ended OK; no errors, no results 
+ *  When  the startup succeeds this will run an ordered (or default) task
+ *  in an endless loop until killed by signal or stopped by MBean/JConsole
+ *  command.
+ *  @return 0: application ended OK; otherwise error
  */
   @Override public int doIt(){
     out.println(formMessage("startOn") );
     String oName = null;
     try {
       oName = regAsStdMBean(); // registration as MBean 
-      out.println("\n  " + PROG_SHORT + " MBean: " + oName); // success
+      out.println("  MBean: " + oName + " (JConsole)"); // success
     } catch (JMException ex) { repExc(out, ex, false); } // report fail
     
-    String restArgs = TextHelper.prepParams(args);
-    if (restArgs != ComVar.EMPTY_STRING) {
-      out.println("\n  " + PROG_SHORT + " argsLeft: " + restArgs); // success
-    }
-
     if (getUseLock()) {
       final int oL = openLock(null, false);
       if (oL != 0) return errorExit(oL, formMessage("errLock")
@@ -437,7 +513,7 @@ like e.g. <pre><code>
     }
     try {
       pI = ClientPigpiod.make(this); 
-      out.println("\n  TestOnPi connect " + pI);
+      out.println(formMessage("connected") + pI + "\n");
     } catch (IOException ex) {
       return errorExit(ERR_PIGPIOD_CON, ex, 
                                           PiUtil.errorText(ERR_PIGPIOD_CON));
@@ -446,55 +522,115 @@ like e.g. <pre><code>
        rdLEDs = pI.thePi.gpios4pinsChck("red LED", ledRDpins);
        gnLEDs = pI.thePi.gpios4pinsChck("grn LED", ledGNpins);
        yeLEDs = pI.thePi.gpios4pinsChck("yel LED", ledYEpins);
-       out.println("\n  " + PROG_SHORT + " rdLEDs: " + 
-                            TextHelper.eightDigitHex(null, rdLEDs)
-           + " by " + Arrays.toString(ledRDpins)); // TEST
-       if (outPin > 0 ) {
-        outGpio = pI.thePi.gpio4pinChck("singleIO", outPin);
-       } else {
-         outPin = pI.thePi.gpio2pin(outGpio);
-       }
+
+       portOut = pI.thePi.portByGPIO(PINig, outPortName); // make no out
+       portOut.setPort(outPort); // set by arg
+       pI.setPullR(portOut, PI_PUD_DT); // set the ports PUD setting
+       
+       portIn = pI.thePi.portByGPIO(PINig, inPortName); // make no out
+       portIn.setPort(inPort); // set by arg
+       pI.setPullR(portIn, PI_PUD_DT); // set the ports PUD setting
     } catch (IOException  ex) {
       return errorExit(ERR_ASSIGN_PIN, ex, PiUtil.errorText(ERR_ASSIGN_PIN));
     } // assign GPIOs to LED pins
+    
+    int argsLeft = TextHelper.countParams(args);
+    if (argsLeft == 0) {
+      if (rdLEDs != 0) {
+         args = new String[]{"-blinkLEDs"};
+         argsLeft = 1; // default task blink LEDs
+      } else if (portOut.isIO()) {
+        args = new String[]{"-winkServo"};
+        argsLeft = 1; // default task wink servo
+      }
+    } else if (isTest()) {
+      String restArgs = TextHelper.prepParams(args);
+      out.println("  // TEST args left: " + restArgs); 
+    }
+    char nextArgFor = 0; // O,V,U,L,s,v,d: for out, val Up Lo, steps val delay
+    int valForArg = 0;
+    String forArg = null;
+    ovArgs: for (String arg : args) {
+      if (!isRunFlag()) break ovArgs;
+      arg = TextHelper.trimUq(arg, null);
+      if (arg == null || arg.length() == 0) continue ovArgs;
+      arg = TextHelper.simpLowerC(arg);
+      if (nextArgFor != 0) {
+        if (nextArgFor == 'O') { // for output (String)
+          setOutput(arg);
+          if (isRunFlag()) thrDelay(stepDelay);
+        } else { // arg must parse to int
+          try {
+            valForArg = Integer.parseInt(arg);
+          } catch (NumberFormatException ex) {
+            errorExit(113, ex, forArg);
+          }
+          nxArg: switch (nextArgFor) {
+           case 'V': setVal(valForArg); break nxArg;
+           case 'U': setValUp(valForArg); break nxArg;
+           case 'L': setValLo(valForArg); break nxArg;
+           case 'v': setStepVal(valForArg); break nxArg;
+           case 'd': setStepDelay(valForArg); break nxArg;
+           case 's': setCycLim(valForArg); break nxArg;
+        }} // switch 
+        if (this.val < 0) errorExit(val, forArg); // error
+        nextArgFor = 0;
+        continue ovArgs;
+      } // is a second argument for previous option
+      forArg = arg;
+      swArgs: switch (arg) {
+      case "-blink":
+      case "-blinkleds": // -blink[LEDs] 
+        blink();
+        continue ovArgs;
+      case "-winkpwm": // -winkPWM
+        valLo=2; val=127; valUp=254;
+        wink();
+        continue ovArgs;
+      case "-winkservo": // -wink[Servo]
+        valLo=580; val=1501; valUp=2420;
+      case "-wink":
+        wink();
+        continue ovArgs;
+      case "-out":
+        nextArgFor = 'O';
+        continue ovArgs;
+      case "-val":
+        nextArgFor = 'V';
+        continue ovArgs;
+      case "-valUp":
+        nextArgFor = 'U';
+        continue ovArgs;
+      case "-valLo":
+        nextArgFor = 'L';
+        continue ovArgs;
+      case "-stepVal":
+        nextArgFor = 'v';
+        continue ovArgs;
+      case "-steps":
+        nextArgFor = 's';
+        continue ovArgs;
+      case "-stepdelay":
+        nextArgFor = 'd';
+        continue ovArgs;
+      } // switch 
+    } // for (over parameters left by partial parsing)
 
-    out.println("  TestOnPi set mode output rd ye gn/up  14 mA");
- //   pI.logCommand(pI.setMode(rdLED, GPIO_OUT));
- //   pI.logCommand(pI.setMode(gnLED, GPIO_OUT));
- //   pI.logCommand(pI.setMode(yeLED, GPIO_OUT));
- //   pI.logCommand(pI.setPullR(gnLED, PI_PUD_UP));
-    pI.logCommand(pI.setPadS(0, 14));
-    pI.setAsOutputsReport("red LED", rdLEDs);
-    pI.setAsOutputsReport("yel LED", yeLEDs);
-    pI.setAsOutputsReport("grn LED", gnLEDs);
-    out.println("  TestOnPi start endless loop (try JConsole)\n");
-
-    for(;isRunFlag(); ++cycCount) {          //   red yellow green time/state 
-      pI.logIfBad(pI.setOutSet(rdLEDs, rLd=HI));// on
-      thrDelay(200); if (!isRunFlag()) break;  //                  200 ms red
-      yLd = !yLd;                             //       toggle
-      pI.logIfBad(pI.setOutSet(yeLEDs, yLd)); //       on off
-      pI.logIfBad(pI.setOutSet(gnLEDs, gLd=HI)); //            on
-      thrDelay(100); if (!isRunFlag()) break;   //                 100 ms both
-      pI.logIfBad(pI.setOutSet(rdLEDs, rLd=LO));// off
-      thrDelay(100); if (!isRunFlag()) break;   //                 100ms green
-      pI.logIfBad(pI.setOutSet(gnLEDs, gLd=LO)); //           off
-      thrDelay(200);                            //                 200 ms dark
-    } // for endless (leave on stop signals)
     
     // shutdown tasks
     if (pI != null) {
-      out.println("\n  TestOnPi shutdown " + pI + "    cyc/ovr: "
-                     + getCycCnt() + "/" + getOvrCnt());
+    //  out.println("\n  TestOnPi shutdown " + pI + "    cyc/ovr: "
+      //              + getCycCnt() + "/" + getOvrCnt());
       pI.releaseOutputsReport(out);
       try {
          pI.disconnect();
       } catch (IOException e) { } 
         // pigpio.gpioTerminate();
     } else { // pI not null else null
-      out.println("\n  TestOnPi shutdown ");
+     // out.println("\n  TestOnPi shutdown ");
     } // pI null
     closeLock();
+    log.println( threeLineEndMsg());
     return 0; // normal end
   } // doIt()
 } // TestOnPi (April 2021)

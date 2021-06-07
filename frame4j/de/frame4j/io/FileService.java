@@ -26,6 +26,7 @@ import de.frame4j.util.AppHelper;
 import de.frame4j.util.AppLangMap;
 import de.frame4j.util.MinDoc;
 import de.frame4j.util.PropMap;
+import de.frame4j.util.Verbos;
 import de.frame4j.text.TextHelper;
 import de.frame4j.time.TimeHelper;
 
@@ -178,16 +179,15 @@ import static de.frame4j.util.ComVar.*;
  //           V02.29 (02.02.2006) : difOld <= 0L is xcopy mode
  //           V.10   (19.11.2008) : Version's jump cvsNT -> SVN
  //           V.26   (19.12.2008) : option -noReplace (difOld == -2L)
- //           V.124+ (06.06.2009) : error introduced at 121 corrected  
  //           V.170+ (07.11.2009) : omitExtraDirs omitExtraFiles added
- //           V.134+ (02.11.2015) : method made static
  //           V.142+ (06.01.2016) : FileHelper
+ //           V.  50 (01.06.2021) : changes due to Verbos
 
 @MinDoc(
-   copyright = "Copyright  2000 - 2006, 2009, 2015  A. Weinert",
+   copyright = "Copyright  2000 - 2009, 2015, 2021  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 44 $",
-   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
+   version   = "V.$Revision: 51 $",
+   lastModified   = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
    usage   = "use when multiple file and directories have to be worked on",  
    purpose = "file and directory services"
 ) public class FileService implements Serializable {
@@ -474,72 +474,26 @@ import static de.frame4j.util.ComVar.*;
  *  <br />
  *  @see #getVerbosity()
  */
-   protected int verbosity = AppHelper.NORMAL;
-   boolean verbose;   
+   protected Verbos verbosity = Verbos.NORMAL;
+   
 
 /** Verbosity of reports. <br />
  *  <br />
  *  Meaning and handling see at 
- *  {@link AppHelper}.{@link AppHelper#getVerbosityAsString(int)}.<br />
- *  For values &lt;= {@link AppHelper#TEST TEST} all implemented services 
+ *  {@link AppHelper}.{@link Verbos#toString()}.<br />
+ *  For values &lt;= {@link Verbos#TEST TEST} all implemented services 
  *  shall show no effect to the out side world, i.e. manipulate no files or 
  *  directories.<br />
  *  <br />
- *  default: {@link AppHelper#NORMAL} (10)<br />
+ *  default: {@link Verbos#NORMAL} (10)<br />
  *
- *  @see #setVerbosity(int)
- *  @see #setVerbosity(String)
- *  @see #getVerbosityString()
- *  @see AppHelper#SILENT
- *  @see AppHelper#NORMAL
- *  @see AppHelper#VERBOSE
- *  @see AppHelper#DEBUG
- *  @see AppHelper#TEST
+ *  @see Verbos#SILENT
+ *  @see Verbos#NORMAL
+ *  @see Verbos#VERBOSE
+ *  @see Verbos#DEBUG
+ *  @see Verbos#TEST
  */
-   public final int getVerbosity(){ return verbosity; }
-
-
-/** Verbosity of reports. <br />
- *  <br />
- *  @return AppHelper.getVerbosityAsString(verbosity)<br />
- *  <br />
- *  @see #getVerbosity()
- */
-   public String getVerbosityString(){
-      return AppHelper.getVerbosityAsString(verbosity);
-   }  // getVerbosityString()
-
-/** Verbosity of reports. <br />
- *  <br />
- *  @see #getVerbosity()
- *  @see #setVerbosity(String)
- *  @param verbosity Level AppHelper.DEBUG .. AppHelper.SILENT; 
- *     default: AppHelper.NORMAL
- *  @see AppHelper#NORMAL
- *  @see AppHelper#getVerbosityAsString(int)
- *  @see AppHelper#getVerbosityLevel(int)   
- */
-   public void setVerbosity(int verbosity){
-      if (verbosity < AppHelper.DEBUG || verbosity > AppHelper.SILENT) 
-            verbosity = AppHelper.NORMAL;
-      if (this.verbosity != verbosity) { // change
-         this.verbosity = verbosity;
-         this.verbose = verbosity <= AppHelper.VERBOSE;
-      } // change
-   } // setVerbosity(int) 
-
-/** Verbosity of reports. <br />
- *  <br />
- *  The parameter will be interpreted by 
- *  {@link AppHelper}.{@link AppHelper#getVerbosity(String)} 
- *  and the {@link #getVerbosity() verbosity} set appropriately.<br />
- *
- *  @see #getVerbosity()
- *  @see #setVerbosity(int)
- */
-   public void setVerbosity(String verbosity){
-      setVerbosity(AppHelper.getVerbosity(verbosity));
-   } // setVerbosity(String)
+   public final Verbos getVerbosity(){ return verbosity; }
    
 //-------------------------------------------------------------------------   
 
@@ -673,7 +627,7 @@ import static de.frame4j.util.ComVar.*;
       this.noLCforTypes = other.noLCforTypes;
       this.nonew = other.nonew;
       this.reverse = other.reverse;
-      this.setVerbosity(other.verbosity);
+      this.verbosity = other.verbosity;
       this.zoneSafe = other.zoneSafe;
    } // FileService(FileService) 
 
@@ -741,8 +695,9 @@ import static de.frame4j.util.ComVar.*;
  */
    public void set(final PropMap prop) throws IllegalArgumentException {
       if (prop == null) return;
-
-      setVerbosity(prop.getString("verbosity", null));
+      
+      this.verbosity = Verbos.getVerbosity(
+                                  prop.getString("verbosity", null));
       setCreateLowerCase(prop.getBoolean("lcNames", createLowerCase));
       setNoLCforTypes(prop.getString("noLCforTypes", noLCforTypes));
       
@@ -866,7 +821,7 @@ import static de.frame4j.util.ComVar.*;
       StringBuilder bastel = new StringBuilder(500);
       bastel.append("de.frame4j.io.FileService  :  { \n");
  
-      bastel.append("\n ** verbosity  = ").append(getVerbosityString());
+      bastel.append("\n ** verbosity  = ").append(verbosity.toString());
       bastel.append("\n ** recursion  = ").append(recursion);
       bastel.append("\n ** createLowerCase = ").append(createLowerCase);
       if (createLowerCase && noLCforTypes != null) {
@@ -984,12 +939,12 @@ import static de.frame4j.util.ComVar.*;
       if (deD == null || (deD.exists() && !deD.isDirectory())) return 0;
       if (soD == null || !soD.exists() || !soD.isDirectory()) return 0;
       if (bcD != null &&  bcD.exists() && !bcD.isDirectory()) return 0;
-      final boolean sil  = verbosity >= AppHelper.SILENT || log == null; 
+      final boolean sil  = verbosity.isSilent() || log == null; 
      //  final boolean verb = verbose &&   log != null; // verbose + output
-      final boolean test = verbosity <= AppHelper.TEST;
+      final boolean test = verbosity.isTest();
       if (test && sil) return 0;   // no test runs without log 
-      final boolean verbL = verbose && !sil;
-      final boolean mormL = !sil && verbosity <= AppHelper.NORMAL;
+      final boolean verbL = verbosity.verbose && !sil;
+      final boolean mormL = !sil && verbosity.isNormal();
       
       File bFile;
       if (reverse) {
@@ -1033,14 +988,14 @@ import static de.frame4j.util.ComVar.*;
                return 0;
             } // making destination directory forbidden by test mode
             if (!deD.mkdirs()) {
-             if (log != null && verbosity <= AppHelper.TEST )
+             if (log != null && verbosity.isTest() )
               log.println(AppLangMap.formMessageUL("nomkdstdr", null, zdir));
                   ///  log no make dest cause of failure
              return 0;
             }
-            qNzGemeld = verbose;
+            qNzGemeld = verbosity.verbose;
             zMade      = true;
-            if (verbose && log != null) 
+            if (verbosity.verbose && log != null) 
                log.println(messHdl(qdir, zdir, zMade));
          } // destination directory did not exist
          
@@ -1118,8 +1073,7 @@ import static de.frame4j.util.ComVar.*;
                     b.append(" : ").append(dif >= 0 ? "uptodate" : "older");
                     if (dif < -1000L) {
                        b.append("...\n     // ^^ //    ...  destination is ");
-                       b.append(TextHelper.durationAsString(-dif));
-                       b.append(" younger ");
+                       TextHelper.formatDuration(b, -dif).append(" younger ");
                     }    
                     log.println(b);
                  } // verbose
@@ -1215,7 +1169,7 @@ import static de.frame4j.util.ComVar.*;
                                 : anz > 0 ? "OK": 
                                          delZFile ? "DelL0" : "Len=0") +
                        (backed? "+back":"")   );   XXXX */
-                  if (verbosity<= AppHelper.TEST  && zfm >= 0) {
+                  if (verbosity.isTest()  && zfm >= 0) {
                       log.println (" //.. Q(+0s) --> Save("+
                                         ((zfm - qfm) / 1000)+"s)"+
                           ((backed && bfm >= 0)?" --> Back("+
@@ -1321,8 +1275,8 @@ import static de.frame4j.util.ComVar.*;
           return 0;
       }  /// no delete pattern directory
       
-      final boolean verb = verbose && log != null;   // verbose + output
-      final boolean test = verbosity <= AppHelper.TEST;
+      final boolean verb = verbosity.verbose && log != null;   // verbose + output
+      final boolean test = verbosity.isTest();
       if (test && !verb) return 0; // no TEST run without log
       
       final String  bDir = bcD == null ?  null :  bcD.getPath();
@@ -1404,7 +1358,7 @@ import static de.frame4j.util.ComVar.*;
                if (deleted) ++ret;
             } // may be deleted
                
-            if ((verbose || (deleted && verbosity <= AppHelper.NORMAL)
+            if ((verbosity.verbose || (deleted && verbosity.isNormal())
                            || backIt && !backed)  && log != null) {
                if (!qNzGemeld) {
                   log.println ("\n Clean  " + dDir + (pDir == null ? ""

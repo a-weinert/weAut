@@ -53,7 +53,7 @@ import de.frame4j.util.ComVar;
  *  @see ThePi
  *  @see PiVals 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 49 $ ($Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $)
+ *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
  */
 // so far:   V.  19 (17.05.2019) : new
 //           V.  42 (29.04.2021) : overhaul (Frame4J)
@@ -108,7 +108,8 @@ public class ClientPigpiod {
 
 /** Connecting. <br />
  *  <br />
- *  A socket connection to the server's  {@link ThePi#port() port} is made.
+ *  A socket connection to the server's 
+ *  {@linkplain ThePi#sockP() socket port} is made. 
  *  The streams will be provided.<br />
  *  <br />
  *  An exception occurring during the proceeding will be forwarded. A partly
@@ -122,12 +123,12 @@ public class ClientPigpiod {
  *  even {@link #disconnect()} might be removed / made private in future.
  *  
  *  @throws IOException if the connecting
- *          to {@link ThePi#host() host}.{@link ThePi#port() port} fails
+ *          to {@link ThePi#host() host}.{@link ThePi#sockP() port} fails
  */
    public synchronized Socket connect() throws IOException {
      try {
          if (sock == null) {
-            sock = new Socket(thePi.host(), thePi.port());        
+            sock = new Socket(thePi.host(), thePi.sockP());        
             sock.setSoTimeout(thePi.timeout()); // default 10 s
             sock.setReceiveBufferSize(260);
             sockIn = sock.getInputStream();
@@ -163,7 +164,7 @@ public class ClientPigpiod {
  *
  *  @return a ClientPipiod with the given
  *        {@link thePi Pi} = {@link ThePi#host() host} 
- *        connected via {@link ThePi#port() port} within 
+ *        connected via {@linkplain ThePi#sockP() socket port} within 
  *        {@link ThePi#timeout() timeout} 
  *  @throws IOException when connecting to the pigpiod server fails
  *  @see Pi3#make(String, int, int, int)
@@ -179,14 +180,14 @@ public class ClientPigpiod {
 /** Make and connect to a new Pi. <br />
  *  <br />
  *  This method does the same as
- {@link #make(String,int,int,int,Object) make(host, port, timeout, type, app)}.
+{@link #make(String,int,int,int,Object) make(host, port, timeout, type, app)}.
  *  The values host, port, timeout and type are got from app's 
  *  {@link PiUtil} genes as default values or by start parameter evaluation.
  *
  *  @param app the application as {@link PiUtil} object
  *  @return a ClientPipiod with the given
  *        {@link thePi Pi} = {@link ThePi#host() host} 
- *        connected via {@link ThePi#port() port} within 
+ *        connected via {@linkplain ThePi#sockP() socket port} within 
  *        {@link ThePi#timeout() timeout} 
  *  @throws IOException when connecting to the pigpiod server fails
  *  @see Pi3#make(String, int, int, int)
@@ -221,7 +222,7 @@ public class ClientPigpiod {
  *  closed.<br />
  *  <br />
  *  Hint: Another thread blocked on this connection's I/O will get a
- *  SocketException. <br />
+ *  SocketException.
  *
  *  @throws IOException on closing problems
  */
@@ -237,18 +238,18 @@ public class ClientPigpiod {
 /** The connection's settings as String. <br /> */
    @Override public String toString() {
       return "pigpiod: " + thePi.host() + (sock != null ? ":" : "-")
-                         + thePi.port() + " Pi" + thePi.type();
+                         + thePi.sockP() + " Pi" + thePi.type();
    } // toString()
    
 //---------------------------- pigpiod GPIO on the Pi ---------------------     
 
 /** <b>Status of a command executed</b>. <br />
  *  <br >   
- *  One object of this class will be held per thread to hold the values of
- *  the current / last pigpiod IO command executed for the purpose of
- *  analysis or {@linkplain ClientPigpiod#logCommand(int) logging}. As this is
- *  done on a per thread base there is no need to guard an
- *  [IO method + log method] pair be synchronized.
+ *  One object of this class will be held per thread to hold the values
+ *  of the current / last pigpiod IO command executed for the purpose of
+ *  analysis or {@linkplain ClientPigpiod#logCommand(int) logging}. As
+ *  this is done on a per thread base there is no need to guard an
+ *  {@code [IO method + log method]} pair be synchronised.
  */
    public final static class CmdState {
      
@@ -274,7 +275,7 @@ public class ClientPigpiod {
  */
      public Throwable lastException;
 
-/** Record form last pigpiod command.<br />
+/** Record form last pigpiod command. <br />
  *  <br />
  *  The last execution of {@link #stdCmd(int, int, int)} records its 
  *  parameters command, and its p1 and p2 parameter here for subsequent
@@ -284,7 +285,9 @@ public class ClientPigpiod {
  *  The approach is not threadsafe. Applications with multiple control
  *  threads or cycles must not use these recorded informations in normal 
  *  operation.
- *  @see #logCommand(int) {@link #debugCommand(int)} {@link #lastCmd} 
+ *  
+ *  @see #logCommand(int) 
+ *  @see #debugCommand(int)
  */
      public int lastCmd, lastP1, lastP2;
      int cmdExecStage; // 0: none; 2..15: request; 16..31: + response
@@ -292,7 +295,7 @@ public class ClientPigpiod {
    
 /** A container holding one CmdState object per thread. <br /> */  
    static final ThreadLocal<CmdState> lastCmdState = 
-                                            new ThreadLocal<CmdState>(){
+                                              new ThreadLocal<CmdState>() {
      @Override protected CmdState initialValue(){
        final CmdState initVal = new CmdState();
        initVal.lastCmd = PI_CMD_NONE; // if logged w/o command recorded
@@ -306,7 +309,7 @@ public class ClientPigpiod {
  *  log the command on {@link out}.<br />
  *  Compared to {@link #logCommand(int)} debugCommand also logs the socket 
  *  request and response buffers which is only very seldom of any
- *  interest. <br />
+ *  interest.
  *  
  *  @param  ret the return value of the command method; <br /> &nbsp; &nbsp;
  *     &nbsp; &nbsp; e.g. by placing the call as parameter
@@ -364,7 +367,7 @@ public class ClientPigpiod {
   } //rErr(4*int)
 
 /** Recording helper for IO methods for errors. <br />
- *  <br />
+ *
  *  @see #rErr(int, int, int, int)
  */   
   protected final int rErr(final int error, final int cmd){
@@ -374,7 +377,7 @@ public class ClientPigpiod {
 
 /** Recording helper for IO methods. <br />
  *  when operating on a pin/GPIO to be ignored.
- *  <br />
+ *
  *  @see #rErr(int, int, int, int)
  */
   protected final int rIgn(final int cmd, final int p2){
@@ -382,14 +385,13 @@ public class ClientPigpiod {
     cmdSt.lastCmd = cmd; cmdSt.lastP1 = ThePi.PINig; 
     cmdSt.lastP2 = p2; return 0;
   } //rErr(2*int)
-
   
 /** Log of last command execution. <br />
  *  <br />
  *  When this method is called immediately after a command method with the 
  *  command's return value it will log the command on {@link out}.<br />
  *  Scheme: {@code [int r = ]logCommand(anyIOcommand(p1, p2));}
- *  <br />
+ *
  *  @param  ret the return value of the command method; <br /> &nbsp; &nbsp;
  *  &nbsp; &nbsp; e.g. by placing the call as parameter
  *           <code>logCommand(commandMethod(...))</code>
@@ -429,12 +431,13 @@ public class ClientPigpiod {
  *  When this method is called immediately after a command method it will 
  *  log the command on <code>System.out</code> if and only if the execution
  *  failed (with a negative return code). In that case it will delegate to
- *  {@link #logCommand}. <br />
- *   @param  ret the return value of the command method; <br /> &nbsp; &nbsp;
- *   &nbsp; &nbsp; e.g. by placing the call as parameter
- *           <code>logIfBad(commandMethod(...))</code>
- *   @return ret the return value of the IO command method
- *   @see #logCommand(int)
+ *  {@link #logCommand}.
+ *
+ *  @param  ret the return value of the command method; <br /> &nbsp; &nbsp;
+ *          &nbsp; &nbsp; e.g. by placing the call as parameter
+ *          <code>logIfBad(commandMethod(...))</code>
+ *  @return ret the return value of the IO command method
+ *  @see #logCommand(int)
  */
    public int logIfBad(final int ret){
      if (ret >= 0) return ret;
@@ -443,7 +446,6 @@ public class ClientPigpiod {
      if (uint32ret[lastCmd]) return ret; // no negative error, just unsigned
      return logCommand(ret);
    } // logIfBad(int);
- 
 
 /** Implementation of two parameter (standard) commands. <br />
  *  <br />
@@ -464,7 +466,8 @@ public class ClientPigpiod {
  *  IO operations, provided here, as  {@link #setMode(int, int)},
  *  {@link #getMode(int)}, {@link #setPadS(int, int)}, {@link #getPadS(int)},
  *  {@link #setPullR(int, int)}, {@link #setOutput(int, boolean)}
- *  etc. pp.. <br />
+ *  etc. pp..
+ *  
  *  @param cmd the command number 
  *  @param p1 first parameter, mostly GPIO number
  *  @param p2 optional second parameter
@@ -588,8 +591,9 @@ public class ClientPigpiod {
  *  This method does a forEachRemaining(action) as described in 
  *  {@link #gpiosByMsk(int)} plus some checks and synchronising: <br />
  *  When mask is 0 nothing is done. When action is null nothing is done.<br />
- *  Otherwise, in one synchronized (this ClientPigdiod object) block all
- *  actions are done.
+ *  Otherwise, in one 
+ *  {@code synchronized (this ClientPigdiod object)}
+ *  block all actions are done.
  *    
  *  @param mask a bank 0 bit mask of GPIOs in the range 0..31
  *  @param action what to do with each GPIO in mask
@@ -602,8 +606,8 @@ public class ClientPigpiod {
 
 //-------------------------    Pin / gpio initialisation  ------------------
 
-/** Set the mode of one GPIO pin.<br />
- *  <br />
+/** Set the mode of one GPIO pin. <br />
+ *
  *  @param gpio a legal IO number 0.. 31
  *  @param mode a mode like {@link PiGpioDdefs#PI_INPUT}, 
  *            {@link PiGpioDdefs#PI_OUTPUT}, {@link PiGpioDdefs#PI_ALT0} etc.
@@ -614,7 +618,7 @@ public class ClientPigpiod {
    } // setMode(2 * int) 
 
 /** Get the mode of one GPIO pin.<br />
- *  <br />
+ *
  *  @param gpio a legal BCM IO number 0.. 56
  *  @return     the mode like {@link PiGpioDdefs#PI_INPUT}, 
  *            {@link PiGpioDdefs#PI_OUTPUT}, {@link PiGpioDdefs#PI_ALT0} etc.
@@ -624,21 +628,43 @@ public class ClientPigpiod {
       return stdCmd(PI_CMD_MODEG, gpio, 0);
    } // getMode(int) 
 
-/** Set the pull resistor for one GPIO pin. <br />
- *  <br />
- *  @param gpio a legal BCM IO number 0.. 31
+/** Set the pull resistor for one GPIO. <br />
+ *
+ *  @param gpio a legal BCM IO number 0.. 31 or {@link PiVals#PINig}
  *  @param pud  a mode: {@link PiGpioDdefs#PI_PUD_OFF}, 
  *            {@link PiGpioDdefs#PI_PUD_DOWN} or {@link PiGpioDdefs#PI_PUD_UP}
  *  @return 0: OK; &lt; 0: error
  */
    public int setPullR(final int gpio, final int pud){
      if (pud < 0 || pud > 4) return PI_BAD_PUD;
+     if (gpio == PiVals.PINig) return 0; // ignore is OK
      if (gpio < 0 || gpio > 31) return PI_BAD_USER_GPIO;
      if (pud > 2) return 0; // do nothing on default or keep
      return stdCmd(PI_CMD_PUD, gpio, pud);
-   } // setMode(2 * int) 
+   } // setPullR((2 * int) 
+   
+/** Set the pull resistor for one port and record the setting. <br />
+ *
+ *  @param port a Pi port; null means {@link PiVals#PINig ignore}
+ *  @param pud  a mode: {@link PiGpioDdefs#PI_PUD_OFF}, 
+ *            {@link PiGpioDdefs#PI_PUD_DOWN} or {@link PiGpioDdefs#PI_PUD_UP}
+ *            {@link PiVals#PI_PUD_DT PI_PUD_DT (default)} will be
+ *            replaced by the port's pull resistor flag.
+ *  @return 0: OK; &lt; 0: error
+ *  @see #setPullR(int, int)
+ */
+  public int setPullR(final ThePi.Port port, int pud){
+    if (port == null) return 0; // null is ignore
+    int gpio = port.gpio;
+    if (pud == PiVals.PI_PUD_DT) pud = port.pud;
+    if (pud < 0 || pud > 4) pud = port.pud = PiVals.PI_PUD_KP;
+    int ret = setPullR(gpio, pud);
+    if (ret == 0) port.pud = pud;
+    return ret;
+  } // setPullR((2 * int) 
 
 /** Names for input's pull resistor settings. <br />
+ * 
  *  @param pud  a mode: {@link PiGpioDdefs#PI_PUD_OFF}, 
  *            {@link PiGpioDdefs#PI_PUD_DOWN}, {@link PiGpioDdefs#PI_PUD_UP},
  *            {@link PiUtil#PI_PUD_KP}, {@link PiUtil#PI_PUD_DT}
@@ -648,9 +674,8 @@ public class ClientPigpiod {
     if (pud < 0 || pud > 4) return "err ";
     return pudTxt[pud];
   } // pudTxt(int)
-
    
-/** Set the output strength of a set of GPIO pins.<br />
+/** Set the output strength of a set of GPIO pins. <br />
  *  <br />
  *  For pins set as output (by {@link #setMode(int, int)} e.g.)
  *  this function sets the drive capacity in the range of 2..16 mA.<br />
@@ -663,8 +688,9 @@ public class ClientPigpiod {
  *  Nevertheless, this function accepts all values 2..16 incrementing
  *  odd values.
  *  
- *  @see #getPadS(int) PiGpioDdefs#PI_BAD_PAD PiGpioDdefs#PI_BAD_STRENGTH 
- * 
+ *  @see #getPadS(int)
+ *  @see PiGpioDdefs#PI_BAD_PAD
+ *  @see PiGpioDdefs#PI_BAD_STRENGTH 
  *  @param pad The pad or I/O port set number; 0 is GPIO numbers 0..27. <br />
  *   1 would be 28..45 and 2 46..53; To use 1 and 2 is not recommended as GPIO
  *   &gt; 31 should not be touched in regard to output.
@@ -677,13 +703,14 @@ public class ClientPigpiod {
      return stdCmd(PI_CMD_PADS, pad, mA);
    } // setPadS(2 * int) 
 
-/** Get the output strength of a set of GPIO pins.<br />
+/** Get the output strength of a set of GPIO pins. <br />
  *  <br />
  *  For pins set as output (by {@link #setMode(int, int)} e.g.)
  *  this function gets the drive capacity in the range of 2..16 mA.<br />
  *  
- *  @see #setPadS(int, int) PiGpioDdefs#PI_BAD_PAD PiGpioDdefs#PI_BAD_STRENGTH 
- * 
+ *  @see #setPadS(int, int) 
+ *  @see PiGpioDdefs#PI_BAD_PAD 
+ *  @see PiGpioDdefs#PI_BAD_STRENGTH 
  *  @param pad The pad or I/O port set number; 0 is GPIO numbers 0..27
  *  @return  2..16 pad strength in mA
  */
@@ -733,11 +760,10 @@ public class ClientPigpiod {
      return ret;
   } // initAsOutputs(unsigned const[])
 
-
 /** Report an arbitrary operation on a list of GPIOs. <br />
  *  <br />
  *  The report lines on ::outLog will be
- *  {@code   progNam   ___operation GPIO: 13 pin: 27 \endcode }
+ *  {@code   progNam   ___operation GPIO: 13 pin: 27}
  *  @param out the writer to output to
  *  @param op  the operation displayed as 12 characters right justified
  *  @param lesGPIOs a GPIO list 
@@ -768,7 +794,7 @@ public class ClientPigpiod {
  *  corresponding bit is cleared.
  *  @see #areOut()
  */
-  int areOut; // omit volatile if set clear is put to synchonised method
+  int areOut; // omit volatile if set clear is put to synchronised method
   
 /** Stores all output GPIO as bitmask. <br />
  *  <br />
@@ -804,7 +830,7 @@ public class ClientPigpiod {
     return ret;
   } // initAsLoInput(int, unsigned)
 
-/**  Release all GPIO pins set as output. <br />
+/** Release all GPIO pins set as output. <br />
  *  <br />
  *  This releases all GPIO in the range 0..27 that this program has set as
  *  outputs (by setting those as inputs). <br />
@@ -857,36 +883,24 @@ public class ClientPigpiod {
     return wereOut;
   } // releaseOutputsReport(Appendable)
   
-  public String pinDescr(int pin, int pud){
-    if (pin <= 0 || pin > 40) return  "noneIgn"; 
-    int gpio = thePi.gpio4pin(pin);
-    if (gpio >= PiVals.PINig) {
-      if (gpio == PiVals.PIN0V) return "gnd_0V";
-      if (gpio == PiVals.PIN3V) return "sup3V3";
-      if (gpio == PiVals.PIN5V) return "sup_5V";
-      return  "noneIgn";
-    }
-    StringBuilder dest = new StringBuilder(10);
-    PiUtil.twoDigitDec(dest, pin);
-    if (pud >= PI_PUD_OFF && pud <= PI_PUD_UP) dest.append(pudC[pud]);
-    dest.append('G');  
-    PiUtil.twoDigitDec(dest, gpio);
-    return dest.toString();    
-  } // pinDescr(2*int)
-  
-  static final char[] pudC = {'N', 'D', 'U', '~', 'K'};
 
 /** Set all GPIO pins named by mask as outputs with report. <br />
  *  <br />
- *  Same as {@link #setAsOutputs(int)} plus a "make output" report line for
- *  every output set so.
+ *  If {@code report} is {@code false} this method does the same as
+ *  {@link #setAsOutputs(int)  setAsOutputs(mask)} (ignoring the parameter
+ *  {@code grp}.<br />
+ *  If {@code report} is {@code true} an extra "make output" report line for
+ *  every output set so is printed to {@link #out}.
  *  
+ *  @param report true: report every every pin/GPIO set as output 
  *  @param grp a short (best 7 char) description of the pin / signal
  *            or device group like "redLEDs", "relaysH" etc. 
  *  @param mask GPIOs to be set as outputs as bit mask
  *  @return the bank mask of all outputs  now set
  */
-  public synchronized int setAsOutputsReport(final String grp, final int mask){
+  public synchronized int setAsOutputs(final boolean report,
+                                        final String grp, final int mask){
+    if (!report) return setAsOutputs(mask); // w/o report lines
     final int wereOut = areOut;
     if (mask == 0) return wereOut; // nothing to do and to report
     final Flushable flushi = out instanceof Flushable ? (Flushable) out : null;
@@ -916,7 +930,7 @@ public class ClientPigpiod {
     };
     gpiosByMsk(newSet).forEachRemaining(setOutRep);
     return areOut;
-  } // setAsOutputsReport(String, int)    
+  } // setAsOutputs(boolean, String, int)    
 
 /** Set all GPIO pins named by mask as outputs. <br />
  *  <br />
@@ -962,11 +976,11 @@ public class ClientPigpiod {
 
 /** Initialise a GPIO pin as input with pull up. <br />
  *  <br />
- *  This initialisation is for an input sensing a switch (button) or transistor
- *  (optocoupler) connected to ground (gnd, 0V). This is the normal
- *  configuration instead of switching to Hi (3.3V). <br />
- *  In most of the cases the Pi's internal pull up resistor (about 50 kOhm) is
- *  sufficient for Lo-switches and should then be used.
+ *  This initialisation is for an input sensing a switch (button) or
+ *  transistor (optocoupler) connected to ground (gnd, 0V). This is the
+ *  normal configuration instead of switching to Hi (3.3V). <br />
+ *  In most of the cases the Pi's internal pull up resistor (about 50 kOhm)
+ *  is sufficient for Lo-switches and should then be used.
  *
  *  @param gpio  the GPIO number (0..53)
  *  @return &lt; 0 : error
@@ -1017,7 +1031,6 @@ public class ClientPigpiod {
      return ret;
   } // initAsHiDrive(2 * int)
 
-
 /** Initialise a GPIO pin as output. <br />
  *  <br />
  *  This function sets the GPIO pi as output, optionally sets the drive
@@ -1050,7 +1063,6 @@ public class ClientPigpiod {
      if (gpio < 0 || gpio > 56) return rErr(PI_BAD_GPIO, PI_CMD_READ, gpio, 0);
      return stdCmd(PI_CMD_READ, gpio, 0);
    }  // getInp(int)
- 
 
 /** Output to one GPIO pin. <br />
  *  <br />
@@ -1088,7 +1100,7 @@ public class ClientPigpiod {
  */
   public int setOutput(final int gpio, final String out){
     int len = out == null ? 0 : out.length();
-    int val = 0; // binary value vor ignore and error
+    int val = 0; // binary value or ignore and error
     boolean isBin = len == 0;
     boolean isNum = false;
     char c0 = out.charAt(0);
@@ -1102,10 +1114,6 @@ public class ClientPigpiod {
       }
     }
     while (!(isNum || isBin)) { // parse out len > 1 if and only if gpio is OK
-      if (gpio == ThePi.PINig) return rIgn(PI_CMD_WRITE, val); // ignore
-      if (gpio < 0 || gpio > 31) {
-        return rErr(PI_BAD_USER_GPIO, PI_CMD_WRITE, gpio, val); // bad gpio 
-      }
       final Boolean binVal = TextHelper.asBoolObj(out);
       if (binVal != null) { 
         isBin = true; 
@@ -1113,7 +1121,7 @@ public class ClientPigpiod {
         break; 
       } // end of parse boolean success
       isNum = true; // now it must be a legal or illegal number
-      try { val =  Integer.decode(out).intValue();
+      try { val =  Integer.parseInt(out);
       } catch (Exception e) { val = -1; } // illegal value (as PWM)
       break; // while as breakable if
     } // while parse out.len > 1
@@ -1122,8 +1130,7 @@ public class ClientPigpiod {
     if (isBin) return setOutput(gpio, val != 0); // On,Off
     if (val > 430) return setServoPos(gpio, val); // servo 500..2500, else err
     return setPWMcycle(gpio, val); // PWM 0..255 else error
-  } // setOutput(2* unsigned const)
-
+  } // setOutput(int, String)
 
 /** Set one GPIO output pin. <br />
  *  <br />
@@ -1141,7 +1148,7 @@ public class ClientPigpiod {
       return rErr(PI_BAD_USER_GPIO, PI_CMD_WRITE, gpio, level ? 1 : 0); 
     }
     return stdCmd(PI_CMD_WRITE, gpio, level ? 1 : 0); // set the, OFF
-  } // setOutput(2* unsigned const)
+  } // setOutput(int, boolean)
 
 /** Set a list/mask/set of GPIO output pins. <br />
  *  <br />
@@ -1158,7 +1165,6 @@ public class ClientPigpiod {
     if (level) return stdCmd(PI_CMD_BS1, lesOuts, 0); // set them ON
     return stdCmd(PI_CMD_BC1, lesOuts, 0); // set the, OFF
   } // setOutputs(int, boolean)
-   
 
 /** Set the PWM duty cycle. <br />
  *     
@@ -1186,7 +1192,7 @@ public class ClientPigpiod {
 
 /** Set the servo position. <br />
  *  <br />
- *  This is a special PWM command for RC serveros
+ *  This is a special PWM command for RC servos
  *     
  *  @param gpio a legal BCM IO number 0..28
  *  @param val  0 (Off) or 500 (full left) .. 2500 (full right)
@@ -1201,7 +1207,7 @@ public class ClientPigpiod {
      return stdCmd(PI_CMD_SERVO, gpio, val);
    }  // setServoPos(2 * int) 
 
-/** Get the servo pulse width.
+/** Get the servo pulse width. <br />
  *     
  *  @param gpio a legal BCM IO number 0.28
  *  @return  0 Off, or pulse width in µs (1500..2500)
@@ -1212,13 +1218,12 @@ public class ClientPigpiod {
      return stdCmd(PI_CMD_GPW, gpio, 0);
    }  // getServoPw(int) 
 
-
 /** Set the PWM frequency. <br />
-*     
-*  @param gpio a legal BCM IO number 0..28
-*  @param hz frequency in Hz  5... 40000 depending on duty cycle
-*  @return 0: OK; &lt; 0: error
-*/
+ *     
+ *  @param gpio a legal BCM IO number 0..28
+ *  @param hz frequency in Hz  5... 40000 depending on duty cycle
+ *  @return 0: OK; &lt; 0: error
+ */
   public int setPWMhertz(int gpio, int hz){
     if (gpio == ThePi.PINig) return rIgn(PI_CMD_PFS, hz); // no action ignore
     if (gpio < 0 || gpio > 31) return rErr(PI_BAD_USER_GPIO, PI_CMD_PFS, gpio, hz);
@@ -1226,17 +1231,16 @@ public class ClientPigpiod {
   }  // setPWMhertz(2 * int) 
 
 /** Get the PWM frequency. <br />
-*     
-*  @param gpio a legal BCM IO number 0..28
-*  @return  frequency in Hz  5... 40000 depending on duty cycle
-*            or  &lt; 0: error
-*/
+ *     
+ *  @param gpio a legal BCM IO number 0..28
+ *  @return  frequency in Hz  5... 40000 depending on duty cycle
+ *            or  &lt; 0: error
+ */
   public int getPWMhertz(int gpio){
     if (gpio == ThePi.PINig) return rIgn(PI_CMD_PFG, 0); // ign return 0 Hz
     if (gpio < 0 || gpio > 31) rErr(PI_BAD_USER_GPIO, PI_CMD_PFG, gpio, 0);
     return stdCmd(PI_CMD_PFG, gpio, 0);
   }  // getPWMhertz(int) 
-  
   
 //------------------- helper methods  and  final 'const' arrays -------------
 
@@ -1246,22 +1250,22 @@ public class ClientPigpiod {
  *  on the Pi's 40 (26) pins connector.<br />
  *  Returned result is then 0x00000001..0x80000000: a 32 bit number with
  *  exactly one bit set corresponding to place in a 32 bit bank mask. <br />
- *  Outside the range 0..31 this method returns 0 (no bit set.
+ *  Outside the range 0..31 this method returns 0 (no bit set).
+ *  
  *  @see ThePi#gpio2pin(int)
  *  @see ThePi#gpio4pin(int)
  */
   public static int gpio2bit(final int gpio){ 
     if (gpio < 0 || gpio > 32) return 0;
     return gpio2bit[gpio]; 
-  } //  gpio2bit
-  
+  } //  gpio2bit(int)
   
 /** GPIO number to bank pin number lookup. <br />
  *  <br />
- *  Index [0..31] is a GPIO number partly (0, 2..27) available on the Pi's 40
- *  (26) pins connector.<br />
- *  Result 0x00000001..0x80000000: a 32 bit number with exactly one bit set
- *  corresponding to place in a 32 bit bank mask. <br />
+ *  Index [0..31] is a GPIO number partly (0, 2..27) available on the
+ *  Pi's 40 (26) pins connector.<br />
+ *  Result 0x00000001..0x80000000: a 32 bit number with exactly one bit
+ *  set corresponding to place in a 32 bit bank mask. <br />
  *  Outside [0..31] index out of bound.
  */
   static final int[] gpio2bit = new int[] { // not private as used by ThePi
@@ -1286,7 +1290,6 @@ public class ClientPigpiod {
  
 //-------------------------------------   result/p3 semantics  --------------   
 
-
 /** Command result type. <br />
  *  <br />
  *  Most commands return a (signed) int value as result. Here any not
@@ -1301,6 +1304,7 @@ public class ClientPigpiod {
  *  BR1 * 10, BR2 * 11, TICK * 16, HWVER * 17, PIGPV * 26.<br />
  *  In Joan N.N.'s <a href="http://abyz.me.uk/rpi/pigpio/sif.html"
  *  >documentation</a> they are marked with *; and they can't fail. <br />
+ *  
  *  @param cmd command number (0..117)
  *  @return true: the commands return value is 32 bit unsigned
  */
@@ -1315,7 +1319,7 @@ public class ClientPigpiod {
  *  BR1 * 10, BR2 *   11, TICK * 16, HWVER * 17, PIGPV * 26.<br />
  *  In Joan N.N.'s <a href="http://abyz.me.uk/rpi/pigpio/sif.html"
  *  >documentation</a> they are marked with *; and they can't fail. <br />
- *  See the explanation at {@link #uint32ret(int)}. <br />
+ *  See the explanation at {@link #uint32ret(int)}.
  */
    private static final boolean[] uint32ret = {
 //   0      1      2      3      4      5      6      7      8      9                        
@@ -1331,7 +1335,6 @@ public class ClientPigpiod {
  false, false, false, false, false, false, false, false, false, false, // 90 
  false, false, false, false, false, false, false, false, false, false, //100 
  false, false, false, false, false, false, false, false, false, };     //110 
-  
 
 /** Command has extension. <br />
  *  <br />

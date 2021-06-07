@@ -26,7 +26,7 @@ package de.weAut;
  *  @see Pi2
  *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 49 $ ($Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $)
+ *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 36  (06.04.2021) :  polymorphism; type 3 4 0
@@ -50,7 +50,7 @@ public interface Pi3 extends ThePi {
 /** Make a Pi3 object for Pi3, Pi or Pi0 (zero). <br />
  *   
  *  @return a Pi3 object with the given {@link #host() host},
- *     {@link #port() port}, {@link #timeout() timeout} and
+ *     (socket) {@link #sockP() port}, {@link #timeout() timeout} and
  *     {@link #type() type}
  *  @param type 3, 4 and 0 are accepted; all else defaults to 3
  *  @param port 20..65535 will be accepted; other values default to 8888
@@ -71,7 +71,7 @@ public interface Pi3 extends ThePi {
         this.timoutPi = timeout < 300 || timeout > 50000 ? 10000 : timeout;
         this.typePi = type != 0 && type!= 4 ? 3 : type;
       } // initialiser
-      @Override public int port(){ return this.portPi; }
+      @Override public int sockP(){ return this.portPi; }
       @Override public String host(){ return this.hostPi; }
       @Override public int timeout(){ return this.timoutPi; }
       @Override public int type(){ return this.typePi; }

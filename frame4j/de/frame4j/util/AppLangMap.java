@@ -21,8 +21,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import de.frame4j.text.TextHelper;
 
-
-
 /** <b>Language specifics for applications</b>. <br />
  *  <br />
  *  One {@link AppLangMap} object encompasses for one language the basic set 
@@ -113,7 +111,7 @@ import de.frame4j.text.TextHelper;
  *  Copyright 2004, 2009 &nbsp; Albrecht Weinert.<br />
  *  <br /> 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 41 $ ($Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $)
+ *  @version  $Revision: 50 $ ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $)
  *
  *  @see de.frame4j
  *  @see de.frame4j.time.TimeHelper
@@ -132,8 +130,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 2004, 2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 41 $",
-   lastModified   = "$Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $",
+   version   = "V.$Revision: 50 $",
+   lastModified   = "$Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage = 
   "use ApplangMap as a (zoo of) PropMap(s) for language specific properties  or\n"
@@ -141,12 +139,9 @@ import de.frame4j.text.TextHelper;
    purpose = "properties for (inter) nationalisation"
 ) public class AppLangMap extends PropMap { 
 
-
 /** Version number for serialising.  */
    static final long serialVersionUID = 260153008100201L;
 //                                      magic /Id./maMi
-   
-   
    
    static final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
 /** The common lock for reads. <br />
@@ -343,8 +338,6 @@ import de.frame4j.text.TextHelper;
  *  Implementation hint: basic endowment; always made.<br />
  */  
    static public final AppLangMap MAP_en = new AppLangMap("en");
-
-
 
 //==========================================================================   
    
@@ -634,9 +627,7 @@ import de.frame4j.text.TextHelper;
              continue;
            }
       } // over  zoneStrings
-      
    } // AppLangMap(String)
-
 
 /** PropMap object with language subset. <br />
  *  <br />
@@ -732,7 +723,6 @@ import de.frame4j.text.TextHelper;
          wLock.unlock();  
       }   // sync.
    } // getMap(CharSequence) 
-
    
 /** Clear  / delete. <br />
  *  <br />
@@ -755,7 +745,6 @@ import de.frame4j.text.TextHelper;
   
 //-----------------------------------------------------------------------
    
-   
 /** Fetching summer / winter time. <br />
  *  <br />
  *  Returns the words or abbreviations for summer or winter time respectively
@@ -771,7 +760,6 @@ import de.frame4j.text.TextHelper;
       return specValue(summer ? abbrev ? Z_B + 3 : Z_B + 1 
                              : abbrev ? Z_B + 2 : Z_B);
    } // summerTime
-
 
 /** Fetching time zone descriptors. <br />
  *  <br />
@@ -842,8 +830,7 @@ import de.frame4j.text.TextHelper;
       if (abbrev) base += 2;
       if (summer) ++base;
       return specValue(base);
-   } // zeitZone(String 
-
+   } // timeZone(String) 
 
 /** Fetching a language descriptor. <br />
  *  <br />
@@ -881,8 +868,7 @@ import de.frame4j.text.TextHelper;
          return specValue(abbrev ? base + 1 : base);    // found
       } // langSear:  for 
       return ComVar.EMPTY_STRING; 
-   } // sprachBezeichnung(CharSequence, boolean)
-
+   } // languageName(CharSequence, boolean)
 
 /** Fetching the full month. <br />
  *  <br />
@@ -895,7 +881,7 @@ import de.frame4j.text.TextHelper;
  */
    public final String month(final int m){ 
       return m < 1 || m > 12 ? ComVar.EMPTY_STRING : specValue(m); 
-  } // month(int
+  } // month(int)
 
 /** Fetching the abbreviated month. <br />
  *  <br />
@@ -918,7 +904,6 @@ import de.frame4j.text.TextHelper;
    } // shortMonat(int)
 
 // days of week  ----------------   
- 
 
 /** Fetching the full day of week. <br />
  *  <br />
@@ -960,7 +945,6 @@ import de.frame4j.text.TextHelper;
    } // shortWeekDay(int)
 
 //------------------------------------------------------------------------   
-   
 
 /** Internal number for standard keys. <br />
  *  <br />
@@ -975,7 +959,7 @@ import de.frame4j.text.TextHelper;
       final String k = TextHelper.trimUq(key, null);
       if (k == null) return -1;
       return spezKontOKo(k);
-   } // contNo(CharSequence 
+   } // contNo(CharSequence)
 
    
 /** Internal number for special keys. <br />
@@ -1010,15 +994,13 @@ import de.frame4j.text.TextHelper;
       return -1;
    } // contNo(String)
 
-   
-
 /** Fetch value for internal number. <br />
  *  <br />
  *  Is contNo &gt;= 0 and &lt: {@link #anzStdKeys} the value to this internal
  *  index is returned and null otherwise.<br />
  *  <br />
- *  Hint: internal helper.<br />
- *  <br />
+ *  Hint: internal helper.
+ *
  *  @see #containsKey(java.lang.Object)
  *  @return value or null
  */
@@ -1034,8 +1016,8 @@ import de.frame4j.text.TextHelper;
 /** Fetch value in user language for a key. <br />
  *  <br />
  *  The call is equivalent to
- *  {@link #valueUL(CharSequence, String) valueUL(key, null)}.<br />
- *  <br />
+ *  {@link #valueUL(CharSequence, String) valueUL(key, null)}.
+ *
  *  @see #getUMap()
  *  @see Prop#valueLang(CharSequence)
  */
@@ -1121,7 +1103,6 @@ import de.frame4j.text.TextHelper;
    } ///  formMessageUL(CharSequence, ...)
 
 //------------------ modified. Map or PropMap methods  --------------
-   
 
 /** Enter a key value pair. <br />
  *  <br />
@@ -1216,10 +1197,8 @@ import de.frame4j.text.TextHelper;
        locale = new Locale(langCode, region, ComVar.EMPTY_STRING);
        return  locale;
     } // getLocale()
-
     
 //----------------------------------------------------------------------------
-
 
 /** Start as application. <br />
  *  <br />

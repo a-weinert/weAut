@@ -175,7 +175,7 @@ import de.frame4j.text.TextHelper;
  *  @see de.frame4j.util
  *  @see de.frame4j.text.TextHelper
  *  @author   Albrecht Weinert
- *  @version  $Revision: 33 $ ($Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $
+ *  @version  $Revision: 50 $ ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $
  */
  // so far    V02.00 (22.10.2004) :  new, alpha
  //           V02.07 (29.10.2004) :  final, Entry modif. intern make
@@ -194,8 +194,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 2004 - 2008, 2009, 2016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
+   version   = "V.$Revision: 50 $",
+   lastModified   = "$Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "3 phase: make, populate, use (preferably not further modified)",  
    purpose = "initial properties for applications and other objects"
@@ -227,7 +227,6 @@ import de.frame4j.text.TextHelper;
  *  as guaranteed pair.<br />
  */
   protected final ReentrantReadWriteLock.WriteLock wLock = rwLock.writeLock();
-
    
 /** The entries. <br />  */
    protected volatile PropMapHelper.Entry[] entries;
@@ -303,8 +302,6 @@ import de.frame4j.text.TextHelper;
  */   
    protected volatile int hashMissMax;
 
-  
-
 /** Summed up &quot;hash miss side steps&quot;. <br />
  *  <br />
  *  hashMissSum / size is a measurement number for the actual quality of the
@@ -319,7 +316,6 @@ import de.frame4j.text.TextHelper;
  *  @see #reHashes
  */   
    protected int hashMissSum;
-   
 
 /** Summed up re-hashes (since new or empty). <br />
  *  <br />
@@ -449,8 +445,6 @@ import de.frame4j.text.TextHelper;
       internalEntrySet = this.new EntrySet();
       internalKeySet   = this.new KeySet<CharSequence>();
    } // PropMap(int)
-
-
    
 /** Remove an Entry by (internal) index. <br />
  *  <br />
@@ -555,7 +549,7 @@ import de.frame4j.text.TextHelper;
       return found == null ? null : found.value;
    } // value(CharSequence)
 
-/** Get a property  as String. <br />
+/** Get a property as String. <br />
  *  <br />
  *  This methods delegates to {@link #value(CharSequence)}. Its only purpose
  *  is the compatibility to the late {@link java.util.Properties} 
@@ -1114,9 +1108,7 @@ import de.frame4j.text.TextHelper;
       //System.out.println("  /// TEST valueLang( " + tKey + ", " + def
       //                     + ") lang = " + lang + ", regio = " + regio);
       PropMapHelper.Entry retEnt = null;
-      
       try { rLock.lock();  // read synchronise / lock 
-      
          if (cchKeys!= null) { // search cache
             for (int si = 0; si < VL_CL; ++si) { // for search
                final String cachKey = cchKeys[si];
@@ -1128,27 +1120,22 @@ import de.frame4j.text.TextHelper;
                }  // found in cache
             }  // for cache search
          }
-         
          if (regio != ComVar.EMPTY_STRING) {
             retEnt = entry(lang + '_' + regio + '.' + tKey); // lang_reg.key
             //System.out.println("  /// TEST valueLang try " + lang + '_' + regio + '.' + tKey
               //                      + " > " + retEnt);
-
          }
          if (retEnt == null) {
             retEnt = entry(lang + '.' + tKey); // lang.key
             //System.out.println("  /// TEST valueLang try " + lang + '.' + tKey
               //                      + " > " + retEnt);
-
             if (retEnt == null) 
                retEnt = substLang(tKey, lang, regio, defV);
                /// System.out.println("  /// TEST valueLang try subst  > " + retEnt);
          }
-      
          if (retEnt != null) {
             defV =  retEnt.value; // value found replace def
          }
-
       } finally { rLock.unlock(); } // read synchronise / lock 
    //  little double entry risk as rwlock allows no upgrade        
       try { wLock.lock();  // write synchronise / lock 
@@ -1511,7 +1498,6 @@ import de.frame4j.text.TextHelper;
       } finally { wLock.unlock(); } // write synchronise / lock 
       return null;
    } //  put(Entry)
-
 
 
 /** Adding a new property. <br />

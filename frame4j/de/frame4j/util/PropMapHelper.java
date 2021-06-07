@@ -50,8 +50,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright  2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 43 $",
-   lastModified   = "$Date: 2021-05-04 20:53:48 +0200 (Di, 04 Mai 2021) $",
+   version   = "V.$Revision: 50 $",
+   lastModified   = "$Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "import",  
    purpose = "common map and properties utilities"
@@ -243,14 +243,14 @@ import de.frame4j.text.TextHelper;
  *  The positive value only depends on the (final) key. It is calculated by
  *  {@link PropMapHelper#posHash(String)}.<br />
  */      
-    protected  final  int keyHash;
+    protected  final int keyHash;
 
 /** The value of this entry is immutable. <br />
  *  <br />
  *  Objects of this class either allow any change of value any time or forbid
  *  it forever.
  */      
-    protected  final  boolean immutable;
+    protected  final boolean immutable;
 
 /** The key of this Entry. <br />
  *  <br />

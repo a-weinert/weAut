@@ -47,11 +47,11 @@ import de.frame4j.text.TextHelper;
  *  Besides a variety of settings the level of  
  *  {@link de.frame4j.util.App#getVerbosity() verbosity} determines, what is 
  *  logged:<ul>
- *  <li> == {@link de.frame4j.util.AppHelper#SILENT} (option -silent) : 
+ *  <li> == {@link de.frame4j.util.Verbos#SILENT} (option -silent) : 
  *         no log output, </li>
- *  <li> &lt;= {@link de.frame4j.util.AppHelper#NORMAL} (default) : &nbsp; 
+ *  <li> &lt;= {@link de.frame4j.util.Verbos#NORMAL} (default) : &nbsp; 
  *         the report text,</li>
- *  <li> &lt;= {@link de.frame4j.util.AppHelper#VERBOSE} (Option -v) : also
+ *  <li> &lt;= {@link de.frame4j.util.Verbos#VERBOSE} (Option -v) : also
  *         the question and the response.</li></ul>
  *  
  *  By starting the application {@link AskAlert} the window is made visible
@@ -134,7 +134,7 @@ import de.frame4j.text.TextHelper;
  *  @see      de.frame4j.graf
  *  @see      AskDialog
  *  @author   Albrecht Weinert
- *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
+ *  @version  $Revision: 50 $ ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $)
  */
  // so far    V00.00 (09.09.2004) : new
  //           V02.12 (15.07.2005) : Text and Key delete mutually
@@ -144,8 +144,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 2004-2016, 2019  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 44 $",
-   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
+   version   = "V.$Revision: 50 $",
+   lastModified   = "$Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "report or question on Window with timeout"
 ) public class AskAlert extends App {
@@ -461,8 +461,8 @@ import de.frame4j.text.TextHelper;
          waitMax = 485; // 40 sec
          no = null;
          title = "\u00A0  Framework \u00A0 Frame4J  (R.12)         \u00A0";
-         lower = "\u00A0  AskAlert  V.$Revision: 44 $" 
-             +  " ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $);"
+         lower = "\u00A0  AskAlert  V.$Revision: 50 $" 
+             +  " ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $);"
          		               + " package: de.frame4j... \u00A0";
       } else {
          if (isDebug()) prop.list(log);

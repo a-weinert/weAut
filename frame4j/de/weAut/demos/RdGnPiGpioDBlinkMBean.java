@@ -28,7 +28,7 @@ package  de.weAut.demos;
  *  <br />
  *  Copyright  &copy;  2021  Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 41 $ ($Date: 2021-04-23 20:44:27 +0200 (Fr, 23 Apr 2021) $)
+ *  @version  $Revision: 50 $ ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $)
  */
 // so far:   V.  33  (27.03.2021) : new, minimal functionality
 //           V.  34  (04.04.2021) : getPiType added 
@@ -52,7 +52,7 @@ public interface RdGnPiGpioDBlinkMBean {
 
 /** The state of the green LED(s). <br />
  *  <br />
- *  The yellow LED(s) are inverted twice in a {@link #getCycCount() cycle}.  
+ *  The green LED(s) are inverted twice in a {@link #getCycCount() cycle}.  
  *  @return true when ON
  */
    public Boolean getLEDgn();
@@ -61,8 +61,8 @@ public interface RdGnPiGpioDBlinkMBean {
  *  <br />
  *  Invoked by JConsole e.g. this ends the otherwise endless loop and 
  *  the program in a civilised manner. The forcible alternative of stopping
- *  the application by cntl-C would be, by the way, civilised by a shut
- *  down hook.
+ *  the application by cntl-C would be, by the way, by grace of a shut
+ *  down hook civilised, too.
  */
    public void stop();
 
@@ -73,22 +73,14 @@ public interface RdGnPiGpioDBlinkMBean {
  *  Note: Java has no unsigned number type. int is int32_t there is 
  *  no uint32_t. 
  *  @return the loop count
- *  @see #resetCycCount()
+ *  @see #setCycCount(Integer)
  */
    public Integer getCycCount();
    
 /** Set the number of cycles. <br /> */   
    public void setCycCount(Integer cycCount);
-
-/** Reset the number of cycles counter. <br />
- *  <br />
- *  If you don't want to wait almost 82 years to see low positive numbers 
- *  again, you may reset the counter (via JConsole e.g.).
- *  @see #getCycCount()
- */
-   public void resetCycCount();
    
 /** Get the Pi type. <br /> */
    public Integer getPiType();
    
-} // RdGnPiGpioDBlinkMbean (09.2020)
+} // RdGnPiGpioDBlinkMbean (09.2020, 05.2021)

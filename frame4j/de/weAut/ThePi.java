@@ -14,6 +14,7 @@
 package de.weAut;
 
 import java.io.IOException;
+import de.frame4j.text.TextHelper;
 
 /** <b>Definitions for the usage of a Raspberry Pi device</b>. <br />
  *  <br />
@@ -21,25 +22,237 @@ import java.io.IOException;
  *  Copyright 2021 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  A derived interface of this type will contain constants and methods 
- *  describing a Pi type like {link de.weAut.Pi1 Pi1},
- *  {link de.weAut.Pi2 Pi2}, or 
- *  {link de.weAut.Pi3 Pi3 for Pi3, P4 and Pi0}. Insofar this interface
+ *  describing a Pi type like {@link de.weAut.Pi1 Pi1},
+ *  {@link de.weAut.Pi2 Pi2}, or 
+ *  {@link de.weAut.Pi3 Pi3 for Pi3, P4 and Pi0}. Insofar this interface
  *  acts as an abstract class (allowing multiple inheritance for future
  *  applications).<br />
- *  An object of this type (usually factored from an anonymous class) will
- *  additionally contain the data of a concrete Pi device, especially the
- *  pigpiod access data.
+ *  <br />
+ *  A {@link ThePi#make(String, int, int, int) make()} method here 
+ *  (respectively the one called in said sub interfaces) will yield a Pi
+ *  object holding the type and some application data of a concrete Pi
+ *  device.<br />
+ *  A Pi ({@link ThePi}) object will be usually held and usually 
+ *  {@link ClientPigpiod#make(String, int, int, int, Object) made} within 
+ *  {@link ClientPigpiod} object holding also the pigpiod (socket) access
+ *  data and comfortably implementing the IO.<br />
+ *  <br />
+ *  Additionally, objects of the {@link ThePi}'s inner class 
+ *  {@link de.weAut.ThePi.Port Port} may be used to hold data (and
+ *  behaviour) of one of this Pi's IO ports. 
+ *
  *  @see Pi1
  *  @see Pi2
  *  @see Pi3
  *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 48 $ ($Date: 2021-05-15 20:20:23 +0200 (Sa, 15 Mai 2021) $)
+ *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
  */
 // so far:   V. 36  (13.04.2021) :  new
 //           V. 4x  (21.05.202x) :  ...
 
 public interface ThePi extends PiVals { 
+
+/** <b>A port on this Pi</b>. <br />
+ *  <br />
+ *  Doc comments (and may be some information hiding) still to be done;
+ *  excerpt from TestOnPi.  
+ */
+  public class Port {
+
+/** The pin and GPIO number. <br />
+ *  <br />
+ *  Note: Do not change by direc assignment.
+ *  
+ *  @see #setPin(int)
+ *  @see #setGpio(int)
+ *  @see #setPort(String)
+ */
+    public int gpio, pin;
+    
+/** The port's (short) name. <br />
+ *  <br />
+ *  Neither null nor empty; recommended length: 7. 
+ */    
+    public final String name;
+    final ThePi encl;
+    
+/** A flag to record the port's pull resistor setting. <br />
+ *  <br />
+ *  default: {@link #PI_PUD_KP} 
+ *  @see PiVals#PI_PUD_OFF
+ *  @see PiVals#PI_PUD_DOWN
+ *  @see PiVals#PI_PUD_UP
+ *  @see PiVals#PI_PUD_DT
+ *  @see ClientPigpiod
+ */
+    public int pud = PI_PUD_KP;
+
+/** Usable for IO. <br />
+ *  <br />
+ *  This method returns {@code true} when this port's GPIO can be used for
+ *  both real input and output operations.
+ * 
+ *  @return {@link #gpio} &lt; 32
+ */
+    public final boolean isIO(){ return gpio < 32; }
+
+/** internal contructor. */    
+    Port(int gpio, int pin, String name, ThePi encl){
+      this.gpio = gpio;
+      this.pin = pin;
+      this.name = name;
+      this.encl = encl;
+    } // Port(2*int, String)
+    
+/** Set GPIO for IO operations. <br /> */
+    public void setGpio(final int gpio){
+      this.gpio = (gpio < 0 || gpio > 31) ? PINig : gpio;
+      if (this.gpio >= PINig) { 
+        this.pin = 0; this.pud = PI_PUD_KP; // ignore
+        return;
+      } 
+      this.pin = encl.gpio2pin(this.gpio);
+    } // setIntGpio(int)
+
+/** Set pin for IO operations. <br /> */
+    public void setPin(int pin){
+      this.gpio =  encl.gpio4pin(pin);
+      if (this.gpio < 32) { this.pin = pin; return; } // OK
+      this.pin = 0; this.gpio = PINig; this.pud = PI_PUD_KP;  // error
+    } // setInPin(int)
+    
+/** Change IO settings. <br /> 
+ *  <br />
+ *  This method sets the port's IO either as pin number or as GPIO with a
+ *  prefix G. A postfix U, D or N will set the pull resistor flag as up,
+ *  down or none.<br />
+ *  Without postfix the pull resistor setting {@link #pud} will be kept
+ *  untouched.
+ *  
+ *  @param port pin (12N, e.g.) or gpio (with leading G; G18, e.g.)
+ */
+    public void setPort(String port){ 
+      port = TextHelper.trimUq(port, EMPTY_STRING);
+      int len = port.length();
+      if (len == 0) { setGpio(PINig); return; } // no IO
+      char c0 = port.charAt(0);
+      int num = 0;
+      int nx = 1;
+      boolean isGPIO = c0  == 'G' || c0 == 'g';
+      if (isGPIO || c0  == 'P' || c0 == 'p') { // c0 said pin or gpio
+        if (len == 1) { setGpio(PINig); return; } // none specified
+        c0 = port.charAt(1); nx = 2;
+      } // c0 (before) said pin or gpio
+      if (c0 < '0' || (num = c0 - '0') > 9) { // c0 must be cif  but is not 
+        setGpio(PINig); return; // none specified (format error)
+      } // c0 must be cif  but is not
+      while (nx < len) { // 2nd cif and / or PUD (U D N) follow
+        c0 = port.charAt(nx); ++nx;
+        if (c0 <= ' ') break; // end of value (start comment)
+        if (c0 >= '0' &&  c0 <= '9') { // 2nd cif
+          num = num * 10 + c0 - '0';
+          if (num >= 99) break; // error ends c0 character loop
+          continue;
+        } // 2nd cif
+        // to here no cif; must be U D N K (u d n k)
+        if (c0 >= 'a') c0 -= 32; // poor man's toUpperCase for primitive USascii
+        if (c0 == 'G' || c0 == 'P') break; // ignore redundant gpio or pin
+        int pud = PI_PUD_KP;  // keep PUD (restore default)
+        if (c0 == 'D') pud = PI_PUD_DOWN;
+        else if (c0 == 'U') pud = PI_PUD_UP;
+        else if (c0 == 'N') pud = PI_PUD_OFF;  // shall we accept O also ?
+        else if (c0 != 'K') num = 100; // now in error anyway
+        if (pud == PI_PUD_KP) break;
+        this.pud = pud;
+        break; // postfix ends char loop
+      } // while c0 character loop
+      if (isGPIO) { setGpio(num); // set by GPIO number (prefix G)
+      } else setPin(num);  // set by pin number
+    } // setPort(boolean, String)
+    
+/** Short description of the port. <br />
+ *  <br />
+ *  The text returned consists of the {@link #name}, the port number, a letter
+ *  for the pull resistor setting and the gpio number with a prefix "G".     
+ */
+    @Override public final String toString(){
+      StringBuilder dest = new StringBuilder(45).append(name)
+                              .append(':').append(' ');
+      if (gpio >= PiVals.PINig) {
+        if (gpio == PiVals.PIN0V) return dest.append("gnd_0V").toString();
+        if (gpio == PiVals.PIN3V) return dest.append("sup3V3").toString();
+        if (gpio == PiVals.PIN5V) return dest.append("sup_5V").toString();
+        return dest.append("noneIgn").toString();
+      }
+      PiUtil.twoDigitDec(dest, pin);
+      if (pud >= PI_PUD_OFF && pud <= PI_PUD_UP) dest.append(pudC[pud]);
+      dest.append('G');  
+      PiUtil.twoDigitDec(dest, gpio);
+      return dest.toString();
+    } // toString()
+    
+    static final char[] pudC = {'N', 'D', 'U', '~', 'K'};
+    
+/** Equal with other port. <br />
+ *  <br />
+ *  From the physical sight of a Raspberry Pi's IO to outside world two ports
+ *  have equal effects or information when the GPIO numbers are equal.<br />
+ *  This sight is implemented here and, consistently, in {@link #hashCode()}. 
+ *  
+ *   @return true when other is a {@code Port} object with the same GPIO
+ */
+    @Override public final boolean equals(final Object other){
+      if (! (other instanceof Port)) return false;
+      return this.gpio == ((Port)other).gpio;
+    } // equals(Object)
+    
+/** Hashcode. <br />
+ *  
+ *   @see #equals(Object)
+ *   @return {@link #gpio}
+ */
+    @Override public final int hashCode(){ return this.gpio; }    
+  } // Port (06.06.2021) 
+
+/** Make an input/output port for this Pi. <br />
+ *
+ *  @param name a short (best 7 char) description of the pin's attached device
+ *              like "red LED", "servo16" etc.; must not be empty 
+ *  @param pin 0, 1..40 (26 [+8]) is the legal IO connector pin number
+ *  @return an operable Port object on success
+ *  @throws IOException if the pin does not allow input and output operations
+ *          with a comprehensive message     
+ */  
+  public default Port portByPin(int pin, String name) throws IOException {
+    name = TextHelper.trimUq(name, null);
+    if (name == null) throw new IOException("pin " + pin 
+                            + " for no or empty signal name");
+    final int gpio = gpio4pin(pin);
+    if (gpio >= GPIOmin && gpio <= GPIOutM) return new Port(gpio, pin, name, this);
+    
+    throw new IOException("pin " + pin + " for " + name + " = "  
+                                                        + gpio2String(gpio));
+  } // portByPin(int, String)
+
+/** Make an input/output port for this Pi. <br /> 
+ * 
+ *  @param name a short (best 7 char) description of the pin's attached device
+ *              like "red LED", "servo16" etc.; must not be empty 
+ *  @param gpio 0..32 or {@link #PINig} an operable / legal GPIO number
+ *  @return an operable Port object on success
+ *  @throws IOException if the pin does not allow the IO operation intended
+ *          with a comprehensive message     
+ */  
+public default Port portByGPIO(int gpio, String name) throws IOException {
+  name = TextHelper.trimUq(name, null);
+  int pin = gpio2pin(gpio);
+  if (name == null) throw new IOException("pin " + pin 
+                                         + " for no or empty signal name");
+  if (pin != 0 || gpio == PINig) return new Port(gpio, pin, name, this);
+  throw new IOException("pin " + pin + " for " + name + " = "  
+                                                      + gpio2String(gpio));
+} // portByGPIO(int, String)
   
 /** Allows a GPIO number output. <br />
  *  <br />
@@ -53,7 +266,7 @@ public interface ThePi extends PiVals {
  */
   public static boolean gpioMayOut(final int gpio){
     return (gpio >= GPIOmin && gpio <= GPIOutM) || gpio == PINig;
-  } // gpio2String(int)
+  } // gpioMayOut(int)
 
 /** Format a GPIO number. <br />
  *  <br />
@@ -79,6 +292,26 @@ public interface ThePi extends PiVals {
     dest.append((char)('0' + gpio/10)).append((char)('0' + gpio%10));
     return new String(dest);
   } // gpio2String(int)
+  
+  public default String pinDescr(int pin, int pud){
+    if (pin <= 0 || pin > 40) return  "noneIgn"; 
+    int gpio = gpio4pin(pin);
+    if (gpio >= PiVals.PINig) {
+      if (gpio == PiVals.PIN0V) return "gnd_0V";
+      if (gpio == PiVals.PIN3V) return "sup3V3";
+      if (gpio == PiVals.PIN5V) return "sup_5V";
+      return  "noneIgn";
+    }
+    StringBuilder dest = new StringBuilder(10);
+    PiUtil.twoDigitDec(dest, pin);
+    if (pud >= PI_PUD_OFF && pud <= PI_PUD_UP) dest.append(Port.pudC[pud]);
+    dest.append('G');  
+    PiUtil.twoDigitDec(dest, gpio);
+    return dest.toString();    
+  } // pinDescr(2*int)
+  
+
+  
 
 /** The pigpiod default host. <br />
  *  <br />
@@ -193,7 +426,7 @@ public interface ThePi extends PiVals {
  *  Once made this is an non mutable property of a ThePi object.<br />
  *  The default is 8888.
  */
-   public int port();
+   public int sockP();
 
 /** Get the pigpiod socket host. <br />
  *  <br />
@@ -229,7 +462,7 @@ public interface ThePi extends PiVals {
  *  represented by a {@link Pi3} object. <br />
  *  
  *  @return a ThePi object of given type with the given {@link #host() host},
- *     {@link #port() port} and  {@link #timeout() timeout} 
+ *     (socket) {@link #sockP() port} and  {@link #timeout() timeout} 
  *  @see Pi3#make(String, int, int, int)
  *  @see  Pi1#make(String, int, int)    
  */

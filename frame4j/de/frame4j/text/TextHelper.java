@@ -83,8 +83,8 @@ import de.frame4j.util.MinDoc;
 @MinDoc(
    copyright = "Copyright 2000 - 2013, 2021  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 49 $",
-   lastModified   = "$Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $",
+   version   = "V.$Revision: 51 $",
+   lastModified   = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
    usage   = "import",  
    purpose = "common text utilities: check, parse and formating of texts"
 ) public abstract class TextHelper {
@@ -2794,6 +2794,31 @@ import de.frame4j.util.MinDoc;
       return ret;
       //  return getCommaSemicolonWSpattern().split(input, -1);
    } // splitCsWS(CharSequence)
+   
+
+/** Count of non empty Strings or arguments in a (parameter) array. <br />
+ *  <br />
+ *  This method return the number of non empty entries in a String array.
+ *  The array is left untouched. <br />
+ *  One application is to determine the number of start 
+ *  {@link App#args parameters} not evaluated and cleared by 
+ *  {@link App#go(String[]) partial} parsing.
+ *  
+ *  @param args    the parameter array
+ *  @return        the corresponding (command) line
+ *  @see #prepParams(String[])
+ */
+   public static int countParams(final String[] args){
+     if (args == null) return 0;
+     int argAnz = args.length;
+     if (argAnz == 0) return 0;
+     for (String arg : args) {
+        if (arg == null || arg.length() == 0) {
+          if (--argAnz == 0) return 0; // no more content to be found
+        } // no content
+     } // for
+     return argAnz;
+   } // countParams(String[])
 
 /** Make an argument line from a parameter array. <br />
  *  <br />
@@ -2807,10 +2832,11 @@ import de.frame4j.util.MinDoc;
  *  If there are no parameters the 
  *  {@linkplain ComVar#EMPTY_STRING empty String} is returned.<br />
  *
- *  @param args    the parameter
- *  @return        the corresponding (command) line
+ *  @param args the parameters
+ *  @return     the corresponding (command) line
+ *  @see #countParams(String[])
  */
-   public static  String prepParams(String[] args){
+   public static String prepParams(final String[] args){
       if (args == null) return ComVar.EMPTY_STRING;
       final int argAnz = args.length;
       if (argAnz == 0) return ComVar.EMPTY_STRING;
@@ -2909,7 +2935,7 @@ import de.frame4j.util.MinDoc;
  *  <br />
  *  @see #write(PrintWriter, CharSequence, CharSequence[])
  *  @param  dest   destination to append to; if null dest is made as
- *          StringBuilder with initial capacity of 50 + 16 * element cont6 *
+ *          StringBuilder with initial capacity of 50 + 16 * sA's length
  *  @param name the name to be given to sA;
  *               null will be taken as &quot;...&quot;
  *  @param sA    the String[] to be formatted / listed
@@ -2972,31 +2998,34 @@ import de.frame4j.util.MinDoc;
  *  or 1d00h00min<br />
  *  <br />
  *  @see de.frame4j.util.App#getExecTimeMs()
- *  @see #twoDigit(int)
+ *  @param  dest   destination to append to; if null dest is made as
+ *          StringBuilder with initial capacity of 16
+ *  @param dur the duration
+ *  @return dest
  */
-   public static String durationAsString(long dur){
-      StringBuilder dest = new StringBuilder(11);
+   public static StringBuilder formatDuration(StringBuilder dest, long dur){
+      if (dest == null) dest = new StringBuilder(16);
       if (dur < 0) {
          dur = -dur;
          dest.append('-');
       } 
       if (dur < 9789) 
-         return dest.append(dur).append("ms").toString();
+         return dest.append(dur).append("ms");
       int durs = (int)((dur + 500L) / 1000L); // seconds total
       if (durs < 3600) 
-        return  dest.append(durs).append('s').toString();
+        return  dest.append(durs).append('s');
       durs /= 60;   // minutes total
       int min = durs % 60; // minutes 0..59
       durs /= 60;   // hours total
       if (durs < 24) {
          dest.append(durs).append('h').append(TextHelper.twoDigit(min));
-         return dest.append("min").toString();
+         return dest.append("min");
       }
       int h = durs % 24; // hours 0..23
       durs /= 24;   // days
       dest.append(durs).append('d').append(TextHelper.twoDigit(h));
       dest.append('h').append(TextHelper.twoDigit(min));
-      return dest.append("min").toString();
+      return dest.append("min");
    } // durationAsString()
 
 /** Pattern for separation at comma, semicolon or white space. <br />

@@ -22,7 +22,7 @@ package de.weAut;
  *  @see Pi3
  *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 49 $ ($Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $)
+ *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 36  (06.04.2021) :  polymorphism
@@ -94,14 +94,14 @@ public interface Pi1 extends ThePi {
 /** Make a Pi1 object with default settings. <br />
  *   
  *  @return a Pi1 object with default {@link ThePi#defaultHost host},
- *     {@link ThePi#port() port} and  {@link ThePi#timeout() timeout} 
+ *    (socket) {@link ThePi#sockP() port} and  {@link ThePi#timeout() timeout} 
  */
- static public Pi1 make(){ return make(null, 0, 0);  }
+ static public Pi1 make(){ return make(null, 0, 0); }
 
 /** Make a Pi1 object. <br />
  *   
  *  @return a PI1 object with the given {@link #host() host},
- *     {@link #port() port} and  {@link #timeout() timeout} 
+ *     (socket) {@link #sockP() port} and  {@link #timeout() timeout} 
  */
   static public Pi1 make(final String host, final int port, final int timeout){
     return new Pi1(){
@@ -113,7 +113,7 @@ public interface Pi1 extends ThePi {
         this.portPi = port < 20 || port > 65535 ? 8888 : port;
         this.timoutPi = timeout < 300 || timeout > 50000 ? 10000 : timeout;
       } // initialiser
-      @Override public int port(){ return this.portPi; }
+      @Override public int sockP(){ return this.portPi; }
       @Override public String host(){ return this.hostPi; }
       @Override public int timeout(){ return this.timoutPi; }
     }; // ano inner

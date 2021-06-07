@@ -34,13 +34,13 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  @see App
  */
- // so far:   V.o95+  (13.03.2009 16:00) : new (String values before)
+ // so far:   V.o95+  (13.03.2009) : new (String values before)
 
 @MinDoc(
    copyright = "Copyright  2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
+   version   = "V.$Revision: 50 $",
+   lastModified   = "$Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "use instead of String or int values",  
    purpose = "values for the possible modes for handling an existing file"
@@ -85,7 +85,7 @@ import de.frame4j.text.TextHelper;
 /** As String (the name). <br />  */
    @Override public String toString(){ return name; }
    
-   OutMode(final String name, final int val) {
+   OutMode(final String name, final int val){
       this.name = name;
       this.val  = val;
    } // constructor

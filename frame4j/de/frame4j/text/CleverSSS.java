@@ -42,7 +42,7 @@ import de.frame4j.util.MinDoc;
  *  This class and its extensions (like {@link RK} and {@link KMP}) hide their
  *  constructors behind factory respectively make() methods. Inheritors do
  *  neither have to handle the cases, where an 
- *  &quot;{link {@link #optimisticOK optimistic}&quot; search is 
+ *  &quot;{@link #optimisticOK optimistic}&quot; search is 
  *  sufficient nor do they have to handle the the trivial cases of<ul>
  *   <li>subsequences to search for that are null, empty or shorter than
  *       two characters either from start,</li>
@@ -97,8 +97,8 @@ import de.frame4j.util.MinDoc;
 @MinDoc(
    copyright = "Copyright 2010  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
+   version   = "V.$Revision: 51 $",
+   lastModified   = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "extend for clever substring search",  
    purpose = "common type for clever searches like Rabin Karp (RK), KMP etc."

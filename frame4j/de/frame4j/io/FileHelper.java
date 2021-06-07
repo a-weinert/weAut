@@ -37,7 +37,7 @@ import de.frame4j.time.TimeHelper;
  *  <a href="package-summary.html#co">&copy;</a>
  *  Copyright 1998 - 2009, 2013  &nbsp; Albrecht Weinert. 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 38 $ ($Date: 2021-04-16 19:38:01 +0200 (Fr, 16 Apr 2021) $)
+ *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
  *  @see FileCriteria
  *  @see FileService
  */
@@ -45,8 +45,8 @@ import de.frame4j.time.TimeHelper;
 @MinDoc(
    copyright = "Copyright  2016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 38 $",
-   lastModified   = "$Date: 2021-04-16 19:38:01 +0200 (Fr, 16 Apr 2021) $",
+   version   = "V.$Revision: 51 $",
+   lastModified   = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "use en lieu de direct java.io.File",  
    purpose = "a file with some extra abilities"
@@ -744,7 +744,7 @@ import de.frame4j.time.TimeHelper;
 /** Make an output connected to the File given. <br />
  *  <br />
  *  This method generates and returns an object of the inner class
- *  {link OS} and hence {@link FileOutputStream} plus a 
+ *  {@link OS} and hence {@link FileOutputStream} plus a 
  *  {@link PrintWriter} ({@code pw}) contained.<br />
  *  <br />
  *  Parameter mode specifies how to treat an existing file pointed to by the

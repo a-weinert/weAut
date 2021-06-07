@@ -27,8 +27,6 @@ import java.util.Map;
 import de.frame4j.io.Input;
 import de.frame4j.text.TextHelper;
 
-
-
 /** <b>Properties, extended to support App based and other applications</b>. <br />
  *  <br />
  *  <b> &nbsp; <a name="inh" id="inh">Content</a></b><br />
@@ -206,7 +204,7 @@ import de.frame4j.text.TextHelper;
  *  @see #setFields(Object)
  *  @see PropMapHelper#setField(Object, String, String)
  *  @author   Albrecht Weinert
- *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
+ *  @version  $Revision: 50 $ ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $)
  */
  // so far    V00.00 (05.04.1999) : new
  //           V00.02 (11.07.2000) : Inter nationalising, extensions
@@ -241,8 +239,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 1999 - 2009, 2016, 2021  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 44 $",
-   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
+   version   = "V.$Revision: 50 $",
+   lastModified   = "$Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $",
    usage   = "3 phase: make, populate, use (preferably not further modified)",  
    purpose = 
       "extended capabilities of PropMap for applications, App, ..."
@@ -250,7 +248,7 @@ import de.frame4j.text.TextHelper;
 
 /** Version number for serialising.  <br />
  *  <br />
- *  Changed 21.11.2009, V.159+, due to added nationalisation history.<br />
+ *  Changed 21.11.2009, V.159+, due to added nationalisation history.
  */
    static final long serialVersionUID = 260153008402021L;
 //                                      magic /Id./maMi
@@ -756,7 +754,7 @@ import de.frame4j.text.TextHelper;
  *  {@link #Prop(Class, String, boolean, String)}.
  *  If the {@link App} object {@code app} has a mother application the 
  *  properties help and verbosity take its values as defaults (instead of
- *  false and {@link AppHelper#NORMAL NORMAL}.<br />
+ *  false and {@link Verbos#NORMAL NORMAL}.<br />
  *  <br />
  *  After that a file named &quot;ClassName.properties&quot; will be searched
  *  and loaded to this Prop object. Then other .properties files with 

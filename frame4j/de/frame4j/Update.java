@@ -85,8 +85,8 @@ import de.frame4j.time.TimeHelper;
 @MinDoc(
    copyright = "Copyright  1998 - 2005, 2016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 44 $",
-   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
+   version   = "V.$Revision: 50 $",
+   lastModified   = "$Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $",
    usage   = "start as Java application (-? for help)",
    purpose = "updates files and / or directories also by complex criteria"
 ) public class Update extends App {
@@ -279,7 +279,7 @@ import de.frame4j.time.TimeHelper;
       int anz = service.doUpdate(qvz, zvz, bvz, log);
       if (isNormal()) {
          log.println(formMessage("updnofrep", anz));
-         if (isVerbose() || anz > 32) {
+         if (verbose || anz > 32) {
             log.println();
             log.println(twoLineEndMsg().append('\n'));
          }

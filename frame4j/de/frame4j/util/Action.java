@@ -82,8 +82,8 @@ import de.frame4j.text.TextHelper;
  *                          </td></tr>
  *  <tr><td>SVERBOS</td><td style="text-align:center;">13</td><td>Set a level of 
  *          verbosity for logs or reports</td>
- *                          <td>{@link AppHelper#DEBUG} ..
- *                          {@link AppHelper#SILENT}
+ *                          <td>{@link Verbos#DEBUG} ..
+ *                          {@link Verbos#SILENT}
  *                          </td></tr></table>
  *                          
  *  <br style="clear:both;">
@@ -94,7 +94,7 @@ import de.frame4j.text.TextHelper;
  *  @see de.frame4j.graf.ColorHelper#getColor(CharSequence)
  *  @see de.frame4j.time.TimeHelper#TIME_CHOOSE
  * 
- *  @version  $Revision: 33 $ ($Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $)
+ *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
  */
  // until now  V02.01 (17.06.2003 17:00) : new (for ZeitHelper)
  //            V.o48+ (19.01.2009 11:37) : ported (Frame4J) translation start
@@ -103,8 +103,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 2004, 2009  A. Weinert",
    author = "Albrecht Weinert",
-   version = "V.$Revision: 33 $",
-   lastModified = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
+   version = "V.$Revision: 51 $",
+   lastModified = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage = "use for human friendly parsers",  
    purpose = "translate (polyglotly) keywords to unique integer codes"
@@ -172,7 +172,7 @@ import de.frame4j.text.TextHelper;
  *  {@link #code} = 300 (debug) .. 1000 (silent / severe).<br />
  *  Value: {@value}<br />
  *  <br />
- *  @see AppHelper#getVerbosityAsString(int)
+ *  @see Verbos#toString()
  */   
    public static final int SVERBOS = 13;
 
@@ -288,7 +288,7 @@ import de.frame4j.text.TextHelper;
  *  @param value  action parameter, value
  *  @param keys   all keywords meaning (code, value).
  */   
-   public Action(int code, int value, String[] keys) {
+   public Action(int code, int value, String[] keys){
       this.value = value;
       this.code  = code;
       this.keys  = keys;
@@ -356,7 +356,7 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  @param list        the list of possible {@link Action}s to match key to
  *  @param filter      an optional filter, to select a subset from list. null
- *                     accepts all {link {@link Action}s from list. 
+ *                     accepts all {@link Action}s from list. 
  *  @param key         the choice; if key ends with a dot (.) that is removed; 
  *                     if key is (then) shorter than 2, null is returned
  *  @param ignoreCase  true: match non regarding case

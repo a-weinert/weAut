@@ -65,8 +65,8 @@ import static de.frame4j.time.AClock.*;
 @MinDoc(
    copyright = "Copyright 2000 - 2009, 2016  A. Weinert",
    author  = "Albrecht Weinert",
-   version = "V.$Revision: 33 $",
-   lastModified = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
+   version = "V.$Revision: 51 $",
+   lastModified = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage = "import TimeHelper to your classes  or\n\n"
         +  "  java de.frame4j.time.TimeHelper [options] [time [time .. [loop]",  
@@ -363,7 +363,7 @@ import static de.frame4j.time.AClock.*;
  *  <br /> 
  *  @param time the object to be type checked
  *  @return true if time is an instance of a of a type formattable by
- *          {link {@link #format(CharSequence, Object)}
+ *          {@link #format(CharSequence, Object)}
  */
    public static boolean instanceOfTime(final Object time){
       if (time == null) return false;

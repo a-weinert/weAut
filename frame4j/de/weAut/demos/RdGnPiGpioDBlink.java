@@ -1,4 +1,4 @@
-/*  Copyright 2021 Albrecht Weinert, Bochum, Germany (a-weinert.de)
+/*  Copyright 2021 AlbrechtWeinert, Bochum, Germany (a-weinert.de)
  *  All rights reserved.
  *  
  *  This file is part of Frame4J notwithstading being in de.weAut... 
@@ -29,7 +29,7 @@ import java.io.PrintWriter;
  *  Comment excerpt of the original/ported C source file: <br /><pre>
   A fifth program for Raspberry's GPIO pins
 
-  Rev. $Revision: 46 $  $Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $
+  Rev. $Revision: 50 $  $Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $
   Copyright  (c)  2019   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
 
@@ -48,17 +48,23 @@ import java.io.PrintWriter;
 <br />
  *  In Java, for good reasons, we do not have the "make plus macros and all
  *  can be wildly changed" mechanism. In a Java program, by playing with
- *  inheritance and polymorphism, we can postpone the Pi type decision in a 
- *  better way to runtime. One way is making a {@link de.weAut.ThePi ThePi}
- *  object either by a {@link de.weAut.Pi3} (for Pi0, 3 and 4) or
- *  by a {@link de.weAut.Pi1} or {@link de.weAut.Pi1} interface's inner
- *  class.<br />
+ *  inheritance and polymorphism, we can postpone the Pi type decision &ndash;
+ *  in a better way &ndash; to program's run time. Here this is done by 
+ *  {@linkplain de.weAut.ThePi#make(String, int, int, int) making} (by the 
+ *  factory method)
+ *  {@link de.weAut.ThePi#make(String, int, int, int) ThePi.make(...)} a
+ *  {@link de.weAut.ThePi ThePi} object either as
+ *  {@link de.weAut.Pi3} (for Pi0, 3 and 4) or
+ *  as a {@link de.weAut.Pi1} or {@link de.weAut.Pi2} (interface's inner
+ *  class) object.<br />
  *  <br />
- *  Copyright  &copy;  2019   Albrecht Weinert <br />
+ *  Copyright  &nbsp;&copy;&nbsp; 2019 Albrecht Weinert <br />
  *  @see BlinkOnPi
  *  @see de.weAut.TestOnPi
+ *  @see <a href="../doc-files/Raspi4testPins.png"
+ *   title="GPIOs and pins">Raspi4testPins</a>
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 46 $ ($Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $)
+ *  @version  $Revision: 50 $ ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $)
  */
 // so far:   V.  21  (21.05.2019) : new, minimal functionality
 //           V. -26  (31.05.2019) : three LEDs, IO lock 
@@ -104,7 +110,6 @@ public class RdGnPiGpioDBlink implements PiUtil, RdGnPiGpioDBlinkMBean {
 //----  MBean Operations / Implementation    --------------------------------
   @Override public Integer getCycCount(){ return cycCount; }
   @Override public void setCycCount(Integer cycCount){ this.cycCount = cycCount; }
-  @Override public void resetCycCount(){ cycCount = 0; }
   @Override public Boolean getLEDye(){ return yLd; }
   @Override public Boolean getLEDgn(){ return gLd; }
   @Override public Boolean getLEDrd(){ return rLd; }
@@ -133,8 +138,8 @@ public class RdGnPiGpioDBlink implements PiUtil, RdGnPiGpioDBlinkMBean {
       rdGnPiGpioDBlink.regAsStdMBean();
     } catch (Exception e) { // should not happen
       e.printStackTrace();
-      return;
-    } // should not happen
+      return; // should not happen
+    } // make and register
     rdGnPiGpioDBlink.doIt(); // run on the RdGnPiGpioDBlink object
   } // main(String[])
   
@@ -204,20 +209,19 @@ public class RdGnPiGpioDBlink implements PiUtil, RdGnPiGpioDBlinkMBean {
                                                   + PiUtil.errorText(oL));
       return;
     }
-    try {
-      pI = ClientPigpiod.make(argHost, argPort, argTimeout,
-                              argPiType, this); // local connect
+    try { // make and connect
+      pI = ClientPigpiod.make(argHost, argPort, argTimeout, argPiType, this);
       out.println("  RdGnPiGpioDBlink connect " + pI);
     } catch (IOException ex) {
       ex.printStackTrace();
       return; // can't open socket
     }  // null, 8888, 2
-
+    // as we have the concrete Pi type now make GPIO numbers for pins
     int LEDrd = pI.thePi.gpio4pin(ledRDpin);
     int LEDgn = pI.thePi.gpio4pin(ledGNpin);
     int LEDye = pI.thePi.gpio4pin(ledYEpin);
 
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> { // shutdownHook
       runOn = false;
       if (pI != null) {
         out.println("\n  RdGnPiGpioDBlink shutdown " + pI);

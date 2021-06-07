@@ -1,3 +1,4 @@
+
 /*  Copyright 2021 Albrecht Weinert, Bochum, Germany (a-weinert.de)
  *  All rights reserved.
  *  
@@ -60,10 +61,12 @@ import javax.management.JMException;
  *  @see BlinkOnPiMBean
  *  @see de.weAut.TestOnPi
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $)
+ *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
  *  @see BlinkOnPiMBean
  *  @see PiUtil
  *  @see <a href="./doc-files/BlinkOnPi.properties">BlinkOnPi.properties</a>
+ *  @see <a href="../doc-files/Raspi4testPins.png"
+ *   title="GPIOs and pins">Raspi4testPins</a>
  */
 // so far:   V.  21  (21.05.2019) : new, minimal functionality
 //           V.  26  (31.05.2019) : three LEDs, IO lock 
@@ -71,33 +74,38 @@ import javax.management.JMException;
 //           V.  45  (08.05.2021) : piTraffic buzzer and button
 @MinDoc(
   copyright = "Copyright 2021  A. Weinert",
-  author    = "Albrecht Weinert",
-  version   = "V.$Revision: 47 $",
-  lastModified   = "$Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $",
+  version   = "V.$Revision: 51 $",
+  lastModified   = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
   usage   = "start as Java application (-? for help)",  
   purpose = "a Frame4J program to blink LEDs on a Pi via pigpioD"
 ) public class BlinkOnPi extends App implements PiUtil, BlinkOnPiMBean {
 
  // @Override public final boolean parsePartial(){ return true; } // not yet
 
-/** The LEDs to blink. <br />
+/** A LED to blink. <br />
  *  <br />
- *  The default pins for rd/ye/gn are 11, 22, and 13. <br />
- *  This is the traditional 2017 experimental setup. With a piTraffic 
- *  (cross roads) head  {@link #ledGNpin} would be south yellow and
- *  {@link #ledYEpin} west green.  
+ *  The default pins for rd/ye/gn LED are 11, 22, and 13. 
+ *  This is the traditional (2017) experimental setup. <br />
+ *  With a piTraffic (cross roads) head  {@link #ledGNpin} would be
+ *  south yellow and {@link #ledYEpin} west green.  
  */
   public int ledRDpin = 11, // piTraffic south rd
              ledYEpin = 22, // piTraffic west  gn
              ledGNpin = 13; // piTraffic south ye
 
-/** The buzzer and button. <br />
+/** The buzzer. <br />
  *  <br />
- *  The default pin for a buzzer is 12 and for a low active button (needs
- *  pull up) is 7. This is the trafficPi assignment.
+ *  The default pin for a buzzer (respectively its switching transistor) is
+ *  12. This is the trafficPi assignment.
  */
-  public int buzzPin = 12, // piTraffic buzzer to 5V by npn transistor
-             buttPin =  7; // piTraffic button switch to ground
+  public int buzzPin = 12; // piTraffic buzzer to 5V by npn transistor
+
+/** The button pin. <br />
+ *  <br />
+ *  The default pin for a low active button (would need a pull up, internal
+ *  or external) is 7. This is the trafficPi assignment.
+ */
+  public int buttPin =  7; // piTraffic button switch to ground
 
   ClientPigpiod  pI; // Pi and its connection
   
@@ -118,7 +126,6 @@ import javax.management.JMException;
  @Override public Integer getCycCount(){ return cycCount; }
  @Override public void setCycCount(Integer cycCount){
                            BlinkOnPi.this.cycCount = cycCount; }
- @Override public void resetCycCount(){ cycCount = 0; }
  @Override public Boolean getLEDye(){ return yLd; }
  @Override public Boolean getLEDgn(){ return gLd; }
  @Override public Boolean getLEDrd(){ return rLd; }
@@ -165,7 +172,7 @@ import javax.management.JMException;
   int butt0 = PINig;
   
 /** Helper method delay and button/buzzer IO. <br /> */
-  void butuzDel(final int drl){
+  void buttzDel(final int drl){
     leBut0 = pI.getInp(butt0) == 1; // input button
     if (leBut0 != leBut0prev) { // button input changed
       pI.logIfBad(pI.setOutput(buzz0, leBut0prev)); // buzzer 
@@ -223,15 +230,15 @@ import javax.management.JMException;
 
     for(;isRunFlag(); ++cycCount) {           //   red yellow green time/state 
       pI.logIfBad(pI.setOutput(rdLED, rLd=HI)); // on
-      butuzDel(200); if (!isRunFlag()) break;  //                  200 ms red
+      buttzDel(200); if (!isRunFlag()) break;  //                  200 ms red
       yLd = !yLd;                             //       toggle
       pI.logIfBad(pI.setOutput(yeLED, yLd)); //        on off
       pI.logIfBad(pI.setOutput(gnLED, gLd=HI)); //             on
-      butuzDel(100); if (!isRunFlag()) break;   //                 100 ms both
+      buttzDel(100); if (!isRunFlag()) break;   //                 100 ms both
       pI.logIfBad(pI.setOutput(rdLED, rLd=LO)); // off
-      butuzDel(100); if (!isRunFlag()) break;   //                 100ms green
+      buttzDel(100); if (!isRunFlag()) break;   //                 100ms green
       pI.logIfBad(pI.setOutput(gnLED, gLd=LO)); //             off
-      butuzDel(200); if (!isRunFlag()) break;  //                  200 ms dark
+      buttzDel(200); if (!isRunFlag()) break;  //                  200 ms dark
     } // for endless (leave on stop signals)
     
     // shutdown tasks

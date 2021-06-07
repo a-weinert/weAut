@@ -43,7 +43,7 @@ import de.frame4j.util.ComVar;
  *  Copyright <a href=package-summary.html#co>&copy;</a> 2019, 2021
  *           &nbsp; Albrecht Weinert<br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $)
+ *  @version  $Revision: 50 $ ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $)
  */
 // so far:   V. o19  (17.05.2019) : new
 //           V.  21  (19.05.2019) : ALT numbers, typo
@@ -409,10 +409,10 @@ public interface PiUtil extends PiVals {
 
 /** Get the number of spoiled delays. <br />
  *  <br />   
- *  @return the number of successful thread delays
+ *  @return the number of spoiled thread delays
  *  @see #thrDelay(int) #getCycCnt()
  */
-   public default int getOvrCnt(){ return Impl.getOvrCnt(); } 
+   public default int getOvrCnt(){ return Impl.getCycOvr(); } 
 
 /** <b>A tick as mutable object</b>. <br />
  *  <br />
@@ -682,11 +682,11 @@ static final class Impl {
  *  @see PiUtil#getCycCnt()
  *  @see PiUtil#getOvrCnt()
  *  @see #getCycCnt()
- *  @see #getOvrCnt()
+ *  @see #getCycOvr()
  *  @param millies the number of ms to delay relativ to the last call
  */  
    static void thrDelay(int millies){
-      if (millies < 1) return; // must be positive
+      if (millies < 1) millies = 2; // must be positive and not to be ommitted
       long now = java.lang.System.currentTimeMillis();
       LeTick leTick = lastThTick.get();
       if (leTick == null) { //
@@ -709,7 +709,7 @@ static final class Impl {
  *  {@link PiUtil.LeTick#add(long)} calls.
  *  @return the number of successful thread delays
  *  @see #thrDelay(int)
- *  @see #getOvrCnt()
+ *  @see #getCycOvr()
  */
    static int getCycCnt(){
      LeTick leTick = lastThTick.get();
@@ -725,11 +725,11 @@ static final class Impl {
  *  @see #thrDelay(int)
  *  @see #getCycCnt()
  */
-   static int getOvrCnt(){
+   static int getCycOvr(){
      LeTick leTick = lastThTick.get();
      if (leTick == null) return 0; // no thread local tick ==> no overrun
      return leTick.ovrCnt;
-   } // getCycCnt()
+   } // getCycOvr()
 
 /** A container holding one LeTick object per thread. */  
    static final ThreadLocal<LeTick> lastThTick = new ThreadLocal<>();

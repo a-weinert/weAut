@@ -16,14 +16,15 @@ import de.frame4j.util.AppMBean;
 
 /** <b>IO/device on Pi test and demo program TestOnPi as MBean</b>. <br />
  *  <br />
- *  <br />
- *  Copyright  &copy;  2021  Albrecht Weinert <br />
- *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 49 $ ($Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $)
+ *  Copyright  &copy;  2021  Albrecht Weinert 
+ *
+ *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
  *  @see TestOnPi
  *  @see PiUtil
  *  @see de.weAut.demos.BlinkOnPi
  *  @see <a href="./doc-files/TestOnPi.properties">TestOnPi.properties</a>
+ *  @see <a href="../doc-files/Raspi4testPins.png"
+ *    title="GPIOs and pins">Raspi4testPins</a>
  */
 // so far:   V.  42  (29.04.2021) : new, minimal functionality
 
@@ -51,10 +52,10 @@ public interface TestOnPiMBean extends AppMBean {
  */
  public Boolean getLEDgn();
      
-/** See the number of cycles. <br />
+/** The number of cycles. <br />
  *  <br />
- *  As the duration of one cycle is 600ms it would take more than 40 years to
- *  overflow to negative.<br />
+ *  As the duration of one cycle is typically 600ms it would take more
+ *  than 40 years to overflow to negative.<br />
  *  Note: Java has no unsigned number type. int is int32_t there is 
  *  no uint32_t.
  *  Note 2: Here for greater values, the required (ill) return type Integer
@@ -63,22 +64,47 @@ public interface TestOnPiMBean extends AppMBean {
  *  detrimental to real time applications. Hence, this method might be
  *  deprecated or removed in future.
  *  @return the loop / cycle or delay count
- *  @see #resetCycCount()
+ *  @see #setCycCount(Integer)
+ *  @see #getCycOvr()
  */
   public Integer getCycCount();
       
 /** Set the number of cycles. <br /> */   
   public void setCycCount(Integer cycCount);
   
-/** Reset the number of cycles counter. <br />
+/** The limit for the number of cycles. <br />
  *  <br />
- *  If you don't want to wait almost 82 years to see low positive numbers 
- *  again, you may reset the counter (via JConsole e.g.).
+ *  When this limit is hit when incrementing the 
+ *  {@linkplain #getCycCount() number of cycles} the current task will be
+ *  stopped. The next task will be started 
+ *  (with {@link #setCycCount(Integer) setCycCount(0)}, if any, or the
+ *  application will stop.
+ *
+ *  @return the limit for the loop or cyclecount
+ *  @see #setCycLim(Integer)
  *  @see #getCycCount()
- *  @return the last value before this reset
  */
-  public Integer resetCycCount();
+  public Integer getCycLim();
       
+/** Set the limit for number of cycles. <br />
+ *  <br />
+ *  This method sets the {@linkplain #getCycLim() limit} for number of cycles
+ *  by the parameter {@code cycLim} and, also,
+ *  resets the {@linkplain #getCycCount() number of cycles} to 0.
+ *  
+ *  @see#getCycLim()
+ *  @param cycLim the limit; 0 effectively means endless
+ */   
+  public void setCycLim(Integer cycLim);
+  
+/** Get the number of spoiled delays. <br />
+ *  <br />   
+ *  @return the number of spoiled thread delays
+ *  @see PiUtil#thrDelay(int) 
+ *  @see #getCycCount()
+ */
+  public Integer getCycOvr();
+   
 /** Get the Pi type. <br /> */
   public Integer getPiType();
   
@@ -197,8 +223,29 @@ public interface TestOnPiMBean extends AppMBean {
  */
   public void setOutput(String out);  
   
-/** Input and set the output with the inverted result. <br /> */
+/** Input and set the output with the inverted result. <br />
+ *  <br />
+ *  If no input port is defined this method does nothing and returns FALSE.
+ *  If an operable output port is defined (also) the inverted input value 
+ *  will be output to it.  
+ *  @return the state of the input port
+ *  @see #input
+ *  @see #setOutput(String)
+ */
+  public Boolean inToInvOut();
+
+/** Just input. <br />
+ *  <br />
+ *  If no input port is defined this method does nothing and returns FALSE.
+ *  Otherwise the input is read and if that returns {@link PiVals#H1 1/Hi}
+ *  TRUE will be returned.<br />
+ *  Note, that a returned false is a bit ambiguous. Besides signal Lo it
+ *  might mean no input port defined or error while reading.
+ *  @return the state of the input port
+ *  @see #inToInvOut()
+ */
   public Boolean input();
+  
  
 /** The state of the output. <br />
  *  <br />
@@ -208,6 +255,13 @@ public interface TestOnPiMBean extends AppMBean {
  *  numerical PMW or servo state as text.
  */
   public String getOutput();
-
+  
+/** Stop the task. <br />
+ *  <br />
+ *  This method will stop a periodic task (like {@link #blink()} or 
+ *  {@link #wink()} etc.) if any is running. This will start the next task
+ *  pending. Otherwise it will act like {@link de.frame4j.util.App#stop()}.
+ */   
+  public void stopTask();
 } // TestOnPiMBean (29.04.2021, 13.05.2021)
 

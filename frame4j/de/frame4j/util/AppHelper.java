@@ -17,37 +17,44 @@ import java.io.InputStream;
 import java.net.URLClassLoader;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
 
 import de.frame4j.text.TextHelper;
 import de.frame4j.time.SynClock;
 import de.frame4j.time.TimeHelper;
 
-
 /** <b>Helper for applications</b>.  <br />
  *  <br />
  *  This  abstract class contains some (static) helpers for applications.<br />
  *  <br />
- *  <a href="package-summary.html#co">&copy;</a>
- *  Copyright 1999 - 2006, 2009 &nbsp; Albrecht Weinert<br />
- *  <br />
+ *  &nbsp; Copyright <a href="package-summary.html#co">&copy;</a>
+ *  1999 - 2009 &nbsp; 2021  &nbsp; Albrecht Weinert<pre><code>
+   weinert-automation.de        a-weinert.de
+
+     /         /      /\
+    /         /___   /  \      |
+    \        /____\ /____\ |  _|__
+     \  /\  / \    /      \|   |
+      \/  \/   \__/        \__/|_
+</code></pre>
  *  @see TextHelper
+ *  @see Verbos
  */
- //  so far   V00.01 (19.06.2000 10:26) : DE., moves to TextHelper
- //           V00.05 (27.12.2001 14:24) : universal toOutln 
- //           V00.06 (27.12.2001 14:24) : setProxy 
- //           V02.25 (15.10.2004 11:00) : messageFormat
- //           V02.30 (21.01.2005 18:07) : getAsResourceStream()
- //           V02.32 (15.02.2006 17:00) : Timer support
- //           V.o58+ (28.01.2009 13:21) : ported
- //           V.125+ (14.04.2ß15 11:46) : OSexec out (remains in AdmHelper)
+ //  so far   V00.01 (19.06.2000) : DE., moves to TextHelper
+ //           V00.05 (27.12.2001) : universal toOutln 
+ //           V00.06 (27.12.2001) : setProxy 
+ //           V02.25 (15.10.2004) : messageFormat
+ //           V02.30 (21.01.2005) : getAsResourceStream()
+ //           V02.32 (15.02.2006) : Timer support
+ //           V.o58+ (28.01.2009) : ported
+ //           V.125+ (14.04.2015) : OSexec out (remains in AdmHelper)
  //           V.134+ (02.11.2015) : Class<?>
+ //           V.  50 (31.05.2021) : Verbos put out as separate enum
 
 @MinDoc(
-   copyright = "Copyright  1999 - 2006, 2009  A. Weinert",
+   copyright = "Copyright  1999 - 2009, 2021 A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 42 $",
-   lastModified   = "$Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $",
+   version   = "V.$Revision: 50 $",
+   lastModified   = "$Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "use the basic services",  
    purpose = "provide helper methods for applications"
@@ -187,138 +194,6 @@ import de.frame4j.time.TimeHelper;
       return TimeHelper.format(AppLangMap.valueUL("wedaclock"), time);
       //  "Mi, 28.01.2009, 12:13:41");
    } // getActTime()
-
-//----------------------  Detailedness of reports    -------------------   
-
-
-/** Detailedness of reports or logging. <br />
- *  <br />
- *  One common way to designate the detailedness or frequency of reports or
- *  log entries is by the assignment of integer values, here in the range of
- *  0 to 1000, called levels.<br />
- *  Levels like this have a double meaning:<br />
- *  At one hand they are assigned to an event or the report about, whereby 
- *  higher values mean higher severity (no meaning to catastrophic) of the
- *  event or the importance of the report or log.<br />
- *  On the other hand the level serves as a threshold in the sense that 
- *  reports of levels lower than threshold are not generated at all or 
- *  filtered out.<br />
- *  <br />
- *  Such &quot;generating threshold&quot; may be assigned to an application, 
- *  but also to every agent, class or object. Very often, only two &mdash;
- *  verbose or not &mdash; or three levels &mdash; silent, normal and 
- *  verbose &mdash; are distinguished, but seldom more than five /as defined
- *  here) make sense.<br />
- *  <br />
- *  <table  border="1" cellspacing="0" cellpadding="3" style="text-align:center;"
-    width="593" summary="Verbosity levels" >
- *  <tr style="text-align:center;"><th style="width:100;"> Level </th>
- *  <th style="width:120;"> name </th><th style="width:160;"> description </th>
- *  <th style="width:160;"> logging API name </th></tr>
- *  <tr><td> 300 </td><td> debug </td>
- *         <td>test, debug and commissioning reports</td><td>FINEST</td></tr>
- *  <tr><td> 400 </td><td> test </td>
- *                <td>commissioning and some tests</td><td>FINER</td></tr>
- *  <tr><td> 500 </td><td>verbose</td>
- *        <td>single agent (normal) state changes and events</td><td>FINE</td></tr>
- *  <tr><td> 700 </td><td> normal </td>
- *        <td>configuration / plant state changes and events, 
- *           start up and shut down</td><td>CONFIG</td></tr>
- *  <tr><td> 900 </td><td> error </td>
- *        <td>only errors and failures</td><td>WARNING</td></tr>
- *  <tr><td> 1000 </td><td> silent </td>
- *      <td>no reports, except catastrophic</td><td>SEVERE</td></tr>
- *  </table>
- *  <br style="clear:both;" />
- *  The usual default is 700 (=normal).<br />
- *  <br />
- *  @param verbosity level 300..1000
- *  @return the level's name; see table
- *  @see App#setVerbosity(int)
- *  @see java.util.logging.Level
- */
-   public static String getVerbosityAsString(final int verbosity){
-      if (verbosity >= SILENT) return "silent";
-      if (verbosity >= NORMAL) {
-         return verbosity >= ERROR ? "error" : "normal";
-      }
-      if (verbosity >= TEST) {
-         return verbosity >= VERBOSE ? "verbose" : "test";
-      }
-      return "debug";
-   }  // getVerbosityAsString(int)
-
-/** Level values for report detailedness. <br />
- *  <br />
- *  Value: {@value}<br />
- *  <br />
- */   
-   public static // should be made enum ??
-     final int SILENT  = 1000, // say almost nothing
-               ERROR   = 900,  // only report unusual incidents
-               NORMAL  = 700,  // standard report level, normal mode
-               VERBOSE = 500,  // verbose reports
-               TEST    = 400,  // finer reports, test/simulate mode
-               DEBUG   = 300;  // search systematic faults, commissioning mode 
-                           
-/** Logging API's level by integer detailedness. <br />
- *  <br />
- *  See table at {@link #getVerbosityAsString(int)}.<br />
- *  <br />
- *  @see App#setVerbosity(int)
- */
-   public static Level getVerbosityLevel(int verbosity){
-      if (verbosity >= SILENT) return Level.SEVERE;
-      if (verbosity >= NORMAL) {
-         return verbosity >= ERROR ? Level.WARNING : Level.CONFIG;
-      }
-      if (verbosity >= TEST) {
-         return verbosity >= VERBOSE ? Level.FINE : Level.FINER;
-      }
-      return Level.FINEST;
-   } // getVerbosityLevel(int )
-   
-
-/** Action list for report level. <br />
- *  <br />
- *  See table at {@link #getVerbosityAsString(int)}.<br />
- *  <br />
- *  Languages: English (partly German).<br />
- *  <br />
- *  @see Action#select(Action[], de.frame4j.util.Action.Filter, CharSequence, boolean)
- */
-  final public static Action[] LEVEL_CHOOSE = {
-     new Action(Action.SVERBOS, NORMAL,  new String[]{"normal", 
-                                      "default", "false", "config", "700"} ), 
-     new Action(Action.SVERBOS, SILENT,  new String[]{"silent", "severe", 
-                                     "off", "aus", "none", "keine", "1000"} ), 
-     new Action(Action.SVERBOS, ERROR, 
-                        new String[]{"error", "Fehler", "warning", "900" } ),
-     new Action(Action.SVERBOS, VERBOSE, 
-                    new String[]{"verbose", "ausführlich", "fine", "500" } ),
-     new Action(Action.SVERBOS, TEST, 
-                             new String[]{"test", "finer", "true", "400" } ),
-     new Action(Action.SVERBOS, DEBUG, 
-                             new String[]{"debug", "finest", "300" } )  };
-
-   
-/** Determine report level from text. <br />
- *  <br />
- *  The (key) words and numbers in the table at 
- *  {@link #getVerbosityAsString(int)} are recognised.<br />
- *  The match is case insensitive and allows for abbreviations: err orr err., 
- *  e.g., instead off error. If no match is found, not 700 (normal)
- *  is returned.<br />
- *  <br />
- *  <br />
- *  @see #getVerbosityAsString(int)
- *  @see Action#select(Action[], de.frame4j.util.Action.Filter, CharSequence, boolean)
- *  @param verbosity key word or number
- */
-   public static int getVerbosity(String verbosity){
-      Action act = Action.select(LEVEL_CHOOSE, null, verbosity, true);
-      return act == null ? NORMAL : act.value;
-   } // setVerbosity(String)
    
 /** Designate an input stream from a file or a resource. <br />
  *  <br />
@@ -403,8 +278,6 @@ import de.frame4j.time.TimeHelper;
       if (task == null) return;
       getTimer().scheduleAtFixedRate(task, delay, period);
    } // scheduleAtFixedRate
-
-
 
 /** Schedule a task for absolute start and repeated execution. <br />
  *  <br />

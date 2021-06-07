@@ -165,8 +165,8 @@ import de.frame4j.text.KMP;
  *  see the something like <br /> &nbsp;
  *  &#036;Date: 2013-01-12 23:47:57 +0100 (Sa, 12 Jan 2013) &#036;<br >
  *  {@link SVNkeys} did work:<ul>
- *  <li>Revision: &quot;$Revision: 44 $&quot;</li>
- *  <li>Date: &nbsp; &nbsp; &quot;$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $&quot;</li>
+ *  <li>Revision: &quot;$Revision: 50 $&quot;</li>
+ *  <li>Date: &nbsp; &nbsp; &quot;$Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $&quot;</li>
  *  <li>Author: &quot;$Author: albrecht $&quot;</li>
  *  </ul>
  *  <br />
@@ -194,8 +194,8 @@ import de.frame4j.text.KMP;
 @MinDoc(
    copyright = "Copyright 2003 - 2013, 2016, 2017  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 44 $",
-   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
+   version   = "V.$Revision: 50 $",
+   lastModified   = "$Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "refine and beautify text files got from SVN"
 ) public class SVNkeys extends App implements FileVisitor {
@@ -894,7 +894,6 @@ TextHelper#fUr(CharSequence, StringBuilder, CleverSSS, CleverSSS, ReplaceVisitor
             log.println (formMessage("repkeywrp", nums));
             /// "  ///   " + (eAnz -tAnz -dtFm) + "\t keyword replacements.");
          }
-
          log.println( threeLineEndMsg().append('\n'));
       }} // verbose oder error | sync
       return dFel > 0 ? 1 : 0; 

@@ -70,8 +70,8 @@ import de.frame4j.time.TimeHelper;
  *  <br /> 
  *  With {@code App} and the framework 
  *  <a href="../package-summary.html#package_description">Frame4J</a> 
- *  implementing Java applications is quite simplified. Ever recurring tasks
- *  are solved already, as among others<ul>
+ *  implementing comfortable Java applications is simplified. Ever recurring
+ *  tasks are solved, as among others<ul>
  *  <li> providing a PrintWriter ({@link #out}) for normal output,</li>
  *  <li> providing a PrintWriter ({@link #err}) for error messages</li>
  *  <li> providing a PrintWriter ({@link #log}) with optional branching to 
@@ -88,10 +88,9 @@ import de.frame4j.time.TimeHelper;
  *  <li> supporting a role as JMX server.</li>
  *  </ul>
  *  An application to use {@code App} by inheritance may do so directly or 
- *  by an inheriting (simple) inner class just by adhering to an relatively 
- *  simple schema best explained by examples like HelloFrame4J
- *  or  SAXdemo. For the inner class scheme, see the end of 
- *  {@link AppLangMap}'s source as an example.<br />
+ *  by a simple inner class. One just follows a schema best explained by
+ *  examples like HelloFrame4J or SAXdemo. For the inner class scheme, see
+ *  the end of {@link AppLangMap}'s source as an example.<br />
  *  The schema in short is<ol>
  *  <li>In the application's start method (static main(String[] args) make
  *     the applications object by the default constructor and call one of 
@@ -117,42 +116,37 @@ import de.frame4j.time.TimeHelper;
  *  Copyright 1997 - 2006, 2009  &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 45 $ ($Date: 2021-05-08 19:50:48 +0200 (Sa, 08 Mai 2021) $
+ *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $
  *  @see de.frame4j.io.AppIO
  *  @see Prop
  *  @see #go(String[], String, CharSequence)
  */
  // so far  V.0.02 (13.09.1997) : new, no version control (yet) 
- //         V00.03 (08.05.2000) :  de.a_weinert instead of weinertBib
- //         V00.20 (13.12.2001) :  AppBase out / ext. Object
- //         V00.30 (27.06.2002) :  parsePartial(), getMinDoc()
- //         V01.50 (28.06.2002) :  unified with WinApp
- //         V02.00 (24.04.2003) :  CVS and Eclipse
- //         V02.03 (26.04.2003) :  JavaDoc bug (1.4.2beta) revealed
- //         V02.12 (16.07.2003) :  WinApp swingy
- //         V02.13 (01.10.2003) :  AppMBean.Adapter resolved
- //         V02.23 (08.07.2007) :  queueAction
- //         V02.29 (07.10.2004) :  allowNoPropertiesFile
- //         V02.33 (21.12.2004) :  International., Action. improved
- //         V02.53 (04.12.2005) :  Exit code constants
- //         V02.60 (04.08.2006) :  Logger support
- //         V02.68 (11.04.2007) :  JMX -> JConsole / 1.5
- //         V.107+ (26.04.2009) :  setBgColor error corrected
- //         V.173+ (10.01.2010) :  getMyFrame() to support graph.inh.
- //         V.011+ (03.02.2010) :  moved to Assembla due to Oracle-Sun
- //         V.o12+ (10.02.2010) :  handling of doIt() Exceptions 
- //         V.o20+ (12.02.2010) :  errorExit(int, ex , + int) now 3Par
- //         V.160+ (10.05.2016) :  Web Start compatibility
- //         V.167+ (05.08.2016) :  refactored to Frame4J'89 slimline
- //         V.  36 (07.04.2021) :  AppMBean instead of AppMBean.xml
- //         V.  41 (20.04.2021) :  implements+ ComVar (2 static imports before)
-
+ //         V00.03 (08.05.2000) : de.a_weinert instead of weinertBib
+ //         V00.30 (27.06.2002) : parsePartial(), getMinDoc()
+ //         V01.50 (28.06.2002) : alike WinApp
+ //         V02.00 (24.04.2003) : CVS and Eclipse
+ //         V02.03 (26.04.2003) : JavaDoc bug (1.4.2beta) revealed
+ //         V02.13 (01.10.2003) : AppMBean.Adapter resolved
+ //         V02.23 (08.07.2007) : queueAction
+ //         V02.29 (07.10.2004) : allowNoPropertiesFile
+ //         V02.33 (21.12.2004) : International., Action. improved
+ //         V02.53 (04.12.2005) : Exit code constants
+ //         V02.60 (04.08.2006) : Logger support
+ //         V02.68 (11.04.2007) : JMX -> JConsole / 1.5
+ //         V.107+ (26.04.2009) : setBgColor error corrected
+ //         V.173+ (10.01.2010) : getMyFrame() to support graph.inh.
+ //         V.o12+ (10.02.2010) : handling of doIt() Exceptions 
+ //         V.160+ (10.05.2016) : Web Start compatibility
+ //         V.167+ (05.08.2016) : refactored to Frame4J'89 slimline
+ //         V.  36 (07.04.2021) : AppMBean instead of AppMBean.xml
+ //         V.  41 (20.04.2021) : implements+ ComVar (2 static imports before)
+ //         V.  50 (01.06-2021) : Verbos out of AppHelper 
 @MinDoc(
    copyright = "Copyright 1997 - 2016, 2021 A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 45 $",
-   lastModified   = "$Date: 2021-05-08 19:50:48 +0200 (Sa, 08 Mai 2021) $",
-// lastModifiedBy = "$Author: albrecht $",
+   version   = "V.$Revision: 51 $",
+   lastModified   = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
    usage   = "start as Java application",  
    purpose = "Base class for powerful, robust and comfortable applications"
 ) public abstract class App implements ActionListener, AppMBean, ComVar,
@@ -168,7 +162,7 @@ import de.frame4j.time.TimeHelper;
     public final long appStartTimeMS = SynClock.sys.millis();
  
 /** The application's start up time. <br />
- *  <br />
+ *
  *  @see #appStartTime
  *  @return the application's start time
  */
@@ -181,8 +175,8 @@ import de.frame4j.time.TimeHelper;
  *  AppLangMap#valueUL(CharSequence) .valueUL(&quot;wedaclock&quot;)}.<br />
  *  <br />
  *  Hint: The formatting is only done once, {@link #appStartTime} being
- *  final. Afterwards a stored String is returned (singleton).<br />
- *  <br />
+ *  final. Afterwards a stored String is returned (singleton).
+ *
  *  @return the application's start time
  */
    @Override public String getStartTime(){
@@ -196,7 +190,7 @@ import de.frame4j.time.TimeHelper;
    private String startUpTimeSingleton;
 
 /** Number of messageFormat components of this application. <br />
- *  <br />
+ *
  *  @see #getMessageComponent(int)     
  *  @return 29 if not overridden
  */
@@ -236,7 +230,8 @@ import de.frame4j.time.TimeHelper;
  *  [27..]: null if this method and {@link #getMessageComponentsLength()}
  *          are not overridden to tell otherwise.     
  *  @param  index Range 0 .. {@link #getMessageComponentsLength()} - 1 
- *  @return the (actual) piece of information or null.  
+ *  @return the (actual) piece of information or null.
+ *  @see AppLangMap#formMessageUL(CharSequence, String, Object)
  */
    @Override public Object getMessageComponent(final int index){
       if (index > 4 && index < 29) switch (index) {
@@ -298,8 +293,8 @@ import de.frame4j.time.TimeHelper;
     
 /** Two line standard end report (nationalised). <br />
  *  <br />
- *  See the resembling {@link #twoLineStartMsg()}.<br />
- *  <br />
+ *  See the resembling {@link #twoLineStartMsg()}.
+ *
  *  @see #getMessageComponent(int)
  *  @return the report
  */
@@ -309,13 +304,13 @@ import de.frame4j.time.TimeHelper;
        return endMeld;
     } // twoLineEndMsg()
     
- /** Two line standard end report (nationalised). <br />
+/** Two line standard end report (nationalised). <br />
   *  <br />
   *  See the resembling {@link #twoLineStartMsg()}
   *  and {@link #twoLineEndMsg()}.<br />
   *  The difference to  {@link #twoLineEndMsg()} is an extra line reporting
   *  the execution time.
-  *  <br />
+  *
   *  @see #getMessageComponent(int)
   *  @see #getExecTimeMs()
   *  @see #getExecTimeString()
@@ -334,26 +329,26 @@ import de.frame4j.time.TimeHelper;
  *  account searching in this ({@link App}) object's {@link #prop} 
  *  (properties) and in  {@link AppLangMap}.<br />
  *  <br />
- *  If all fails or key is empty {@code def} is returned.<br />
- *  <br />
+ *  If all fails or key is empty {@code def} is returned.
+ *
  *  @see Prop#valueLang(CharSequence)
  *  @see AppLangMap#valueUL(CharSequence)
  *  @param key the key to get a value for
  *  @param def the default value if nothing can be found by key
  *  @return the key's or the default value
  */
-   public final String valueLang(final CharSequence key, String def){
-      if (prop != null) return prop.valueLang(key, def);
-      if (key == null) return def;
-      String ret = AppLangMap.valueUL(key);  // for prop cleared, only 
-      return ret != null ? ret : def;
+   public final String valueLang(final CharSequence key, final String def){
+     if (key == null) return def;
+     if (prop != null) return prop.valueLang(key, def);
+     String ret = AppLangMap.valueUL(key);  // for prop cleared, only 
+     return ret != null ? ret : def;
    } //  valueLang(CharSequence, String) 
    
 /** Get a value for a key &mdash; regarding set user language. <br />
  *  <br />
  *  The call is equivalent to <br /> &nbsp;
- *  {@link #valueLang(CharSequence, String) valueLang(key, null)}.<br />
- *  <br />
+ *  {@link #valueLang(CharSequence, String) valueLang(key, null)}.
+ *
  *  @see AppLangMap#valueUL(CharSequence)
  *  @see Prop#valueLang(CharSequence)
  *  @param key the key to get a value for
@@ -508,9 +503,9 @@ import de.frame4j.time.TimeHelper;
 /** Detailedness of reports or logging. <br />
  *  <br />
  *  The levels are defined according to the table in
- *  {@link AppHelper}.{@link AppHelper#getVerbosityAsString(int)}.<br />
+ *  {@link AppHelper}.{@link Verbos#toString()}.<br />
  *  <br />
- *  default: {@link AppHelper#NORMAL}<br />
+ *  default: {@link Verbos#NORMAL}<br />
  *  <br />
  *  @see #isSilent()
  *  @see #setVerbosity(int)
@@ -518,22 +513,20 @@ import de.frame4j.time.TimeHelper;
  *  @see #getVerbose()
  *  @return the current verbosity
  */
-   public final int getVerbosity(){ return verbosity; }
+   public final Verbos getVerbosity(){ return verbosity; }
 
 /** Detailedness of reports or logging. <br />
  *  <br />
  *  The levels are defined according to the table in
- *  {@link AppHelper}.{@link AppHelper#getVerbosityAsString(int)}.<br />
+ *  {@link AppHelper}.{@link Verbos#toString()}.<br />
  *  <br />
  *  <br />
- *  @return {@link AppHelper}.{@link AppHelper#getVerbosityAsString(int)
+ *  @return {@link AppHelper}.{@link Verbos#toString()
  *     getVerbosityAsString(verbosity)}<br />
  *  @see #getVerbosity()
  */
-   @Override public String getVerbose(){
-      return AppHelper.getVerbosityAsString(verbosity);
-   } // getVerbose()
-
+   @Override public String getVerbose(){ return verbosity.toString(); }
+   
 
 /** Set the report detailedness of this application. <br />
  *  <br />
@@ -543,38 +536,41 @@ import de.frame4j.time.TimeHelper;
  *  <br />
  *  @see #getVerbosity()
  *  @see #setVerbosity(String)
- *  @param verbosity Level AppHelper.DEBUG .. AppHelper.SILENT; 
- *     default: AppHelper.NORMAL
- *  @see AppHelper#NORMAL
- *  @see AppHelper#getVerbosityAsString(int)
- *  @see AppHelper#getVerbosityLevel(int)   
+ *  @param value Level Verbos.DEBUG .. Verbos.SILENT; 
+ *     default: Verbos.NORMAL
+ *  @see Verbos#NORMAL
+ *  @see Verbos#toString()
+ *  @see Verbos#getVerbosityLevel()  
  */
-   public void setVerbosity(int verbosity){
-      if (verbosity < AppHelper.DEBUG || verbosity > AppHelper.SILENT) 
-            verbosity = AppHelper.NORMAL;
-      if (this.verbosity != verbosity) { // change
-         this.verbosity = verbosity;
-         this.verbose = verbosity <= AppHelper.VERBOSE;
-         if (appLogger != null) {
-            Level level = AppHelper.getVerbosityLevel(verbosity);
-            appLogger.setLevel(level);
-            getLogHandler().setLevel(level);
-          }   
-      } // change
+   public void setVerbosity(final int value){
+     final Verbos nxVerb= Verbos.byValue(value);
+     if (this.verbosity == nxVerb) return; // no change
+     this.verbosity = nxVerb;
+     this.verbose = nxVerb.verbose;
+     if (appLogger != null) {
+        Level level = this.verbosity.getVerbosityLevel();
+        appLogger.setLevel(level);
+        getLogHandler().setLevel(level);
+      }   
    } // setVerbosity(int)
 
 /** Set the report detailedness of this application. <br />
  *  <br />
  *  The parameter {@code verbosity} will be interpreted by the method 
- *  {@link AppHelper}.{@link AppHelper#getVerbosity(String)} and the result
+ *  {@link AppHelper}.{@link Verbos#getVerbosity(String)} and the result
  *  will be passed to {@link #setVerbosity(int)}.<br />
  *  <br />
  *  @see #getVerbosity()
  *  @see #setVerbosity(int)
  *  @param verbosity the verbosity level to be set
  */
-   public final void setVerbosity(String verbosity){
-      setVerbosity(AppHelper.getVerbosity(verbosity));
+   public final void setVerbosity(final String verbosity){
+     if (verbosity == null) return;
+     final Action act = Action.select(Verbos.LEVEL_CHOOSE,
+                                           null, verbosity, true);
+     if (act == null) return; // (error in parameter) no change  
+     this.verbosity = Verbos.byValue(act.value);
+     this.verbose = this.verbosity.verbose;
    } // setVerbosity(String)
 
 /** Set the report detailedness of this application. <br />
@@ -586,52 +582,53 @@ import de.frame4j.time.TimeHelper;
 
 /** Set the report detailedness of this application. <br />
  *  <br />
- *  @see #isVerbose()
+ *  @see #verbose
  *  @param verbose the verbosity level to be set; true: verbose; false: normal
  */
-   public final void setVerbose(boolean verbose){
+   public final void setVerbose(final boolean verbose){
       if (this.verbose == verbose) return;
-      setVerbosity(verbose ? AppHelper.VERBOSE : AppHelper.NORMAL);
+      this.verbosity = verbose ? Verbos.VERBOSE : Verbos.NORMAL;
+      this.verbose = verbose;
    } // setVerbose(boolean) 
    
 /** Report detailedness of this application. <br />
  *  <br />
- *  default: {@link AppHelper#NORMAL}<br />
+ *  default: {@link Verbos#NORMAL}<br />
  *  <br />
  *  @see #getVerbosity()
  */
-   protected int verbosity = AppHelper.NORMAL;
+   protected Verbos verbosity = Verbos.NORMAL;
 
 /** Report detailedness of this application.  <br />
  *  <br />
+ *  This method just returns {@link #verbose}.
  *  @see #getVerbosity()
  *  @return the current verbosity level; true: above normal
  */
-   public final boolean isVerbose(){
-      return verbose;
-   } // isVerbose()
+   public final boolean isVerbose(){ return verbose; }
 
 /** Verbose reports. <br />
  *  <br />
- *  @see #isVerbose()
+ *  It is the same value as 
+ *  {@link #verbosity}.{@link Verbos#verbose verbose} and is (to be) kept
+ *  so whenever {@link #verbosity} changes. 
+ *  @see #verbose
  *  @see #setVerbose(boolean)
  *  @see #setVerbosity(String)
  *  @see #setVerbosity(int)
  */
-   protected boolean verbose;
+   protected boolean verbose = verbosity.verbose;
 
 /** Almost no reports. <br />
  *  <br />
  *  If true only reports on catastrophic events are to be generated.<br />
  *  <br />
- *  @see #isVerbose()
+ *  @see #verbose
  *  @see #isNormal()
  *  @see #getVerbosity()
  *  @return the current verbosity level; true: silent
  */ 
-   public final boolean isSilent(){
-     return verbosity >= AppHelper.SILENT;
-   } // isSilent()
+   public final boolean isSilent(){ return verbosity.isSilent(); }
 
 
 /** Just the normal reports. <br />
@@ -640,26 +637,26 @@ import de.frame4j.time.TimeHelper;
  *  of every day relevance for the process done or controlled by this 
  *  application.<br />
  *  <br />
- *  @see #isVerbose()
+ *  @see #verbose
  *  @see #isSilent()
  *  @see #getVerbosity()
  *  @return the current verbosity level; true: normal (or more)
  */ 
-   public final boolean isNormal(){ return verbosity <=  AppHelper.NORMAL; }
+   public final boolean isNormal(){ return verbosity.isNormal(); }
 
 /** Many reports &mdash; for testing. <br />
  *  <br />
- *  If true many events, also  to a very fine granularity (normally of low 
+ *  If true many events, also to a very fine granularity (normally of low 
  *  relevance for the process done or controlled by this application), are 
  *  generated.<br />
  *  <br />
- *  @see #isVerbose()
+ *  @see #verbose
  *  @see #isSilent()
  *  @see #isNormal()
  *  @see #getVerbosity()
  *  @return the current verbosity level; true: test events (or more)
  */ 
-   public final boolean isTest() { return verbosity <=  AppHelper.TEST; }
+   public final boolean isTest(){ return verbosity.isTest(); }
 
 /** All reports &mdash; for test and debugging.  <br />
  *  <br />
@@ -667,13 +664,13 @@ import de.frame4j.time.TimeHelper;
  *  relevance for the process done or controlled by this application), are 
  *  generated.<br />
  *  <br />
- *  @see #isVerbose()
+ *  @see #verbose
  *  @see #isSilent()
  *  @see #isNormal()
  *  @see #getVerbosity()
  *  @return the current verbosity level; true: debug (or more)
  */ 
-   public final boolean isDebug(){ return verbosity <= AppHelper.DEBUG; }
+   public final boolean isDebug(){ return this.verbosity.isDebug(); }
 
 
 //------------------------   Action-Queue-------------------------------
@@ -721,8 +718,8 @@ import de.frame4j.time.TimeHelper;
  *  event. This border is a hint which event handler execution time would 
  *  require an extra thread.<br />
  *  <br />
- *  Hint: If {@link #verbosity} is &lt;= {@link AppHelper#TEST} e.g. equal to
- *  {@link AppHelper#DEBUG} every action will be logged on {@link #log} before 
+ *  Hint: If {@link #verbosity} is &lt;= {@link Verbos#TEST} e.g. equal to
+ *  {@link Verbos#DEBUG} every action will be logged on {@link #log} before 
  *  calling  {@link #performeAction(String, AWTEvent)}.<br />
  *  <br />
  *  @see #performeAction(String, AWTEvent)
@@ -748,7 +745,7 @@ import de.frame4j.time.TimeHelper;
      } // commandSet: 
      if (command.isEmpty()) return;
      if (command.equals("do not act")) {
-        if (verbosity <= AppHelper.TEST) {
+        if (verbosity.isTest()) {
            String from = " ???? ";
            if (event != null) {
               Object s = event.getSource();
@@ -782,7 +779,7 @@ import de.frame4j.time.TimeHelper;
                     if (getInd == eCap) getInd = 0;
                     --eSize;
                  } // sync
-                 if (verbosity <= AppHelper.TEST) {
+                 if (verbosity.isTest()) {
                     String from = " ???? ";
                     if (event != null) {
                        Object s = event.getSource();
@@ -800,7 +797,7 @@ import de.frame4j.time.TimeHelper;
                     log.println(" // action [" + getInd
                              + "]   dequeued : \"" + command
                           + "\"\n    threw  " + e);
-                    if (verbosity <= AppHelper.DEBUG) 
+                    if (verbosity.isDebug()) 
                        e.printStackTrace(log);
                  }  // try catch since 29.04.2005: robust
               } // endless
@@ -838,7 +835,7 @@ import de.frame4j.time.TimeHelper;
  *  <br />
  *  This implementation reacts to no command at all (as of January 2010). As
  *  long as {@link #isRunFlag() runFlag} is true and if 
- *  {@link #getVerbosity() verbosity} is &lt;= {@link AppHelper#DEBUG} the 
+ *  {@link #getVerbosity() verbosity} is &lt;= {@link Verbos#DEBUG} the 
  *  {@code command} will be logged with the actual time.<br /> 
  *  <br />
  *  In case of a possible reaction true is returned. true is also returned
@@ -863,7 +860,7 @@ import de.frame4j.time.TimeHelper;
   public boolean performeAction(String command, AWTEvent e){
      if (!runFlag) return true;  // no more actions on stop signal
      
-     if (verbosity <= AppHelper.DEBUG) {
+     if (verbosity.isDebug()) {
         log.println(" ///  Action  ( " + AppHelper.getActTime()
              + " ) .. " + command  + (e != null
              ?  " ... from ... " + e.getClass().getSimpleName()
@@ -909,7 +906,6 @@ import de.frame4j.time.TimeHelper;
   
 //-----------------------------------------------------------------------
   
-   
 /** Do only (on line) help output; have no other effects. <br />
  *  <br />
  *  If inheriting / implementing classes (objects) find this property set true
@@ -949,9 +945,8 @@ import de.frame4j.time.TimeHelper;
  *  @param help true if a help output (-help -?) is requested
  */
    public final void setHelp(boolean help) { this.help = help; } 
-
    
-///------------------------------------------------------------
+//------------------------------------------------------------
 
 /** Output mode for log and out files. <br />
  *  <br />
@@ -991,7 +986,6 @@ import de.frame4j.time.TimeHelper;
    } // setOutMode(CharSequence)
 
 //---------------------------------------------------------------------------
-
 
 /** Flag to stop all threads of this application. <br />
  *  <br />
@@ -1035,8 +1029,7 @@ import de.frame4j.time.TimeHelper;
  *  @see #stop()
  */   
    protected volatile boolean runFlag = true;
-   
-  
+ 
 /** Stop the application. <br />
  *  <br />
  *  This method shall gracefully end this application. It will set the 
@@ -1082,18 +1075,18 @@ import de.frame4j.time.TimeHelper;
 
 /** Wake up the main thread. <br />
  *  <br />
- *  This method supports applications that want to do triggered tasks in their
- *   main thread ({@link #mainThread}, that is {@link #doIt()}). This thread
- *   will be waked up robustly and reliably. 
- *  The success will be signalled by returning true.<br />
+ *  This method supports applications that want to do triggered tasks in
+ *  their main thread ({@link #mainThread}, that is {@link #doIt()}). This
+ *  thread will be woken up robustly and reliably. Success will be
+ *  signalled by returning true. <br />
  *  <br />
  *  Missing preconditions or (non probable) wake up exceptions will be 
  *  signalled by returning false.<br />
  *  <br />
  *  <br />
- *  Implementation hint: If this application shall run and if the  
- *  {@link #mainThread} still exists and if the caller is not in that main 
- *  that thread will be interrupted.<br />
+ *  Implementation hint: If this application {@linkplain #runFlag shall run}
+ *  and if the {@link #mainThread} still exists and if the caller itself is not the main 
+ *  thread will be interrupted.<br />
  *  <br />
  *  @see AppHelper#sleep(long)
  *  @see AppHelper#getTimer()
@@ -1608,38 +1601,10 @@ import de.frame4j.time.TimeHelper;
    public boolean parsePartial(){ return parsPart; } // parsePartial() 
    private boolean parsPart;
 
-/*  * Provide a XML input stream. <br />
- *  <br />
- *  The {@code fileName} provided as parameter will be suffixed with .xml if
- *  not yet ending so.<br />
- *  By using {@link #prop prop}.{@link Prop#getAsStream(String, String)
- *  prop.getAsStream(suffixedFileName, null)} it is tried to get a stream 
- *  from a file or a resource (that would be mostly from the application's
- *  .jar file).<br />
- *  <br />
- *  If {@link #prop prop} already was set to null, it will be tried to open a
- *  {@link FileInputStream} using the {@code fileName} perhaps suffixed.<br />
- *  <br />
- *  @param fileName the name (will be suffixed with .xml)
- *  @return a stream or null
- *  @see Prop#getAsStream(String, String)
- *  /
-   public final InputStream getXMLinput(final CharSequence fileName) {
-      String fileNam = TextHelper.makeFName(fileName, ".xml");
-      if (fileNam == null) return null;
-      if (prop != null) { // prop will also handle the file
-         return prop.getAsStream(fileNam, null);
-      }  // prop still there
-      try  {  // (only) if prop already null only file will be tried
-         return new FileInputStream(fileNam);
-      } catch (FileNotFoundException fnf) {}
-      return null;     
-   } // getXMLinput(CharSequence)   xxxx  removed 01.05.2021  */
-
 /** The main thread. <br />
  *  <br />
  *  {@code mainThread} is the thread which the working method
- *  {@link #doIt doIt()} is started in. This variable will be set prior to
+ *  {@link #doIt doIt()} was started in. This variable will be set prior to
  *  entering 
  *  {@link #doIt doIt()} and reset to null after return from it.<br />
  *  <br />
@@ -1652,7 +1617,7 @@ import de.frame4j.time.TimeHelper;
  *  @see #go(String[], String, CharSequence)
  *  @see #go(String[], String)
  */
-   protected volatile Thread  mainThread;
+   protected volatile Thread mainThread;
 
 
 //---  Constructor   -------------------------------------------------------
@@ -1848,9 +1813,9 @@ import de.frame4j.time.TimeHelper;
  *  The effect is almost identical to
  *  {@link #appIO}.{@link AppIO#getAppLogger() getAppLogger()}. If the 
  *  {@link Logger} is newly generated its {@link Level} will be set according
- *  to {@link #getVerbosity()}.<br />
- *  <br />
- *  @see AppHelper#getVerbosityLevel(int)
+ *  to {@link #getVerbosity()}.
+ *
+ *  @see Verbos#getVerbosityLevel()
  *  @see #setVerbosity(int) 
  *  @return the logger
  */
@@ -1858,7 +1823,7 @@ import de.frame4j.time.TimeHelper;
       if (appLogger != null) return  appLogger;
       synchronized (appIO) {
          appLogger = appIO.getAppLogger();
-         Level level = AppHelper.getVerbosityLevel(verbosity);
+         Level level = verbosity.getVerbosityLevel();
          appLogger.setLevel(level);
          getLogHandler().setLevel(level);
          if (dbLogger == null) dbLogger = appLogger;
@@ -1866,9 +1831,7 @@ import de.frame4j.time.TimeHelper;
       return appLogger;
    } // getAppLogger()
 
-/** A DB (data base) Logger for the application. <br />
- *  <br />
- */
+/** A DB (data base) Logger for the application. <br /> */
    Logger dbLogger;
 
    protected Logger getDbLogger(){ return dbLogger = appLogger; }
@@ -1877,9 +1840,9 @@ import de.frame4j.time.TimeHelper;
  *  <br />
  *  The message consisting of the parameters will be generated and logged 
  *  using the {@link Level}.{@link Level#FINE FINE} that is equivalent to
- *  {@link AppHelper#VERBOSE}. If a separate {@link #getDbLogger() dbLogger}
- *  was made with the logging will be
- *  into the database.<br />
+ *  {@link Verbos#VERBOSE}. If a separate {@link #getDbLogger() dbLogger}
+ *  was made with the logging will be into the database.
+ *  
  *  @param sourceClass  source of log message
  *  @param sourceMethod  source of log message
  *  @param msg    log message
@@ -1917,7 +1880,8 @@ import de.frame4j.time.TimeHelper;
  *  That is the one which made the singleton {@link AppBase AppBase}
  *  object.<br />
  *  <br />
- *  Otherwise nothing happens at all.<br />
+ *  Otherwise nothing happens at all.
+ *  
  *  @param codePage the new encoding for all text I/O streams
  */ 
    public void setCodePages(final String codePage){
@@ -1927,9 +1891,9 @@ import de.frame4j.time.TimeHelper;
 /** Set log's second Writer as Stream. <br />
  *  <br />
  *  The call is equivalent to:<br />
-* {@link #appIO}.{@link de.frame4j.io.AppIO#setLogOut2(OutputStream, String)
- *  setLogOut2(os2, cp2)}<br />
- *  <br />
+ * {@link #appIO}.{@link de.frame4j.io.AppIO#setLogOut2(OutputStream, String)
+ *  setLogOut2(os2, cp2)}
+ *
  *  @param os2 the new second (Tee) writer
  *  @param cp2 its encoding
  */
@@ -1957,8 +1921,8 @@ import de.frame4j.time.TimeHelper;
  *  the parameter prop will be used to determine the asking windows 
  *  properties (see {@link 
  *  de.frame4j.io.FileVisitor.AskGrafImpl
- *  de.frame4j.io.FileVisitor.AskGrafImpl}).<br />
- *  <br />
+ *  de.frame4j.io.FileVisitor.AskGrafImpl}).
+ *
  *  @see #INIT_ERROR
  *  @see #LOG_OUT_ERROR
  *  @param outMode the mode for opening an output stream
@@ -2002,8 +1966,8 @@ import de.frame4j.time.TimeHelper;
  *  <br />
  *  {@link #NO_PARS_ERROR} or {@link #INIT_ERROR} is returned on 
  *  initialisation problems (without calling {@link #doIt() doIt()}).<br />
- *  Otherwise {@link #doIt() doIt()}'s return value is returned.<br />
- *  <br />
+ *  Otherwise {@link #doIt() doIt()}'s return value is returned.
+ *
  *  @param  args    start arguments passed on (not null)
  *  @param  codePage the encoding for in, out and err (or null)
  *  @param  commBeg the start pattern of a start argument's comment;
@@ -2079,8 +2043,8 @@ import de.frame4j.time.TimeHelper;
  *  <br />
  *  {@link #NO_PARS_ERROR} or {@link #INIT_ERROR} is returned on 
  *  initialisation problems (without calling {@link #doIt() doIt()}).<br />
- *  Otherwise {@link #doIt() doIt()}'s return value is returned.<br />
- *  <br />
+ *  Otherwise {@link #doIt() doIt()}'s return value is returned.
+ *
  *  @param  args    start arguments passed on (not null)
  *  @param  codePage the encoding for in, out and err (or null)
  *  @return {@link #NO_PARS_ERROR}: Start problem,<br />
@@ -2094,7 +2058,6 @@ import de.frame4j.time.TimeHelper;
       return go(args, codePage, null, false);
    } // go(String[], String)
 
-
 /** Internal go() method. <br />
  *  <br />
  *  @param  args    start arguments passed on (not null)
@@ -2104,9 +2067,8 @@ import de.frame4j.time.TimeHelper;
  *  @return {@link #NO_PARS_ERROR}: Start problem,<br />
  *  &nbsp; &nbsp;  0: OK (or any other return from doIt())
  */ 
-   final int go(final String[] args,
-                           final String codePage, 
-                           CharSequence commBeg,  boolean stdStart) 
+   final int go(final String[] args, final String codePage, 
+                      final CharSequence commBeg,  boolean stdStart) 
                      throws FileNotFoundException, IllegalArgumentException {
       setCodePages(codePage);
       if (args == null) {
@@ -2152,7 +2114,7 @@ import de.frame4j.time.TimeHelper;
          runFlag = false;
          log.println("\n\n   /////// ----------------------   \n\n" +
                                  "   ///  unhandled Exception in main thread (doIt()):\n");
-         if (isVerbose()) {
+         if (verbose) {
             e.printStackTrace(log);  
          } else 
             log.println(e.getMessage());
@@ -2162,7 +2124,7 @@ import de.frame4j.time.TimeHelper;
          return retCode;
       } // unhandled Exception in the main thread
   
-      //  mainThread null => others alive    since 14.02.2006
+      //  mainThread null => others alive since 14.02.2006
       if (retCode != 0  || !runFlag || mainThread != null) { // main
          mainThread = null;
          appBase.normalExit(this, retCode);
@@ -2178,8 +2140,8 @@ import de.frame4j.time.TimeHelper;
  *  @param trace true: print also a stack trace
  *               (and only if out is a PrintWriter or a PrrintStream)
  */
-  public void repExc(final Appendable out, final Throwable exc,
-                                     final boolean trace){
+  public final void repExc(final Appendable out, final Throwable exc,
+                                                    final boolean trace){
     if (out == null || exc == null) return;
     Throwable ex = exc.getCause();
     if (ex == null) ex = exc;
@@ -2200,7 +2162,6 @@ import de.frame4j.time.TimeHelper;
       } 
     } // trace
   } // repExc(Appendable, Throwable) 
-
   
 //-------------------------------------------------------------  
   
@@ -2263,27 +2224,25 @@ import de.frame4j.time.TimeHelper;
       return formMessage(key, new int[] {parInt});
    } // formMessage(String, int)
 
-
 //--------------------------------------------------------------------------
 
 /** This application's working method. <br />
  *  <br />
- *  This method, being the sole abstract one, has to be implemented by an
- *  inheritor of {@link App}. <br />
+ *  This method (abstract in {@link App}) must be implemented by an
+ *  inheritor. <br />
  *  <br />
- *  The application's intrinsic or core task are usually done here after 
- *  having inherited all initialisation by {@link App}'s constructors and
+ *  The application's intrinsic or core task are done here after having
+ *  inherited all initialisation by {@link App}'s constructors and
  *  {@link #go(String[]) go()} methods in a simple main(String[])
- *  just doing {@code new MyApp().go(args, false)}, for example.<br />
- *  <br />
+ *  just doing {@code new MyApp().go(args, false)}, for example.
+ *
  *  @see Prop Prop
  *  @see #go(String[])
  *  @see #go(String[], String, CharSequence)
  *  @see #mainThread
  *  @return the exit code; 0 means OK
  */
-   abstract protected int doIt(); // the only one abstract method in App
-
+   abstract protected int doIt(); // the only abstract method in App
   
 //-------------- Termination  ------------------------------------------
 
@@ -2328,7 +2287,7 @@ import de.frame4j.time.TimeHelper;
 /** Error exit with exception. <br />
  *  <br />
  *  If the verbosity level ({@link #verbosity}) is &gt;  
- *  {@link AppHelper#VERBOSE}
+ *  {@link Verbos#VERBOSE}
  *  the stack trace of {@code ex} will be output to {@link #log}; otherwise
  *  only {@code ex}'s message is used.<br />
  *  <br />
@@ -2346,9 +2305,9 @@ import de.frame4j.time.TimeHelper;
  *  @see #INIT_ERROR
  */
    public int errorExit(final int errNum, final Exception ex,
-                                                 final String errText) {
+                                                 final String errText){
       if (ex != null) {
-         if (verbosity < AppHelper.VERBOSE) {
+         if (isTest()) {
             ex.printStackTrace(log);
          } else {  // ex.name added 12.04.2021
             log.println(ex.getClass().getName() + ": " + ex.getMessage());
@@ -2366,10 +2325,10 @@ import de.frame4j.time.TimeHelper;
  *          9788ms, 3599s, 1h00min or  1d00h00min
  *  @see #getExecTimeMs()
  *  @see AppBase#setActTime()
- *  @see TextHelper#durationAsString(long)
+ *  @see TextHelper#formatDuration(StringBuilder, long)
  */
    public final String getExecTimeString(){
-     return TextHelper.durationAsString(getExecTimeMs());
+     return TextHelper.formatDuration(null, getExecTimeMs()).toString();
    } //  getExecTimeString()
 
 /** The application's execution time (milliseconds) so far. <br />
@@ -2412,7 +2371,7 @@ import de.frame4j.time.TimeHelper;
  *       supplemented by {@link App}'s common options info.</li></ul> 
  *  @return the help text     
  */
-   @Override public String getHelp() {
+   @Override public String getHelp(){
       return getHelpText();
    } // getHelp()
    
@@ -2625,8 +2584,8 @@ import de.frame4j.time.TimeHelper;
  *  set is taken from the {@link MinDoc}'s purpose field. If no such 
  *  annotation {@link #ano} is set (nearly impossible) or its purpose field is
  *  empty  &quot;de.frame4j.util.App&nbsp;&lt;-- &nbsp;{11}&quot; is
- *  set instead.<br />
- *  <br /> 
+ *  set instead.
+ *
  *  @param  purpose null: no effect if set or set to annotation (default)
  *  @see #getPurpose()
  *  @see #getMessageComponent(int)
@@ -2661,13 +2620,13 @@ import de.frame4j.time.TimeHelper;
  *  application.<br />
  *  If the parameter is null and the about text was not set yet the text will
  *  be composed of (as default setting) {@link App#getNameWithVersDate()},
- *  {@link #getCopyright()} and {@link #getPurpose()}.<br />
- *  <br />
+ *  {@link #getCopyright()} and {@link #getPurpose()}.
+ *
  *  @param  aboutText  null: no effect if set or set default. <br />
  *  @see #getAbout()
  *  @see #getMessageComponent(int)
  */
-   public void setAboutText(final CharSequence aboutText) {
+   public void setAboutText(final CharSequence aboutText){
       CharSequence about = aboutText;
       if (aboutText == null) {
          if (this.aboutText != null) return; // already set null no change
@@ -2710,8 +2669,8 @@ import de.frame4j.time.TimeHelper;
  *  quite simple. Nevertheless, overriding this method 
  *  {@link #setAttribute(String, Object)} is also feasible. In any case
  *  the overriding method must delegate back to the overridden one if it
- *  could not handle a non null name.<br />
- *  <br />
+ *  could not handle a non null name.
+ *
  *  @param name the property's / attributes name; if null, empty or not 
  *              lower case (Java name convention) {@link #NO_ATTRIBUTE}
  *              is returned and nothing is done
@@ -2748,9 +2707,10 @@ import de.frame4j.time.TimeHelper;
  *  <br />
  *  Hint: The gain (for the prize of 6 parameters) is that all preliminaries,
  *  and checks otherwise necessary (if directly overriding 
- *  {@link #setAttribute(String, Object)}) are superfluous here.<br />
- *  <br />
- *  This implementation does nothing. It  
+ *  {@link #setAttribute(String, Object)}) are superfluous here. <br />
+ *  Hint2: Not overriding either would have no effect except for start-up
+ *  performance. App and PropMap would do the same job using introspection.
+ *
  *  @param  name        name of the property (never empty)
  *  @param  name0       first character of name (&gt;= a)
  *  @param  value       the (new) value of the property
@@ -2873,8 +2833,9 @@ import de.frame4j.time.TimeHelper;
                   return 0;
                }
                if (vClass != Boolean.class) return ILLEGAL_TYPE;
-               setVerbosity(((Boolean)value).booleanValue()
-                                 ? AppHelper.VERBOSE : AppHelper.NORMAL);
+               this.verbose = ((Boolean)value).booleanValue();
+               this.verbosity = this.verbose
+                                 ? Verbos.VERBOSE : Verbos.NORMAL;
                return 0;
             } // verbose
 
@@ -2890,10 +2851,9 @@ import de.frame4j.time.TimeHelper;
       return NO_KNOWN_ATTRIBUTE; 
    } // setAttributeImpl(String, char, Object, Class<?>, 2*boolean)
 
-
 //------------------------------------------------------------------------
 
-/** The usage (quick help). */
+/** The usage (quick help). <br /> */
    String usage;
 
 /** The usage (quick help). <br />
@@ -3043,7 +3003,7 @@ import de.frame4j.time.TimeHelper;
  *  output.<br />
  *  <br />
  *  Is the parameter <code>suplText<code> an {@link Exception} and the 
- *  level of  {@link #getVerbosity() verbosity} &lt;= {@link AppHelper#TEST},
+ *  level of  {@link #getVerbosity() verbosity} &lt;= {@link Verbos#TEST},
  *  the exception's call stack is output, too.<br />
  *  <br />
  *  @param  errNum  the error number, if &gt; 0
@@ -3053,7 +3013,7 @@ import de.frame4j.time.TimeHelper;
  */
    public final int errMeld(final int errNum, final Object suplText){
       log.println(errorText(errNum, suplText));
-      if (verbosity  <= AppHelper.TEST && suplText instanceof Throwable) {
+      if (isTest() && suplText instanceof Throwable) {
          log.println("\n   ///  -------   stack trace:\n");
          ((Throwable)suplText).printStackTrace(log);
          log.println("\n   ///  -------   \n\n");
@@ -3068,7 +3028,7 @@ import de.frame4j.time.TimeHelper;
  *  output.<br />
  *  <br />
  *  Is the parameter <code>suplText<code> an {@link Exception} and the 
- *  level of  {@link #getVerbosity() verbosity} &lt;= {@link AppHelper#TEST},
+ *  level of  {@link #getVerbosity() verbosity} &lt;= {@link Verbos#TEST},
  *  the exception's call stack is output, too.<br />
  *  <br />
  *  @param  errNum  the error number, if &gt; 0
@@ -3085,5 +3045,4 @@ import de.frame4j.time.TimeHelper;
       return errNum;
    } // errMeld(PrintStream, int, Object)
 
-
-} // App 08.12.2003, 29.09.2004, 22.06.2005, 15.02.2006, 25.07.2009
+} // App 08.12.2003, 29.09.2004, 22.06.2005, 15.02.2006, 25.07.2009 01.06.2021

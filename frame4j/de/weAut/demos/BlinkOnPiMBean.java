@@ -28,7 +28,7 @@ import de.frame4j.util.AppMBean;
  *  <br />
  *  Copyright  &copy;  2021  Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 47 $ ($Date: 2021-05-13 19:06:22 +0200 (Do, 13 Mai 2021) $)
+ *  @version  $Revision: 50 $ ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $)
  *  @see BlinkOnPi
  *  @see de.weAut.TestOnPi
  *  @see <a href="./doc-files/BlinkOnPi.properties">BlinkOnPi.properties</a>
@@ -101,30 +101,23 @@ public interface BlinkOnPiMBean extends AppMBean {
  *  @see #getLeBuz()
  */   
   public void setLeBuzPWM(Integer pwm);
-
      
 /** See the number of cycles. <br />
  *  <br />
- *  As the duration of one cycle is 600ms it would take more than 40 years to
- *  overflow to negative.<br />
- *  Note: Java has no unsigned number type. int is int32_t there is 
- *  no uint32_t. 
+ *  As the duration of one cycle is 600ms (for {@link BlinkOnPi} it 
+ *  would take more than 40 years to overflow to negative.<br />
+ *  Note: Java has no unsigned number type. In the C counterpart the type
+ *  would be uint32_t. 
  *  @return the loop count
- *  @see #resetCycCount()
+ *  @see #setCycCount(Integer)
  */
   public Integer getCycCount();
       
-/** Set the number of cycles. <br /> */   
-  public void setCycCount(Integer cycCount);
-  
-/** Reset the number of cycles counter. <br />
- *  <br />
- *  If you don't want to wait almost 82 years to see low positive numbers 
- *  again, you may reset the counter (via JConsole e.g.).
+/** Set the number of cycles. <br />
  *  @see #getCycCount()
- */
-  public void resetCycCount();
-      
+ */   
+  public void setCycCount(Integer cycCount);
+        
 /** Get the Pi type. <br /> */
   public Integer getPiType();
 
