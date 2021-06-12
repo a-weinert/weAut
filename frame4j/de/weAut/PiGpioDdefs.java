@@ -25,7 +25,7 @@ package de.weAut;
  *  @see ThePi
  *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 46 $ ($Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $)
+ *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 36  (06.04.2021) :  minor typo
@@ -43,7 +43,6 @@ public interface PiGpioDdefs {
    public static final int PI_ALT3   = 7;
    public static final int PI_ALT4   = 3;
    public static final int PI_ALT5   = 2;
-
    
    public static final int PI_CMD_PUD   =  2; // set pull resistor mode
    public static final int PI_PUD_OFF   =  0; // free float

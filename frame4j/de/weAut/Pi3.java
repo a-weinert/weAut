@@ -26,59 +26,13 @@ package de.weAut;
  *  @see Pi2
  *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
+ *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 36  (06.04.2021) :  polymorphism; type 3 4 0
 //           V. 49  (17.05.2021) :  bug- gpio2pin()
-
-public interface Pi3 extends ThePi {
-  
-/** Make a Pi3 object for a given host. <br />
- * 
- *  This is equivalent to
- *  {@link #make(String, int, int, int) make(host, 0, 0, 3)}.
- *   
- *  @return a Pi3 object with the given {@link #host() host},
- *     port 8888 and  timeout 10000 (10s)
- *  @param host might be given as name "raspi67" if known to DNS or IP
- *     address "192.168.178.67". null or empty will be
- *     {@link de.weAut.ThePi#defaultHost defaultHost}
- */
-  static public Pi3 make(final String host){ return make(host, 0, 0, 3); }
-  
-/** Make a Pi3 object for Pi3, Pi or Pi0 (zero). <br />
- *   
- *  @return a Pi3 object with the given {@link #host() host},
- *     (socket) {@link #sockP() port}, {@link #timeout() timeout} and
- *     {@link #type() type}
- *  @param type 3, 4 and 0 are accepted; all else defaults to 3
- *  @param port 20..65535 will be accepted; other values default to 8888
- *  @param timeout for socket connection in ms, 300..50000 will be accepted;
- *           other values default to 10s 
- *  @see #make(String)            
- */
-  static public Pi3 make(final String host, final int port,
-                                      final int timeout, final int type){
-    return new Pi3(){
-      String hostPi;
-      int portPi;
-      int timoutPi;  
-      int typePi;
-      { // pseudo "constructor" for anonymous class
-        this.hostPi = host == null || host.length() < 3 ? defaultHost : host;
-        this.portPi = port < 20 || port > 65535 ? 8888 : port;
-        this.timoutPi = timeout < 300 || timeout > 50000 ? 10000 : timeout;
-        this.typePi = type != 0 && type!= 4 ? 3 : type;
-      } // initialiser
-      @Override public int sockP(){ return this.portPi; }
-      @Override public String host(){ return this.hostPi; }
-      @Override public int timeout(){ return this.timoutPi; }
-      @Override public int type(){ return this.typePi; }
-   }; // ano inner
-  } // make(String, 3*int)
-
-//----------------------------------------------------------------------  
+//V. 52  (09.06.2021) :  class <- interface
+public final class Pi3 extends ThePi.ComBeh { 
 
 /** 40 pin connector GPIO assignment mapping. <br />
  *  <br />
@@ -136,7 +90,7 @@ public interface Pi3 extends ThePi {
  *     {@link #PIN5V}, {@link #PINix}: undefined, i.e. illegal pin number
  *       or {@link #PINig} ignore for pin = 0
  */
-  @Override public default int gpio4pin(final int pin){
+  @Override public final int gpio4pin(final int pin){
     if (pin < 0 || pin > 40) return PINix;
     return ThePi.Impl.pi3PIN2gpio[pin];
   } // gpio4pin(int)
@@ -148,9 +102,43 @@ public interface Pi3 extends ThePi {
  *  @return 1..40 as the respective pin or 0 if the GPIO is not
  *           on the IO connector (P1).
  */
-  @Override public default int gpio2pin(final int gpio){
+  @Override public final int gpio2pin(final int gpio){
     if (gpio < 0 || gpio > 31) return 0;  // bug- 17.05.2021
     return ThePi.Impl.pi3GPIO2pin[gpio];
   } // gpio2pin(int)
+
+/** Make a Pi3 object for a given host. <br />
+ * 
+ *  This is equivalent to
+ *  {@link #make(String, int, int, int) make(host, 0, 0, 3)}.
+ *   
+ *  @return a Pi3 object with the given {@link #host() host},
+ *     port 8888 and  timeout 10000 (10s)
+ *  @param host might be given as name "raspi67" if known to DNS or IP
+ *     address "192.168.178.67". null or empty will be
+ *     {@link de.weAut.ThePi#defaultHost defaultHost}
+ */
+  static public Pi3 make(final String host){ return make(host, 0, 0, 3); }
+
+/** Make a Pi3 object for Pi3, Pi or Pi0 (zero). <br />
+ *   
+ *  @return a Pi3 object with the given {@link #host() host},
+ *     (socket) {@link #sockP() port}, {@link #timeout() timeout} and
+ *     {@link #type() type}
+ *  @param type 3, 4 and 0 are accepted; all else returns null
+ *  @param port 20..65535 will be accepted; other values default to 8888
+ *  @param timeout for socket connection in ms, 300..50000 will be accepted;
+ *           other values default to 10s 
+ *  @see #make(String)            
+ */
+  static public Pi3 make(final String host, final int port,
+                                         final int timeout, int type){
+    if (type != 3 && type != 0 && type != 4) return null;
+    return new Pi3(type, host, port, timeout);
+  } // make(String, 3*int)
+  
+  private Pi3(int type, String host, int port, int timeout){
+    super(type, host, port, timeout);
+  } // P3(int, String, 2*int)
   
 } // Pi3 (01.04.2021)

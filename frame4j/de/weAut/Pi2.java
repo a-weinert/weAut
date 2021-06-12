@@ -27,12 +27,12 @@ package de.weAut;
  *  @see Pi3
  *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
+ *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
  */
 // so far:   V. 35  (01.04.2021) :  new
 //           V. 36  (06.04.2021) :  name ambiguity in anonymous inner class
 //           V. 49  (17.05.2021) :  bug- gpio2pin()
-public interface Pi2 extends ThePi { 
+public final class Pi2 extends ThePi.ComBeh { 
 
 /** 26 pin connector GPIO assignment mapping. <br />
  *  <br />
@@ -90,7 +90,7 @@ public interface Pi2 extends ThePi {
  *     {@link #PIN5V}, {@link #PINix}: undefined, i.e. illegal pin number
  *      or {@link #PINig} ignore for pin = 0
  */
-  @Override public default int gpio4pin(final int pin){
+  @Override public final int gpio4pin(final int pin){
     if (pin < 0 || pin > 38) return PINix;
     return ThePi.Impl.pi2PIN2gpio[pin];
   } // gpio4pin(int)
@@ -102,18 +102,10 @@ public interface Pi2 extends ThePi {
  *  @return 1..26 or 31..38 as the respective pin or 0 if the GPIO
  *         is on no connector.
  */
-  @Override public default int gpio2pin(final int gpio){
+  @Override public final int gpio2pin(final int gpio){
     if (gpio < 0 || gpio > 31) return 0; //  bug- 17.05.2021
     return ThePi.Impl.pi2GPIO2pin[gpio];
   } // gpio4pin(int)
-  
-/** The Pi's type. <br />
- *  <br />
- *  This method returns 2 meaning all Pi types with a 26 pin GPIO
- *  plus an 8 pin connector (device P8).
- *  @return 2
- */
-  @Override public default int type(){ return 2; }
     
 /** Make a Pi2 object with default settings. <br />
  *   
@@ -128,18 +120,10 @@ public interface Pi2 extends ThePi {
  *     (socket) {@link #sockP() port} and  {@link #timeout() timeout} 
  */
   static public Pi2 make(final String host, final int port, final int timeout){
-    return new Pi2(){
-      String hostPi;
-      int portPi;
-      int timoutPi;      
-      { // pseudo "constructor" for anonymous class
-        this.hostPi = host == null || host.length() < 3 ? defaultHost : host;
-        this.portPi = port < 20 || port > 65535 ? 8888 : port;
-        this.timoutPi = timeout < 300 || timeout > 50000 ? 10000 : timeout;
-      } // initialiser
-      @Override public int sockP(){ return this.portPi; }
-      @Override public String host(){ return this.hostPi; }
-      @Override public int timeout(){ return this.timoutPi; }
-    }; // ano inner
-  } // make(String, 3*int)
-} // Pi2 (06.04.2021)
+    return new Pi2(host, port, timeout);
+  } // make(String, 2*int)
+  
+  private Pi2(String host, int port, int timeout){
+    super(2, host, port, timeout);
+  } // P2(String, 2*int)
+} // Pi2 (06.04.2021, 12.06.2021)

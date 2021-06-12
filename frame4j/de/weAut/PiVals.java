@@ -23,7 +23,7 @@ import de.frame4j.util.ComVar;
  *  This interface contains values for all Raspberry Pis and related 
  *  applications. 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 49 $ ($Date: 2021-05-19 16:47:26 +0200 (Mi, 19 Mai 2021) $)
+ *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
  */
 // so far:  V. 38  (16.04.2021) :  new
 //          V. 4x  (21.05.202x) :  ...
@@ -134,7 +134,6 @@ public interface PiVals extends ComVar {
  */
   public static final int PIN00  = PINix, PIN0 = PINix;
 
-
 /** The Pi's 3.3 V µC supply pins. <br />
  *  <br />
  *  The 3.3 V pins are 1 and 17 on all Pi types denoted by constants
@@ -143,7 +142,6 @@ public interface PiVals extends ComVar {
  */
   public static final int PIN01 = PIN3V, PIN1 = PIN3V, 
                           PIN17 = PIN3V; // 3.3 V µC supply
-
 
 /** The Pi's 5.0 V µC board pins. <br />
  *  <br />
@@ -165,9 +163,6 @@ public interface PiVals extends ComVar {
                           PIN09 = PIN0V,  PIN9 = PIN0V, // Gnd
                           PIN14 = PIN0V, PIN20 = PIN0V, // Gnd    
                           PIN25 = PIN0V; // Gnd
-  
-
-  
 
 //------------  common constants for Pi GPIO ----------------------------- 
   
@@ -203,7 +198,6 @@ public interface PiVals extends ComVar {
  *  See the explanation at {@link HI}; see also {@link H1}.
  */
   public static final int L0 = 0;
-
  
 /** GPIO input mode. <br /> */
   public static final int GPIO_INP = 0;

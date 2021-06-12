@@ -36,10 +36,12 @@ import de.frame4j.util.ComVar;
  *  Linux PCs and servers.
  *   
  *  For one Pi and its IO only one {@link ClientPigpiod} object should be
- *  created and used. The IO methods and most others are threadsafe but 
- *  initialising and shutting down / cleaning up the control IO application
- *  is usually better done in one thread. <br />
- *  The C IO functions of the 
+ *  created and used (and the {@link ClientPigpiod} object will be 
+ *  associated with {@link #thePi this Pi} object). The IO methods and most
+ *  others are threadsafe. Nevertheless, initialising and shutting down /
+ *  cleaning up the control IO application is usually better done in one
+ *  thread. <br />
+ *  The IO functions of the 
  *  <a href="http://abyz.me.uk/rpi/pigpio/sif.html" taget="_blank"
  *  title="pigdiod socket interface">piogpio daemon</a> on the Raspberry Pi 
  *  are also threadsafe, there. <br />
@@ -53,7 +55,7 @@ import de.frame4j.util.ComVar;
  *  @see ThePi
  *  @see PiVals 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
+ *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
  */
 // so far:   V.  19 (17.05.2019) : new
 //           V.  42 (29.04.2021) : overhaul (Frame4J)
@@ -119,8 +121,8 @@ public class ClientPigpiod {
  *  Hint: After successfully making an ClientPigpiod object it <b>is</b>
  *  connected. Hence, this method is normally not needed. The only exception
  *  would be re-connect after {@link #disconnect()}. So far, no use case for
- *  this was reported. If this does not change {@link #connect()} and
- *  even {@link #disconnect()} might be removed / made private in future.
+ *  this was reported. If this does not change {@link #connect()} might be
+ *  removed / made private in future.
  *  
  *  @throws IOException if the connecting
  *          to {@link ThePi#host() host}.{@link ThePi#sockP() port} fails
@@ -177,7 +179,7 @@ public class ClientPigpiod {
     return new ClientPigpiod(Pi3.make(host, port, timeout, type), app);
   } // make(String, 3*int, Object)
   
-/** Make and connect to a new Pi. <br />
+/** Make a new Pi and connect to it. <br />
  *  <br />
  *  This method does the same as
 {@link #make(String,int,int,int,Object) make(host, port, timeout, type, app)}.
@@ -212,8 +214,8 @@ public class ClientPigpiod {
  */
    public ClientPigpiod(final ThePi thePi, Object app) throws IOException {
      this.thePi = thePi != null ? thePi : Pi3.make(null, 0, 0, 3);
-      sock = connect();
-      setOut(app); // helper method
+     sock = connect();
+     setOut(app); // helper method
    } // ClientPigpiod(CharSequence, 2 * int) 
    
 /** Disconnecting. <br />
@@ -222,7 +224,9 @@ public class ClientPigpiod {
  *  closed.<br />
  *  <br />
  *  Hint: Another thread blocked on this connection's I/O will get a
- *  SocketException.
+ *  SocketException. <br />
+ *  Hint 2: We do not recommend to disconnect and 
+ *  {@linkplain #connect re-connect} in an application. 
  *
  *  @throws IOException on closing problems
  */
@@ -238,8 +242,36 @@ public class ClientPigpiod {
 /** The connection's settings as String. <br /> */
    @Override public String toString() {
       return "pigpiod: " + thePi.host() + (sock != null ? ":" : "-")
-                         + thePi.sockP() + " Pi" + thePi.type();
+                         + thePi.sockP() + " " + thePi.toString();
    } // toString()
+
+/** Equal with other ClientPigPiod. <br />
+ *  <br />
+ *  From the sight of socket communication to a pigpiod daemon two Clients
+ *  using the same host and socket port are considered equal.<br />
+ *  This sight is implemented here and, consistently, in {@link #hashCode()}. 
+ *  @return true when other is a {@code ClientPigPiod} object with same
+ *          host and socket
+ */
+    @Override public final boolean equals(final Object other){
+      if (! (other instanceof ClientPigpiod)) return false;
+      if (other == this) return true;
+      ThePi oPi = ((ClientPigpiod)other).thePi;
+      if (oPi == this.thePi) return true;
+      if (oPi.sockP() != this.thePi.sockP()) return false;
+      return this.thePi.host().equals(oPi.host());
+    } // equals(Object)
+    
+/** Hashcode. <br />
+ *  
+ *   @see #equals(Object)
+ */
+    @Override public final int hashCode(){ 
+      int hash = (217 + this.thePi.sockP()) * 31;
+      if (this.thePi.host() != null) hash += this.thePi.host().hashCode();
+      return hash;
+    } // hashCode()    
+
    
 //---------------------------- pigpiod GPIO on the Pi ---------------------     
 
@@ -353,9 +385,9 @@ public class ClientPigpiod {
  *  parameters (e.g.) hence bypassing the socket communication for the 
  *  thrill of just getting an error value in return  (for those cases where
  *  {@link #stdCmd(int, int, int)} does not do pre-checks itself). <br />
- *  As the parameter recording is bypassed also the methods doing so
- *  must (should) set lastCmd, lastP1, lastP2 in this case in the thread 
- *  local {@link #lastCmdState} object.<br />
+ *  As by doing so the parameter recording is bypassed also the methods
+ *  with such pre-checks must (should) set lastCmd, lastP1, lastP2 in this
+ *  case in the thread local {@link #lastCmdState} object.<br />
  *  This method is a helper therefore, as are {@link #rErr(int, int)}
  *  and {@link #rIgn(int, int)}.     
  */
@@ -376,7 +408,12 @@ public class ClientPigpiod {
   } //rErr(2*int)
 
 /** Recording helper for IO methods. <br />
- *  when operating on a pin/GPIO to be ignored.
+ *  <br />
+ *  Correctly doing nothing (except returning 0 = OK) when operating on a
+ *  pin/GPIO to be {@linkplain PiVals#PINig ignored} would, of course,
+ *  also bypass the recording of the last command. As not to spoil log
+ *  outputs the &quot;ignoring&quot; must do this recording.<br />
+ *  This method implements it.
  *
  *  @see #rErr(int, int, int, int)
  */
@@ -429,9 +466,9 @@ public class ClientPigpiod {
 /** Log of last bad command execution. <br />
  *  <br />
  *  When this method is called immediately after a command method it will 
- *  log the command on <code>System.out</code> if and only if the execution
- *  failed (with a negative return code). In that case it will delegate to
- *  {@link #logCommand}.
+ *  log the command on {@link out} if and only if the execution
+ *  failed (with a negative return code). (In that case it will delegate to
+ *  {@link #logCommand}.)
  *
  *  @param  ret the return value of the command method; <br /> &nbsp; &nbsp;
  *          &nbsp; &nbsp; e.g. by placing the call as parameter
@@ -451,9 +488,10 @@ public class ClientPigpiod {
  *  <br />
  *  This method handles (is the swiss army knife for) all (81) socket
  *  interface commands with up to two parameters and no extra extension data.
- *  These 81 commands are the great majority and usually the others are not
- *  needed in most control applications. This method is the base for the more 
- *  comfortable convenient methods (see some mentioned below).<br />
+ *  These 81 commands are the great majority and usually the others are 
+ *  practically not needed in (most) control applications. This method is
+ *  the base for the more comfortable convenient methods (see some
+ *  mentioned below).<br />
  *  <br />
  *  This method does the bookkeeping for logging the IO actions afterwards.
  *  It also checks a lot of command (cmd) and parameter combinations to
@@ -787,30 +825,33 @@ public class ClientPigpiod {
      } // for
   } // reportPinOp(char const *, unsigned const [])
 
-/** Stores all output GPIO as bitmask. <br />
+/** Stores all output GPIOs as bitmask. <br />
  *  <br />
- *  For all GPIOs in the range 0..31 set here as output the corresponding 
- *  bit is set. For all GPIOs in the range 0..31 set here as input the
- *  corresponding bit is cleared.
+ *  For all GPIOs in the range 0..31 set by {@link ClientPigpiod} as output
+ *  (binary, PWM, servo etc.) the corresponding bit is set.<br />
+ *  For all GPIOs in the range 0..31 set by {@link ClientPigpiod} as input
+ *  the corresponding bit is cleared.
  *  @see #areOut()
  */
-  int areOut; // omit volatile if set clear is put to synchronised method
+  int areOut;
   
 /** Stores all output GPIO as bitmask. <br />
  *  <br />
- *  For all GPIOs in the range 0..31 set here as output *) the corresponding 
- *  bit is set. For all GPIOs in the range 0..31 set here as input the
+ *  For all GPIOs in the range 0..31 set by {@link ClientPigpiod} as 
+ *  output *) the corresponding bit is set. For all GPIOs in the range 0..31
+ *  set by {@link ClientPigpiod} as input the
  *  corresponding bit is cleared. <br />
  *  The rationale is an automatic bookkeeping to enable a comfortable
- *  "release as input" function mainly for the end of / shutdown of the 
- *  application. <br />
+ *  "release as input" function ({@link #releaseOutputs()}) mainly for 
+ *  the end of / shutdown of the application. <br />
  *  <br />
  *  Note *): To be precise, it is set as "not input" as we wan't also to 
- *  release alternate GPIO functions.  
+ *  release alternate GPIO functions as well as pigpiod's usage as PWM or 
+ *  servo.  
  */
   public final int areOut(){ return areOut; }   
 
-/**  Initialise a GPIO pin as output. <br />
+/** Initialise a GPIO pin as output. <br />
  *  <br />
  *  This sets a GPIO as output and puts it in the list of GPIOs used as
  *  outputs by the program if in the range of 0..31 (resp. 2..27). For
@@ -839,6 +880,7 @@ public class ClientPigpiod {
  *  afterwards.
  *
  *  @return the bank mask of the previous resp. released outputs
+ *  @see #releaseOutputsReport(Appendable)
  */
   public int releaseOutputs(){
     final int wereOut = areOut;
@@ -1177,7 +1219,7 @@ public class ClientPigpiod {
      if (gpio < 0 || gpio > 31) return rErr(PI_BAD_USER_GPIO, PI_CMD_PWM, gpio, val);
      if (val < 0 || val > 40000) return rErr(PI_BAD_DUTYCYCLE, PI_CMD_PWM, gpio, val);
      return stdCmd(PI_CMD_PWM, gpio, val);
-   }  // setPWMcycle(2 * int) 
+   } // setPWMcycle(2 * int) 
 
 /** Get the PWM duty cycle. <br />
  *     
@@ -1205,7 +1247,7 @@ public class ClientPigpiod {
        return rErr(PI_BAD_PULSEWIDTH, PI_CMD_SERVO, gpio, val);  
      }
      return stdCmd(PI_CMD_SERVO, gpio, val);
-   }  // setServoPos(2 * int) 
+   } // setServoPos(2 * int) 
 
 /** Get the servo pulse width. <br />
  *     
@@ -1216,7 +1258,7 @@ public class ClientPigpiod {
      if (gpio == ThePi.PINig) return rIgn(PI_CMD_GPW, 0); // no action ignore
      if (gpio < 0 || gpio > 31) return rErr(PI_BAD_USER_GPIO, PI_CMD_GPW, gpio, 0); 
      return stdCmd(PI_CMD_GPW, gpio, 0);
-   }  // getServoPw(int) 
+   } // getServoPw(int) 
 
 /** Set the PWM frequency. <br />
  *     
@@ -1228,7 +1270,7 @@ public class ClientPigpiod {
     if (gpio == ThePi.PINig) return rIgn(PI_CMD_PFS, hz); // no action ignore
     if (gpio < 0 || gpio > 31) return rErr(PI_BAD_USER_GPIO, PI_CMD_PFS, gpio, hz);
     return stdCmd(PI_CMD_PFS, gpio, hz);
-  }  // setPWMhertz(2 * int) 
+  } // setPWMhertz(2 * int) 
 
 /** Get the PWM frequency. <br />
  *     
@@ -1240,7 +1282,7 @@ public class ClientPigpiod {
     if (gpio == ThePi.PINig) return rIgn(PI_CMD_PFG, 0); // ign return 0 Hz
     if (gpio < 0 || gpio > 31) rErr(PI_BAD_USER_GPIO, PI_CMD_PFG, gpio, 0);
     return stdCmd(PI_CMD_PFG, gpio, 0);
-  }  // getPWMhertz(int) 
+  } // getPWMhertz(int) 
   
 //------------------- helper methods  and  final 'const' arrays -------------
 
@@ -1266,7 +1308,9 @@ public class ClientPigpiod {
  *  Pi's 40 (26) pins connector.<br />
  *  Result 0x00000001..0x80000000: a 32 bit number with exactly one bit
  *  set corresponding to place in a 32 bit bank mask. <br />
- *  Outside [0..31] index out of bound.
+ *  Outside [0..31] index out of bound. <br />
+ *  Implementation hint: Should be private (to inhibit content modification).
+ *  If done so must be copied as such to ThePi. 
  */
   static final int[] gpio2bit = new int[] { // not private as used by ThePi
          0x00000001, 0x00000002, 0x00000004, 0x00000008, //  0.. 3
@@ -1292,9 +1336,10 @@ public class ClientPigpiod {
 
 /** Command result type. <br />
  *  <br />
- *  Most commands return a (signed) int value as result. Here any not
- *  negative value means a good return value or without a return value 0
- *  means command was executing OK. A negative value means an error; 
+ *  Most commands return a (signed) int value as result. Here (i.e. with 
+ *  pigpiod) any not negative value means a good return value or without
+ *  a return value 0 means command was executing OK. A negative value means
+ *  an error; 
  {@link PiGpioDdefs#PI_INIT_FAILED}..{@link PiGpioDdefs#PI_BAD_EVENT_ID}.<br />
  *  <br />
  *  Very few commands return an unsigned 32 bit value (uint32_t in C), where
@@ -1344,7 +1389,7 @@ public class ClientPigpiod {
  *  Those more special command get a true in this table. They can't be 
  *  handled by {@link ClientPigpiod#stdCmd(int, int, int)}. Trying to do so
  *  gets a {@link PiGpioDdefs#PI_CMD_BAD} error.<br />
- *  Hint: As of April 2021 here is no implementation of non standard commands
+ *  Hint: As of June 2021 here is no implementation of non standard commands
  *  as no need arose so far. This might change in future.
  */
   private static final boolean[] hasExtension = {
@@ -1412,4 +1457,4 @@ public class ClientPigpiod {
 "SHELL", "BSPIC", "BSPIO", "BSPIX", "BSCX", "EVM", "EVT", "PROCU", // 110..117
 "none", "none"};  // 118 .. no command (as of 05.2021)
 
-} // ClientPigpiod (21.05.2019, 17.04.2021)
+} // ClientPigpiod (21.05.2019, 17.04.2021, 12.06.2021)

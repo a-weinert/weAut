@@ -42,7 +42,32 @@ like e.g. <pre><code>
 </code></pre>
  *  Additionally to command line arguments, the settings and functions might
  *  be made or called via JMX/JConsole. <br >
- * 
+ *  <br />
+ *  Examples: <pre><code>
+ *    java de.weAut.TestOnPi -help
+ *    java TestOnPi -?
+ *    java TestOnPi -help -de
+ *    java TestOnPi -en -help</code></pre>
+ *  Help output, optionally using the the Starter application in the anonymous
+ *  package (for typing comfort), optionally choosing the output language.
+ *  -de (Deutsch) stands for German.<pre><code>
+ *    java TestOnPi -blink -south
+ *    java TestOnPi -west -east -blink 192.168.178.67
+ *    java TestOnPi raspi67 -north -blink -cycLim 3122</code></pre>
+ *  Blink the south cross road LEDs on the default Pi. If run on Pi with Java8
+ *  and Frame4J this is the Pi itself; on a non Pi machine like a Windows PC
+ *  (with Java(8) and Frame4J) this will be a Pi with the IPv4 address ending
+ *  with .67 in the same (W)LAN.<br />
+ *  Blink two other LED groups optionally naming the (other) Pi explicitly 
+ *  by its IP address or blink another group naming the other Pi by its DNS
+ *  name optionally limiting the number of (blink) cycles.<br />
+ *  Without the limit the program would run (blink) endlessly; it can be
+ *  stopped by signal, cntl-C or JMX/JConsole command. <pre><code>
+ *    java TestOnPi -outPort 3 -winkServo -de -cycLim 89012 </code></pre>
+ *  Test a RC servo attached to Pin 3 (and 5V and Gnd) by winking over almost
+ *  the whole (180°) range in many small steps.<br />   
+ *  <br /> 
+ *  <br /> 
    Copyright  &copy;  2021  Albrecht Weinert <pre><code>
    weinert-automation.de        a-weinert.de
 
@@ -59,7 +84,7 @@ like e.g. <pre><code>
  *  @see <a href="./doc-files/Raspi4testPins.png"
  *   title="GPIOs and pins">Raspi4testPins</a>
  *
- *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
+ *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
  */
 // so far:   V.  21  (21.05.2019) : new, minimal functionality
 //           V.  26  (31.05.2019) : three LEDs, IO lock 
@@ -67,8 +92,8 @@ like e.g. <pre><code>
 //           V.  47  (12.05.2021) : end of rudimentary prototype state 
 @MinDoc(
   copyright = "Copyright 2021  A. Weinert",
-  version   = "V.$Revision: 51 $",
-  lastModified   = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
+  version   = "V.$Revision: 52 $",
+  lastModified   = "$Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $",
   usage   = "start as Java application (-? for help)",  
   purpose = "a Frame4J program to test IO devices on a Pi via pigpioD"
 ) public class TestOnPi extends App implements PiUtil, TestOnPiMBean {
@@ -614,8 +639,7 @@ like e.g. <pre><code>
         nextArgFor = 'd';
         continue ovArgs;
       } // switch 
-    } // for (over parameters left by partial parsing)
-
+    } // for (over only those parameters left by partial parsing)
     
     // shutdown tasks
     if (pI != null) {

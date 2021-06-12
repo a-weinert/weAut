@@ -43,7 +43,7 @@ import de.frame4j.util.ComVar;
  *  Copyright <a href=package-summary.html#co>&copy;</a> 2019, 2021
  *           &nbsp; Albrecht Weinert<br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 50 $ ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $)
+ *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
  */
 // so far:   V. o19  (17.05.2019) : new
 //           V.  21  (19.05.2019) : ALT numbers, typo
@@ -149,8 +149,9 @@ public interface PiUtil extends PiVals {
  *  <br />
  *  Hint: This implementation delegates to
  *  {@link TextHelper#twoDigitDec(Appendable, int)}. It is here to facilitate
- *  using {@link PiUtil}, {@link ClientPigpiod} etc. without the 
- *  de.frame4j packages. But why should one want to do this? <br />
+ *  using {@link PiUtil}, {@link ClientPigpiod} sources etc. without the 
+ *  de.frame4j packages. But why should one want to do this?
+ *  
  *  @param  dest   destination to append to; if null dest is made as
  *                 StringBuilder with initial capacity of 6
  *  @param  value  the number 
@@ -168,8 +169,9 @@ public interface PiUtil extends PiVals {
  *  <br />
  *  Hint: This implementation delegates to
  *  {@link TextHelper#eightDigitHex(Appendable, int)}. It is here 
- *  to facilitate using {@link PiUtil}, {@link ClientPigpiod} etc. without
- *  the de.frame4j packages. But why should one want to do this? <br />
+ *  to facilitate using {@link PiUtil}, {@link ClientPigpiod} etc. (sources) 
+ *  without the de.frame4j packages. But why should one want to do this?
+ *
  *  @param  dest   destination to append to; if null dest is made as
  *                 StringBuilder with initial capacity of 14
  *  @return        dest (appended is &quot;000000&quot;..&quot;FFFFFF&quot;
@@ -386,14 +388,16 @@ public interface PiUtil extends PiVals {
  *  This method delays the calling thread for the given number of 
  *  milliseconds relative to its last call. Hence, it is able to implement
  *  strong long term periodicity. Called 86400 times with 1000 will end
- *  one day later, e.g.. The number of such successful delays can be 
+ *  one day *) later, e.g.. The number of such successful delays can be 
  *  obtained by {@link #getCycCnt()}. <br />
+ *  Hint: On a day with leap seconds either this fails or the underlying
+ *  system clock has been spoiled.<br />
  *  <br />
  *  If this call's (corrected) relative end time would be in the past
  *  the current delay will be relative to now. In that case an existing long
  *  term periodicity will be destroyed. This would happen if other threads
  *  or processes hinder the wake up of this thread for more than 
- *  millies ms. The number of delays having been spoiled so can be 
+ *  {@code millies} ms. The number of delays having been spoiled so can be 
  *  obtained by {@link #getOvrCnt()}. <br />
  *  <br />
  *  @param millies the number of ms to delay relativ to the last call
@@ -419,7 +423,7 @@ public interface PiUtil extends PiVals {
  *  Objects of this class essentially hold a mutable long variable intended 
  *  for absolute times in ms. LeTick is used to implement
  *  {@link PiUtil#thrDelay(int) thrDelay()} with no (or less) throw away 
- *  objects and one (thread local) LeTick object per thread. 
+ *  objects and one (thread local) {@code LeTick} object per thread. 
  */
    public final class LeTick {
       long tick;
@@ -445,9 +449,8 @@ public interface PiUtil extends PiVals {
       public LeTick(long tick){ this.tick = tick; }
    } // LeTick
 
-
 /** Get the last lock file. <br />
- *  <br />  
+ *
  *  @return the name of the last lock file locked and eventually released
  *          (in case of success) or the last file having been tried to lock.
  */
@@ -519,13 +522,12 @@ static final class Impl {
   public static int argTimeout = 10000; // 10s default (not yet evaluated as arg)
   public static String argHost = null; // null not yet set -> default
 
-
   private static PrintWriter myOut; 
    
   static PrintWriter getOut(){
     if (myOut != null) return myOut;
-    // need no sync as System.out is fixed; constructor optimised for
-    return myOut = new PrintWriter(System.out, true); // for PrintStream
+    // need no sync as System.out is fixed
+    return myOut = new PrintWriter(System.out, true);
   } // getOut()
 
 /** The process holding the lock file. <br />

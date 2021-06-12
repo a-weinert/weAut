@@ -22,11 +22,12 @@ package de.weAut;
  *  @see Pi3
  *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
+ *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 36  (06.04.2021) :  polymorphism
-public interface Pi1 extends ThePi { 
+//           V. 52  (09.06.2021) :  class <- interface
+public final class Pi1 extends ThePi.ComBeh { 
 
 /** 26 pin connector GPIO assignment mapping. <br />
  *  <br />
@@ -58,18 +59,17 @@ public interface Pi1 extends ThePi {
   public static final int PIN7 =  PIN07;  // synonym
   public static final int PIN8 =  PIN08;  // synonym
 
-
 /** Pin number to GPIO number lookup. <br />
- *
- *  @param pin 0, 1..26 is the legal IO connector pin number
- *  @return 0..56 the GPIO number; {@link #PIN0V}, {@link #PIN3V},
- *     {@link #PIN5V}, {@link #PINix}: undefined, i.e. illegal pin number
- *     or {@link #PINig} ignore for pin = 0
- */
-  @Override public default int gpio4pin(final int pin){
-    if (pin < 0 || pin > 26) return PINix;
-    return ThePi.Impl.pi1PIN2gpio[pin];
-  } // gpio4pin(int)
+*
+*  @param pin 0, 1..26 is the legal IO connector pin number
+*  @return 0..56 the GPIO number; {@link #PIN0V}, {@link #PIN3V},
+*     {@link #PIN5V}, {@link #PINix}: undefined, i.e. illegal pin number
+*     or {@link #PINig} ignore for pin = 0
+*/
+   @Override public final int gpio4pin(final int pin){
+     if (pin < 0 || pin > 26) return PINix;
+     return ThePi.Impl.pi1PIN2gpio[pin];
+   } // gpio4pin(int)
 
 /** Pin number to GPIO number lookup. <br />
  *
@@ -78,18 +78,10 @@ public interface Pi1 extends ThePi {
  *  @return 1..26 as the respective pin or 0 if the GPIO is not on the
  *         pin connector.
  */
-  @Override public default int gpio2pin(final int gpio){
-    if (gpio < 0 || gpio > 25) return 0; // no bug 25 is OK with Pi1
-    return ThePi.Impl.pi1GPIO2pin[gpio];
-  } // gpio2pin(int)
-
-/** The Pi's type. <br />
- *  <br />
- *  This method returns 1 meaning all Pi types with a 26 pin GPIO
- *  connector (i.e. Pi1).
- *  @return 1
- */
- @Override public default int type(){ return 1; }
+   @Override public final int gpio2pin(final int gpio){
+     if (gpio < 0 || gpio > 25) return 0; // no bug 25 is OK with Pi1
+     return ThePi.Impl.pi1GPIO2pin[gpio];
+   } // gpio2pin(int)
     
 /** Make a Pi1 object with default settings. <br />
  *   
@@ -103,20 +95,12 @@ public interface Pi1 extends ThePi {
  *  @return a PI1 object with the given {@link #host() host},
  *     (socket) {@link #sockP() port} and  {@link #timeout() timeout} 
  */
-  static public Pi1 make(final String host, final int port, final int timeout){
-    return new Pi1(){
-      String hostPi;
-      int portPi;
-      int timoutPi;      
-      { // pseudo "constructor" for anonymous class
-        this.hostPi = host == null || host.length() < 3 ? defaultHost : host;
-        this.portPi = port < 20 || port > 65535 ? 8888 : port;
-        this.timoutPi = timeout < 300 || timeout > 50000 ? 10000 : timeout;
-      } // initialiser
-      @Override public int sockP(){ return this.portPi; }
-      @Override public String host(){ return this.hostPi; }
-      @Override public int timeout(){ return this.timoutPi; }
-    }; // ano inner
-  } // make(String, 3*int)
- 
+  static public Pi1 make(final String host, 
+                          final int port, final int timeout){
+    return new Pi1(host, port, timeout);
+  } // make(String, 2*int)
+  
+  private Pi1(String host, int port, int timeout){
+    super(1, host, port, timeout);
+  } // P1(String, 2*int)
 } // Pi1 (01.04.2021)

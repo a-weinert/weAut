@@ -24,12 +24,12 @@ import java.io.PrintWriter;
  *  rdGnPiGpioDBlink from C to Java. It uses Joan N.N's pigpio library's 
  *  <a href="http://abyz.me.uk/rpi/pigpio/sif.html">socket interface</a> 
  *  directly. Hence, it is 100% pure Java &mdash; that means no JNI
- *  (Java native interface) is used.<br />
+ *  (Java native interface) is used. <br />
  *  <br />
  *  Comment excerpt of the original/ported C source file: <br /><pre>
   A fifth program for Raspberry's GPIO pins
 
-  Rev. $Revision: 50 $  $Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $
+  Rev. $Revision: 52 $  $Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $
   Copyright  (c)  2019   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
 
@@ -58,13 +58,19 @@ import java.io.PrintWriter;
  *  as a {@link de.weAut.Pi1} or {@link de.weAut.Pi2} (interface's inner
  *  class) object.<br />
  *  <br />
+ *  Hint: Contrary to the other Java IO on Pi programs, like
+ *  {@link BlinkOnPi} and {@link de.weAut.TestOnPi} etc., this Java was
+ *  written to be as similar as possible to its (rasProject) C counterpart for
+ *  sake of C programmers. Hence, it is &quot;Frame4J free&quot; and
+ *  deliberately waives its (as well as Java's) comfort and features.<br />
+ *  <br />
  *  Copyright  &nbsp;&copy;&nbsp; 2019 Albrecht Weinert <br />
  *  @see BlinkOnPi
  *  @see de.weAut.TestOnPi
  *  @see <a href="../doc-files/Raspi4testPins.png"
  *   title="GPIOs and pins">Raspi4testPins</a>
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 50 $ ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $)
+ *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
  */
 // so far:   V.  21  (21.05.2019) : new, minimal functionality
 //           V. -26  (31.05.2019) : three LEDs, IO lock 

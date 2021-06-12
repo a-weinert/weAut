@@ -55,13 +55,14 @@ import javax.management.JMException;
  *  {@link de.weAut.Pi1} or {@link de.weAut.Pi2} interface's inner class.<br />
  *  <br />
  *  Settings, start parameter evaluation etc. are defined by
- *  <a href="./doc-files/BlinkOnPi.properties">BlinkOnPi.properties</a>.
+ *  <a href="./doc-files/BlinkOnPi.properties">BlinkOnPi.properties</a>.<br />
+ *  <br />
  *
  *  Copyright  &copy;  2021  Albrecht Weinert <br />
  *  @see BlinkOnPiMBean
  *  @see de.weAut.TestOnPi
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
+ *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
  *  @see BlinkOnPiMBean
  *  @see PiUtil
  *  @see <a href="./doc-files/BlinkOnPi.properties">BlinkOnPi.properties</a>
@@ -74,8 +75,8 @@ import javax.management.JMException;
 //           V.  45  (08.05.2021) : piTraffic buzzer and button
 @MinDoc(
   copyright = "Copyright 2021  A. Weinert",
-  version   = "V.$Revision: 51 $",
-  lastModified   = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
+  version   = "V.$Revision: 52 $",
+  lastModified   = "$Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $",
   usage   = "start as Java application (-? for help)",  
   purpose = "a Frame4J program to blink LEDs on a Pi via pigpioD"
 ) public class BlinkOnPi extends App implements PiUtil, BlinkOnPiMBean {

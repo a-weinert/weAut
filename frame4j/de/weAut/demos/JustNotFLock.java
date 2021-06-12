@@ -33,7 +33,7 @@ import de.weAut.PiUtil;  // Raspberry Pi handling utilities (IO lock, watchdog)
  *  <br />
  *  Copyright  &copy;  2019   Albrecht Weinert <br />
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 50 $ ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $)
+ *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
  */
 // so far:   V. 25  (27.05.2019) :  new, minimal functionality
 //           V. 26  (31.05.2019) :  two reads with interpretation 
@@ -141,4 +141,4 @@ public class JustNotFLock implements PiUtil {
                           lockFil.getAbsolutePath() + ") stop\n");
      return;
   } // doIt()
-} // PiWDogDemo (28.05.2019, 31.05.2019, 05.2021)
+} // JustNotFLock(28.05.2019, 31.05.2019, 05.2021)

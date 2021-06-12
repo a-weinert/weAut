@@ -46,7 +46,7 @@ import de.frame4j.text.TextHelper;
  *  @see Pi3
  *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
+ *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
  */
 // so far:   V. 36  (13.04.2021) :  new
 //           V. 4x  (21.05.202x) :  ...
@@ -55,20 +55,39 @@ public interface ThePi extends PiVals {
 
 /** <b>A port on this Pi</b>. <br />
  *  <br />
- *  Doc comments (and may be some information hiding) still to be done;
- *  excerpt from TestOnPi.  
+ *  @see ThePi#portByGPIO(int, String)
+ *  @see ThePi#portByPin(int, String)  
  */
   public class Port {
 
 /** The pin and GPIO number. <br />
  *  <br />
- *  Note: Do not change by direc assignment.
+ *  Note: Do not change by direct assignment.
  *  
  *  @see #setPin(int)
  *  @see #setGpio(int)
  *  @see #setPort(String)
  */
-    public int gpio, pin;
+    int gpio, pin;
+    
+/** The pin number. <br />
+ *  <br />
+ *  @see #setPin(int)
+ *  @see #getGpio()
+ *  @see #setGpio(int)
+ *  @see #setPort(String)
+ */
+    public int getPin(){ return this.pin;}
+    
+/** The pin and GPIO number. <br />
+ *  <br />
+ *  @see #getPin()
+ *  @see #setPin(int)
+ *  @see #setGpio(int)
+ *  @see #setPort(String)
+ */
+    public int getGpio(){ return this.gpio; }
+    
     
 /** The port's (short) name. <br />
  *  <br />
@@ -79,7 +98,8 @@ public interface ThePi extends PiVals {
     
 /** A flag to record the port's pull resistor setting. <br />
  *  <br />
- *  default: {@link #PI_PUD_KP} 
+ *  default: {@link #PI_PUD_KP}
+ *  
  *  @see PiVals#PI_PUD_OFF
  *  @see PiVals#PI_PUD_DOWN
  *  @see PiVals#PI_PUD_UP
@@ -97,7 +117,7 @@ public interface ThePi extends PiVals {
  */
     public final boolean isIO(){ return gpio < 32; }
 
-/** internal contructor. */    
+/** internal constructor. */    
     Port(int gpio, int pin, String name, ThePi encl){
       this.gpio = gpio;
       this.pin = pin;
@@ -216,6 +236,11 @@ public interface ThePi extends PiVals {
   } // Port (06.06.2021) 
 
 /** Make an input/output port for this Pi. <br />
+ *  <br />
+ *  For this {@link ThePi} object and associated with it a {@link Port}
+ *  object will be made an returned. <br />
+ *  Hint: Due to the association a {@link ThePi} object can't be garbage
+ *  collected before all of the {@link Port} objects made for it.
  *
  *  @param name a short (best 7 char) description of the pin's attached device
  *              like "red LED", "servo16" etc.; must not be empty 
@@ -309,9 +334,6 @@ public default Port portByGPIO(int gpio, String name) throws IOException {
     PiUtil.twoDigitDec(dest, gpio);
     return dest.toString();    
   } // pinDescr(2*int)
-  
-
-  
 
 /** The pigpiod default host. <br />
  *  <br />
@@ -420,27 +442,24 @@ public default Port portByGPIO(int gpio, String name) throws IOException {
  
 //--------------------- Object properties --------------------------  
 
-/** Get the pigpiod socket port number. <br />
+/** The Pi's socket port number for a pigpiod socket connection. <br />
  *  <br />
- *  This method returns the port number of the Pi's pigpiod server.<br />
- *  Once made this is an non mutable property of a ThePi object.<br />
- *  The default is 8888.
+ *  Not used by {@link ThePi} itself; see {@link ClientPigpiod}.<br />
+ *  default: 8888    
  */
    public int sockP();
 
-/** Get the pigpiod socket host. <br />
+/** The Pi's hostname for a pigpiod socket connection. <br />
  *  <br />
- *  This method returns pigpiod's host.<br />
- *  Once made this is an non mutable property of a ThePi object. <br />
- *  The default is {#defaultHost()} 
+ *  Not used by {@link ThePi} itself; see {@link ClientPigpiod}.<br />
+ *  default: {@link ThePi#defaultHost}  
  */
   public String host();
 
-/** Get the pigpiod socket timeout in ms. <br />
+/** The Pi's tiemout for a pigpiod socket connect in ms. <br />
  *  <br />
- *  This method returns pigpiod's socket timeout.<br />
- *  Once made this is an non mutable property of a ThePi object.<br />
- *  The default is 10000 (10s).
+ *  Not used by {@link ThePi} itself; see {@link ClientPigpiod}.<br />
+ *  default: 10000  (10s)  
  */
   public int timeout();
   
@@ -589,4 +608,92 @@ public default Port portByGPIO(int gpio, String name) throws IOException {
       return tmp.substring(0, lastByte) + ".67";
     }  // defaultHost()
   } // Impl
+  
+/** <b>Predefined behaviour for ThePi objects</b>. <br />
+ *  <br />
+ */
+  public abstract class ComBeh implements ThePi {
+    
+/** Hidden (package) constructor. <br > */    
+    ComBeh(final int type,
+                    final String host, final int port, final int timeout){
+      this.type = type == 0 || type == 1 || type == 2 || type == 4 ? type : 3;
+      this.hostPi = host == null || host.length() < 3 ? defaultHost : host;
+      this.portPi = port < 20 || port > 65535 ? 8888 : port;
+      this.timoutPi = timeout < 300 || timeout > 50000 ? 10000 : timeout;
+    } // ComBeh(int)
+    
+/** The type. <br />
+ *  <br />
+ *  The Pi's type as a (one decimal digit) value: 0, 1, 2, 3 or 4.    
+ */
+    public final int type;
+    
+/** The Pi's type. <br />
+ *
+ *  @return {@link #type}.
+ */
+    @Override public int type(){ return this.type; }
+    
+    String hostPi;
+    int portPi;
+    int timoutPi;      
+
+/** The Pi's socket port number for a pigpiod socket connection. <br />
+ *  <br />
+ *  Not used by {@link ThePi} itself; see {@link ClientPigpiod}.<br />
+ *  default: 8888    
+ */
+   @Override public int sockP(){ return this.portPi; }
+    
+    
+/** The Pi's hostname for a pigpiod socket connection. <br />
+ *  <br />
+ *  Not used by {@link ThePi} itself; see {@link ClientPigpiod}.<br />
+ *  default: {@link ThePi#defaultHost}  
+ */
+    @Override public String host(){ return this.hostPi; }
+    
+/** The Pi's tiemout for a pigpiod socket connect in ms. <br />
+ *  <br />
+ *  Not used by {@link ThePi} itself; see {@link ClientPigpiod}.<br />
+ *  default: 10000  (10s)  
+ */
+    @Override public int timeout(){ return this.timoutPi; }
+
+/** The Pi as text. <br />
+ *  
+ *  @return Pi0, Pi1 ... Pi4 (depending on {@link #type()}
+ */
+    @Override public String toString(){
+      char a[] = {'P', 'i', (char)('0' + type()) };
+      return String.valueOf(a);
+    } // toString()
+
+/** Equal with other Pi. <br />
+ *  <br />
+ *  From the physical sight of a Raspberry Pi's process IO to outside world
+ *  i.e. the IO and supply pins and properties two Pis of the same 
+ *  {@link #type()} are equal.<br />
+ *  The {@link #host() host} etc. have multiple possible values (like 
+ *  localhost, names, varying and multiple IPs) that do not affect the
+ *  Pi's process IO aspect and hence neither {@link #equals(Object)} nor
+ *  {@link #hashCode()} here. But it will in an associated 
+ *  {@link ClientPigpiod} object.<br />
+ *  This sight is implemented here and, consistently, in {@link #hashCode()}. 
+ *   @return true when other is a {@code ThePi} object of same type
+ */
+    @Override public final boolean equals(final Object other){
+      if (! (other instanceof ThePi)) return false;
+      return this.type == ((ThePi)other).type();
+    } // equals(Object)
+    
+/** Hashcode. <br />
+ *  
+ *   @see #equals(Object)
+ *   @return {@link #type}
+ */
+    @Override public final int hashCode(){ return this.type; }    
+    
+  } // ThePi.ComBeh
 } // ThePi  (06.04.2021)

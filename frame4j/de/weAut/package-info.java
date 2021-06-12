@@ -11,7 +11,7 @@ second and short domain of
 This  package {@link de.weAut} is the base Java process control with small 
 programmable systems, capable of hosting a standard Java JDK/JRE plus Frame4J.
 As of April 2021 (and since 2018) small control systems thus supported are
-Raspberry Pis with Java 8. <br />
+Raspberry Pis. <br />
 See also the <a href="https://a-weinert.github.io/raspiGPIOjava.html"
 title="on GitHub" target="_blank">post</a> and <a target="_blank"
 href="https://github.com/a-weinert/weAut/"
@@ -21,6 +21,8 @@ As of Revision 17, May 2019, we keep {@link de.weAut} in the same SVN
 source repository as the framework Frame4J, packages {@link de.frame4j} and
 below and deploy it in one frame4j.jar. And we make extensive use of Java 8's
 intact "installed extension" mechanism.<br />
+To put it short: IO on Raspberry Pis with Java is now a feature
+of Frame4J.<br />
 <br />
 <br />
 <h3>Conditions of use / license, <a name="co" id="co">Copyright</a></h3>
@@ -39,5 +41,5 @@ distribution.<br />
 Copyright <a href="#co">&copy;</a>  2019 2021 &nbsp; Albrecht Weinert <br />
 <br />
  @author   Albrecht Weinert
- @version  Revision $Revision: 42 $ ($Date: 2021-05-01 18:54:54 +0200 (Sa, 01 Mai 2021) $) 
+ @version  Revision $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $) 
 */package de.weAut;
