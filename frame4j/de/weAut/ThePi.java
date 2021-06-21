@@ -46,7 +46,7 @@ import de.frame4j.text.TextHelper;
  *  @see Pi3
  *  @see ClientPigpiod
  *  @author   Albrecht Weinert
- *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
+ *  @version  $Revision: 53 $ ($Date: 2021-06-21 19:59:41 +0200 (Mo, 21 Jun 2021) $)
  */
 // so far:   V. 36  (13.04.2021) :  new
 //           V. 4x  (21.05.202x) :  ...
@@ -274,7 +274,9 @@ public default Port portByGPIO(int gpio, String name) throws IOException {
   int pin = gpio2pin(gpio);
   if (name == null) throw new IOException("pin " + pin 
                                          + " for no or empty signal name");
-  if (pin != 0 || gpio == PINig) return new Port(gpio, pin, name, this);
+  if (pin != 0 || gpio == PINig) {
+    return new Port(gpio, pin, name, this);
+  }
   throw new IOException("pin " + pin + " for " + name + " = "  
                                                       + gpio2String(gpio));
 } // portByGPIO(int, String)
