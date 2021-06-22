@@ -24,12 +24,13 @@ package de.weAut;
  *  Copyright 2019 &nbsp; Albrecht Weinert<br />
  *  @see ThePi
  *  @see ClientPigpiod
+ *  @see PiGpioDerrs
  *  @author   Albrecht Weinert
- *  @version  $Revision: 53 $ ($Date: 2021-06-21 19:59:41 +0200 (Mo, 21 Jun 2021) $)
+ *  @version  $Revision: 54 $ ($Date: 2021-06-22 17:30:16 +0200 (Di, 22 Jun 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 36  (06.04.2021) :  minor typo
-
+//           V. 54  (22.06.2021) :  docu enh.
 public interface PiGpioDdefs {
 
 //-------------------------------------   Socket command codes   ------------
@@ -222,8 +223,8 @@ public interface PiGpioDdefs {
  *  <br />
  *  Hint: The use of the constants 
  *  {@link #PI_INIT_FAILED} .. {@link #PI_CMD_INTERRUPTED} or {@code PI_THeERROR}
- *  could be replaced by the enum {@link ErrPI} as
- *  {@link ErrPI}.{@code THeERROR}.{@link ErrPI#errNum()}.
+ *  could be replaced by the enum {@link PiGpioDerrs} as
+ *  {@link PiGpioDerrs}.{@code PI_THeERROR}.{@link PiGpioDerrs#errNum() errNum}.
  */
    public static final int PI_INIT_FAILED       = -1; // gpioInitialise failed
    public static final int PI_BAD_USER_GPIO     = -2; // GPIO not 0-31
@@ -379,249 +380,5 @@ public interface PiGpioDdefs {
    public static final int PI_CUSTOM_ERR_999 = -3999; //    
    public static final int PI_SOCK_READ_LEN  = -3059; // socket read wrong length
    public static final int PI_CMD_BAD        = -3081; // command bad; not 0..117
-   
-/** <b>pigpiod errors  plus short explanation as enumeration</b>. <br />
- *  <br >
- *  The pigpiod {@link #errNum() errors} -1..-143 plus a very short English
- *  {@link #expl explanation} are hier as enum objects. Their
- *  {@link #ordinal() ordinal} numbers 1..143 are the positive
- *  {@linkplain #errNum() error codes}:  <br />
- *  &nbsp; {@link #ordinal()} {@code  ==  -}{@link #errNum()}  <br />
- *  This is supplemented by {@link #NO_ERROR no error (0)}, a the Python error
- *  {@link #CMD_INTERRUPTED command interrupted (-144)}, and a   
- *  {@link #UNKNOWN_ERROR unknown PI_error} for a wrong pigpiod error
- *  number.
- */
-  public static enum ErrPI {
-    // Before you change anything:
-    // N.b.: The sequence of definition assigns the error number.
-    // Joan N.N. has no gaps in their error numbers -1 .. -144, thus allowing
-    // this efficient enum implementation. 
-    NO_ERROR("no error (0)"),
-    INIT_FAILED("pigpio initialisation failed"),
-    BAD_USER_GPIO("GPIO not 0..31"),
-    BAD_GPIO("GPIO not 0..53"),
-    BAD_MODE("mode not 0..7"),
-    BAD_LEVEL("level not 0 or 1"),
-    BAD_PUD("pud not 0..2"),
-    BAD_PULSEWIDTH("pulsewidth not 0 or 500..2500"),
-    BAD_DUTYCYCLE("dutycycle not in range (default 0..255)"),
-    BAD_TIMER("timer not 0..9"),
-    BAD_MS("ms not 10..60000"),
-    BAD_TIMETYPE("timetype not 0 or 1"),
-    BAD_SECONDS("seconds < 0"),
-    BAD_MICROS("micros not 0..999999"),
-    TIMER_FAILED("gpioSetTimerFunc failed"),
-    BAD_WDOG_TIMEOUT("timeout not 0..60000"),
-    NO_ALERT_FUNC("deprecated"),
-    BAD_CLK_PERIPH("clock peripheral not 0 or 1"),
-    BAD_CLK_SOURCE("deprecated"),
-    BAD_CLK_MICROS("clock micros not 1, 2, 4, 5, 8 or 10"),
-    BAD_BUF_MILLIS("buf millis not 100..10000"),
-    BAD_DUTYRANGE("dutycycle range not 25..40000"),
-    BAD_SIGNUM("signum not 0..63"),
-    BAD_PATHNAME("can't open pathname"),
-    NO_HANDLE("no handle available"),
-    BAD_HANDLE("unknown handle"),
-    BAD_IF_FLAGS("ifFlags > 3"),
-    BAD_CHANNEL("DMA channel not 0..14"),
-    BAD_SOCKET_PORT("socket port not 1024..30000"),
-    BAD_FIFO_COMMAND("unknown fifo command"),
-    BAD_SECO_CHANNEL("DMA secondary channel not 0..14"),
-    NOT_INITIALISED("function called before gpioInitialise"),
-    INITIALISED("function called after gpioInitialise"),
-    BAD_WAVE_MODE("waveform mode not 0..3"),
-    BAD_CFG_INTERNAL("bad parameter in gpioCfgInternals call"),
-    BAD_WAVE_BAUD("baud rate not 50-250000(RX)/1000000(TX)"), // -35
-    TOO_MANY_PULSES("waveform has too many pulses"),
-    TOO_MANY_CHARS("waveform has too many chars"),
-    NOT_SERIAL_GPIO("no bit bang serial read in progress on GPIO"),
-    BAD_SERIAL_STRUC("bad (null) serial structure parameter"),
-    BAD_SERIAL_BUF("bad (null) serial buf parameter"),
-    NOT_PERMITTED("GPIO operation not permitted"), // -41
-    SOME_PERMITTED("one or more GPIO not permitted"),
-    BAD_WVSC_COMMND("bad WVSC subcommand"),
-    BAD_WVSM_COMMND("bad WVSM subcommand"),
-    BAD_WVSP_COMMND("bad WVSP subcommand"),
-    BAD_PULSELEN("trigger pulse length not 1..100"),
-    BAD_SCRIPT("invalid script"),
-    BAD_SCRIPT_ID("unknown script id"),
-    BAD_SER_OFFSET("add serial data offset > 30 min"),
-    GPIO_IN_USE("GPIO already in use"),
-    BAD_SERIAL_COUNT("must read at least a byte at a time"),
-    BAD_PARAM_NUM("script parameter id not 0..9"),
-    DUP_TAG("script has duplicate tag"),
-    TOO_MANY_TAGS("script has too many tags"),
-    BAD_SCRIPT_CMD("illegal script command"),
-    BAD_VAR_NUM("script variable id not 0..149"),
-    NO_SCRIPT_ROOM("no more room for scripts"),
-    NO_MEMORY("can't allocate temporary memory"),
-    SOCK_READ_FAILED("socket read failed"),
-    SOCK_WRIT_FAILED("socket write failed"),
-    TOO_MANY_PARAM("too many script parameters (> 10)"),
-    SCRIPT_NOT_READY("script initialising"),  // -62
-    BAD_TAG("script has unresolved tag"),
-    BAD_MICS_DELAY("bad MICS delay (too large)"),
-    BAD_MILS_DELAY("bad MILS delay (too large)"),
-    BAD_WAVE_ID("non existent wave id"),
-    TOO_MANY_CBS("No more CBs for waveform"),
-    TOO_MANY_OOL("No more OOL for waveform"),
-    EMPTY_WAVEFORM("attempt to create an empty waveform"),
-    NO_WAVEFORM_ID("No more waveform ids"),
-    I2C_OPEN_FAILED("can't open I2C device"),
-    SER_OPEN_FAILED("can't open serial device"),
-    SPI_OPEN_FAILED("can't open SPI device"),
-    BAD_I2C_BUS("bad I2C bus"),
-    BAD_I2C_ADDR("bad I2C address"),
-    BAD_SPI_CHANNEL("bad SPI channel"),
-    BAD_FLAGS("bad i2c/spi/ser open flags"),
-    BAD_SPI_SPEED("bad SPI speed"),
-    BAD_SER_DEVICE("bad serial device name"),
-    BAD_SER_SPEED("bad serial baud rate"),
-    BAD_PARAM("bad i2c/spi/ser parameter"),
-    I2C_WRITE_FAILED("I2C write failed"),
-    I2C_READ_FAILED("I2C read failed"),
-    BAD_SPI_COUNT("bad SPI count"),
-    SER_WRITE_FAILED("ser write failed"),
-    SER_READ_FAILED("ser read failed"),
-    SER_READ_NO_DATA("ser read no data available"),
-    UNKNOWN_COMMAND("unknown command"),
-    SPI_XFER_FAILED("SPI xfer/read/write failed"),
-    BAD_POINTER("bad(NULL) pointer"),
-    NO_AUX_SPI("no auxiliary SPI on Pi A or B"),
-    NOT_PWM_GPIO("GPIO is not in use for PWM"),
-    NOT_SERVO_GPIO("GPIO is not in use for servo pulses"),
-    NOT_HCLK_GPIO("GPIO has no hardware clock"),
-    NOT_HPWM_GPIO("GPIO has no hardware PWM"),
-    BAD_HPWM_FREQ("hardware PWM frequency not 1..125M"),
-    BAD_HPWM_DUTY("hardware PWM dutycycle not 0..1M"),
-    BAD_HCLK_FREQ("hardware clock frequency not 4689..250M"),
-    BAD_HCLK_PASS("need password to use hardware clock 1"),
-    HPWM_ILLEGAL("illegal, PWM in use for main clock"),
-    BAD_DATABITS("serial data bits not 1..32"),
-    BAD_STOPBITS("serial(half) stop bits not 2..8"),
-    MSG_TOOBIG("socket/pipe message too big"),
-    BAD_MALLOC_MODE("bad memory allocation mode"),
-    TOO_MANY_SEGS("too many I2C transaction segments"),
-    BAD_I2C_SEG("an I2C transaction segment failed"),
-    BAD_SMBUS_CMD("SMBus command not supported"),
-    NOT_I2C_GPIO("no bit bang I2C in progress on GPIO"),  // -108
-    BAD_I2C_WLEN("bad I2C write length"),
-    BAD_I2C_RLEN("bad I2C read length"),
-    BAD_I2C_CMD("bad I2C command"),
-    BAD_I2C_BAUD("bad I2C baud rate, not 50-500k"),
-    CHAIN_LOOP_CNT("bad chain loop count"),
-    BAD_CHAIN_LOOP("empty chain loop"),
-    CHAIN_COUNTER("too many chain counters"),
-    BAD_CHAIN_CMD("bad chain command"), // -116
-    BAD_CHAIN_DELAY("bad chain delay micros"),
-    CHAIN_NESTING("chain counters nested too deeply"),
-    CHAIN_TOO_BIG("chain is too long"),
-    DEPRECATED("deprecated function removed"),
-    BAD_SER_INVERT ("bit bang serial invert not 0 or 1"),
-    BAD_EDGE       ("bad ISR edge value, not 0..2"),
-    BAD_ISR_INIT   ("bad ISR initialisation"),
-    BAD_FOREVER    ("loop forever must be last chain command"),
-    BAD_FILTER     ("bad filter parameter"), //-125
-    BAD_PAD        ("bad pad number"), // -126 
-    BAD_STRENGTH   ("bad pad drive strength"), // -127 
-    FIL_OPEN_FAILED("file open failed"), // -128 
-    BAD_FILE_MODE  ("bad file mode"),   // -129 
-    BAD_FILE_FLAG  ("bad file flag"),  // -130 
-    BAD_FILE_READ  ("bad file read"), // -131 
-    BAD_FILE_WRITE ("bad file write"), // -132 
-    FILE_NOT_ROPEN ("file not open for read"), // -133 
-    FILE_NOT_WOPEN ("file not open for write"), // -134 
-    BAD_FILE_SEEK  ("bad file seek"), // -135 
-    NO_FILE_MATCH  ("no files match pattern"), // -136 
-    NO_FILE_ACCESS ("no permission to access file"), // -137 
-    FILE_IS_A_DIR  ("file is a directory"), // -138 
-    BAD_SHELL_STATUS("bad shell return status"), // -139 
-    BAD_SCRIPT_NAME("bad script name"), // -140 
-    BAD_SPI_BAUD   ("SPI baud rate not 50..500k"), // -141 
-    NOT_SPI_GPIO   ("no bit bang SPI in progress on GPIO"), // -142 
-    BAD_EVENT_ID   ("bad event id"),    // -143 
-    CMD_INTERRUPTED("command interrupted"), // -144   (Python, only)
-    UNKNOWN_ERROR  ("unknown PI_error");  // currently -145 (may raise)
-
-/** The pigpiod error's short explanation. <br > **/   
-    public final String expl;
-
-/** constructor. */  
-    private ErrPI(String expl){ this.expl = expl; }
- 
-/** The error explanations as private array. <br />
- *  <br />
- *  index 0..145 is the ordinal, which is (must be!) 
- *  the negative error number. <br />
- *  [0] (-0) is no error (OK) <br />
- *  [145] (-145) represent unknown error or bad error number.<br />
- *  This value may / will raise when Joan N.N. defines errors -145 ...
- */
-    private static final ErrPI errors[] = values();
-  
-/** Get explained error by error number (-) or index. <br />
- *  <br />
- *  @param num the negative error number or its absolute (positive) value 
- *  @return the error enum object or {@link #UNKNOWN_ERROR}; <br >
- *         0 yields  {@link #NO_ERROR} 
- */
-    public static ErrPI byErrNum(int num){
-      if (num < 0) num = -num; // non negative index
-      if (num > 145) return UNKNOWN_ERROR;
-      return errors[num];
-    } // byErrNum(int)
-
-/** Get the error number (-). <br />
- *  <br />
- *  @return the error number; it is negative (-{@link #ordinal()})
- */
-    public int errNum(){ return -ordinal(); }
-
-/** Description of the enum object. <br />
- *  <br />
- *  This method returns a description in the form <br />
- *  {@code ErrPI.NOT_PERMITTED    -41:  GPIO operation not permitted}   
- */
-    @Override public String toString(){
-      StringBuilder dest = new StringBuilder(89);
-      dest.append("ErrPI.").append(name());
-      do { dest.append(' '); } while (dest.length() < 23);
-      dest.append('-').append(ordinal()).append(':');
-      do { dest.append(' '); } while (dest.length() < 29);
-      return dest.append(expl).toString();
-    } // toString()
-
-/** The enum ErrPi as application. <br />
- *  <br />
- *  This little helper lists all enum (pigpiod error) objects on standard
- *  output. Thats a nice list for reference.<br />
- *  Additionally, if something should be changed or added, this is the test
- *  output to check the correct error number assignment.<br />
- *  N.b.: for this enum class must hold: <br />   
- *  &nbsp;  &nbsp; {@link #ordinal()} {@code ==  -}{@link #errNum()}<br />
- *  <br >
- *  Hint: Start this application by <br  /> 
- *  {@code    java de.weAut.PiGpioDdefs$ErrPI }   
- *  @param args start parameters, ignored
- */
-    public static void main(String[] args){
-      System.out.println("\n\n  enum PiGpioDdefs.ErrPi "
-                       + "\n  pigpiod error explanations"
-                       + "\n  (c)  2021  Albrecht Weinert   a-weinert.de"
-                       + "\n  Rev.   53  (21.06.2021) \n");
-      for (ErrPI err : errors) { System.out.println(err); }
-  } // main(String[])
- } // ErrPI (21.06.2021) 
-  
-/** Listing the ErrPi enums. <br />
- *  <br />
- *  This little helper lists all enum (pigpiod error) objects on standard
- *  output.
- *  
- *  @see ErrPI#main(String[])
- *  @param args start parameters, ignored
- */
- public static void main(String[] args){  ErrPI.main(args); }  
   
 } // PiGpioDdefs (22.05.2019, 06.04.2021)
