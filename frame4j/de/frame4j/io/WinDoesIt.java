@@ -74,7 +74,7 @@ import de.frame4j.util.AppLangMap;
  *  Copyright 2007 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
+ *  @version  $Revision: 56 $ ($Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $)
  */
  // so far   V00.00 (19.12.2006) : new
  //          V.022+ (23.08.2013) : began porting (compatible) to 64 bit
@@ -95,7 +95,7 @@ public class WinDoesIt {
  *  respectively for 64 bit: <br />
  *   &nbsp; #define INVALID_HANDLE_VALUE ((HANDLE)(LONG_PTR)-1) <br />
  *  <br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */
    public static final long  INVALID_HANDLE_VALUE = -1;
 
@@ -197,8 +197,7 @@ public class WinDoesIt {
  *  Hint: The Windows (winBase.h) value and not the one according to
  *  javax.comm, RXTX and hence {@link SerialDefs}.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #setSerialParams(long, int, int, int, int, int)
  *  @see #ONE5STOPBITS
  *  @see #TWOSTOPBITS
@@ -207,8 +206,7 @@ public class WinDoesIt {
 
 /** Constant for StoppBits. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #ONE5STOPBITS
  *  @see #ONESTOPBIT
  */
@@ -219,8 +217,7 @@ public class WinDoesIt {
  *  Hint: The values used here are those of Windows (winBase.h) and not those
  *  defined by javax.comm, RXTX and hence {@link SerialDefs}.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #ONESTOPBIT
  */
    public final static int ONE5STOPBITS = 1;
@@ -397,8 +394,7 @@ public class WinDoesIt {
  *  implementation "bsDoesItNative.dll for Windows all are &quot;non
  *  overlapped&quot;.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #purgeSerialPort(long, int)
  *  @see #PURGE_TXABORT
  */
@@ -408,8 +404,7 @@ public class WinDoesIt {
  *  <br />
  *  Clears the input buffer (if the device driver has one).<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #purgeSerialPort(long, int)
  *  @see #PURGE_RXABORT
  */
@@ -420,8 +415,7 @@ public class WinDoesIt {
  *  Terminates all outstanding overlapped write operations and returns
  *  immediately, even if the write operations have not been completed.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #purgeSerialPort(long, int)
  *  @see #PURGE_RXABORT
  *  @see #PURGE_RXOR
@@ -432,8 +426,7 @@ public class WinDoesIt {
  *  <br />
  *  OR of the receive operations.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #purgeSerialPort(long, int)
  *  @see #PURGE_RXABORT
  */
@@ -443,8 +436,7 @@ public class WinDoesIt {
  *  <br />
  *  Clears the output buffer (if the device driver has one).<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #purgeSerialPort(long, int)
  *  @see #PURGE_RXABORT
  */
@@ -454,8 +446,7 @@ public class WinDoesIt {
  *  <br />
  *  OR of all PURGE constants.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #purgeSerialPort(long, int)
  *  @see #PURGE_RXABORT
  *  @see #PURGE_RXCLEAR
@@ -484,8 +475,7 @@ public class WinDoesIt {
  *  <br />
  *  The CTS (clear-to-send) signal is on.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #getSerialModemStatus(long)
  *  @see #MS_DSR_ON
  */
@@ -495,8 +485,7 @@ public class WinDoesIt {
  *  <br />
  *  The DSR (data-set-ready) signal is on.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #getSerialModemStatus(long)
  *  @see #MS_RING_ON
  */
@@ -506,8 +495,7 @@ public class WinDoesIt {
  *  <br />
  *  The ring indicator signal is on.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #getSerialModemStatus(long)
  *  @see #MS_RLSD_ON
  */
@@ -518,8 +506,7 @@ public class WinDoesIt {
  *  The RLSD (receive-line-signal-detect; vulgo carrier detect ??)
  *  signal is on.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #getSerialModemStatus(long)
  *  @see #MS_CTS_ON
  */
@@ -668,8 +655,7 @@ public class WinDoesIt {
  *  Restores character transmission and places the transmission line into
  *  a non-break state.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #escapeComm(long, int)
  *  @see #CLRDTR
  */
@@ -679,8 +665,7 @@ public class WinDoesIt {
  *  <br />
  *  Clears DTR (data-terminal-ready).<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #escapeComm(long, int)
  *  @see #CLRBREAK
  */
@@ -690,8 +675,7 @@ public class WinDoesIt {
  *  <br />
  *  Clears RTS (request-to-send).<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #escapeComm(long, int)
  *  @see #CLRBREAK
  */
@@ -702,8 +686,7 @@ public class WinDoesIt {
  *  Suspends character transmission and places the transmission line in
  *  a break state.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #escapeComm(long, int)
  *  @see #CLRBREAK
  */
@@ -713,8 +696,7 @@ public class WinDoesIt {
  *  <br />
  *   Sets DTR (data-terminal-ready).<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #escapeComm(long, int)
  *  @see #CLRBREAK
  */
@@ -724,8 +706,7 @@ public class WinDoesIt {
  *  <br />
  *  Sets RTS (request-to-send).<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #escapeComm(long, int)
  *  @see #CLRBREAK
  */
@@ -736,8 +717,7 @@ public class WinDoesIt {
  *  Causes transmission to act as
  *  if an XOFF character has been received.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #escapeComm(long, int)
  *  @see #CLRBREAK
  */
@@ -748,8 +728,7 @@ public class WinDoesIt {
  *  Causes transmission to act as
  *  if an XOFN character has been received.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #escapeComm(long, int)
  *  @see #CLRBREAK
  */

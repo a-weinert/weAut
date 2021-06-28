@@ -35,17 +35,18 @@ import de.frame4j.util.ComVar;
 
 /** <b>Constants and methods for the Raspberry Pi and its I/O</b>.<br />
  *  <br />
- *  The methods here are all implemented
- *  (featuring a kind of multiple inheritance). <br />
+ *  All methods define here are implemented. Insofar this interface isn't 
+ *  abstract (featuring a kind of multiple inheritance). <br />
  *  An application wanting to use {@link ThePi}, {@link ClientPigpiod}
- *  etc. must implement this interface {@link PiUtil}. 
+ *  etc. must implement (inherit from) this interface {@link PiUtil}. <br />
+ *  <br />
  *  <br />
  *  Copyright <a href=package-summary.html#co>&copy;</a> 2019, 2021
  *           &nbsp; Albrecht Weinert<br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
+ *  @version  $Revision: 56 $ ($Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $)
  */
-// so far:   V. o19  (17.05.2019) : new
+// so far:   V.  19  (17.05.2019) : new
 //           V.  21  (19.05.2019) : ALT numbers, typo
 //           V.  25  (27.05.2019) : enhanced error numbers 
 //           V.  36  (06.04.2021) : re-work
@@ -66,7 +67,8 @@ public interface PiUtil extends PiVals {
  *  <br />
  *  This method flushes {@link #getOut out}, waits a few ms to let that
  *  happen and then lets end all with {@code System.exit(ret)}. <br />
- *  This methods end the programme (the JVM) and, hence, never returns. <br />
+ *  This methods end the programme (the JVM) and, hence, never returns.
+ *  
  *  @param ret the return code 
  */
   public default void systemExit(final int ret){
@@ -78,7 +80,7 @@ public interface PiUtil extends PiVals {
     System.exit(ret);
   } // systemExit(int)
   
-/** Register this as standard MBean. <br />
+/** Register this application as standard MBean. <br />
  * 
  *  @return the registered object name
  *  @throws JMException if the registering fails 
@@ -140,6 +142,9 @@ public interface PiUtil extends PiVals {
 
   
 // ------------ common Frame4J resources ----------------------------------
+// Two "forwardes" only for those wanting to use this package as copy
+// without packages de.frame4j... If doing so (why the hell?) provide an
+// own proper implementation here.
 
 /** Format as two digit decimal number with leading zero. <br />
  *  <br />
@@ -234,7 +239,7 @@ public interface PiUtil extends PiVals {
  */
     public static final int ERR_PIGPIOD_CON =  85;
 
-// *) Other programmes / librariy's exit values; do NOT change here    
+// *) Other programmes' / libraries' exit values; do NOT change here    
 
 /** Get error text. <br />
  *  <br />
@@ -265,7 +270,7 @@ public interface PiUtil extends PiVals {
           return "can't connect pigpioD";
         case ERR_ASSIGN_PIN: //  86
           return "no IO pin";
-     }
+     } // switch (errNum)
      return "error " + errNum;
   } //errorText(int)
    
@@ -385,11 +390,11 @@ public interface PiUtil extends PiVals {
 
 /** Periodic delay. <br />
  *  <br />
- *  This method delays the calling thread for the given number of 
- *  milliseconds relative to its last call. Hence, it is able to implement
- *  strong long term periodicity. Called 86400 times with 1000 will end
+ *  This method delays the calling thread for the given number of ms
+ *  (milliseconds) relative to its last call. Hence, it is able to implement
+ *  strong long term periodicity. Called 86400 times with 1000 ms will end
  *  one day *) later, e.g.. The number of such successful delays can be 
- *  obtained by {@link #getCycCnt()}. <br />
+ *  obtained by {@link #getDelCnt()}. <br />
  *  Hint: On a day with leap seconds either this fails or the underlying
  *  system clock has been spoiled.<br />
  *  <br />
@@ -404,19 +409,19 @@ public interface PiUtil extends PiVals {
  */  
    public default void thrDelay(int millies){ Impl.thrDelay(millies); }
 
-/** Get the number of cycles respectively delays. <br />
+/** Get the number of thread delays. <br />
  *  <br />   
  *  @return the number of successful thread delays
  *  @see #thrDelay(int) #getOvrCnt()
  */
-   public default int getCycCnt(){ return Impl.getCycCnt(); } 
+   public default int getDelCnt(){ return Impl.getDelCnt(); } 
 
 /** Get the number of spoiled delays. <br />
  *  <br />   
  *  @return the number of spoiled thread delays
  *  @see #thrDelay(int) #getCycCnt()
  */
-   public default int getOvrCnt(){ return Impl.getCycOvr(); } 
+   public default int getOvrCnt(){ return Impl.getDelOvr(); } 
 
 /** <b>A tick as mutable object</b>. <br />
  *  <br />
@@ -681,10 +686,10 @@ static final class Impl {
 /** Periodic delay. <br />
  *  <br />
  *  @see PiUtil#thrDelay(int)
- *  @see PiUtil#getCycCnt()
+ *  @see PiUtil#getDelCnt()
  *  @see PiUtil#getOvrCnt()
- *  @see #getCycCnt()
- *  @see #getCycOvr()
+ *  @see #getDelCnt()
+ *  @see #getDelOvr()
  *  @param millies the number of ms to delay relativ to the last call
  */  
    static void thrDelay(int millies){
@@ -708,12 +713,12 @@ static final class Impl {
 /** Get the number of cycles respectively delays. <br />
  *  <br /> 
  *  Implementation note on {@link PiUtil.LeTick): This is the count of
- *  {@link PiUtil.LeTick#add(long)} calls.
+ *  {@link PiUtil.LeTick#add(long)} calls. (This is  a per thread property.)
  *  @return the number of successful thread delays
  *  @see #thrDelay(int)
- *  @see #getCycOvr()
+ *  @see #getDelOvr()
  */
-   static int getCycCnt(){
+   static int getDelCnt(){
      LeTick leTick = lastThTick.get();
      if (leTick == null) return 0; // no thread local tick ==> no cycle count
      return leTick.cycCnt;
@@ -722,18 +727,19 @@ static final class Impl {
 /** Get the number of spoiled delays. <br />
  *  <br /> 
  *  Implementation note on {@link PiUtil.LeTick): This is the count of
- *  {@link PiUtil.LeTick#setTick(long)} calls.
+ *  {@link PiUtil.LeTick#setTick(long)} calls unable to hit the target 
+ *  point in time. (This is  a per thread property.)
  *  @return the number of successful thread delays
  *  @see #thrDelay(int)
- *  @see #getCycCnt()
+ *  @see #getDelCnt()
  */
-   static int getCycOvr(){
+   static int getDelOvr(){
      LeTick leTick = lastThTick.get();
      if (leTick == null) return 0; // no thread local tick ==> no overrun
      return leTick.ovrCnt;
    } // getCycOvr()
 
-/** A container holding one LeTick object per thread. */  
+/** A container holding one LeTick object per thread. <br /> */  
    static final ThreadLocal<LeTick> lastThTick = new ThreadLocal<>();
   } // Impl
-} // PiUtil (28.05.2019, 03.04.2021)
+} // PiUtil (28.05.2019, 28.06.2021)

@@ -23,7 +23,7 @@ import de.frame4j.util.ComVar;
  *  This interface contains values for all Raspberry Pis and related 
  *  applications. 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
+ *  @version  $Revision: 56 $ ($Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $)
  */
 // so far:  V. 38  (16.04.2021) :  new
 //          V. 4x  (21.05.202x) :  ...
@@ -32,24 +32,24 @@ public interface PiVals extends ComVar {
   
 /** Defines maximal existing GPIO number. <br />
  *  <br />
- *  Value: {@value}
+ *  Value: {@code 56}
  *  @see #GPIOmin
  *  @see #GPIOutM #PINig
  */
-    int GPIOmax = 56; // this value must be 
+    int GPIOmax = 56;
 
 /** Defines smallest existing GPIO number. <br />
  *  <br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  *  @see #GPIOmax
  *  @see #GPIOutM #PINig
  */
-    int GPIOmin = 0; // this value must be 
+    int GPIOmin = 0;
 
 /** Defines highest GPIO number allowed for output. <br />
  *  <br />
  *  Principally all GPIO numbers in the range 
- *  {@code  {@link #GPIOmin} .. {@link #GPIOmax} = 0..56} could be 
+ *  {@link #GPIOmin}{@code .. }{@link #GPIOmax}{@code  = 0..56} could be 
  *  used for input and output &ndash; and pigpiod would allow this. <br />
  *  Nevertheless it is highly recommended not to use GPIO numbers above
  *  {@code  {@link #GPIOouM} = 31} for output. <br />
@@ -58,13 +58,13 @@ public interface PiVals extends ComVar {
  *  Hence, all output related methods of this framework will reject the
  *  attempt as error. <br />
  *  <br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  *  @see #GPIOmin
  *  @see #GPIOmax
  *  @see #PINig
  *  @see ThePi#gpioMayOut(int)
  */
-    int GPIOutM = 31; // this value must be 
+    int GPIOutM = 31;  
   
 /** Defines non existing GPIO number for a disabled GPIO pin. <br />
  *  <br />
@@ -72,7 +72,7 @@ public interface PiVals extends ComVar {
  *  parameter means not assigned or disabled. All IO methods of this
  *  framework will accept this value as GPIO parameter and and won't do any
  *  action on it nor raise an error.<br />
- *  Value: {code {@value} = {@link #GPIOmax} + 1} 
+ *  Value: {@code 57 = }{@link #GPIOmax} {@code + 1} 
  */
   int PINig = 57;
 
@@ -82,7 +82,7 @@ public interface PiVals extends ComVar {
  *  non existing pin numbers, i.e. outside [1..40] for Pi3, Pi4 and Pi0
  *  and outside [1..26] for Pi1. In any sequence of GPIO numbers this 
  *  value, also, marks the end (as last+1 entry).<br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code><br />
  *  Nota bene: PINix as all constants called PIN** are GPIO numbers.
  *  A non existing pin or one for a non existent signal will get the pin
  *  number 0. The smallest possible pin number on a pin connector is 1.
@@ -95,27 +95,27 @@ public interface PiVals extends ComVar {
  *  returned for ground pins (Gnd, 0V). Methods asked to act on this
  *  pseudo GPIO number are free to do nothing (ignore) or raise an
  *  error. The recommended behaviour is ignore.<br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */
   int PIN0V = 90;
   
 /** Defines a 3.3 V pin. <br />
  *  <br />
  *  This special undefined GPIO number will be assigned to respectively
- *  returned for µC supply voltage pins (3.3V). Methods asked to act on this
+ *  returned for &micro;C supply voltage pins (3.3V). Methods asked to act on this
  *  pseudo GPIO number are free to do nothing (ignore) or raise an
  *  error. The recommended behaviour is ignore.<br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */
   int PIN3V = 93;
 
 /** Defines a 5 V pin. <br />
  *  <br />
  *  This special undefined GPIO number will be assigned to respectively
- *  returned for µC supply voltage pins (3.3V). Methods asked to act on this
+ *  returned for &micro;C supply voltage pins (3.3V). Methods asked to act on this
  *  pseudo GPIO number are free to do nothing (ignore) or raise an
  *  error. The recommended behaviour is ignore.<br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */
   int PIN5V = 95;
   
@@ -124,7 +124,7 @@ public interface PiVals extends ComVar {
 /** The Pi's GPIO pin connector mapping. <br />
  *  <br />
  *  There are int constants by name PINn and PINnn with hn resp. n in the
- *  range 1 resp. 01 ti 40 with the GPIO number or function of the Pi type
+ *  range 1 resp. 01 to 40 with the GPIO number or function of the Pi type
  *  as value. <br />
  *  <br />
  *  As there is no pin 0 the extra constants {@link #PIN00} and 
@@ -134,7 +134,7 @@ public interface PiVals extends ComVar {
  */
   public static final int PIN00  = PINix, PIN0 = PINix;
 
-/** The Pi's 3.3 V µC supply pins. <br />
+/** The Pi's 3.3 V &micro;C supply pins. <br />
  *  <br />
  *  The 3.3 V pins are 1 and 17 on all Pi types denoted by constants
  *  {@link #PIN1}, {@link #PIN01} and {@link #PIN17} with value
@@ -143,7 +143,7 @@ public interface PiVals extends ComVar {
   public static final int PIN01 = PIN3V, PIN1 = PIN3V, 
                           PIN17 = PIN3V; // 3.3 V µC supply
 
-/** The Pi's 5.0 V µC board pins. <br />
+/** The Pi's 5.0 V &micro;C board pins. <br />
  *  <br />
  *  The 5 V pins are 2 and 4 on all Pi types denoted by constants
  *  {@link PIN2}, {@link PIN02}, {@link PIN4} and {@link PIN04} with value

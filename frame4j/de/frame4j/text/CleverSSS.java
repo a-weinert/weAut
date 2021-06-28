@@ -97,8 +97,8 @@ import de.frame4j.util.MinDoc;
 @MinDoc(
    copyright = "Copyright 2010  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 51 $",
-   lastModified   = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
+   version   = "V.$Revision: 56 $",
+   lastModified   = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "extend for clever substring search",  
    purpose = "common type for clever searches like Rabin Karp (RK), KMP etc."
@@ -116,7 +116,7 @@ import de.frame4j.util.MinDoc;
  *  will not be true for use in Eastern Asia. The hash quality might even then 
  *  be sufficient for {@link RK RK}, but that has to be explored then.<br />
  *  <br />
- *  Value: {@value} <br />
+ *  Value: <code>{@value}</code>
  *  @see #hashCode()
  *  @see #mskMod
  */      
@@ -137,7 +137,7 @@ import de.frame4j.util.MinDoc;
  *  types. And that is by nature clearly determined by
  *  {@link RK Rabin Karp}.<br />
  *  <br /> 
- *  Value: {@value} &nbsp;= 0x3FFFFFFF =  0x40000000-1<br />
+ *  Value: <code>{@value}</code> &nbsp;= 0x3FFFFFFF =  0x40000000-1
  *  @see #hashCode()
  *  @see #primF
  */      

@@ -94,7 +94,7 @@ import de.frame4j.text.TextHelper;
  *  @see de.frame4j.graf.ColorHelper#getColor(CharSequence)
  *  @see de.frame4j.time.TimeHelper#TIME_CHOOSE
  * 
- *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
+ *  @version  $Revision: 56 $ ($Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $)
  */
  // until now  V02.01 (17.06.2003 17:00) : new (for ZeitHelper)
  //            V.o48+ (19.01.2009 11:37) : ported (Frame4J) translation start
@@ -103,8 +103,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 2004, 2009  A. Weinert",
    author = "Albrecht Weinert",
-   version = "V.$Revision: 51 $",
-   lastModified = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
+   version = "V.$Revision: 56 $",
+   lastModified = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage = "use for human friendly parsers",  
    purpose = "translate (polyglotly) keywords to unique integer codes"
@@ -112,28 +112,28 @@ import de.frame4j.text.TextHelper;
     
 /** Action code: Don't do anything. <br />
  *  <br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */      
    public static final int NOP = 0;
 
 /** Action code: Set day of week. <br />
  *  <br />
  *  {@link #code} = 0 : Sunday, 1 : Monday, ... 6 : Saturday.<br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */   
    public static final int SWD = 3;
 
 /** Action code: Set month. <br />
  *  <br />
  *  {@link #code} = 1 : January ... 12 : December.<br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */   
    public static final int SMON = 4;
 
 /** Action code: Set time zone offset. <br />
  *  <br />
  *  {@link #code} =  Offset in minutes  -12*60..+12*60 in 60 (30,15) steps<br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */   
    public static final int STZO = 5;
 
@@ -146,14 +146,14 @@ import de.frame4j.text.TextHelper;
 /** Action code: Set the day relative to today. <br />
  *  <br />
  *  {@link #code} = 0 : today, -1 : yesterday, +1 : tomorrow, and so on..<br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */   
    public static final int SDAY = 7;
 
 /** Action code: Set complete date. <br />
  *  <br />
  *  {@link #code} = 0 : (right) now<br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */   
    public static final int SDAT = 8;
 
@@ -162,7 +162,7 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  {@link #code} = 1 : every second, 2: every minute, 3 : every hour,
  *   4 : daily, 5 : weekly.<br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */   
    public static final int SRATE = 11;
 
@@ -170,7 +170,7 @@ import de.frame4j.text.TextHelper;
 /** Action code: Report level. <br />
  *  <br />
  *  {@link #code} = 300 (debug) .. 1000 (silent / severe).<br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code><br />
  *  <br />
  *  @see Verbos#toString()
  */   
@@ -180,7 +180,7 @@ import de.frame4j.text.TextHelper;
 /** Action code: Select colour. <br />
  *  <br />
  *  {@link #code} = 0xFF0000 : red (e.g.); any of  0xrrggbb.<br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */   
    public static final int SCOLOR = 32;
 

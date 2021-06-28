@@ -50,8 +50,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright  2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 50 $",
-   lastModified   = "$Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $",
+   version   = "V.$Revision: 56 $",
+   lastModified   = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "import",  
    purpose = "common map and properties utilities"
@@ -472,7 +472,7 @@ import de.frame4j.text.TextHelper;
 
 /** Modifier public static final. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  *  @see Modifier
  */      
    static public final int PUSTFI =

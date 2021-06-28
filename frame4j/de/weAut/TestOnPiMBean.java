@@ -18,7 +18,7 @@ import de.frame4j.util.AppMBean;
  *  <br />
  *  Copyright  &copy;  2021  Albrecht Weinert 
  *
- *  @version  $Revision: 51 $ ($Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $)
+ *  @version  $Revision: 56 $ ($Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $)
  *  @see TestOnPi
  *  @see PiUtil
  *  @see de.weAut.demos.BlinkOnPi
@@ -210,8 +210,18 @@ public interface TestOnPiMBean extends AppMBean {
 /** Blink the LEDs. <br /> */
   public void blink();
   
-/** Servo wink respectively PWM up/down. <br /> */
-  public void wink(); 
+/** Servo wink respectively PWM up/down. <br /> 
+ *  <br />
+ *  The choice of action (servo or PWM) depends on the start and other values
+ *  set.
+ */
+  public void wink();
+  
+/** Wink servo over almost full range. <br />  */
+  public void winkServo(); 
+  
+/** PWM continuously up and down over almost full range. <br />  */
+public void winkPWM();    
   
 /** Set the output. <br /> 
  *  <br />

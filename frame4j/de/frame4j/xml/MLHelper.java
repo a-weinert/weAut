@@ -53,8 +53,8 @@ import org.w3c.dom.NodeList;
 @MinDoc(
    copyright = "Copyright   2003 - 2007, 2009, 2016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
+   version   = "V.$Revision: 56 $",
+   lastModified   = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "use in XML / HTML applications",  
    purpose = "provide helper methods and values"
@@ -68,7 +68,7 @@ import org.w3c.dom.NodeList;
  *  <br />
  *  The value of this String is a property name.<br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  *  <br />
  *  Hint: http is here and in other constants like that no hypertext URL but
  *  XML standardised nonsense. To say it clear: do not try to set it into your
@@ -86,7 +86,7 @@ import org.w3c.dom.NodeList;
  *  <br />
  *  See the hint at {@link #JAXP_SCHEMA_LANGUAGE }.
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
    public static final String W3C_XML_SCHEMA =
                                         "http://www.w3.org/2001/XMLSchema";
@@ -97,7 +97,7 @@ import org.w3c.dom.NodeList;
  *  <br />
  *  See the hint at {@link #JAXP_SCHEMA_LANGUAGE }.
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
     static public final String JAXP_SCHEMA_SOURCE =
                     "http://java.sun.com/xml/jaxp/properties/schemaSource";  

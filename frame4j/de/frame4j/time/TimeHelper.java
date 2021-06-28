@@ -65,8 +65,8 @@ import static de.frame4j.time.AClock.*;
 @MinDoc(
    copyright = "Copyright 2000 - 2009, 2016  A. Weinert",
    author  = "Albrecht Weinert",
-   version = "V.$Revision: 51 $",
-   lastModified = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
+   version = "V.$Revision: 56 $",
+   lastModified = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage = "import TimeHelper to your classes  or\n\n"
         +  "  java de.frame4j.time.TimeHelper [options] [time [time .. [loop]",  
@@ -80,7 +80,7 @@ import static de.frame4j.time.AClock.*;
    
 /** Days in four years (implying one of it being a leap year). <br />
  *  <br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */
    public static final int DAYSin4YEARS = 365 * 3 + 366;
 

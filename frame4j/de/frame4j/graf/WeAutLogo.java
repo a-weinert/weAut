@@ -53,8 +53,8 @@ import de.frame4j.util.MinDoc;
 @MinDoc(
    copyright = "Copyright 2000 - 2009, 2019  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 39 $",
-   lastModified   = "$Date: 2021-04-17 21:00:41 +0200 (Sa, 17 Apr 2021) $",
+   version   = "V.$Revision: 56 $",
+   lastModified   = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "get as image",  
    purpose = "weinert-automation's Logo, the graphics"
@@ -218,7 +218,7 @@ import de.frame4j.util.MinDoc;
 
 /** weinert-automation's logo as icon; dimension; width = height. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
    static public final int iconWH = 32;
 

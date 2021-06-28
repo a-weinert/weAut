@@ -62,7 +62,7 @@ import javax.management.JMException;
  *  @see BlinkOnPiMBean
  *  @see de.weAut.TestOnPi
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
+ *  @version  $Revision: 56 $ ($Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $)
  *  @see BlinkOnPiMBean
  *  @see PiUtil
  *  @see <a href="./doc-files/BlinkOnPi.properties">BlinkOnPi.properties</a>
@@ -75,8 +75,8 @@ import javax.management.JMException;
 //           V.  45  (08.05.2021) : piTraffic buzzer and button
 @MinDoc(
   copyright = "Copyright 2021  A. Weinert",
-  version   = "V.$Revision: 52 $",
-  lastModified   = "$Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $",
+  version   = "V.$Revision: 56 $",
+  lastModified   = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
   usage   = "start as Java application (-? for help)",  
   purpose = "a Frame4J program to blink LEDs on a Pi via pigpioD"
 ) public class BlinkOnPi extends App implements PiUtil, BlinkOnPiMBean {
@@ -245,7 +245,7 @@ import javax.management.JMException;
     // shutdown tasks
     if (pI != null) {
       out.println("\n  BlinkOnPi shutdown " + pI + "    cyc/ovr: "
-                     + getCycCnt() + "/" + getOvrCnt());
+                     + getDelCnt() + "/" + getOvrCnt());
       pI.releaseOutputsReport(out);
       try {
          pI.disconnect();

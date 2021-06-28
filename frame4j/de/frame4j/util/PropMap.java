@@ -175,7 +175,7 @@ import de.frame4j.text.TextHelper;
  *  @see de.frame4j.util
  *  @see de.frame4j.text.TextHelper
  *  @author   Albrecht Weinert
- *  @version  $Revision: 50 $ ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $
+ *  @version  $Revision: 56 $ ($Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $
  */
  // so far    V02.00 (22.10.2004) :  new, alpha
  //           V02.07 (29.10.2004) :  final, Entry modif. intern make
@@ -194,8 +194,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 2004 - 2008, 2009, 2016  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 50 $",
-   lastModified   = "$Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $",
+   version   = "V.$Revision: 56 $",
+   lastModified   = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "3 phase: make, populate, use (preferably not further modified)",  
    purpose = "initial properties for applications and other objects"
@@ -1063,8 +1063,7 @@ import de.frame4j.text.TextHelper;
    
 /** Cache size for valueLang() look up. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #valueLang(CharSequence, String) 
  *  @see Prop#valueLang(CharSequence)
  *  @see Prop#valueLang(CharSequence, String)
@@ -1925,7 +1924,7 @@ import de.frame4j.text.TextHelper;
 
 /** Maximum length of loaded .properties files or resources list. <br />
  *  <br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */
    public static final int FILE_LIST_LEN = 25;
 
@@ -2500,7 +2499,7 @@ import de.frame4j.text.TextHelper;
 
 /** Message on value to be a character sequence, for exceptions. <br />
  *  <br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */
    static public final String valStringMld =
       "de.frame4j.util.ProMap.Entry values must be CharSequences (or null).";
@@ -2508,7 +2507,7 @@ import de.frame4j.text.TextHelper;
 /** Message on key to be non empty a character sequence, 
  *                                                     for exceptions. <br />
  *  <br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */
    static public final String keyStringMld =
     "de.frame4j.util.ProMap.Entry keys must be non empty (trimmed) Strings.";

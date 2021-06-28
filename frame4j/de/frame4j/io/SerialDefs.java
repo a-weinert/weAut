@@ -57,7 +57,7 @@ import de.frame4j.text.TextHelper;
  *  Copyright 2006, 2007, 2009, 2013 &nbsp; Albrecht Weinert<br /> 
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
+ *  @version  $Revision: 56 $ ($Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $)
  */
  // so far    V00.00 (21.12.2006) : extracted out of SerIO
  //           V.134+ (02.11.2015) : method made static
@@ -81,8 +81,7 @@ public interface SerialDefs {
  *  receiver and transmitter), of course, can do it, but modern PCs and chip
  *  sets may have dropped this mode, like RXTX did.<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #DATABITS_8
  *  @see #getDataBits()
  *  @see #setSerialPortParams(int, int, int, int)
@@ -91,32 +90,28 @@ public interface SerialDefs {
 
 /** Setting: 6 data bits. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #DATABITS_5
  */
    static public final int DATABITS_6 = 6;
 
 /** Setting: 7 data bits. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #DATABITS_5
  */
    static public final int DATABITS_7 = 7;
 
 /** Setting: 8 data bits. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #DATABITS_5
  */
    static public final int DATABITS_8 = 8;
 
 /** Setting: 1 stop bit. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #STOPBITS_2
  *  @see #getStopBits()
  *  @see #setSerialPortParams(int, int, int, int)
@@ -127,10 +122,9 @@ public interface SerialDefs {
  *  <br />
  *  Using two stop bits in a serial link's hardware/software usually affects
  *  the transmitter only. The receiver would normally still accept one without
- *  reporting an error. 
- *  
- *  Value: {@value}<br />
+ *  reporting an error. <br />
  *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #STOPBITS_1
  *  @see #getStopBits()
  *  @see #setSerialPortParams(int, int, int, int)
@@ -143,8 +137,7 @@ public interface SerialDefs {
  *  transmitter) or chip sets do allow 1.5 stop bits only in combination with
  *  5 data bits ({@link #DATABITS_5}).<br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #DATABITS_5
  *  @see #STOPBITS_2
  *  @see #getStopBits()
@@ -154,8 +147,7 @@ public interface SerialDefs {
 
 /** Setting: no parity. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #PARITY_EVEN
  *  @see #parityAsString()
  *  @see #getParity()
@@ -167,8 +159,7 @@ public interface SerialDefs {
  *  <br />
  *  One parity bit will be appended in a way that the number of one's is
  *  even.<br /><br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #PARITY_ODD
  *  @see #parityAsString()
  *  @see #getParity()
@@ -179,9 +170,9 @@ public interface SerialDefs {
 /** Setting: odd parity. <br />
  *  <br />
  *  One parity bit will be appended in a way that the number of one's is
- *  odd.<br /><br />
- *  Value: {@value}<br />
+ *  odd.<br />
  *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #PARITY_EVEN
  *  @see #parityAsString()
  *  @see #getParity()
@@ -191,8 +182,7 @@ public interface SerialDefs {
 
 /** Setting: parity mark. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #PARITY_EVEN
  *  @see #parityAsString()
  *  @see #getParity()
@@ -202,8 +192,7 @@ public interface SerialDefs {
 
 /** Setting: parity space. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #PARITY_EVEN
  *  @see #parityAsString()
  *  @see #getParity()
@@ -224,7 +213,7 @@ public interface SerialDefs {
 
 /** Setting: data flow control: none. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code><br />
  *
  *  @see #FLOWCONTROL_RTSCTS
  *  @see #getFlowControlMode()
@@ -234,8 +223,7 @@ public interface SerialDefs {
 
 /** Setting: data flow control: hardware on input. <br />
  *  <br />
- *  Value: {@value}<br />
- *
+ *  Value: <code>{@value}</code>
  *  @see #FLOWCONTROL_NONE
  *  @see #getFlowControlMode()
  */
@@ -243,8 +231,7 @@ public interface SerialDefs {
 
 /** Setting: data flow control: hardware on output. <br />
  *  <br />
- *  Value: {@value}<br />
- *
+ *  Value: <code>{@value}</code>
  *  @see #FLOWCONTROL_NONE
  *  @see #getFlowControlMode()
  */
@@ -252,7 +239,7 @@ public interface SerialDefs {
 
 /** Setting: data flow control: hardware both directions. <br />
  *  <br />
- *  Value: {@value} ({@link #FLOWCONTROL_RTSCTS_OUT} | 
+ *  Value: <code>{@value}</code> ({@link #FLOWCONTROL_RTSCTS_OUT} | 
  *                    {@link #FLOWCONTROL_RTSCTS_IN})<br />
  *  @see #FLOWCONTROL_NONE
  *  @see #getFlowControlMode()
@@ -262,8 +249,7 @@ public interface SerialDefs {
 
 /** Setting: data flow control: software on input. <br />
  *  <br />
- *  Value: {@value}<br />
- *
+ *  Value: <code>{@value}</code>
  *  @see #FLOWCONTROL_NONE
  *  @see #getFlowControlMode()
  */
@@ -271,7 +257,7 @@ public interface SerialDefs {
 
 /** Setting: data flow control: software on output. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code><br />
  
  *  @see #FLOWCONTROL_NONE
  *  @see #getFlowControlMode()
@@ -280,7 +266,7 @@ public interface SerialDefs {
 
 /** Setting: data flow control: software both directions. <br />
  *  <br />
- *  Value: {@value} ({@link #FLOWCONTROL_XONXOFF_OUT} | 
+ *  Value: <code>{@value}</code> ({@link #FLOWCONTROL_XONXOFF_OUT} | 
  *                    {@link #FLOWCONTROL_XONXOFF_IN})<br />
  */
    static public final int FLOWCONTROL_XONXOFF = FLOWCONTROL_XONXOFF_OUT
@@ -288,8 +274,7 @@ public interface SerialDefs {
 
 /** Event type: Overrun error. <br />
  *  <br />
- *  Value: {@value}<br />
- *
+ *  Value: <code>{@value}</code>
  *  @see #FLOWCONTROL_NONE
  *  @see #getFlowControlMode()
  */
@@ -297,55 +282,55 @@ public interface SerialDefs {
 
 /** Event type: Parity error. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
    static public final int PE = 8;
 
 /** Event type: Framing error. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
    static public final int FE = 9;
 
 /** Event type: Break / Interrupt. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
    static public final int BI = 10;
 
 /** Event type: Carrier detect. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
    static public final int CD = 6;
 
 /** Event type: Ring Indicator. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
    static public final int RI = 5;
 
 /** Event type: Data set ready. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
    static public final int DSR = 4;
 
 /** Event type: Clear to send. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
    static public final int CTS = 3;
 
 /** Event type: Data available. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
    static public final int DATA_AVAILABLE = 1;
 
 /** Event type:  Output buffer empty. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
    static public final int OUTPUT_BUFFER_EMPTY = 2;
 

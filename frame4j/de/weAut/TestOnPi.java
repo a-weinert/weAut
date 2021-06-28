@@ -84,7 +84,7 @@ like e.g. <pre><code>
  *  @see <a href="./doc-files/Raspi4testPins.png"
  *   title="GPIOs and pins">Raspi4testPins</a>
  *
- *  @version  $Revision: 54 $ ($Date: 2021-06-22 17:30:16 +0200 (Di, 22 Jun 2021) $)
+ *  @version  $Revision: 56 $ ($Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $)
  */
  // so far:  V.  21  (21.05.2019) : new, minimal functionality
  //          V.  26  (31.05.2019) : three LEDs, IO lock 
@@ -92,8 +92,8 @@ like e.g. <pre><code>
  //          V.  54  (22.06.2021) : beta 10
 @MinDoc(
   copyright = "Copyright 2021  A. Weinert",
-  version   = "V.$Revision: 54 $",
-  lastModified   = "$Date: 2021-06-22 17:30:16 +0200 (Di, 22 Jun 2021) $",
+  version   = "V.$Revision: 56 $",
+  lastModified   = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
   usage   = "start as Java application (-? for help)",  
   purpose = "a Frame4J program to test IO devices on a Pi via pigpioD"
 ) public class TestOnPi extends App implements PiUtil, TestOnPiMBean {
@@ -175,8 +175,17 @@ like e.g. <pre><code>
   int val    = 100; // PMW or servo current value; default 100
   int valUp = 255; // PMW or servo value upper limit; default 255
   int valLo = 0;  // PMW or servo value lower limit; default 0
-  
-  boolean runOnTask;
+
+/** Running task counter. <br />
+ *  <br />
+ *  Starting a task: <br />
+ *  (local) int mTskCnt = ++runOnTask; <br />
+ *  Condition to run on: <br />
+ *  runOnTask >= mTskCnt && isRunFlag() <br />
+ *  Stop last task:<br />
+ *  --runOnTask; <br />
+ */
+  int runOnTask; // 0 no task running
   
 //---- standard Bean / argument  implementation   --------------------------
   
@@ -248,7 +257,7 @@ like e.g. <pre><code>
   } // setValLO(Integer)
   @Override public Integer getValLo(){ return valLo; }
   @Override public void stopTask(){
-    if (runOnTask) { runOnTask = false; } else { stop(); }
+    if (runOnTask > 1) { --runOnTask; } else { runOnTask = 0; stop(); }
   } // stopTask()
   
 //-------------- non LED input and output ------------------ 
@@ -309,7 +318,7 @@ like e.g. <pre><code>
 
 /** Helper for starting cyclic task action. <br /> */   
   boolean reportTskStrt(final String taskName) {
-   if (!runOnTask || !isRunFlag()) return false;
+   if (!isRunFlag()) return false;
    if (cycLim <= 0 || cycLim >= 2000111222) {
      out.println("\n  " + taskName + "  (" + valueLang("endless") 
                                  + " -> JConsole)");
@@ -333,10 +342,8 @@ like e.g. <pre><code>
  */
   boolean chkDelay(final int millies){
     if (invInToOut)inToInvOut();
-    if (runOnTask && isRunFlag()){
-      thrDelay(millies);
-    } 
-    return runOnTask && isRunFlag();
+    if (isRunFlag()) thrDelay(millies);
+    return isRunFlag();
   } // chkDelay(int)
  
 /** Blink the LEDs. <br /> */
@@ -346,14 +353,15 @@ like e.g. <pre><code>
       out.println("  TestOnPi  blink: " + valueUL("fem0", "no") + " LEDs");
       return;
     }
-    runOnTask = true; // start a local task
+    int mTskCnt = ++runOnTask; // start a local task
     invInToOut = portIn.isIO(); // input & eventually output in every step
     //  out.println("  TestOnPi set mode output rd ye gn/up  14 mA");
     pI.logCommand(pI.setPadS(0, 14));
     pI.setAsOutputs(verbose, "red LED", rdLEDs);
     pI.setAsOutputs(verbose, "yel LED", yeLEDs);
     pI.setAsOutputs(verbose, "grn LED", gnLEDs);
-    if (reportTskStrt("blink LEDs")) for(;;) { // red yellow green time/state 
+    if (reportTskStrt("blink LEDs")) for(;;) { // red yellow green time/state
+      if (mTskCnt > runOnTask) break; // end this task (thread)
       pI.logIfBad(pI.setOutSet(rdLEDs, rLd=HI));// on
       if (!chkDelay(200)) break;               //                  200 ms red
       yLd = !yLd;                             //       toggle
@@ -372,6 +380,18 @@ like e.g. <pre><code>
     pI.gpioActionsByMsk(ledOut, gpio -> pI.stdCmd(PI_CMD_MODES, gpio, PI_INPUT));
   } // blink()
 
+/** Wink servo over almost full range. <br />  */
+  @Override public void winkServo() {
+    valLo=580; val=1501; valUp=2420;
+    wink();
+  } // winkServo()
+
+/** PWM continuously up and down over almost full range. <br />  */
+  @Override public void winkPWM() {
+    valLo=2; val=127; valUp=254;
+    wink();
+  } // winkPWM()    
+
 /** Servo wink respectively PWM up/down. <br /> 
  *  <br />
  *  If {@link #portOut} allows no out nothing is done except a message.<br />
@@ -381,7 +401,7 @@ like e.g. <pre><code>
  *  else: no action.
  */
   @Override public void wink(){
-    if (! portOut.isIO()) {
+    if (portOut == null || ! portOut.isIO()) {
       out.println("\n  TestOnPi  wink: " + valueUL("mal0", "no") + " port");
       return;
     }  // no GPIO
@@ -413,12 +433,12 @@ like e.g. <pre><code>
     } // servo
     //int dif = valUp - valLo;
     //if (stepVal > dif) stepVal = dif;  // ?? necessary ???
-    runOnTask = true; // start a local task
+    int mTskCnt = ++runOnTask; // start a local task
     if (reportTskStrt(isPWM ? "wink PMM" : "wink servo")) {
-      reportWnkPar();
-      int ret = 0;
-      for(;;) {
-    
+     reportWnkPar();
+     int ret = 0;
+     for(;;) {
+      if (mTskCnt > runOnTask) break; // end this task (thread)
       if (isPWM) { ret =  pI.setPWMcycle(outGpio, val);
       } else ret = pI.setServoPos(outGpio, val);
       if (ret < 0) {
@@ -630,11 +650,13 @@ like e.g. <pre><code>
         blink();
         continue ovArgs;
       case "-winkpwm": // -winkPWM
-        valLo=2; val=127; valUp=254;
-        wink();
+        // valLo=2; val=127; valUp=254;
+        winkPWM();
         continue ovArgs;
       case "-winkservo": // -wink[Servo]
-        valLo=580; val=1501; valUp=2420;
+        //  valLo=580; val=1501; valUp=2420;
+        winkServo();
+        continue ovArgs;
       case "-wink":
         wink();
         continue ovArgs;

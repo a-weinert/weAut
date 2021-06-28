@@ -116,8 +116,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 1998 - 2009, 2014  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 44 $",
-   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
+   version   = "V.$Revision: 56 $",
+   lastModified   = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "construct and get answer (or static getAnswer)",  
    purpose = "dialog or info window with timeout"
@@ -238,8 +238,7 @@ import de.frame4j.text.TextHelper;
 /** Response value. <br />
  *  <br />
  *  No response yet or timed out.<br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #answer
  *  @see #maxWait
  *  @see #getAnswer getAnswer()
@@ -249,32 +248,28 @@ import de.frame4j.text.TextHelper;
 /** Response value.<br />
  *  <br />
  *  Window was closed (by X or Icon-Menu).<br >
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #answer
  */    
    public static final int CLOSED = -2;
 
 /** Response value. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #answer
  */    
    public static final int CANCEL = 0;
 
 /** Response value. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #answer
  */    
    public static final int NO = 1;
  
 /** Response value. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #answer
  */    
    public static final int YES = 2;

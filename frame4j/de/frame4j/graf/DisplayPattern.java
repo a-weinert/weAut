@@ -54,8 +54,8 @@ import de.frame4j.util.MinDoc;
 @MinDoc(
    copyright = "Copyright 2000 - 2009, 2019  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 44 $",
-   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
+   version   = "V.$Revision: 56 $",
+   lastModified   = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "supports application with patterns for a dot matrix display"
 ) public class DisplayPattern {
@@ -65,25 +65,25 @@ import de.frame4j.util.MinDoc;
 
 /** Number of points, X direction, horizontal. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
    public static final int X_DOTS = 5;
 
 /** Number of points, Y direction, vertical. <br />
  *  <br />
- *  Value: {@value}<br />
+ *  Value: <code>{@value}</code>
  */
    public static final int Y_DOTS = 8;
 
 /** Constant for off (0) for &quot;readable&quot; array initialisers. <br>
  *  <br />
- *  Value: {@value}<br /> 
+ *  Value: <code>{@value}</code> 
  */
    private static final byte µ = 0;
 
 /** Constant for on (1) for &quot;readable&quot; array initialisers. <br>
  *  <br />
- *  Value: {@value}<br /> 
+ *  Value: <code>{@value}</code> 
  */
    private static final byte X = 1;
 

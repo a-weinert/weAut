@@ -60,20 +60,20 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 1997 - 2009, 2021  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 46 $",
-   lastModified   = "$Date: 2021-05-11 19:01:23 +0200 (Di, 11 Mai 2021) $",
+   version   = "V.$Revision: 56 $",
+   lastModified   = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
    purpose = "Common final values, platform info, constants and so on."
 ) public interface ComVar {
 
 /** The author and project owner of the framework. <br />
  *  <br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */
    String AUTHOR = "Albrecht Weinert";
 
 /** Copyright for the framework. <br />
  *  <br />
- *  Value: {@value}
+ *  Value: <code>{@value}</code>
  */
    String COPYRIGHT = "Copyright (c) 2021  Albrecht Weinert";
    
@@ -185,16 +185,14 @@ import de.frame4j.text.TextHelper;
 
 /** Milliseconds per hour. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #ONE_HOUR
  */
    int H =  60 * M; 
 
 /** Milliseconds per day. <br />
  *  <br />
- *  Value: {@value}<br />
- *  <br />
+ *  Value: <code>{@value}</code>
  *  @see #ONE_DAY
  */
    int D  = 24 * H; 
@@ -209,37 +207,37 @@ import de.frame4j.text.TextHelper;
 
 /** Milliseconds per minute. <br />
  *  <br />
- *  Value: {@value} &nbsp; (...L means long)
+ *  Value: <code>{@value}</code> &nbsp; (...L means long)
  */
    long ONE_MINUTE = 60000L;          // ms in 1 minute
 
 /** Milliseconds per hour. <br />
  *  <br />
- *  Value: {@value} &nbsp; (...L means long)
+ *  Value: <code>{@value}</code> &nbsp; (...L means long)
  */
    long ONE_HOUR =  60L * ONE_MINUTE;  // ms in 1 hour
 
 /** Milliseconds per day. <br />
  *  <br />
- *  Value: {@value} &nbsp; (...L means long)
+ *  Value: <code>{@value}</code> &nbsp; (...L means long)
  */
    public static final long ONE_DAY  = 24L * ONE_HOUR;     // ms in 1 day
 
 /** Milliseconds per week (long). <br />
  *  <br />
- *  Value: {@value} &nbsp; (...L means long)<br />
+ *  Value: <code>{@value}</code> &nbsp; (...L means long)<br />
  */
    long ONE_WEEK  = 7L * ONE_DAY;      
 
 /** Milliseconds per year (365 days). <br />
  *  <br />
- *  Value: {@value} &nbsp; (...L means long)<br />
+ *  Value: <code>{@value}</code> &nbsp; (...L means long)<br />
  */
    long ONE_YEAR  = 365L * ONE_DAY;    
 
 /** Milliseconds per leap year (366 days). <br />
  *  <br />
- *  Value: {@value} &nbsp; (...L means long)<br />
+ *  Value: <code>{@value}</code> &nbsp; (...L means long)<br />
  */
    long ONE_LEAP_YEAR  = 366L * ONE_DAY;
 

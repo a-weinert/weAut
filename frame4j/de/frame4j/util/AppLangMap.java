@@ -111,7 +111,7 @@ import de.frame4j.text.TextHelper;
  *  Copyright 2004, 2009 &nbsp; Albrecht Weinert.<br />
  *  <br /> 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 50 $ ($Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $)
+ *  @version  $Revision: 56 $ ($Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $)
  *
  *  @see de.frame4j
  *  @see de.frame4j.time.TimeHelper
@@ -130,8 +130,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 2004, 2009  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 50 $",
-   lastModified   = "$Date: 2021-06-04 19:53:05 +0200 (Fr, 04 Jun 2021) $",
+   version   = "V.$Revision: 56 $",
+   lastModified   = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage = 
   "use ApplangMap as a (zoo of) PropMap(s) for language specific properties  or\n"
@@ -161,8 +161,7 @@ import de.frame4j.text.TextHelper;
 
 /** Cache size for valueUL() look up. <br />
 *  <br />
-*  Value: {@value}<br />
-*  <br />
+*  Value: <code>{@value}</code>
 *  @see #valueUL(CharSequence, String)
 *  @see #valueUL(CharSequence)
 */    
@@ -206,7 +205,7 @@ import de.frame4j.text.TextHelper;
  *  <br />
  *  Internal container number; start of first language entry (de).<br />
  *  <br />
- *  Value: {@value} 
+ *  Value: <code>{@value}</code> 
  */   
    public static final int S_B = 39;
 

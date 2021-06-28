@@ -18,19 +18,26 @@ package de.weAut;
  *  The definitions are ported from 
  *  <a href="http://abyz.me.uk/rpi/pigpio/cif.html"
  *  title="Joan N.N.'s pigpio library">abyz.me.uk/rpi/pigpio/cif.html</a> or
- *  the respective .h-files.<br />
+ *  the respective .h-files. The (final) variables' names here are equal to
+ *  those of the respective macros in pigpio[d]'s C code.<br /><br />
+ *  <br />
+ *  This interface defines final int values only. To learn about values etc.
+ *  better read the <a href="./doc-files/PiGpioDdefs.java"
+ *  title="PiGpioDdefs.java">source file</a> instead of this 
+ *  javadoc generated text. <br />
  *  <br />
  *  <a href=package-summary.html#co>&copy;</a> 
- *  Copyright 2019 &nbsp; Albrecht Weinert<br />
+ *  Copyright 2019 &nbsp; 2021 &nbsp;&nbsp; Albrecht Weinert<br />
  *  @see ThePi
  *  @see ClientPigpiod
  *  @see PiGpioDerrs
+ *  @see <a href="./doc-files/PiGpioDdefs.java">PiGpioDdefs.java</a>
  *  @author   Albrecht Weinert
- *  @version  $Revision: 54 $ ($Date: 2021-06-22 17:30:16 +0200 (Di, 22 Jun 2021) $)
+ *  @version  $Revision: 56 $ ($Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 36  (06.04.2021) :  minor typo
-//           V. 54  (22.06.2021) :  docu enh.
+//           V. 54  (22.06.2021) :  documentation++
 public interface PiGpioDdefs {
 
 //-------------------------------------   Socket command codes   ------------
@@ -255,7 +262,7 @@ public interface PiGpioDdefs {
    public static final int PI_BAD_CHANNEL      = -27; // DMA channel not 0-14
    public static final int PI_BAD_PRIM_CHANNEL = -27; // DMA primary channel not 0-14
    public static final int PI_BAD_SOCKET_PORT  = -28; // socket port not 1024-32000
-   public static final int PI_BAD_FIFO_COMMAND = -29; // unrecognised fifo command
+   public static final int PI_BAD_FIFO_COMMAND = -29; // unrecognised FIFO command
    public static final int PI_BAD_SECO_CHANNEL = -30; // DMA secondary channel not 0-6
    public static final int PI_NOT_INITIALISED  = -31; // function called before gpioInitialise
    public static final int PI_INITIALISED      = -32; // function called after gpioInitialise
@@ -269,9 +276,9 @@ public interface PiGpioDdefs {
    public static final int PI_BAD_SERIAL_BUF   = -40; // bad (null) serial buf parameter
    public static final int PI_NOT_PERMITTED    = -41; // GPIO operation not permitted
    public static final int PI_SOME_PERMITTED   = -42; // one or more GPIO not permitted
-   public static final int PI_BAD_WVSC_COMMND  = -43; // bad WVSC subcommand
-   public static final int PI_BAD_WVSM_COMMND  = -44; // bad WVSM subcommand
-   public static final int PI_BAD_WVSP_COMMND  = -45; // bad WVSP subcommand
+   public static final int PI_BAD_WVSC_COMMND  = -43; // bad WVSC sub-command
+   public static final int PI_BAD_WVSM_COMMND  = -44; // bad WVSM sub-command
+   public static final int PI_BAD_WVSP_COMMND  = -45; // bad WVSP sub-command
    public static final int PI_BAD_PULSELEN     = -46; // trigger pulse length not 1-100
    public static final int PI_BAD_SCRIPT       = -47; // invalid script
    public static final int PI_BAD_SCRIPT_ID    = -48; // unknown script id
@@ -344,7 +351,7 @@ public interface PiGpioDdefs {
    public static final int PI_BAD_CHAIN_LOOP  = -114; // empty chain loop
    public static final int PI_CHAIN_COUNTER   = -115; // too many chain counters
    public static final int PI_BAD_CHAIN_CMD   = -116; // bad chain command
-   public static final int PI_BAD_CHAIN_DELAY = -117; // bad chain delay micros
+   public static final int PI_BAD_CHAIN_DELAY = -117; // bad chain delay µs
    public static final int PI_CHAIN_NESTING   = -118; // chain counters nested too deeply
    public static final int PI_CHAIN_TOO_BIG   = -119; // chain is too long
    public static final int PI_DEPRECATED      = -120; // deprecated function removed
@@ -371,7 +378,7 @@ public interface PiGpioDdefs {
    public static final int PI_BAD_SPI_BAUD    = -141; // bad SPI baud rate, not 50-500k
    public static final int PI_NOT_SPI_GPIO    = -142; // no bit bang SPI in progress on GPIO
    public static final int PI_BAD_EVENT_ID    = -143; // bad event id
-   public static final int PI_CMD_INTERRUPTED = -144; // Used by Python
+   public static final int PI_CMD_INTERRUPTED = -144; // Python only 
 
    public static final int PI_PIGIF_ERR_0    = -2000; // 
    public static final int PI_PIGIF_ERR_99   = -2099; // 
@@ -381,4 +388,4 @@ public interface PiGpioDdefs {
    public static final int PI_SOCK_READ_LEN  = -3059; // socket read wrong length
    public static final int PI_CMD_BAD        = -3081; // command bad; not 0..117
   
-} // PiGpioDdefs (22.05.2019, 06.04.2021)
+} // PiGpioDdefs (22.05.2019, 28.06.2021)
