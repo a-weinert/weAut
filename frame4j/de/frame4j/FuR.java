@@ -17,7 +17,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 import de.frame4j.io.FileHelper;
 import de.frame4j.io.FileService;
 import de.frame4j.io.FileVisitor;
@@ -68,7 +70,7 @@ import de.frame4j.text.CleverSSS;
  *  new[150] would both be recognised, e.g.).<br /> 
  *  <br />
  *  The meaning hereby is<ul>
- *  <li>newFile in stead of new: the associated substitute text is not
+ *  <li>newFile instead of new: the associated substitute text is not
  *       given directly but read from the textfile named. <br />
  *       Multiply named files &mdash; newFile132=partner_links.txt and
  *       newFile[17]=partner_links.txt for example &mdash; are read only
@@ -107,20 +109,20 @@ import de.frame4j.text.CleverSSS;
  *  Besides these big &quot;100 replacements times hundreds of files&quot;
  *  employments, this application also does the little every day things.
  *  <b>Examples</b>:<br />
- *  <code>java FuR de.a_weinert de.a_weinert -i .\+.java -r</code><br />
+ *  {@code java FuR -i .\+.java -r de.weaut de.weAut }<br />
  *  &#160; &#160; replaces in all files *.java in the actual tree the
- *  text de.a_weinert in any case by the same text in only lower case.<br />
+ *  text de.weaut in any case by the same text in the correct case.<br />
  *  <br />
- *  <code>java FuR &quot;&lt;br&gt;&quot; &quot;&lt;br \&gt;&quot; -i -r .\+.html</code><br />
+ *  {@code java FuR .\+.html "<br>" "<br />" -i -r}<br />
  *  &#160; &#160; replaces in all .html files frumpish breaks by the
  *  good ones loved by XML.<br />
  *  <br />
- *  <code>java FuR ap&#105;\&#160;api/ -i 
- *           -v jdk1.3\docs\aweinertbib\+.html</code><br />
+ *  {@code java FuR jdk1.3\docs\de\frame4j\+.html api\ api/ -i -v}<br />
  *  &#160; &#160; replaces in all .html files &#160; 
  *  <code> ap&#105;\&#160;</code> 
  *  by &#160;  <code> api/</code> &#160; so repairing a fault done by quite
- *  many javaDoc.exe versions while doing relative linking.<br />
+ *  many javaDoc.exe versions in Java 1.3 days while doing relative
+ *  linking.<br />
  *  <br />
  *  <br />
  *  <b>Hint 1</b>: The file FuR.properties is an integral part of this 
@@ -133,39 +135,39 @@ import de.frame4j.text.CleverSSS;
  *  <a href="./package-summary.html#co">&copy;</a> 
  *  Copyright 2000 - 2004, 2009, 2015  &nbsp; Albrecht Weinert <br />
  *  <br />
- *  @see      App
- *  @see      AppBase
- *  @see      Prop
+ *  @see     App
+ *  @see     AppBase
+ *  @see     Prop
  */
- // so far    V00.02 (02.10.2001) :  multiple
- //           V00.10 (22.12.2001) :  Bracket old end
- //           V00.20 (22.12.2001) :  parse partial, space is possible
- //           V00.21 (03.05.2002) :  Datei.Criteria.parse
- //           V01.31 (28.06.2002) :  dir, old, [oldEnd,] new
- //           V02.00 (23.04.2003) :  CVS Eclipse
- //           V02.05 (09.06.2003) :  New package structure
- //           V02.13 (29.04.2004) :  CVS bug repair,  prep. regex
- //           V02.20 (19.05.2005) :  utilise Prop's enhancements
- //           V.10   (19.11.2008) :  cvsNT -> SVN; SVN version saltoes
- //           V.11   (25.11.2008) :  keepFileDate
- //           V.o23+ (25.11.2008) :  keepBraces
- //           V.o69+ (11.02.2009) :  -useReplDate
- //           V.o29+ (15.05.2012) :  null pointer bug (1  w/o propfile)
- //           V.135+ (25.06.2015) :  -test now working (no file modif.)
- //           V.137+ (06.01.2016) : FileHelper
- //           V.003+ (06.01.2017) : SVN new on Ubuntu, (hence) filModEnc 
+ // so far   V00.02 (02.10.2001) :  multiple
+ //          V00.10 (22.12.2001) :  Bracket old end
+ //          V00.20 (22.12.2001) :  parse partial, space is possible
+ //          V00.21 (03.05.2002) :  Datei.Criteria.parse
+ //          V01.31 (28.06.2002) :  dir, old, [oldEnd,] new
+ //          V02.00 (23.04.2003) :  CVS Eclipse
+ //          V02.05 (09.06.2003) :  New package structure
+ //          V02.13 (29.04.2004) :  CVS bug repair,  prep. regex
+ //          V02.20 (19.05.2005) :  utilise Prop's enhancements
+ //          V.10   (19.11.2008) :  cvsNT -> SVN; SVN version saltoes
+ //          V.o23+ (25.11.2008) :  keepFileDate keepBraces
+ //          V.o69+ (11.02.2009) :  -useReplDate
+ //          V.o29+ (15.05.2012) :  null pointer bug (1  w/o propfile)
+ //          V.135+ (25.06.2015) :  -test now working (no file modif.)
+ //          V.137+ (06.01.2016) :  FileHelper
+ //          V.003+ (06.01.2017) :  SVN new on Ubuntu, (hence) filModEnc
+ //          V.  51 (03.07.2021) :  hyphenation de-hyphenation (experimental)
 
 @MinDoc(
    copyright = "Copyright 2000 - 2009, 2015, 2017  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 44 $",
-   lastModified   = "$Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $",
+   version   = "V.$Revision: 57 $",
+   lastModified   = "$Date: 2021-07-04 17:53:10 +0200 (So, 04 Jul 2021) $",
    usage   = "start as Java application (-? for help)",  
    purpose = "find and replace multiple texts in multiple files"
 ) public class FuR extends App {
 
 /** No objects. */
-   private FuR(){ }
+   private FuR(){}
 
 /** FuR requests only partial start parameter parsing by Prop. */
    @Override public boolean parsePartial(){ return true; }
@@ -188,6 +190,46 @@ import de.frame4j.text.CleverSSS;
    } // main(String[])
 
 //-----  Properties, automatic set by Prop.parse() ----------------------
+   
+// hyphenation de-hyphenation (03.07.2021, experimental)
+/** Hyphenate or de-hyphenate. <br />
+ *  <br />
+ *  If one of {@link #hyphen} or {@link #deHyphen} is {@code true} FuR gets
+ *  its old / new find and replace pattern from the text file 
+ *  {@link #hyphFile} only.<br />
+ *  If both are true the program ends with an error message.
+ *  @since July 2021  
+ */
+   public boolean hyphen, deHyphen;
+   
+/** Path of the hyphenation definition file. <br />
+ *  <br />
+ *  This is a strict one hyphenated (by {@code &shy;}) word per line text
+ *  file:<pre>
+ *  {@code Klas&shy;sen&shy;ver&shy;band}
+ *  {@code Feuer&shy;wehr&shy;haupt&shy;mann}
+ *  {@code twelve&shy;year&shy;old}
+ *  {@code anx&shy;ious}
+ *  {@code stu&shy;pid}</pre><br />
+ *  Note 1: In most cases, it is better to have language specific hyphenation
+ *  definition files.<br />
+ *  Note 2: If you happen to have a good hyphenation definition file having
+ *  hyphens {@code -;} instead of the XML entity {@code &shy;}, let this
+ *  program {@link de.frame4j.FuR} replace the first with the latter:<br />
+ *  &nbsp; {@code java de.frame4j.FuR myHyphFile.txt "-" "&shy;" -v}
+ *  
+ *  @see #hyphen
+ *  @see #deHyphen
+ */
+   public String  hyphFile;
+
+/** Encoding of the hyphenation definition file. <br />
+ *  <br />
+ *  Default: UTF-8
+ *  @see #hyphFile   
+ */
+   public String  hypFilEnc = "UTF-8";
+   
 
 /** Recursively visit sub-directories. <br />
  *  <br />
@@ -286,41 +328,34 @@ import de.frame4j.text.CleverSSS;
     public boolean ignoreWS;
 
 /** Search text (multiple). <br />
- *  <br />
  *  @see #oldText
  */
    protected String[]  oldT;
    CleverSSS[] oldRKt, oldRKe;
 
 /** Search text, end (multiple). <br />
- *  <br />
  *  @see #oldEnd
  */
    protected String[] oldE;
 
 /** Ignore case for search text matching (multiple). <br />
- *  <br />
  *  @see #ignoreCase
  */ 
    protected boolean[] ignCase;
 
 /** Ignore white spaces search text matching (multiple). <br />
- *  <br />
  *  @see #ignoreWS
  */ 
    protected boolean[] ignWS;
 
-/** Replacement text; substitute (multiple). <br />
- */
+/** Replacement text; substitute (multiple). <br /> */
    protected String[] newT;
 
-/** Replacement text / substitute file name;  (multiple). <br />
- */
+/** Replacement text / substitute file name;  (multiple). <br /> */
    protected String[] fileNs;
 
 
-/** Modification date for the substitute (multiple). <br />
- */
+/** Modification date for the substitute (multiple). <br />  */
    protected long[] newModif;
 
 /** Keep the braces, when replacing text. <br />
@@ -329,8 +364,7 @@ import de.frame4j.text.CleverSSS;
  */
    public boolean keepBraces = true;
    
-/** Keep the braces, when replacing text (multiple). <br />
- */
+/** Keep the braces, when replacing text (multiple). <br /> */
    protected boolean[] keepBrace;
 
 /** Exclude text. <br />
@@ -349,15 +383,14 @@ import de.frame4j.text.CleverSSS;
 /** Exclude text (number 2). <br />
  *  <br />
  *  Same effect as {@link #ignFilesWith}. (Both excluding conditions are 
- *  ORed.)<br />
- *  <br />
+ *  ORed.)
  */
    public String ignFilesWith2;
 
 /** Number of (multiple) replacements. <br /> */
    int anzAltNeu = -1;
  
-/** Start directory. */
+/** Start directory. <br /> */
    public String directory;
 
 /** File types to regard. <br /> */
@@ -368,7 +401,8 @@ import de.frame4j.text.CleverSSS;
  *  The name of the real/current encoding of the text files to be modified.
  *  It must fit and is not changed. <br />
  *  <br />
- *  No explicit setting (null) defaults to the platform encoding. <br />
+ *  No explicit setting (null) defaults to the platform encoding.
+ *  
  *  @since January 2017
  */
    public String filModEnc;
@@ -380,16 +414,16 @@ import de.frame4j.text.CleverSSS;
    int dAnz = 0; // number of modified files
    int eAnz = 0; // total number of replacements
 
-/** Working method of FuR. */
+/** Working method of FuR. <br /> */
    @Override public int doIt(){
       log.println();
       if (verbose)log.println(twoLineStartMsg().append('\n'));
       if (filModEnc == null 
-         ||  TextHelper.areEqual("defaultEncoding", filModEnc, true)){
+         ||  TextHelper.areEqual("defaultEncoding", filModEnc, true)) {
         filModEnc = FILE_ENCODING;
       } 
       try {
-         filModCs =  Charset.forName(filModEnc );
+         filModCs =  Charset.forName(filModEnc);
       } catch (Exception e) {
          return errMeld(17, "Illegal file encoding " + filModEnc); 
       }
@@ -399,30 +433,29 @@ import de.frame4j.text.CleverSSS;
       } catch (IllegalArgumentException iae) {
          return errMeld(5, iae);
       }
-      for (int i = 0; i < args.length; ++i) {
+      for (int i = 0; i < args.length; ++i) { // parse remaining args
          String aktArg = args[i];
          if (aktArg == null) continue;
-         if (directory == null) {
+         if (directory == null) { // 1st remaining is [directory\]file
             aktArg = aktArg.trim();
-            if (aktArg.length() != 0)
-               directory = aktArg;
+            if (aktArg.length() != 0) directory = aktArg;
             continue;
-         }
-         if (oldText == null) {
+         } // 1st
+         if (oldText == null) { // 2nd remaining is text to be replaced 
             oldText = aktArg;
             continue;
-         }
-         if (oldEnd == null) {
+         } // 2nd remaining is text to be replaced or its begin
+         if (oldEnd == null) { // 3rd is old end or new text 
             oldEnd = aktArg;
             continue;
-         }
-         if (newText == null) {
+         } // 3rd
+         if (newText == null) { // 4th is new text 
             newText = aktArg;
             continue;
-         }
+         } // 4th 
          return errMeld(14, valueLang("tooManStandPar", 
                  "Too many or wrong standard parameters: ")  + aktArg);
-      } // for
+      } // for (parse remaining args)
 
       if (verbose) {
          log.println ("\n  ///   Dir/Files = "  +  directory 
@@ -435,10 +468,72 @@ import de.frame4j.text.CleverSSS;
       } else if (oldEnd == null || oldEnd.length() == 0)
           oldEnd = null;
 
-      if (newText == null || newText.length() == 0)
-          newText = "";
+      if (newText == null || newText.length() == 0) newText = ""; // just del.
+      
+      if (hyphen || deHyphen) { // pepare [de-] hyphenation
+        if (hyphen && deHyphen) {
+          return errMeld(41, valueLang("hyphAndDe", 
+                                  "hyphenate as well as de-hypenate"));
+        } // must be either hyphenate or de-hypenate
+        hyphen = true; // from now hyphen means both and deHyphen distinguishes
+        oldE = new String[153];
+        oldT = new String[153];
+        anzAltNeu = 0;
+        try (Stream<String> stream = Files.lines(Paths.get(hyphFile),
+                                          Charset.forName(hypFilEnc)) ){
+          stream.forEach(line -> { // process hyphenation file lines
+             //  log.println(line); // test only sofar
+             String lin = TextHelper.trimUq(line, null);
+             boolean lOK = lin != null; // OK replaces missing continue
+             int linLen = lOK ? lin.length() : 0;
+             boolean noCom = true; // no comment line
+             lOK = linLen >= 9     // long enough and ...
+                  && (noCom = lin.charAt(0) != '#'); // ... no comment line
+             if (verbose && ! noCom) log.println(line); // print comments
 
-      for (int i = 151; i >= 0; --i) {
+             int firstHyph = lOK ? lin.indexOf(SHY) : -1;
+             lOK = firstHyph >= 2 && linLen > firstHyph + 6; // aa..&shy;bb
+             if (lOK) { // check last 
+               firstHyph = lin.lastIndexOf(SHY); // can't be -1 as one is there
+               lOK = linLen > firstHyph + 6; // and aa&shy;..bb
+             } // check last 
+             String linPure = null;
+             if (lOK) {
+               linPure = lin.replace(SHY, EMPTY_STRING); // replaces all occ
+             }
+             if (lOK && verbose) {
+               log.println("-[" + TextHelper.threeDigit(anzAltNeu) + "]: "
+                              + linPure + (deHyphen ? " < " : " > ") + lin);
+             }
+             if (lOK && anzAltNeu < 153) {
+               oldE[anzAltNeu] = lin;
+               oldT[anzAltNeu] = linPure;
+               ++anzAltNeu;
+             } // line OK and space
+          }); // process hyphenation file lines
+        } catch (IOException ex) {
+          log.println(valueLang("hyphFilErr", "hyphenation file error:"));
+          return errMeld(41, ex);                   
+        } // try stream over lines of hyphFile
+        if (anzAltNeu == 0) return errMeld(43, valueLang("hyphNoSpec", 
+                                                "no hyphenation specified"));
+        ignoreCase = false; // we must keep case intakt
+        ignoreWS   = false; // white space is signifikant in word search
+        keepBraces = true; // we have none
+        // above oldE is text with SHY and oldT is pure text
+        newT = new String[anzAltNeu];
+        if (deHyphen) { // de-hyphenate
+          newT = oldT;
+          oldT = oldE; // i.e. text with hyphen
+        } else { // de-hyphenate else hyphenate
+          newT = oldE; // i.e. text with hyphen
+        } // hyphenate (oldT i.e. pure text is OK)
+        oldRKt = new CleverSSS[anzAltNeu];
+        for (int i = 0; i < anzAltNeu; ++i) {
+          oldRKt[i] = RK.make(oldT[i], ignoreCase, ignoreWS);
+        } // prepare hyphen for
+        
+      } else for (int i = 151; i >= 0; --i) { // prepare std find&replc 
          String a  = prop.getString("old", i, null);
          if (a == null) continue; 
          if (anzAltNeu == -1) { // first old/new pair found
@@ -511,10 +606,9 @@ import de.frame4j.text.CleverSSS;
                                     a).append(" [" + i + "]"));
          oldRKe[i+1] = RK.make(e, iC, iWS);
          oldRKt[i+1] = RK.make(a, iC, iWS);
-         
                                     
         /// ???  ignWS[i+1] = iC &&   prop.getBoolean("ignWS", i, ignoreWS);    
-      } // for old[i]
+      } // else for  prepare std find&replc (for old[i])
 
       if (anzAltNeu == -1) {
          if (oldText == null || oldText.length() == 0) {
@@ -522,7 +616,7 @@ import de.frame4j.text.CleverSSS;
                                                 "No search text specified"));
          }   
          if (!ignoreCase && oldText.equals(newText)) {
-            return errMeld(17, messageFormat(null, "oldNewEqual", 
+            return errMeld(19, messageFormat(null, "oldNewEqual", 
                  "Search and replacement texts = \"{0}\" are equal", 
                                                                     oldText));
          }   
@@ -603,7 +697,7 @@ import de.frame4j.text.CleverSSS;
                final CleverSSS a = oldRKt[i];
                if (a == null) continue searchLoop;
                /// final String e = oldE[i];
-               final CleverSSS e = oldRKe[i];
+               final CleverSSS e = hyphen ? null : oldRKe[i];
                String n = newT[i];
                
                if (e != null && e.len != 0 && keepBrace[i]) {
@@ -613,7 +707,7 @@ import de.frame4j.text.CleverSSS;
 
                int vki = TextHelper.fUr(bu1, bu2, a, e, n); //, ignCase[i], ignWS[i]);
                if (vki > 0) {
-                 long insMod = newModif[i];
+                 long insMod = hyphen ? 0L : newModif[i];
                  if (insMod > modL) modL = insMod;
                  vork += vki;
                  StringBuilder tmp = bu2;
@@ -687,4 +781,4 @@ import de.frame4j.text.CleverSSS;
        }
       return 0; 
    } // doIt()        
-} // FuR (03.06.2003, 19.05.2004, 15.04.2006, 18.02.2009, 25.06.2015)
+} // FuR (03.06.2003, 05.2004, 04.2006, 02.2009, 06.2015, 03.07.2021)

@@ -31,7 +31,6 @@ import de.frame4j.util.ComVar;
 import de.frame4j.util.MinDoc;
 import de.frame4j.text.TextHelper;
 
-
 /** <b>Handling and support for (byte-) Input</b>. <br />
  *  <br />
  *  This class facilitates the handling of reading bytes (8 bit data) from
@@ -63,7 +62,7 @@ import de.frame4j.text.TextHelper;
  *   <li>reading and buffering (recording) the content,</li>
  *   <li>(optionally) concurrent reading and buffering (recording) in an
  *       anonymous Thread,</li>
- *   <li>re activate the Input from an URL or a {@link File}.</ul>
+ *   <li>re activate the Input from an URL or a {@link File}.</li></ul>
  *
  *  The re-activating optimises the process of repeatedly reading from an URL
  *  or a file with dynamically changing content. It saves the otherwise
@@ -75,10 +74,17 @@ import de.frame4j.text.TextHelper;
  *  sequence. {@link Input} features this concurrent reading with all 
  *  comfort and threadsafe (so avoiding the often seen home bread 
  *  solutions).<br />
+ *  Remark: This class {@link Input} is much older than 
+ *  {@link java.util.stream.Stream Stream}s and delivered
+ *  among others some of their features then, already. Now, as Frame4J 
+ *  requires Java8 {@link Input} might get obsolete. The removal of
+ *  {@link Input} from Frame4J or the use of
+ *  {@link java.util.stream.Stream Stream} in this class {@link Input} 
+ *  might be considered in future.<br />   
  *  <br />
  *  <br />   
  *  <a href="package-summary.html#co">&copy;</a>
- *  Copyright 1998 - 2008, 2019  &nbsp; Albrecht Weinert. 
+ *  Copyright 1998 - 2008, 2019, 2021  &nbsp; Albrecht Weinert. 
 
  */
  // so far    V00.00 (12:03 12.03.1998) :  new (parts from FUCopy, AnaHTML)
@@ -96,8 +102,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright  1998 - 2009, 2016, 2019   A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 33 $",
-   lastModified   = "$Date: 2021-03-27 19:01:12 +0100 (Sa, 27 Mrz 2021) $",
+   version   = "V.$Revision: 57 $",
+   lastModified   = "$Date: 2021-07-04 17:53:10 +0200 (So, 04 Jul 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "use instead of an InputStream",  
    purpose = "a byte input with useful extra capabilities"

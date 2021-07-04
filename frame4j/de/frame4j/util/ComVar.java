@@ -60,8 +60,8 @@ import de.frame4j.text.TextHelper;
 @MinDoc(
    copyright = "Copyright 1997 - 2009, 2021  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 56 $",
-   lastModified   = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
+   version   = "V.$Revision: 57 $",
+   lastModified   = "$Date: 2021-07-04 17:53:10 +0200 (So, 04 Jul 2021) $",
    purpose = "Common final values, platform info, constants and so on."
 ) public interface ComVar {
 
@@ -146,7 +146,10 @@ import de.frame4j.text.TextHelper;
  *  {@link String#intern()}; but there's no guarantee.<br />
  */
    String EMPTY_STRING = "";
-
+   
+/** Soft hyphen &amp;shy;entity . <br /> */   
+   String SHY = "&shy;";
+   
 /** 40 blanks. <br />
  *  <br />
  *  A String with forty blanks.
