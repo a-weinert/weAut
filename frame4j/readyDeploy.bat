@@ -133,11 +133,13 @@ if exist ..\junit set useLinks=%useLinks% -link ../junit
 @cd /D  %JAVA_HOME%\docs\
 
 @echo.
+@goto :noRepair6
 @echo Repair the Java6 javaDoc //-bug (..//package), html and add icon
 @REM echo.
 @REM  java.exe de.frame4j.FuR %JAVA_HOME%\docs\frame4j\+.html  ../..//pac  ../../pac  -r -v
 @java.exe de.frame4j.FuR .\frame4j\+.html  @.\frame4j\de\weAut\doc-files\FuRdoc.properties -r -silent
 @REM  echo repaired javaDoc6 //-bug (..//package), html and added icon
+:noRepair6 
  
 @if %frame4j.loc.dnl%X==X goto :noDnlDir_1
 @echo Generating Java-archive frame4jdoc.zip

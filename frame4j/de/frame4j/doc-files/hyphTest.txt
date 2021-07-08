@@ -1,0 +1,67 @@
+# Definitions for [de-]hyphenation in FuR
+
+# This is a short example file for German language.
+# (N.b. Some words do not have all legal soft hyphens.)
+
+# Copyright 2021 Albrecht Weinert     a-weinert.de
+# V. $Revision: 57 $" 
+# $Date: 2021-07-04 17:53:10 +0200 (So, 04 Jul 2021) $)
+
+Un&shy;ter&shy;of&shy;fi&shy;zier
+Aus&shy;bil&shy;dungs&shy;tag
+Aus&shy;dauer
+aus&shy;ge&shy;nom&shy;men
+Berufs&shy;wahl&shy;mes&shy;se
+Blumen&shy;ge&shy;stecke
+dem&shy;sel&shy;ben
+elek&shy;tro&shy;ni&shy;sches
+Ent&shy;scheidungen
+ent&shy;wor&shy;fen
+er&shy;hielt
+Er&shy;ziehungs&shy;berech&shy;tig&shy;te
+Fol&shy;ge&shy;wo&shy;che
+ge&shy;gebe&shy;nen&shy;falls
+gleich&shy;zei&shy;tig
+Grund&shy;schü&shy;ler
+Haus&shy;meis&shy;terei
+Hospi&shy;ta&shy;tions&shy;stunde
+In&shy;fek&shy;tions&shy;schutz
+Jahr&shy;gangs&shy;stufen
+Klassen&shy;stufen
+Kunst&shy;mu&shy;seum
+Kunst&shy;unter&shy;richt
+Leh&shy;rer
+Lehr&shy;kräfte
+mangel&shy;hafte
+mathe&shy;ma&shy;tisch
+Mathe&shy;ma&shy;tik
+mini&shy;ste&shy;riell
+mög&shy;licher&shy;wei&shy;se
+Partner&shy;schule
+Per&shy;so&shy;nen&shy;gruppe
+Per&shy;so&shy;nen&shy;gruppe
+Pflicht&shy;ver&shy;an&shy;stal&shy;tung
+Plas&shy;tik&shy;flaschen
+Pro&shy;gramm
+Real&shy;schule
+Rück&shy;melde&shy;ge&shy;spräch
+Schul&shy;lauf&shy;bahn&shy;be&shy;ratung
+Schul&shy;sek&shy;re&shy;ta&shy;riat
+Schul&shy;wett&shy;be&shy;werb
+Schüle&shy;rinnen
+Son&shy;der&shy;preis
+son&shy;der&shy;päda&shy;gogi&shy;scher
+Sozial&shy;kon&sh;tak&sh;te
+Stadt&shy;sport&shy;bund
+Teil&shy;nahme
+Test&shy;er&shy;geb&shy;nis
+ver&shy;ant&shy;wort&shy;lich
+Ver&shy;dachts&shy;fall
+ver&shy;öffent&shy;licht
+ver&shy;ant&shy;wort&shy;lich
+wahr&shy;ge&shy;nom&shy;men
+Wett&shy;be&shy;werb
+Wider&shy;spruchs&shy;erklärung
+Wohl&shy;be&shy;finden
+zwei&shy;jäh&shy;rig
+

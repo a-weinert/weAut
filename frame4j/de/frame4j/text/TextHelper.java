@@ -79,6 +79,7 @@ import de.frame4j.util.MinDoc;
  //         V.  33 (25.03.2021) :  type flexibility enh. + other improvements
  //         V.  38 (16.04.2021) :  dig(int), dec formatting enhanced
  //         V.  48 (15.05.2021) :  eightDigitHex() (new in March 21) bug-
+ //         V.  51 (06.07.2021) :  isFrntMttr(CharSequence)
 
 @MinDoc(
    copyright = "Copyright 2000 - 2013, 2021  A. Weinert",
@@ -350,10 +351,59 @@ import de.frame4j.util.MinDoc;
           path = path.replace(':', ';');
       return path;
    } // makeFNL(String)
-
-//------------------------------------------------------------------------
-
    
+//------------------------------------------------------------------------
+   
+/** Check if a text starts with a Jekyll front matter. <br />
+ *  <br />
+ *  A jekyll page (markdown, .md) or layout file may start with a front
+ *  matter enclosed in two lines of just three minuses, 
+ *  i.e. {@code "---"}. <br />
+ *  Find the <a href="https://jekyllrb.com/docs/front-matter/"
+ *  target="_blank"> syntax here</a> and:<br />
+ *  &nbsp; Note a: The first --- line is the very beginning 
+ *                 of the file / {@code txt}.<br />
+ *  &nbsp; Note b: Both enclosing  --- lines must not contain anything
+ *                 else. <br />                 
+ *  <br />
+ *  If the text {@code txt} starts with such front matter this function
+ *  returns the index of the first character after the terminating second
+ *  line {@code "---\r\n"} or {@code "---\n"}. <br />
+ *  If the no starting and ending lines were found -1 is returned.
+ *  
+ *  @param txt the text to be checked
+ *  @return the index of the first character after the second line '---'
+ *          or -1 if
+ */
+  public static int isFrntMttr(final CharSequence txt){
+    if (txt == null) return -1;
+    final int len = txt.length();
+    if (len < 8) return -1; // too short for --- ---
+    int i = 3; // next line start assumed 4 (---\n)
+    char ce =  txt.charAt(3);
+    if (ce != '\n') { // not ...\n
+      if (ce != '\r') return -1;
+      i = 4; // next line start 5 (...\r\n)
+      if (txt.charAt(4) != '\n') return -1;
+    } // not ...[\r]\n
+    final int lLim = len - i - 1;
+    for (; i < lLim ; ++i) { // search \n-
+      if (txt.charAt(i) != '\n') continue;
+      if (txt.charAt(++i) != '-') continue;
+      if (txt.charAt(++i) != '-') continue;
+      if (txt.charAt(++i) != '-') continue; 
+      ce = txt.charAt(++i);
+      if (ce == '\n') return ++i; // 2nd ---\n found
+      if (ce != '\r') continue;
+      if (++i == len) return i; // strange end ---\rEOF (should return -1 ?)
+      ce = txt.charAt(i);    // 2nd ---\n? found
+      return ce == '\n'  ? ++i  // 2nd ---\r\n found
+                         : i;   // 2nd ---\r? found
+    } // for search \n-...
+    return -1; //  no second ---
+  } //  isFrntMttr(CharSequence)
+
+  
 /** Determine if a character sequence ends with another one. <br />
  *  <br />
  *  This method returns true if the character sequence {@code st1} ends with
@@ -1114,7 +1164,9 @@ import de.frame4j.util.MinDoc;
  *       matching {@code oldStart} and {@code oldEnd} to {@code source}.</li>    
  * </ul>      
  *  If {@code oldEnd} is null only {@code oldStart} is searched for in 
- *  {@code source}.<br />
+ *  {@code source}.
+ * 
+ *  @return number of replacements 
  @see #fUr(CharSequence, StringBuilder, CleverSSS, CleverSSS, ReplaceVisitor)
  */ 
    public static int fUr(final CharSequence source, final StringBuilder dest,
@@ -1467,8 +1519,6 @@ import de.frame4j.util.MinDoc;
       }  // both braces and no first end
       
       int iSs = (int) weStart;  // start of start find (not -1 on first)
-
-      
       int vork = 0;
       int lastEnd = 0;
       final boolean newTextEx = newText != null && newText.length() != 0;

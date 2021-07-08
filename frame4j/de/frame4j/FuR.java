@@ -59,9 +59,11 @@ import de.frame4j.text.CleverSSS;
  *  One single replacement task (for every specified file) <br /> 
  *  &nbsp; oldText, [oldEnd,] newText<br />
  *  can be specified by start parameters (command line / script). The 
- *  application can also handle up to 150 replacement orders specified in
- *  an extra .properties file. These are worked through per file content 
- *  sequentially.<br />
+ *  application can also handle up to 188 replacement commands/pattern
+ *  specified in an extra .properties or up to 999 replacements 
+ *  ([de-] hyphenations) given in a hyphenation specification file.
+ *  These replacements are worked through for every text file content
+ *  sequentially (in the defined order).<br />
  *  The properties<br /> &nbsp;
  *  old, [end,] new|newFile [ignoreCase] [ignoreWS] [keepBraces] <br />
  *  are the given in the form <br /> &nbsp;
@@ -85,29 +87,30 @@ import de.frame4j.text.CleverSSS;
  *       space bay matching old or old-oldEnd-braces.</li>
  *  <li>keepBraces: set old and oldEnd (both search braces if given) in front
  *       and at the end of the substitute text (new or newFile content).</li>
- *  </ul>
- *  Remark 1: The newFile/keepBraces feature is heavily used respectively
- *  misused to get &quot;include files&quot; for languages without that
+ *  </ul> <br />
+ *  <b>Remark 1</b>: The newFile/keepBraces feature is heavily used to
+ *  get a &quot;include files&quot; for languages without that
  *  feature (like HTML respectively Java). See also the method 
  {@link TextHelper#fUr(CharSequence, StringBuilder, CleverSSS, CleverSSS, String)
  *  TextHelper.fUr(CharSequence, ..)} used, of course, in this application's
  *  {@link FileVisitor}s.<br />
  *  <br />
- *  Remark 2: Obviously the application doesn't use regular expressions for
- *  text matching. But the bracing and ignore white space features, well used,
- *  are a good, robust and performing substitute in most cases. They give
- *  enough freedom in white space ignoring languages like HTML, XML and
- *  Java.<br />
+ *  <b>Remark 2</b>: Obviously the application does not use regular
+ *  expressions for text matching. But the bracing and ignore white space
+ *  features, when used well, are a good, robust and performing substitute
+ *  in most cases. They give enough freedom in white space ignoring 
+ *  languages like HTML, XML and Java.<br />
  *  <br />
  *  This application's real power shows up when doing many dozens of 
  *  replacements in many hundred files, selected by complex criteria, in one
  *  step. Voluminous changes and maintenance work on web spaces have been 
  *  specified in one .properties file and done orders of magnitude faster and
  *  more robust than by script programmed nested loops and 
- *  transformations (already with the predecessor tool).<br />    
+ *  transformations.<br />    
  *  <br />
- *  Besides these big &quot;100 replacements times hundreds of files&quot;
- *  employments, this application also does the little every day things.
+ *  Besides these big
+ *  &quot;some 100 replacements times hundreds of files&quot; use cases,
+ *  this application also does the little every day things.
  *  <b>Examples</b>:<br />
  *  {@code java FuR -i .\+.java -r de.weaut de.weAut }<br />
  *  &#160; &#160; replaces in all files *.java in the actual tree the
@@ -121,17 +124,32 @@ import de.frame4j.text.CleverSSS;
  *  &#160; &#160; replaces in all .html files &#160; 
  *  <code> ap&#105;\&#160;</code> 
  *  by &#160;  <code> api/</code> &#160; so repairing a fault done by quite
- *  many javaDoc.exe versions in Java 1.3 days while doing relative
- *  linking.<br />
+ *  many javaDoc.exe versions in Java3 days when doing relative linking.<br />
  *  <br />
+ *  <b>[De-] hyphenation</b>: A special find and replace feature is
+ *  replacing words without soft hyphen entities by words with them,
+ *  like<br /> &nbsp; &nbsp;
+ *  {@code Feuerwehrhauptmann ==>  Feu&shy;er&shy;wehr&shy;haupt&shy;mann}
+ *  &nbsp; &ndash; or the other way round.<br />
+ *  One only needs a hyphenation definition file with one
+ *  {@code &shy;} hyphenated word per per line made according to the example  
+ *   <a href="./doc-files/hyphTest.txt" target="_top">hyphTest.txt</a>.<br />
+ *  The hyphenation definition file's default encoding is UTF-8, everywhere;
+ *  use options {@code -hyphEnc ISO8859-1 }, e.g. or 
+ *  {@code -hyphISO1 } to change.<br />
  *  <br />
- *  <b>Hint 1</b>: The file FuR.properties is an integral part of this 
+ *  <br /> 
+ *  <b>Hint 1</b>: In some cases, like text and layout files for jekyll, it
+ *  might be advisable to exclude the front matter from all text changes by 
+ *  {@link FuR} (use option -omitFrntMt).<br />
+ *  <br />
+ *  <b>Hint 2</b>: The file FuR.properties is an integral part of this 
  *  application. It's placed in the same directory (usually within the 
  *  deployment .jar) as FuR.class. The file  
  *  <a href="doc-files/FuR.properties" target="_top">FuR.properties</a>
  *  may be regarded as part of the documentation.<br />
  *  <br />
-  *  <br />
+ *  <br />
  *  <a href="./package-summary.html#co">&copy;</a> 
  *  Copyright 2000 - 2004, 2009, 2015  &nbsp; Albrecht Weinert <br />
  *  <br />
@@ -160,8 +178,8 @@ import de.frame4j.text.CleverSSS;
 @MinDoc(
    copyright = "Copyright 2000 - 2009, 2015, 2017  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 57 $",
-   lastModified   = "$Date: 2021-07-04 17:53:10 +0200 (So, 04 Jul 2021) $",
+   version   = "V.$Revision: 57d $",
+   lastModified   = "$Date: 2021-07-08 $",
    usage   = "start as Java application (-? for help)",  
    purpose = "find and replace multiple texts in multiple files"
 ) public class FuR extends App {
@@ -221,15 +239,23 @@ import de.frame4j.text.CleverSSS;
  *  @see #hyphen
  *  @see #deHyphen
  */
-   public String  hyphFile;
+   public String hyphFile;
 
 /** Encoding of the hyphenation definition file. <br />
  *  <br />
  *  Default: UTF-8
  *  @see #hyphFile   
  */
-   public String  hypFilEnc = "UTF-8";
+   public String hypFilEnc = "UTF-8";
    
+/** Omit front matter. <br />
+ *  <br />
+ *  If true a jekyll front matter is searched for in each file to be
+ *  processed and, if found, left untouched.<br />
+ *  default: false
+ *  @see TextHelper#isFrntMttr(CharSequence) 
+ */
+   public boolean omitFrntMt;
 
 /** Recursively visit sub-directories. <br />
  *  <br />
@@ -476,8 +502,9 @@ import de.frame4j.text.CleverSSS;
                                   "hyphenate as well as de-hypenate"));
         } // must be either hyphenate or de-hypenate
         hyphen = true; // from now hyphen means both and deHyphen distinguishes
-        oldE = new String[153];
-        oldT = new String[153];
+        final int MXHY = 999;
+        oldE = new String[MXHY];
+        oldT = new String[MXHY];
         anzAltNeu = 0;
         try (Stream<String> stream = Files.lines(Paths.get(hyphFile),
                                           Charset.forName(hypFilEnc)) ){
@@ -505,7 +532,7 @@ import de.frame4j.text.CleverSSS;
                log.println("-[" + TextHelper.threeDigit(anzAltNeu) + "]: "
                               + linPure + (deHyphen ? " < " : " > ") + lin);
              }
-             if (lOK && anzAltNeu < 153) {
+             if (lOK && anzAltNeu < MXHY) {
                oldE[anzAltNeu] = lin;
                oldT[anzAltNeu] = linPure;
                ++anzAltNeu;
@@ -533,7 +560,7 @@ import de.frame4j.text.CleverSSS;
           oldRKt[i] = RK.make(oldT[i], ignoreCase, ignoreWS);
         } // prepare hyphen for
         
-      } else for (int i = 151; i >= 0; --i) { // prepare std find&replc 
+      } else for (int i = 189; i >= 0; --i) { // prepare std find&replc 
          String a  = prop.getString("old", i, null);
          if (a == null) continue; 
          if (anzAltNeu == -1) { // first old/new pair found
@@ -645,11 +672,10 @@ import de.frame4j.text.CleverSSS;
 
       FileVisitor replaceBesucher =  new FileVisitor() {
          @SuppressWarnings("resource") // fr will be indirectly closed as file  
-         @Override  public int visit(final File dD){
+         @Override public int visit(final File dD){
             ++ dNr;
             if (verbose) {
-               log.print("\n  " + dD.getPath()
-               + "\n " + dNr + " \t");
+               log.print("\n  " + dD.getPath() + "\n " + dNr + " \t");
                log.flush();
             }
             String ai  = null;
@@ -665,8 +691,7 @@ import de.frame4j.text.CleverSSS;
                return 0;
             }
             if (ai == null || (aiL = ai.length()) == 0) {
-               if (verbose)
-                  log.println("no content (empty)");
+               if (verbose) log.println("no content (empty)");
                return 0;
             }
             if (verbose) {
@@ -675,35 +700,51 @@ import de.frame4j.text.CleverSSS;
             }
 
             if (ignFilesWith != null && ai.indexOf(ignFilesWith) >= 0) {
-               if (verbose)
-                  log.println("exclude criterion 1 fulfilled");
+               if (verbose) log.println("exclude criterion 1 fulfilled");
                return 0;
             } // exclude  ??
 
             if (ignFilesWith2 != null && ai.indexOf(ignFilesWith2) >= 0) {
-               if (verbose)
-                  log.println("exclude criterion 2 fulfilled");
+               if (verbose) log.println("exclude criterion 2 fulfilled");
                return 0;
             } // exclude 2 ??
+            
+            // file content
+            
+            int frntMatLen = 0; // length of start part to be left unchanged
+            String frntMat = null; // the start part to be passend unchanged
+            StringBuilder bu1 = null;
+            if (omitFrntMt) {
+              frntMatLen = TextHelper.isFrntMttr(ai);
+              if (frntMatLen > 2) {
+                if (verbose) {
+                  log.print("front matter(" + frntMatLen + ") \t");
+                }
+                if (frntMatLen == aiL) {
+                  if (verbose) log.println(" is all content.");
+                  return 0; // front matter only content
+                }
+                frntMat = ai.substring(0, frntMatLen);
+                bu1 = new StringBuilder(ai.substring(frntMatLen));
+              } else frntMatLen = 0; // keep 0 (not -1)
+            } else { // check front matter
+              bu1 = new StringBuilder(ai);
+            } // no front matter
 
-            StringBuilder bu1 = new StringBuilder(ai);
             StringBuilder bu2 = new StringBuilder(aiL + 500);
             long modL = dD.lastModified();
             final long origModL = modL;
 
             int vork = 0;
             searchLoop: for (int i = 0; i < anzAltNeu; ++i) {
-               //final String a = oldT[i];
                final CleverSSS a = oldRKt[i];
                if (a == null) continue searchLoop;
-               /// final String e = oldE[i];
                final CleverSSS e = hyphen ? null : oldRKe[i];
                String n = newT[i];
                
                if (e != null && e.len != 0 && keepBrace[i]) {
                   n = oldT[i] + n + oldE[i];
                } // keep braces 
-
 
                int vki = TextHelper.fUr(bu1, bu2, a, e, n); //, ignCase[i], ignWS[i]);
                if (vki > 0) {
@@ -744,6 +785,7 @@ import de.frame4j.text.CleverSSS;
                return 0;
             }
             PrintWriter pw = os.pw;
+            if (frntMatLen > 0 && frntMat != null) pw.print(frntMat);
             pw.print(bu1);
             os.close();
             if (keepFileDate || incFileDate) {
