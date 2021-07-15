@@ -33,11 +33,12 @@ package de.weAut;
  *  @see PiGpioDerrs
  *  @see <a href="./doc-files/PiGpioDdefs.java">PiGpioDdefs.java</a>
  *  @author   Albrecht Weinert
- *  @version  $Revision: 56 $ ($Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $)
+ *  @version  $Revision: 60 $ ($Date: 2021-07-15 18:46:10 +0200 (Do, 15 Jul 2021) $)
  */
 // so far:   V. 19  (17.05.2019) :  new
 //           V. 36  (06.04.2021) :  minor typo
 //           V. 54  (22.06.2021) :  documentation++
+//           V. 57  (14.07.2021) :  p1 semantic debugged
 public interface PiGpioDdefs {
 
 //-------------------------------------   Socket command codes   ------------
@@ -200,30 +201,40 @@ public interface PiGpioDdefs {
 
   public static final int GPIO = 1;
   public static final int BITS = 2; 
-  public static final int PAD  = 2; 
-  public static final int MODE = 3; 
-  public static final int SUBCMD = 4; 
+  public static final int PAD  = 3; 
+  public static final int MODE = 4; 
+  public static final int SUBCMD = 5; 
   
-  public static final int MICROS = 5;
-  public static final int MILLIS = 6; 
-  public static final int BAUD = 7; 
-  public static final int COUNT = 8;   
-  public static final int SDA = 9; 
-  public static final int ARG1 = 10; 
+  public static final int MICROS = 6;
+  public static final int MILLIS = 7; 
+  public static final int BAUD = 8; 
+  public static final int COUNT = 9;   
+  public static final int SDA = 10; 
+  public static final int ARG1 = 11; 
   
-  public static final int LEN_NAME = 11; 
-  public static final int CONFIG = 12;  
-  public static final int CHANNEL = 13;  
-  public static final int WAVE_ID = 14; 
-  public static final int SCRIPT_ID = 15; 
-  public static final int EVENT = 16; 
-  public static final int HANDLE = 17; 
-  public static final int BUS = 18; 
-  public static final int CS = 19; 
-  public static final int CONTROL = 20; 
-  public static final int IGNORE = 21; 
+  public static final int LEN_NAME = 12; 
+  public static final int CONFIG = 13;  
+  public static final int CHANNEL = 14;  
+  public static final int WAVE_ID = 15; 
+  public static final int SCRIPT_ID = 16; 
+  public static final int EVENT = 17; 
+  public static final int HANDLE = 18; 
+  public static final int BUS = 19; 
+  public static final int CS = 20; 
+  public static final int CONTROL = 21; 
+  public static final int IGNORE = 22; 
 
-   
+/** Semantic of parameter p1. <br /> */   
+  static final String[] p1Sem  = { 
+           "must be 0", //  0
+           "GPIO",  "BITS", "PAD",  "MODE", "SubCMD", //1..5
+           "MICROS", "MILLIS", "BAUD", "COUNT", "SDA", "ARG1",  // 6.. 11
+           "LEN(name)", "CONFIG", "CHANNEL", "WAVE_ID", // 12..15
+           "SCRIPT_ID",
+           "EVENT", "HANDLE", "BUS", "CS", "CONTROL", "IGNORE", // 17 ..22
+           "undef"}; // 23 ...  illegal value
+  
+  
 //-------------------------------------   Error codes   ---------------------
 
 /** Error: The initialisation of gpiod failed (-1). <br />
@@ -373,7 +384,7 @@ public interface PiGpioDdefs {
    public static final int PI_NO_FILE_MATCH   = -136; // no files match pattern
    public static final int PI_NO_FILE_ACCESS  = -137; // no permission to access file
    public static final int PI_FILE_IS_A_DIR   = -138; // file is a directory
-   public static final int PI_BAD_SHELL_STATUS = -139; // bad shell return status
+   public static final int PI_BAD_SHELL_STATUS= -139; // bad shell return status
    public static final int PI_BAD_SCRIPT_NAME = -140; // bad script name
    public static final int PI_BAD_SPI_BAUD    = -141; // bad SPI baud rate, not 50-500k
    public static final int PI_NOT_SPI_GPIO    = -142; // no bit bang SPI in progress on GPIO

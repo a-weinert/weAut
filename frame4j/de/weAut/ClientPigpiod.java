@@ -55,7 +55,7 @@ import de.frame4j.util.ComVar;
  *  @see ThePi
  *  @see PiVals 
  *  @author   Albrecht Weinert
- *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
+ *  @version  $Revision: 60 $ ($Date: 2021-07-15 18:46:10 +0200 (Do, 15 Jul 2021) $)
  */
 // so far:   V.  19 (17.05.2019) : new
 //           V.  42 (29.04.2021) : overhaul (Frame4J)
@@ -288,12 +288,19 @@ public class ClientPigpiod {
 /** Response buffer. <br /> */
   byte[] response = new byte[16];
 
-/** Command buffer. <br /> */  
-  byte[] command = new byte[] { 
+/** Command buffer. <br /> 
+ *  <br />
+ *  Length 16 is for standard commands; 20 for just 4 byte command
+ *  extension. <br />
+ *  Assume little endian (worked on Windows and Raspbian): <br />
+ *  {@code command[4] = (byte)p1; // low byte resp. 0..255} <br />
+ */  
+  byte[] command = new byte[20];
+/* xxx { 
 // | command   0    |   p1     gpio   |    assume little endian               
     0,  0,  0,  0,     17,  0,  0, 0,    // 17 PIN11 rd LED
 // |    p2   mode   | p3 (extLen)     |
-    1,  0,  0,  0,     0,  0,  0,  0  }; // 1 output
+    1,  0,  0,  0,     0,  0,  0,  0  }; // 1 output  xxx */
 
 /** Record form last pigpiod command. <br />
  *  <br />
@@ -321,7 +328,7 @@ public class ClientPigpiod {
  *  @see #logCommand(int) 
  *  @see #debugCommand(int)
  */
-     public int lastCmd, lastP1, lastP2;
+     public int lastCmd, lastP1, lastP2, lastP3;
      int cmdExecStage; // 0: none; 2..15: request; 16..31: + response
    } // CmdState
    
@@ -394,9 +401,10 @@ public class ClientPigpiod {
   protected final int rErr(final int error, 
                           final int cmd, final int p1, final int p2){
     CmdState cmdSt = lastCmdState.get();
-    cmdSt.lastCmd = cmd; cmdSt.lastP1 = p1; cmdSt.lastP2 = p2; 
+    cmdSt.lastCmd = cmd; cmdSt.lastP1 = p1;
+    cmdSt.lastP2 = p2;   cmdSt.lastP3 = 0; 
     return error;
-  } //rErr(4*int)
+  } // rErr(4*int)
 
 /** Recording helper for IO methods for errors. <br />
  *
@@ -404,8 +412,9 @@ public class ClientPigpiod {
  */   
   protected final int rErr(final int error, final int cmd){
     CmdState cmdSt = lastCmdState.get();
-    cmdSt.lastCmd = cmd; cmdSt.lastP1 = cmdSt.lastP2 = 0; return error;
-  } //rErr(2*int)
+    cmdSt.lastCmd = cmd; cmdSt.lastP1 = cmdSt.lastP2 = cmdSt.lastP3 = 0;
+    return error;
+  } // rErr(2*int)
 
 /** Recording helper for IO methods. <br />
  *  <br />
@@ -420,8 +429,8 @@ public class ClientPigpiod {
   protected final int rIgn(final int cmd, final int p2){
     CmdState cmdSt = lastCmdState.get();
     cmdSt.lastCmd = cmd; cmdSt.lastP1 = ThePi.PINig; 
-    cmdSt.lastP2 = p2; return 0;
-  } //rErr(2*int)
+    cmdSt.lastP2 = p2;   cmdSt.lastP3 = 0; return 0;
+  } // rIgn(2*int)
   
 /** Log of last command execution. <br />
  *  <br />
@@ -439,23 +448,26 @@ public class ClientPigpiod {
   public int logCommand(final int ret){
     CmdState cmdSt = lastCmdState.get();
     final int lastCmd = cmdSt.lastCmd, lastP1 = cmdSt.lastP1,
-                            lastP2 = cmdSt.lastP2;
+              lastP2 = cmdSt.lastP2, lastP3 = cmdSt.lastP3;
     StringBuilder lCmd = (StringBuilder)TextHelper.formDec(
                                      new StringBuilder(34), lastCmd, 4);
     lCmd.append(',');
     TextHelper.formDec(lCmd, lastP1, 4);
     lCmd.append(',');
     TextHelper.formDec(lCmd, lastP2, 4);
-     if (ret ==  PI_CMD_BAD) { // bad command nothing done
-       out.println(" ERR stdCmd(" + lCmd + ") -> bad command");
+    if (lastP3 != 0) {
+      lCmd.append(',');
+      TextHelper.formDec(lCmd, lastP2, 4);
+    }
+    if (ret ==  PI_CMD_BAD) { // bad command nothing done
+       out.println("  ERR commd(" + lCmd + ") -> bad command");
        return ret;
-     } // bad command nothing done  
-     if (ret >= 0 || uint32ret[lastCmd]) { // positive or unsigned
-       out.println("  LOG ioCmd(" + lCmd + ") -> " + (ret & 0xFFFFFFFFL) 
-                                               + " " + cmdNam[lastCmd]);
+    } // bad command nothing done  
+    lCmd.append(')').append(cmdNam[lastCmd]).append(" -> ");  
+    if (ret >= 0 || uint32ret[lastCmd]) { // positive or unsigned
+       out.println("  LOG ioCmd(" + lCmd + (ret & 0xFFFFFFFFL));
      } else {
-        out.println("  ERR ioCmd(" + lCmd + ") -> " + ret 
-                                               + " " + cmdNam[lastCmd]);
+        out.println("  ERR ioCmd(" + lCmd + PiGpioDerrs.byErrNum(ret));
      }
      if (cmdSt.lastException != null) 
        out.println("      " + cmdSt.lastException.getMessage());
@@ -486,22 +498,22 @@ public class ClientPigpiod {
 
 /** Implementation of two parameter (standard) commands. <br />
  *  <br />
- *  This method handles (is the swiss army knife for) all (81) socket
- *  interface commands with up to two parameters and no extra extension data.
- *  These 81 commands are the great majority and usually the others are 
- *  practically not needed in (most) control applications. This method is
- *  the base for the more comfortable convenient methods (see some
- *  mentioned below).<br />
+ *  This method handles (is the swiss army knife for) all (75) socket
+ *  interface commands with up to two parameters and no extra extension data
+ *  on neither command or response. These 75 commands are the majority and
+ *  the others are very often not needed in control applications. This
+ *  method is the base for the more comfortable convenient methods (see some
+ *  mentioned below). <br />
  *  <br />
- *  This method does the bookkeeping for logging the IO actions afterwards.
+ *  This method does the bookkeeping for logging the actions afterwards.
  *  It also checks a lot of command (cmd) and parameter combinations to
  *  save the pains of socket communication for just getting an error. 
  *  {@link #stdCmd(int, int, int) stdCmd()} does the communication with the
  *  pigpiod daemon as well as the bookkeeping threadsafe. <br />
  *  <br />
  *  It is not complicated to use stdCmd(3*int) directly &ndash; nevertheless
- *  this is not recommended. Better use the convenient implementations of
- *  IO operations, provided here, as  {@link #setMode(int, int)},
+ *  this is not recommended when a convenient implementation of the 
+ *  IO operations in question is provided here, as {@link #setMode(int, int)},
  *  {@link #getMode(int)}, {@link #setPadS(int, int)}, {@link #getPadS(int)},
  *  {@link #setPullR(int, int)}, {@link #setOutput(int, boolean)}
  *  etc. pp..
@@ -519,7 +531,8 @@ public class ClientPigpiod {
      cmdSt.cmdExecStage = 0; cmdSt.lastException = null;
      
      // pre checks with own return (inside thread) - no sync needed
-      if (cmd < 0 || cmd > 117 || hasExtension[cmd]) return PI_CMD_BAD;
+      if (cmd < 0 || cmd > 117
+                  || hasExtension[cmd] || hasRespExt[cmd]) return PI_CMD_BAD;
       final int par1Sem = p1Kind[cmd]; // parameter 1 sematic
       if (par1Sem == GPIO) { // a Command for a specific gpio
         if (p1 < 0 || p1 > 53) return PI_BAD_GPIO;
@@ -590,6 +603,234 @@ public class ClientPigpiod {
       } // synchronized 
       return ret;
    } // stdCmd(3*int)
+   
+/** Implementation of three parameter (numerical extension) commands. <br />
+ *  <br />
+ *  This method handles (is the swiss army knife for) all (11) socket
+ *  interface commands with three parameters (the third sent as fixed 4 byte
+ *  extension, technically) and a simple response.
+ *  <br />
+ *  All other commands are delegated to
+ *  {@link #stdCmd(int, int, int)  stdCmd(cmd, p1, p2)} to be rejected
+ *  or (if one of the 75 command without extensions) be executed there.
+ *  
+ *  @param cmd the command number 
+ *  @param p1 first parameter, mostly GPIO number
+ *  @param p2 second parameter
+ *  @param pNum the one numerical (extension) parameter
+ *  @return commands return value &gt;= 0; or error number (&lt;0) 
+ *          except for commands returning an unsigned value (see 
+ *          {@link #uint32ret(int)}
+ *  @see #stdCmd(int, int, int)        
+ */
+   public int stdCmd(final int cmd, final int p1, final int p2,
+                           final int pNum){
+     if (cmd < 0 || cmd > 117 ||          // handle errors and not extended
+                          !hasIntExtNoResp[cmd]) return stdCmd(cmd, p1, p2); 
+
+     CmdState cmdSt = lastCmdState.get();
+     cmdSt.lastP1 = p1; cmdSt.lastP2 = p2; cmdSt.lastCmd = cmd; // enable log
+     cmdSt.cmdExecStage = 0; cmdSt.lastException = null;
+     cmdSt.lastP3 = pNum;
+     final int par1Sem = p1Kind[cmd]; // parameter 1 sematic
+     if (par1Sem == GPIO) { // a Command for a specific gpio
+        if (p1 < 0 || p1 > 31) return PI_BAD_USER_GPIO;
+     } else if (par1Sem == HANDLE) { // p1  is handle >= 0
+        if (p1 < 0) return PI_BAD_HANDLE;
+     }
+     int ret = 0;
+     
+    /* command     p1 (sem)   extension
+     37 TRIG       GPIO       extNumNoR
+     42 SLRO       GPIO       extNumNoR
+     54 I2CO       BUS        extNumNoR
+     62 I2CWB      HANDLE     extNumNoR
+     64 I2CWW      HANDLE     extNumNoR
+     69 I2CPC      HANDLE     extNumNoR
+     71 SPIO       CHANNEL    extNumNoR
+     86 HP         GPIO       extNumNoR
+     90 BI2CO      SDA        extNumNoR
+     98 FN         GPIO       extNumNoR
+    108 FS         HANDLE     extNumNoR
+       command     p1 (sem)   extension    */
+      // prepare and execute command - sync with this ClientPigpiod needed
+      Arrays.fill(cmdSt.command, (byte) 0); // init all 0
+      cmdSt.command[0] = (byte)cmd;
+      cmdSt.command[4] = (byte)p1;
+      if ((p1 & 0xFFFFFF00) != 0) {
+        cmdSt.command[5] = (byte)(p1 >> 8);
+        cmdSt.command[6] = (byte)(p1 >> 16);
+        cmdSt.command[7] = (byte)(p1 >> 24);
+      }
+      cmdSt.command[8] = (byte)p2;
+      if ((p2 & 0xFFFFFF00) != 0) {
+        cmdSt.command[ 9] = (byte)(p2 >> 8);
+        cmdSt.command[10] = (byte)(p2 >> 16);
+        cmdSt.command[11] = (byte)(p2 >> 24);
+      }
+      cmdSt.command[12] = 4; // fixed command extension length 4
+      cmdSt.command[16] = (byte)pNum;
+      if ((pNum & 0xFFFFFF00) != 0) {
+         cmdSt.command[17] = (byte)(pNum >> 8);
+         cmdSt.command[18] = (byte)(pNum >> 16);
+         cmdSt.command[19] = (byte)(pNum >> 24);
+      }
+      cmdSt.cmdExecStage = 1;
+      synchronized (this) {
+      try { // the whole method is quasi sync as cmdSt is threadlocal
+         sockOut.write(cmdSt.command, 0, 20); // command 16 + 4 ext in 1 step
+         try {
+            int bRead = sockIn.available();
+            bRead = sockIn.read(cmdSt.response, 0, 16);
+            cmdSt.cmdExecStage = 16;
+            ret = bRead != 16 ?  PI_SOCK_READ_LEN
+                       : cmdSt.response[12] | cmdSt.response[13] << 8
+                 | cmdSt.response[14] << 16 | cmdSt.response[15] << 24;
+         } catch (IOException e) {
+           cmdSt.lastException = e;
+            ret =  PI_SOCK_READ_FAILED;
+         }
+      } catch (IOException e) {
+         cmdSt.lastException = e;
+         ret = PI_SOCK_WRIT_FAILED;
+      } // try
+      } // synchronized 
+      return ret;
+   } // stdCmd(4*int)  // since 15.07.2021
+   
+/** Implementation of the commands with extensions. <br />
+ *  <br />
+ *  This method handles (is the swiss army knife for) all (31) socket
+ *  interface commands with a byte array as command extension or response
+ *  or both but not none. <br />
+ *  If {@code cmd} is one of the 11 with a numerical command extension 
+ *  (fixed length 4) and no extended response use better 
+ *  {@link #stdCmd(int, int, int, int) stdCmd(cmd, p1, p2, intBuffc)}
+ *  directly instead of letting this method delegate.<br />
+ *  <br />
+ *  Some of these 31 extended commands are rarely used in most applications
+ *  and are (as of 15.07.2021) not implemented yet.<br />
+ *  <br /> 
+ *  If {@code cmd} is one of the 75 non extended command (and for the
+ *  most trivial errors) this method delegated to
+ *  {@link #stdCmd(int, int, int)}. 
+ * 
+ *  @param cmd the command number 
+ *  @param p1 first parameter, mostly GPIO number
+ *  @param p2 optional second parameter
+ *  @param p3 the length of the command extension
+ *  @param buffC the command extension buffer
+ *  @param buffR the response buffer (might be the same as buffC) 
+ *  @return commands return value &gt;= 0; is length of response in bytes
+ *          or error number (&lt;0)
+ */
+   public int extCmd(final int cmd, final int p1, final int p2,
+                    final int p3, final byte[] buffC, byte[] buffR){
+     if (cmd < 0 || cmd > 117 || // handle errors and not extended
+         !(hasExtension[cmd] || hasRespExt[cmd])) return stdCmd(cmd, p1, p2); 
+     CmdState cmdSt = lastCmdState.get();
+     cmdSt.lastP1 = p1; cmdSt.lastP2 = p2; cmdSt.lastCmd = cmd; // enable log
+     cmdSt.lastP3 = p3;
+     cmdSt.cmdExecStage = 0; cmdSt.lastException = null;
+     final int par1Sem = p1Kind[cmd]; // parameter 1 sematic
+     if (par1Sem == GPIO) { // a Command for a specific gpio
+        if (p1 < 0 || p1 > 31) return PI_BAD_USER_GPIO;
+     } else if (par1Sem == HANDLE) { // p1  a handle >= 0 as returne before
+        if (p1 < 0) return PI_BAD_HANDLE;
+     } else if (par1Sem == BUS) { // I2C bus 0,1 (higher if SW multiplexer)
+        if (p1 < 0) return PI_BAD_I2C_BUS;
+     } // command is a bus command
+     // delegate numerical command extension no extended response
+     if (hasIntExtNoResp[cmd]) {
+       if (p3 != 4) return PI_BAD_PARAM_NUM;
+       if (buffC == null || buffC.length < 4) return PI_BAD_PARAM;
+       final int pNum = ((buffC[3] & 0xFF) << 24) 
+            | ((buffC[2] & 0xFF) << 16) | ((buffC[1] & 0xFF) << 8 )
+            | (buffC[0] & 0xFF);  // little endian
+       return stdCmd(cmd, p1, p2, pNum); // better call directly
+     } // numerical command extension no extended response
+     
+     /* command     p1 (sem)   extension
+     28 WVAG       must be 0  extC
+     29 WVAS       GPIO       extC
+     38 PROC       must be 0  extC
+     40 PROCR      SCRIPT_ID  extC
+     43 SLR        GPIO            extR
+     45 PROCP      SCRIPT_ID       extR
+     56 I2CRD      HANDLE          extR
+     57 I2CWD      HANDLE     extC
+     66 I2CWK      HANDLE     extC
+     67 I2CRI      HANDLE     extC extR
+     68 I2CWI      HANDLE     extC
+     70 I2CPK      HANDLE     extC extR
+     73 SPIR       HANDLE          extR
+     74 SPIW       HANDLE     extC
+     75 SPIX       HANDLE     extC extR
+     76 SERO       BAUD       extC
+     80 SERR       HANDLE          extR
+     81 SERW       HANDLE     extC
+     87 CF1        ARG1       extC
+     88 CF2        ARG1       extC extR
+     91 BI2CZ      SDA        extC extR
+     92 I2CZ       HANDLE     extC extR
+     93 WVCHA      must be 0  extC
+    104 FO         MODE       extC
+    106 FR         HANDLE          extR
+    107 FW         HANDLE     extC
+    109 FL         COUNT      extC extR
+    110 SHELL      LEN(name)  extC
+    112 BSPIO      CS         extC
+    113 BSPIX      CS         extC extR
+    114 BSCX       CONTROL    extC extR
+    117 PROCU      SCRIPT_ID  extC
+       command     p1 (sem)   extension    */
+     
+     // below is wrong XXXX (unmodified stdCmd)  
+     int ret = 0;
+     Arrays.fill(cmdSt.command, (byte) 0); // init all 0
+     cmdSt.command[0] = (byte)cmd;
+     cmdSt.command[4] = (byte)p1;
+     if ((p1 & 0xFFFFFF00) != 0) {
+        cmdSt.command[5] = (byte)(p1 >> 8);
+        cmdSt.command[6] = (byte)(p1 >> 16);
+        cmdSt.command[7] = (byte)(p1 >> 24);
+     }
+     cmdSt.command[8] = (byte)p2;
+     if ((p2 & 0xFFFFFF00) != 0) {
+        cmdSt.command[ 9] = (byte)(p2 >> 8);
+        cmdSt.command[10] = (byte)(p2 >> 16);
+        cmdSt.command[11] = (byte)(p2 >> 24);
+     }
+     cmdSt.command[12] = (byte)p3;
+     if ((p3 & 0xFFFFFF00) != 0) {
+        cmdSt.command[13] = (byte)(p3 >> 8);
+        cmdSt.command[14] = (byte)(p3 >> 16);
+        cmdSt.command[15] = (byte)(p3 >> 24);
+     }
+ 
+     cmdSt.cmdExecStage = 1;
+     synchronized (this) {
+     try { // the whole method is quasi sync as cmdSt is threadlocal
+         sockOut.write(cmdSt.command, 0, 16);
+         try {
+            int bRead = sockIn.available();
+            bRead = sockIn.read(cmdSt.response, 0, 16);
+            cmdSt.cmdExecStage = 16;
+            ret = bRead != 16 ?  PI_SOCK_READ_LEN
+                       : cmdSt.response[12] | cmdSt.response[13] << 8
+                 | cmdSt.response[14] << 16 | cmdSt.response[15] << 24;
+         } catch (IOException e) {
+           cmdSt.lastException = e;
+            ret =  PI_SOCK_READ_FAILED;
+         }
+      } catch (IOException e) {
+         cmdSt.lastException = e;
+         ret = PI_SOCK_WRIT_FAILED;
+      } // try
+      } // synchronized 
+      return ret;
+   } // stdCmd(3*int)
+   
 
 //-------------------------  mask / bulk operations (support)  -------------
    
@@ -771,15 +1012,16 @@ public class ClientPigpiod {
   public void initAsInputs(final int[] lesGPIOs){
     if (lesGPIOs == null) return;
     for(int act : lesGPIOs) {
-        if (act >= ThePi.PINix || act < 0) break; //
-        if (act > 53) continue; 
-        initAsInput(act); // make input; release as output
+      if (act >= ThePi.PINix || act < 0) break; //
+      if (act > 53) continue; 
+      initAsInput(act); // make input; release as output
      } // for over GPIO number list
   } // initAsInputs(unsigned const[])
 
 /** Put one or more GPIO pins to output mode.<br />
  *  <br />
- *  This functions sets the pins listed as GPIOs to output mode.
+ *  This functions sets the pins listed by GPIO number in the parameter array
+ *  to output mode.
  *
  *  @see #initAsInputs(int[]) 
  *  @param lesGPIOs array of GPIO numbers (0..53); use {@link ThePi#PINix}
@@ -789,19 +1031,20 @@ public class ClientPigpiod {
  */
   public int initAsOutputs(final int[] lesGPIOs){
     if (lesGPIOs == null) return 0;
-     int ret = 0;
-     for(int act : lesGPIOs) {
-       if (act >= ThePi.PINix || act < 0) break; //
-       if (act > 53) continue; 
-       ret |= initAsOutput(act); // make output
-     } // for over GPIO number list
-     return ret;
+    int ret = 0;
+    for(int act : lesGPIOs) {
+      if (act >= ThePi.PINix || act < 0) break; //
+      if (act > 53) continue; 
+      ret |= initAsOutput(act); // make output
+    } // for over GPIO number list
+    return ret;
   } // initAsOutputs(unsigned const[])
 
 /** Report an arbitrary operation on a list of GPIOs. <br />
  *  <br />
- *  The report lines on ::outLog will be
- *  {@code   progNam   ___operation GPIO: 13 pin: 27}
+ *  The report lines on {@code out} will be
+ *  {@code   progNam   operation GPIO: 13 pin: 27}. 
+ *  
  *  @param out the writer to output to
  *  @param op  the operation displayed as 12 characters right justified
  *  @param lesGPIOs a GPIO list 
@@ -827,25 +1070,25 @@ public class ClientPigpiod {
 
 /** Stores all output GPIOs as bitmask. <br />
  *  <br />
- *  For all GPIOs in the range 0..31 set by {@link ClientPigpiod} as output
- *  (binary, PWM, servo etc.) the corresponding bit is set.<br />
- *  For all GPIOs in the range 0..31 set by {@link ClientPigpiod} as input
- *  the corresponding bit is cleared.
+ *  For all GPIOs in the range {@code 0..31} set by {@link ClientPigpiod} 
+ *  as output (binary, PWM, servo etc.) the corresponding bit is set.<br />
+ *  For all GPIOs in the range {@code 0..31} set by {@link ClientPigpiod}
+ *  as input the corresponding bit is cleared.
  *  @see #areOut()
  */
   int areOut;
   
 /** Stores all output GPIO as bitmask. <br />
  *  <br />
- *  For all GPIOs in the range 0..31 set by {@link ClientPigpiod} as 
- *  output *) the corresponding bit is set. For all GPIOs in the range 0..31
- *  set by {@link ClientPigpiod} as input the
+ *  For all GPIOs in the range {@code 0..31} set by {@link ClientPigpiod} as 
+ *  output *) the corresponding bit is set. For all GPIOs in the range
+ *  {@code 0..31} set by {@link ClientPigpiod} as input the
  *  corresponding bit is cleared. <br />
  *  The rationale is an automatic bookkeeping to enable a comfortable
  *  "release as input" function ({@link #releaseOutputs()}) mainly for 
- *  the end of / shutdown of the application. <br />
+ *  the end / shutdown of the application. <br />
  *  <br />
- *  Note *): To be precise, it is set as "not input" as we wan't also to 
+ *  Note *): To be precise, it is set as "not input" as we want also to 
  *  release alternate GPIO functions as well as pigpiod's usage as PWM or 
  *  servo.  
  */
@@ -924,7 +1167,6 @@ public class ClientPigpiod {
   //     areOut = 0; // done in stdCmd()   
     return wereOut;
   } // releaseOutputsReport(Appendable)
-  
 
 /** Set all GPIO pins named by mask as outputs with report. <br />
  *  <br />
@@ -1056,7 +1298,7 @@ public class ClientPigpiod {
  *  output. Hi-drive is provided by turning on pull-up as to allow broken
  *  wire diagnosis when shortly switching to input.
  *
- *  @param gpio  the GPIO number (o..53)
+ *  @param gpio  the GPIO number {@code (0..53)}
  *  @param init  0 or 1: the initial output value; else: leave unchanged
  *  @return &lt; 0 : error
  */
@@ -1078,7 +1320,7 @@ public class ClientPigpiod {
  *  This function sets the GPIO pi as output, optionally sets the drive
  *  capacity and leaves a pull resistor setting unchanged.
  *
- *  @param gpio  the GPIO number (0..53)
+ *  @param gpio  the GPIO number {@code (0..53)}
  *  @param init  0 or 1: the initial output value; else: leave unchanged
  *  @return &lt; 0 : error
  */
@@ -1095,9 +1337,9 @@ public class ClientPigpiod {
      
 //-------------------------  read and write --------------------------------
  
-/** Read the pin state. <br />
+/** Read the IO state. <br />
  *     
- *  @param gpio a legal BCM IO number 0..56
+ *  @param gpio a legal BCM IO number {@code (0..56)}
  *  @return 0 or 1: OK; &lt; 0: error
  */
    public int getInp(int gpio){
@@ -1124,19 +1366,20 @@ public class ClientPigpiod {
  *  {@code 255, T, t}  as well as all interpreted as {@code true}
  *  by {@link de.frame4j.text.TextHelper#asBoolObj(CharSequence)
                                       TextHelper.asBoolObj(out)} <br />
- *  Pulse width modulation PWM {@code 0..255} (i.e.0..100%):<br />
+ *  Pulse width modulation PWM {@code 0..255} (i.e. 0..100%):<br />
  *  when {@code out} is a decimal value in that range.<br />
- *  Note: 0=0% and 255=100% will be done as binary output.<br />
+ *  Note: {@code 0=0%} and {@code 255=100%} will be done as binary
+ *        output.<br />
  *  Servo setting {@code 500} (left) .. {@code 2500} (right):
- *  when {@code out} is a decimal value in that range.<br />
- *  Note: right = clockwise (from above); 1500 = middle, neutral.<br />
+ *  when {@code out} is a numerical value in that range.<br />
+ *  Note: right = clockwise (from above); {@code 1500 =} middle, neutral.<br />
  *  <br />
  *  All other values/texts will return an error and do no output.<br />
  *  <br />
  *  If gpio is {@link ThePi#PINig} nothing is done and 0 is returned.
  *  That implements the meaning of {@link ThePi#PINig PINig} as unused.
  *  
- *  @param gpio 0..31 gpio a GPIO to output to 
+ *  @param gpio a GPIO {@code (0..31)} to output to 
  *  @param out the output level or PWM 7 servo setting
  *  @return &lt; 0: pigpiod error
  */
@@ -1174,13 +1417,13 @@ public class ClientPigpiod {
     return setPWMcycle(gpio, val); // PWM 0..255 else error
   } // setOutput(int, String)
 
-/** Set one GPIO output pin. <br />
+/** Set one GPIO as output. <br />
  *  <br />
  *  This functions sets an output pin gpio ON or OFF. <br />
  *  If gpio is {@link ThePi#PINig} nothing is done and 0 is returned.
  *  That handles the meaning of {@link ThePi#PINig PINig} as unused.
  *
- *  @param gpio 0..31 gpio a GPIO to output to 
+ *  @param gpio a GPIO {@code (0..31)} to output to 
  *  @param level OFF or ON (0 or 1)
  *  @return &lt; 0: pigpiod error
  */
@@ -1192,7 +1435,7 @@ public class ClientPigpiod {
     return stdCmd(PI_CMD_WRITE, gpio, level ? 1 : 0); // set the, OFF
   } // setOutput(int, boolean)
 
-/** Set a list/mask/set of GPIO output pins. <br />
+/** Set a list/mask/set of GPIOs as output pins. <br />
  *  <br />
  *  This functions sets the (output) pins set in the bank mask ON or OFF.
  *  The method only works for bank 0 (GPIO 0..27) which pigpiod (falsely
@@ -1234,7 +1477,7 @@ public class ClientPigpiod {
 
 /** Set the servo position. <br />
  *  <br />
- *  This is a special PWM command for RC servos
+ *  This is a special PWM command for RC servos.
  *     
  *  @param gpio a legal BCM IO number 0..28
  *  @param val  0 (Off) or 500 (full left) .. 2500 (full right)
@@ -1336,14 +1579,14 @@ public class ClientPigpiod {
 
 /** Command result type. <br />
  *  <br />
- *  Most commands return a (signed) int value as result. Here (i.e. with 
- *  pigpiod) any not negative value means a good return value or without
- *  a return value 0 means command was executing OK. A negative value means
+ *  Most commands return a (signed) int value as result. Then any not negative
+ *  value means a good return value or without a return value 0 means the
+ *  the command was executed OK. A negative value means
  *  an error; 
  {@link PiGpioDdefs#PI_INIT_FAILED}..{@link PiGpioDdefs#PI_BAD_EVENT_ID}.<br />
  *  <br />
- *  Very few commands return an unsigned 32 bit value (uint32_t in C), where
- *  the Java (always signed) int negative value interpretation as error
+ *  But few commands return an unsigned 32 bit value (uint32_t in C); here
+ *  Java's (always signed) int negative value interpretation as error
  *  would be utterly wrong.<br />
  *  These five commands returning uint32_t are: <br />
  *  BR1 * 10, BR2 * 11, TICK * 16, HWVER * 17, PIGPV * 26.<br />
@@ -1351,7 +1594,7 @@ public class ClientPigpiod {
  *  >documentation</a> they are marked with *; and they can't fail. <br />
  *  
  *  @param cmd command number (0..117)
- *  @return true: the commands return value is 32 bit unsigned
+ *  @return true: the commands return value is a 32 bit unsigned value
  */
  public static final boolean uint32ret(int cmd){
    if (cmd < 10 || cmd > 26) return false;
@@ -1407,6 +1650,56 @@ public class ClientPigpiod {
  false, false, false, false,  true, false, false,  true,  true,  true, //100
   true, false,  true,  true,  true, false, false,  true};              //110
 
+/** Command has pseudo extension. <br />
+ *  <br />
+ *  Eleven commands do not need a byte array command extension of arbitrary
+ *  length {@code p3 = X} but would need a third numeric (byte int u_int)
+ *  parameter and no response extension. According to the pigpoid socket
+ *  protocol this would be handled by {@code p3 = 4} plus an extra 
+ *  (transmission) of a 4 byte extension.<br />
+ *  Obviously, these 11 (pseudo-) extended commands can be handled more 
+ *  efficiently than those with arbitrary command and response extensions.
+ */
+  private static final boolean[] hasIntExtNoResp = {
+//   0      1      2      3      4      5      6      7      8      9                        
+ false, false, false, false, false, false, false, false, false, false, // 00
+ false, false, false, false, false, false, false, false, false, false, // 10
+ false, false, false, false, false, false, false, false, false, false, // 20
+ false, false, false, false, false, false, false,  true, false, false, // 30
+ false, false,  true, false, false, false, false, false, false, false, // 40
+ false, false, false, false,  true, false, false, false, false, false, // 50
+ false, false,  true, false,  true, false, false, false, false,  true, // 60
+ false,  true, false, false, false, false, false, false, false, false, // 70
+ false, false, false, false, false, false,  true, false, false, false, // 80
+  true, false, false, false, false, false, false, false,  true, false, // 90
+ false, false, false, false, false, false, false, false,  true, false, //100
+ false, false, false, false, false, false, false, false};              //110
+
+/** Response has extension. <br />
+ *  <br />
+ *  Most commands returning a value (byte int) or error code will do that
+ *  as value of p3.<br />
+ *  But some use p3 as the number of response bytes of the extension to 
+ *  follow. These command are not (all) the same as those having a command
+ *  extension.
+ *  Hint: As of June 2021 here is no implementation of non standard commands
+ *  as no need arose so far. This might change in future.
+ */
+  private static final boolean[] hasRespExt = {  // Attn. wrong values
+//   0      1      2      3      4      5      6      7      8      9                        
+ false, false, false, false, false, false, false, false, false, false, // 00
+ false, false, false, false, false, false, false, false, false, false, // 10
+ false, false, false, false, false, false, false, false, false, false, // 20
+ false, false, false, false, false, false, false, false, false, false, // 30
+ false, false, false,  true, false,  true, false, false, false, false, // 40
+ false, false, false, false, false, false,  true, false, false, false, // 50
+ false, false, false, false, false, false, false,  true, false, false, // 60
+  true, false, false,  true, false,  true, false, false, false, false, // 70
+  true, false, false, false, false, false, false, false,  true, false, // 80
+ false,  true,  true, false, false, false, false, false, false, false, // 90
+ false, false, false, false, false, false,  true, false, false,  true, //100
+ false, false, false,  true,  true, false, false, false};              //110
+
 //-------------------------------------   p1 semantics  --------------------
   
 /** Kind of parameter p1 by command number. <br />
@@ -1420,18 +1713,20 @@ public class ClientPigpiod {
  */
    private static final int[] p1Kind = {
   GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO,  GPIO, // 0..9
-  0,     0,  BITS,  BITS,  BITS,  BITS,     0,     0,     0,  HANDLE,
-  HANDLE, HANDLE, GPIO, GPIO, GPIO, IGNORE,    0,     0,     0,  GPIO,
-  0,     0,     0,     0, SUBCMD, SUBCMD, SUBCMD, GPIO, 0, SCRIPT_ID,
-  SCRIPT_ID, SCRIPT_ID, GPIO, GPIO, GPIO, SCRIPT_ID, MICROS, MILLIS, IGNORE, 0,
-  WAVE_ID, WAVE_ID, WAVE_ID, 0, BUS, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE,
-  HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE,
-  HANDLE, CHANNEL, HANDLE, HANDLE, HANDLE, HANDLE,  BAUD, HANDLE, HANDLE, HANDLE,
-  HANDLE,  HANDLE,  HANDLE, GPIO, GPIO, GPIO, GPIO, ARG1,  ARG1,  SDA,
-  SDA,   SDA, HANDLE,     0,  GPIO,    0, CONFIG,  GPIO,  GPIO,     0,
-  WAVE_ID, 0,  PAD,  PAD,  MODE, HANDLE, HANDLE, HANDLE, HANDLE, COUNT,
-  LEN_NAME,  CS,  CS,  CS,  CONTROL,  HANDLE,  EVENT,  SCRIPT_ID};  
+  0,     0,  BITS,  BITS,  BITS,  BITS,     0,     0,     0,  HANDLE,  // 10
+  HANDLE, HANDLE, GPIO, GPIO, GPIO, IGNORE,    0,     0,     0,  GPIO, // 20
+  0,     0,     0,     0, SUBCMD, SUBCMD, SUBCMD, GPIO, 0, SCRIPT_ID,  // 30
+  SCRIPT_ID, SCRIPT_ID, GPIO, GPIO, GPIO, SCRIPT_ID, MICROS, MILLIS, IGNORE, 0, // 40
+  WAVE_ID, WAVE_ID, WAVE_ID, 0, BUS, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, // 50
+  HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, HANDLE, // 60
+  HANDLE, CHANNEL, HANDLE, HANDLE, HANDLE, HANDLE,  BAUD, HANDLE, HANDLE, HANDLE, // 70
+  HANDLE,  HANDLE,  HANDLE, GPIO, GPIO, GPIO, GPIO, ARG1,  ARG1,  SDA,   // 80
+  SDA,   SDA, HANDLE,     0,  GPIO,    0, CONFIG,  GPIO,  GPIO,     0,   // 90
+  WAVE_ID, 0,  PAD,  PAD,  MODE, HANDLE, HANDLE, HANDLE, HANDLE, COUNT, // 100
+  LEN_NAME,  CS,  CS,  CS,  CONTROL,  HANDLE,  EVENT,  SCRIPT_ID};  // 110..7
 
+
+   
 /** Command short names. <br />
  *  <br />
  *  This array yields a short command name by command number. The short
@@ -1456,5 +1751,49 @@ public class ClientPigpiod {
 "WVTXM", "WVTAT", "PADS", "PADG", "FO", "FC", "FR", "FW", "FS", "FL",  // 100
 "SHELL", "BSPIC", "BSPIO", "BSPIX", "BSCX", "EVM", "EVT", "PROCU", // 110..117
 "none", "none"};  // 118 .. no command (as of 05.2021)
+ 
+/** ClientPigpoid application. <br />
+ *  <br />
+ *  As of July 2021 this application just lists all commands with properties
+ *  on standard output. This might come handy as a little pigpiod online
+ *  documentation when having Frame4J installed.<br />
+ *  The rationale to make this application was to to check this package's
+ *  implementation and lookups in {@link ClientPigpiod} and
+ *  {@link PiGpioDdefs} against the official socket interface 
+ *  <a href="http://abyz.me.uk/rpi/pigpio/sif.html">documentation</a>.
+ *  
+ *  @param args ignored
+ */
+  public static void main(final String[] args){
+    PrintWriter out = new PrintWriter(System.out, true);
+    out.println("\nde.weAut.ClientPigpiod V.53 (14.07.2021)"
+              + "\n(c) 2021 A. Weinert        a-weinert.de\n");
+    out.println( "command   *-   p1 (sem)   extension");
+    StringBuilder line = new StringBuilder(90);
+    for (int i = 0; i < 118; ++i) {
+      line.setLength(0);
+      line.append(i > 99 ? '1' : 0);
+      try { TextHelper.twoDigitDec(line, i > 99 ? i - 100 : i);
+      } catch (Exception e) {} // ignore (can't happen, as line is no Stream)
+      line.append(' ').append(cmdNam[i]).append(' ');
+      while (line.length() < 10) line.append(' ');
+      if (uint32ret[i]) line.append('*').append(' '); 
+      while (line.length() < 15) line.append(' ');
+      line.append(p1Sem[p1Kind[i]]);
+      while (line.length() < 26) line.append(' ');
+      if (hasIntExtNoResp[i])  {
+        line.append("extNumNoR ");
+      } else {
+        line.append(hasExtension[i] ? "extC " : "     ");
+        line.append(hasRespExt[i]   ? "extR " : "     ");
+      }
+      out.println(line.toString());
+    } // for over commands
+    out.println( "command   *-   p1 (sem)   extension\n"
+             + "\n  *-  return value is unsigned;"
+             + "\n  Do not interprete bit 31 as"
+             + "\n  negative sign bit and error."
+             + "\nde.weAut.ClientPigpiod   V.53");    
+  } // main(String[])
 
 } // ClientPigpiod (21.05.2019, 17.04.2021, 12.06.2021)
