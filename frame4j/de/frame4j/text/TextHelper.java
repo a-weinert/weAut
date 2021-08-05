@@ -55,9 +55,9 @@ import de.frame4j.util.MinDoc;
  *  &nbsp; &lt;ta b lecols=&quot;3&quot;su mmary=&quot;L it&quot;&gt;
  *  &nbsp;.<br />
  *  The white-space ignoring methods can &mdash; as this example shows &mdash;
- *  safely be used. If one can assume some minimal correctness of the text under work
- *  the quite significant performance gain is worth the sacrifice of regular
- *  expressions' checking power.<br />
+ *  safely be used. If one can assume some minimal correctness of the
+ *  text under work the quite significant performance gain is worth the
+ *  sacrifice of regular expressions' checking power.<br />
  *  <br />
  *  <br /> 
  *  <a href="package-summary.html#co">&copy;</a>
@@ -70,9 +70,7 @@ import de.frame4j.util.MinDoc;
  //         V02.03 (26.04.2003) :  JavaDoc(1.4.2beta) has a bug   
  //         V02.08 (01.06.2003) :  dismiss Java 1.3 compatibility; CharSeq 
  //         V02.20 (15.05.2004) :  unambiguous Boolean-Interpret., trimUq
- //         V02.25 (19.09.2004) :  tokenise regEx; more hexForm
  //         V02.32 (10.07.2005) :  wildEqual optimised & ignCase
- //         V02.33 (02.10.2005) :  split without RexEx, indexOf
  //         V02.38 (01.11.2006) :  lastIndexOfWS()
  //         V.179+ (06.01.2010) :  Rabin Karp outsourced to RK.java
  //         V.o94+ (04.09.2013) :  compare() bug-
@@ -80,18 +78,21 @@ import de.frame4j.util.MinDoc;
  //         V.  38 (16.04.2021) :  dig(int), dec formatting enhanced
  //         V.  48 (15.05.2021) :  eightDigitHex() (new in March 21) bug-
  //         V.  51 (06.07.2021) :  isFrntMttr(CharSequence)
+ //         V.  54 (05.08.2021) :  fur word recognition (for FuR hyphenation)  
 
 @MinDoc(
    copyright = "Copyright 2000 - 2013, 2021  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 51 $",
-   lastModified   = "$Date: 2021-06-07 16:31:39 +0200 (Mo, 07 Jun 2021) $",
+   version   = "V.$Revision: 64 $",
+   lastModified   = "$Date: 2021-08-05 13:33:37 +0200 (Do, 05 Aug 2021) $",
    usage   = "import",  
    purpose = "common text utilities: check, parse and formating of texts"
 ) public abstract class TextHelper {
 
 /** No objects. */
    private TextHelper(){ }  // no JavaDoc >= package
+   
+   private static final boolean TEST = false; // development only
 
 //==========================================================================
    
@@ -1142,7 +1143,6 @@ import de.frame4j.util.MinDoc;
  {@link  #fUr(CharSequence, StringBuilder, CharSequence, CharSequence, CharSequence, boolean)
  *     fUr(source, dest, oldText, null, newText, ignoreCase)}<br />
  *  <br />
- *  @see de.frame4j.FuR
  */
    public static int fUr(final CharSequence source, final StringBuilder dest,
                   final CharSequence oldText, final CharSequence newText,
@@ -1155,14 +1155,11 @@ import de.frame4j.util.MinDoc;
  *  <br />
  *  This method is equivalent to the simpler 
  {@link #fUr(CharSequence, StringBuilder, CharSequence, CharSequence, boolean) fUr()}
- *  except for the following extras:<ul>
- *  <li> there is not just one pattern for the {@code source}'s sequence to be 
- *       replaced but a bracket of to pattern {@code oldStart} and 
- *       {@code oldEnd} that might enclose arbitrary other text to be 
- *       replaced by {@code newText}. </li>
- *  <li> By setting {@code ignoreWS} true all white space is ignored on
- *       matching {@code oldStart} and {@code oldEnd} to {@code source}.</li>    
- * </ul>      
+ *  except for the following extra: There is not just one pattern for the
+ *  {@code source}'s sequence to be replaced but a bracket of to pattern
+ *  {@code oldStart} and {@code oldEnd} that might enclose arbitrary other
+ *  text to be replaced by {@code newText}. 
+ *  {@code ignoreCase} would apply to both {@code oldStart} and {@code oldEnd}.
  *  If {@code oldEnd} is null only {@code oldStart} is searched for in 
  *  {@code source}.
  * 
@@ -1314,7 +1311,7 @@ import de.frame4j.util.MinDoc;
          su = se;
       } // such:  while 
       return vork;
-   } // fUr(CharSequence, ... visitor)
+   } // fUr(CharSequence, ... visitor)  // nowher used in Frame4J (2021)
 
 /** Find and Replace character sequence's parts (multiple as visitor). <br />
  *  <br />
@@ -1441,7 +1438,7 @@ import de.frame4j.util.MinDoc;
       
       if (lastEnd < ql) dest.append(quell.subSequence(lastEnd, ql));
       return vork;
-    } // fUr( , 2*CleverSSS, visitor)
+    } // fUr( , 2*CleverSSS, visitor) // used in SVNkeys
 
 /** Find and Replace character sequence's parts (multiple, String). <br />
  *  <br />
@@ -1451,47 +1448,86 @@ import de.frame4j.util.MinDoc;
  *  &nbsp;  {@code oldStart}, any sequence and {@code oldEnd}<br />
  *  is searched (by 
  *  {@link CleverSSS}.{@link CleverSSS#where(CharSequence, int)
- *   where(quell, index)}).<br />
+ *   where(source, index)}).<br />
  *  <br />
- *  Each found block (oldStart, text, oldEnd) will be completely replaced by 
- *  the String {@code newText}. If that is null or empty that part is
- *  effectively removed.<br />
+ *  Each found block {@code (oldStart anyText oldEnd)} will be completely
+ *  replaced by the String {@code newText}. If {@code newText} is null or
+ *  empty the block found is effectively removed.<br />
  *  <br />
  *  Returned is the total number of replacements. In case of no (0) 
- *  replacements the {@link StringBuilder} {@code dest} will not be 
+ *  replacements the {@link StringBuilder} {@code dest} has not been 
  *  touched.<br />
  *  Hint: That behaviour differs from 
  {@link #fUr(CharSequence, StringBuilder, CleverSSS, CleverSSS, ReplaceVisitor)}
  *  !<br />
  *  <br />
  *  If {@code oldEnd} is null or empty only {@code oldStart} is searched for
- *  in {@code source} and the {@link ReplaceVisitor}'s method 
- *  {@link ReplaceVisitor#visit visit()} will be called so
- *  {@link ReplaceVisitor#visit visit(null, oldStart, null)}.<br />
- *  If {@code oldEnd} is not null, a (last) finding of  {@code oldStar}
- *  without closing {@code oldEnd} will not be regarded add treated as 
+ *  in {@code source} and just the text block found by  {@code oldStart} 
+ *  will be replaced.<br />
+ *  If {@code oldEnd} is not null, a (last) finding of {@code oldStart}
+ *  without closing {@code oldEnd} will not be regarded and treated as 
  *  hit.<br />  
  *  <br />
  *  This method implements the visitor pattern for arbitrary text 
  *  replacements by separating the single &quot;calculation of the replacement
- *  text&quot; (just a function on text for up to three) from doing all the 
- *  searching, matching and the replacing. By using {@link CleverSSS} objects
- *  as matchers any flexibility in optionally ignoring case or white space
- *  as well as {@link CleverSSS}' inheritor's (like {@link RK} or {@link KMP})
- *  speed is featured here.<br />
+ *  text&quot; from doing all the searching, matching and the replacing. By
+ *  using {@link CleverSSS} objects as matchers any flexibility like
+ *  optionally ignoring case or white space as well as {@link CleverSSS}'
+ *  inheritor's (like {@link RK} or {@link KMP})
+ *  speed is available here.<br />
  *  <br />
- *  @see ReplaceVisitor#visit ReplaceVisitor.visit()
- *  @return number of replacements 
+ *  A special feature meant for hyphenation (see below) is {@code ckWd}
+ *  or &quot;check for (pure text) 
+ *  word&quot;. When true the surrounding characters of a text (block) 
+ *  to be replaced are looked at: <ol>
+ *  <li> If the character before the block is {@code [ } or {@code * } the
+ *       block is accepted (as never part of a {@code href="} or {@code src="} or
+ *       in markdown always a text) for replacement.</li>
+ *  <li> If the character before the block is not {@code <= 32} (poor man's
+ *       {@code isWhiteSpace}) the block's replacement is rejected.</li>
+ *  <li> If the character after the block is one of {@code ] ! ; , ?  *} or 
+ *       (poor man's) white space the block is accepted (as no one should
+ *       use those as part of a path).</li>
+ *  <li> If the second character after the block is one of {@code ] ! ; , ? *}
+ *       or (poor man's) white space the block is accepted. Otherwise it is
+ *       rejected. Considering the second character, also, allows for a
+ *       a dot as well as an additional character for plural (German)
+ *       genitive, dative or else.</li></ul>
+ *
+ *  Rationale / use case: This feature is to avoid the 
+ *  {@link de.frame4j.FuR FuR's} hyphenation of words in links.
+ *  Example (German):<br />
+ *  {@code "Feuerwehr. "} may be hyphenated as {@code Feuer&shy;wehr.} 
+ *  but {@code "./Feuerwehr.pdf"} would never. <br />
+ *  Remark: Above simple (for speed) "grammar" to avoid spoiling links in
+ *  HTML and markdown by hyphenation is not perfect in either way.<br />
+ *  Some surroundings or words not in links will inhibit legal hyphenation.
+ *  If insisting hyphenation  would have to added by hand.<br />
+ *  And one could construct
+ *  unusually exotic links that would be spoiled by hyphenation by, e.g.
+ *  having path names containing punctuation characters or brackets. No 
+ *  problem when not doing such abstruse things.
+ *  
+ *  @param source the text to be appended to {@code dest} with replacements
+ *  @param dest where to append {@code source} (with replacements to
+ *  @param oldStart text (or its start) to be replaced
+ *  @param oldEnd optional (closing) end of text to be replaced
+ *  @param newText the replacement text
+ *  @param ckWd check if text to be replaced is (probably) a pure text word)
+ *  @return number of replacements; replacements rejected will not count
+ *          except for the very first one.
+ *          
+ *  @see de.frame4j.FuR
  */ 
-   public static int fUr(final CharSequence quell, final StringBuilder dest,
+   public static int fUr(final CharSequence source, final StringBuilder dest,
                           final CleverSSS oldStart, final CleverSSS  oldEnd,
-                                                       final String newText){
-      if (quell == null || dest == null 
+                          final String newText, final boolean ckWd){
+      if (source == null || dest == null 
                         || oldStart == null || oldStart.len == 0) return 0;
-      final int ql  = quell.length();                   // L source
-      if (ql == 0) return 0; // nothing to append
-      final int atl = oldStart.len;                // L Start
-      long weStart = oldStart.whereImpl(quell, 0, 0);
+      final int ql  = source.length();  // length of source text to consider
+      if (ql == 0) return 0;          // no text to consider
+      final int atl = oldStart.len;  // length of search pattern (start)
+      long weStart = oldStart.whereImpl(source, 0, 0);
       
       if (weStart == -1L) { // nothing to replace
          return 0;
@@ -1500,7 +1536,7 @@ import de.frame4j.util.MinDoc;
       final boolean bothBrace = oldEnd != null && oldEnd.len != 0;
       final int ael = bothBrace ?  oldEnd.length() : 0;            // L End
       final int minPattLen  = atl + ael;
-      if (ql < minPattLen ) {
+      if (ql < minPattLen) {
          return 0;
       } // missing or too long search pattern of missing visitor
       
@@ -1509,7 +1545,7 @@ import de.frame4j.util.MinDoc;
       int iEe = iSe;         // end+1 of end find
       long weEnd = -1L;
       if (bothBrace) {
-         weEnd = oldEnd.whereImpl(quell, iSe, 0);
+         weEnd = oldEnd.whereImpl(source, iSe, 0);
          iEs = (int) weEnd;
          iEe = (int) (weEnd >>> 32);
       }
@@ -1522,25 +1558,62 @@ import de.frame4j.util.MinDoc;
       int vork = 0;
       int lastEnd = 0;
       final boolean newTextEx = newText != null && newText.length() != 0;
+      boolean replaceIt = true;
       
       replLoop: while(true) {
-         ++vork;
-         dest.append(quell.subSequence(lastEnd, iSs));
-         if (newTextEx) dest.append(newText);
+         checkTextWord: while (ckWd) {
+           replaceIt = true; // assume accept
+           final char cBef =  iSs > 0 ? source.charAt(iSs -1) : '[';
+           final char cAft = iEe < ql ? source.charAt(iEe) : ']';
+           final char cAft2 = iEe < (ql - 1) ? source.charAt(iEe + 1) : ']';
+           if (TEST) { // TEST print out
+             final char c1 = cBef >= ' ' && cBef < 128 ? cBef : '°';
+             final char c2 = cAft >= ' ' && cAft < 128 ? cAft : '°';
+             final char c3 = cAft2 >= ' ' && cAft2 < 128 ? cAft2 : '°';
+            
+             System.out.println(" TEST fur '" + c1 + "'" + newText + "'"
+                      + c2 + c3 +"' -[" + iEe + "<" +  ql + "]");
+             try {
+               Thread.sleep(111);
+             } catch (InterruptedException e) { }
+           } // slow TEST print out
+           if (cBef == '['
+                || cBef == '*' ) break checkTextWord; // (1) accept [* .....
+           if (cBef > ' ' && cBef != 0xA0) { // poor man's no white space
+               replaceIt = false;
+               break checkTextWord;
+           } // (2) reject (not [ and) not poor man's white space
+           int isPunkt = " ],;?!*".indexOf(cAft, 0);
+           if (isPunkt >= 0 || cAft <= ' ') break checkTextWord; // (3) acc.
+           isPunkt = " ],;?!*".indexOf(cAft2, 0);
+           if (isPunkt >= 0 || cAft2 <= ' ') break checkTextWord; // (4) acc.
+           replaceIt = false;  // (4) reject
+           break checkTextWord;
+         } // checkTextWord (breakable if)
+         if (replaceIt) {
+           ++vork;
+           dest.append(source.subSequence(lastEnd, iSs));
+           if (newTextEx) dest.append(newText);
+         } else {
+           dest.append(source.subSequence(lastEnd, iEe));
+           if (vork == 0) vork = 1;
+         }
+         
+         // search next
          lastEnd = iEe;
          if (lastEnd + minPattLen >= ql) break replLoop; // no chance for next
-         weStart = oldStart.whereImpl(quell, lastEnd, 0);
+         weStart = oldStart.whereImpl(source, lastEnd, 0);
          iSs = (int) weStart;
          if (iSs == -1)  break replLoop; // no next
          iEe = iSe = (int) (weStart >>> 32);
          if (bothBrace) {
-            weEnd = oldEnd.whereImpl(quell, iSe, 0);
+            weEnd = oldEnd.whereImpl(source, iSe, 0);
             iEs = (int) weEnd;
             if (iEs == -1)  break replLoop; // no next
             iEe = (int) (weEnd >>> 32);
          }
       } //  replLoop
-      if (lastEnd < ql) dest.append(quell.subSequence(lastEnd, ql));
+      if (lastEnd < ql) dest.append(source.subSequence(lastEnd, ql));
       return vork;
     } // fUr(CharSequence, StringBuilder, 2*CleverSSS , String)
 

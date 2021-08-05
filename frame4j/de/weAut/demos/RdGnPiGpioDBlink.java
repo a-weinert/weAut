@@ -29,7 +29,7 @@ import java.io.PrintWriter;
  *  Comment excerpt of the original/ported C source file: <br /><pre>
   A fifth program for Raspberry's GPIO pins
 
-  Rev. $Revision: 52 $  $Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $
+  Rev. $Revision: 61 $  $Date: 2021-07-20 19:08:34 +0200 (Di, 20 Jul 2021) $
   Copyright  (c)  2019   Albrecht Weinert <br />
   weinert-automation.de      a-weinert.de
 
@@ -69,8 +69,10 @@ import java.io.PrintWriter;
  *  @see de.weAut.TestOnPi
  *  @see <a href="../doc-files/Raspi4testPins.png"
  *   title="GPIOs and pins">Raspi4testPins</a>
+ *  @see <a href="./doc-files/RdGnPiGpioDBlink.java"
+ *   title="this demo application's source">RdGnPiGpioDBlink.java</a>
  *  @author   Albrecht Weinert a-weinert.de
- *  @version  $Revision: 52 $ ($Date: 2021-06-12 13:01:58 +0200 (Sa, 12 Jun 2021) $)
+ *  @version  $Revision: 61 $ ($Date: 2021-07-20 19:08:34 +0200 (Di, 20 Jul 2021) $)
  */
 // so far:   V.  21  (21.05.2019) : new, minimal functionality
 //           V. -26  (31.05.2019) : three LEDs, IO lock 

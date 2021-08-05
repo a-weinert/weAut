@@ -6,8 +6,8 @@ Created-By: Albrecht Weinert
 Specification-Title: Frame4J
 Implementation-Title: Frame4J
 Specification-Vendor: Albrecht Weinert
-Specification-Version:  1.21.01
-Implementation-Version: 1.21.05
+Specification-Version:  1.21.03
+Implementation-Version: 1.21.08
 Implementation-Vendor: Albrecht Weinert
 Permissions: all-permissions
 Main-Class: de.frame4j.Exec

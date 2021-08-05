@@ -97,8 +97,8 @@ import de.frame4j.util.MinDoc;
 @MinDoc(
    copyright = "Copyright 2010  A. Weinert",
    author    = "Albrecht Weinert",
-   version   = "V.$Revision: 56 $",
-   lastModified   = "$Date: 2021-06-28 12:11:29 +0200 (Mo, 28 Jun 2021) $",
+   version   = "V.$Revision: 63 $",
+   lastModified   = "$Date: 2021-08-04 15:19:25 +0200 (Mi, 04 Aug 2021) $",
 // lastModifiedBy = "$Author: albrecht $",
    usage   = "extend for clever substring search",  
    purpose = "common type for clever searches like Rabin Karp (RK), KMP etc."
@@ -1099,7 +1099,7 @@ import de.frame4j.util.MinDoc;
       if (sI < 0) sI = 0;
       if (sI > mxSi) return -1L;  // no space
 
-      if (optimisticOK)  {
+      if (optimisticOK) {
          if (len == 0) return ((long)(sI + 1) << 32) | sI;
          if (len == 1) { // special case char search only 
             final char subLast = subC[0];

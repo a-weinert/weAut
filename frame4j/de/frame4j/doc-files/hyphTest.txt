@@ -1,12 +1,13 @@
+--
 # Definitions for [de-]hyphenation in FuR
 
-# This is a short example file for German language.
+#  This is a short example file for German language.
 # (N.b. Some words do not have all legal soft hyphens.)
 
 # Copyright 2021 Albrecht Weinert     a-weinert.de
-# V. $Revision: 57 $" 
-# $Date: 2021-07-04 17:53:10 +0200 (So, 04 Jul 2021) $)
-
+# V. $Revision: 61 $" 
+# $Date: 2021-07-20 19:08:34 +0200 (Di, 20 Jul 2021) $)
+--
 Un&shy;ter&shy;of&shy;fi&shy;zier
 Aus&shy;bil&shy;dungs&shy;tag
 Aus&shy;dauer

@@ -12,8 +12,7 @@
  *  within the source distribution 
  */
 
-/** <b>Convenience starter of {@link de.frame4j.FuR}</b>
- *   in the unnamed package. <br />
+/** <b>Convenience starter of {@link de.frame4j.FuR}</b>. <br />
  *  <br />
  *  This class / application exists in spite of the (good) rule that no
  *  self respecting class shall dwell in the unnamed package. The only
@@ -26,16 +25,16 @@
  *  As might be inferred this class' {@link #main(String[]) main()} just
  *  delegates to main of the &quot;real&quot; Frame4J tool in its right
  *  package. That's all.<br />
- *  As might as well be inferred from the above example that's a real use case
- *  to repair a Java6 javaDoc bug that sometimes generates
- *  ..&#47;/package within href= links much to the annoyance to link checkers 
+ *  As might as well be inferred from the above (old) example that is a real
+ *  use case to repair a Java6 javaDoc bug that sometimes generates
+ *  ..&#47;/package within href= links much to the annoyance of link checkers 
  *  (in the best case).<br />
  *  <br />
  *  <a href=./de/frame4j/package-summary.html#co>&copy;</a> 
  *  Copyright 2009 &nbsp; Albrecht Weinert<br />
  *  <br />
  *  @author   Albrecht Weinert
- *  @version  $Revision: 44 $ ($Date: 2021-05-06 19:43:45 +0200 (Do, 06 Mai 2021) $)
+ *  @version  $Revision: 61 $ ($Date: 2021-07-20 19:08:34 +0200 (Di, 20 Jul 2021) $)
  *  @see de.frame4j.Del
  *  @see de.frame4j.Update
  *  @see de.frame4j.AskAlert
@@ -58,5 +57,4 @@ public final class FuR {
  *  @see de.frame4j.FuR#main(String[])
  */
    public static void main(String[] args){ de.frame4j.FuR.main(args); }
-   
 } // Starter class
